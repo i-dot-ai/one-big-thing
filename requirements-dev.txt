@@ -1,0 +1,11 @@
+flake8
+flake8-isort
+flake8-print
+flake8-blind-except
+pep8-naming
+black
+nose
+httpx
+testino
+
+-r ./requirements.lock

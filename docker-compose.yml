@@ -1,0 +1,54 @@
+version: '3'
+
+volumes:
+  local_postgres_data: {}
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: ./docker/web/Dockerfile
+    depends_on:
+      - db
+    env_file:
+      - ./envs/web
+    volumes:
+      - ./:/app/:z
+    ports:
+      - "8055:8055"
+
+  db:
+    image: postgres:13
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data:Z
+    env_file:
+      - ./envs/web
+    ports:
+      - "5432"
+
+  requirements:
+    image: python:3.8-buster
+    profiles:
+      - utils
+    volumes:
+      - ./:/app/:z
+
+  tests-one_big_thing:
+    build:
+      context: .
+      dockerfile: ./docker/tests/Dockerfile
+    image: tests_one_big_thing
+    env_file:
+      - ./envs/tests
+    profiles:
+      - testing
+    depends_on:
+      - one_big_thing-test-db
+
+  one_big_thing-test-db:
+    image: postgres:13
+    container_name: one_big_thing_test_postgres
+    env_file:
+      - ./envs/tests
+    expose:
+      - "5432"

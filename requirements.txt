@@ -1,0 +1,12 @@
+django<3.3
+django-cors-headers
+whitenoise
+watchdog[watchmedo]
+jinja2
+django-environ
+django-allauth
+django_use_email_as_username
+waitress
+psycopg2-binary
+pyyaml
+markdown-it-py

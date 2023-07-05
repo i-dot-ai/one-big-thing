@@ -1,0 +1,6 @@
+---
+applications:
+- name: one-big-thing-develop
+  memory: 512M
+  buildpacks:
+  - python_buildpack
