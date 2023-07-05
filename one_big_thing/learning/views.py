@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from . import models
+from . import models, utils
 
 
 @login_required
@@ -16,8 +16,11 @@ def index_view(request):
 @login_required
 @require_http_methods(["GET"])
 def homepage_view(request):
+    courses = models.Course.objects.all()
+    data = {"courses": courses}
+    errors = {}
     return render(
         request,
         template_name="homepage.html",
-        context={"request": request},
+        context={"request": request, "data": data, "errors": errors,},
     )
