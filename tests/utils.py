@@ -3,6 +3,8 @@ import functools
 import httpx
 import testino
 
+import one_big_thing.wsgi
+
 TEST_SERVER_URL = "http://one_big_thing-testserver:8010/"
 
 
