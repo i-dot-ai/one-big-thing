@@ -1,4 +1,5 @@
 from django.core.management import BaseCommand
+
 from one_big_thing.learning import choices, models
 
 courses = (
