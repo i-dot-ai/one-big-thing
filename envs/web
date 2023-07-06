@@ -9,3 +9,5 @@ POSTGRES_USER=one-big-thing
 POSTGRES_PASSWORD=insecure
 PGPASSWORD=insecure
 DATABASE_URL="postgres://one-big-thing:insecure@db:5432/one-big-thing"
+BASE_URL=http://localhost:8055/
+VCAP_APPLICATION='{"space_name": "local"}'
