@@ -1,10 +1,9 @@
-from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from . import models, utils
+from one_big_thing.learning import models
 
 
 @login_required
