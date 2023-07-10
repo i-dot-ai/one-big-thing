@@ -49,6 +49,10 @@ class TimeStampedModelSchema(Schema):
     modified_at = fields.DateTime(dump_only=True)
 
 
+class UUIDPrimaryKeyBaseModelSchema(Schema):
+    id = fields.UUID()
+
+
 def validate_time_to_complete(value):
     try:
         _ = int(value)
@@ -56,7 +60,7 @@ def validate_time_to_complete(value):
         raise ValidationError("Please enter the time this course took to complete in minutes, e.g. 15")
 
 
-class CourseSchema(TimeStampedModelSchema):
+class CourseSchema(TimeStampedModelSchema, UUIDPrimaryKeyBaseModelSchema):
     title = SingleLineStr(required=True, validate=validate.Length(max=1024))
     link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
     learning_type = make_choice_field(max_len=256, values=choices.CourseType.values, allow_none=True)
