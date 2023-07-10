@@ -7,7 +7,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 
-from one_big_thing.learning import utils, choices
+from one_big_thing.learning import choices, utils
 
 logger = logging.getLogger(__name__)
 

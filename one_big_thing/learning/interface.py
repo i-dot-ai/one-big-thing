@@ -1,7 +1,7 @@
 import marshmallow
 
 from . import models, schemas
-from .utils import Entity, register_event, with_schema, Interface
+from .utils import Entity, Interface, register_event, with_schema
 
 
 class CreateCourseSchema(marshmallow.Schema):
