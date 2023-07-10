@@ -10,6 +10,19 @@ from one_big_thing.settings import ALLOWED_CIVIL_SERVICE_DOMAINS
 event_names = set()
 
 
+class Interface:
+    def __init__(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        all_event_names = tuple(
+            event_name for entity in kwargs.values() for event_name in getattr(entity, "event_names", ())
+        )
+        if len(all_event_names) != len(set(all_event_names)):
+            raise DuplicateEvent(all_event_names)
+        self.event_names = all_event_names
+
+
 class MethodDispatcher:
     def __new__(cls, request, *args, **kwargs):
         view = super().__new__(cls)
