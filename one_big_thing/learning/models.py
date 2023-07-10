@@ -7,7 +7,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 
-from one_big_thing.learning import utils
+from one_big_thing.learning import utils, choices
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +81,12 @@ class Course(TimeStampedModel, UUIDPrimaryKeyBase):
     learning_type = models.CharField(max_length=5, blank=True, null=True)
     time_to_complete = models.IntegerField()
     # strengths = models.CharField(max_length=255)
+
+    def get_learning_type_display_name(self):
+        if self.learning_type in choices.CourseType.names:
+            return choices.CourseType.mapping[self.learning_type]
+        else:
+            return ""
 
 
 class Completion(TimeStampedModel, UUIDPrimaryKeyBase):
