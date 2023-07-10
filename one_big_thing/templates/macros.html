@@ -1,8 +1,16 @@
 {% macro input(name, label, data={}, errors={}, type="text") -%}
   {% if errors.get(name) %}
+    {% if errors.get(name) is iterable and errors.get(name) is not string and errors.get(name) is not number %}
+      {% for error in errors.get(name) %}
+        <p id="question-{{name}}-error-{{loop.index}}" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> {{error}}
+        </p>
+      {% endfor %}
+    {% else %}
     <p id="question-{{name}}-error" class="govuk-error-message">
       <span class="govuk-visually-hidden">Error:</span> {{errors.get(name)}}
     </p>
+    {% endif %}
   {% endif %}
   <div class="govuk-form-group {{errors.get(name) and 'govuk-form-group--error' or ''}}">
     <label class="govuk-label" for="question-{{name}}">
@@ -102,11 +110,73 @@
 {%- endmacro%}
 
 
-{% macro start_new_chat() -%}
-  <a href={{url("declaration")}} role="button" draggable="false" class="govuk-button govuk-button--start" data-module="govuk-button">
-    Start a new chat
-    <svg class="govuk-button__start-icon" xmlns="http://www.w3.org/2000/svg" width="17.5" height="19" viewBox="0 0 33 40" aria-hidden="true" focusable="false">
-      <path fill="currentColor" d="M0 0h13l20 20-20 20H0l20-20z" />
-    </svg>
-  </a>
+{% macro form_wrapper(prev_url, button_label="Continue") -%}
+  {% if prev_url %}
+    <a href="{{prev_url}}" class="govuk-back-link">Back</a>
+  {% endif %}
+  {% if errors %}
+    {{error_summary(errors)}}
+  {% endif %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" novalidate>
+        {{csrf_input}}
+
+        {{caller()}}
+
+        <button class="govuk-button" data-module="govuk-button">
+          {{button_label}}
+        </button>
+      </form>
+    </div>
+  </div>
+{%- endmacro%}
+
+
+{% macro select_from_list(name, label, list, empty_option=DEFAULT) -%}
+  {{select(name, label, list_to_options(list), empty_option="Please choose one...")}}
+{%- endmacro %}
+
+{% macro select(name, label, options, empty_option=DEFAULT) -%}
+
+  <div class="govuk-form-group {{errors.get(name) and 'error'}}">
+    <label class="govuk-label" for="{{name}}">{{label}}</label>
+    <div id="select-field">
+      <select name="{{name}}" id="{{name}}" class="govuk-select govuk-!-width-full">
+        {% if not empty_option is sameas DEFAULT %}
+          <option value="" disabled {{is_empty_selected(data, name)}}>{{empty_option}}</option>
+        {% endif %}
+        {% for option in options %}
+          <option value="{{option.value}}" {{is_selected(data, name, option.value)}}>{{option.text}}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+{%- endmacro %}
+
+{% macro error_summary(errors) -%}
+  <div class="govuk-error-summary" data-module="govuk-error-summary">
+    <div role="alert">
+      <h2 class="govuk-error-summary__title">
+        There is a problem
+      </h2>
+      <div class="govuk-error-summary__body">
+        <ul class="govuk-list govuk-error-summary__list">
+        {% for error in errors.values() %}
+          {% if error is iterable and error is not string and error is not number %}
+              {% for inner_error in error %}
+                <p id="question-{{error}}-error-{{loop.index}}" class="govuk-error-message">
+                  <span class="govuk-visually-hidden">Error:</span> {{inner_error}}
+                </p>
+              {% endfor %}
+            {% else %}
+            <p id="question-{{error}}-error" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> {{errors[error]}}
+            </p>
+          {% endif %}
+        {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
 {%- endmacro%}
