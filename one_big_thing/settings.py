@@ -1,3 +1,4 @@
+from . import allowed_domains
 from .settings_base import (
     BASE_DIR,
     SECRET_KEY,
@@ -15,8 +16,15 @@ STATIC_ROOT = STATIC_ROOT
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
+CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
+FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
+FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
+
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
+
 BASE_URL = env.str("BASE_URL")
+
+APPEND_SLASH = True
 
 ALLOWED_HOSTS = [
     "one-big-thing-testserver",
@@ -27,6 +35,9 @@ ALLOWED_HOSTS = [
 
 # CSRF settings
 CSRF_COOKIE_HTTPONLY = True
+
+if VCAP_APPLICATION.get("space_name", "unknown") not in ["tests", "local"]:
+    SESSION_COOKIE_SECURE = True
 
 # Application definition
 
@@ -128,3 +139,34 @@ ACCOUNT_USERNAME_REQUIRED = False
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = "none"
 LOGIN_REDIRECT_URL = "homepage"
+
+ALLOW_EXAMPLE_EMAILS = env.bool("ALLOW_EXAMPLE_EMAILS", default=True)
+
+if ALLOW_EXAMPLE_EMAILS:
+    ALLOWED_CIVIL_SERVICE_DOMAINS = allowed_domains.CIVIL_SERVICE_DOMAINS.union({"example.com"})
+    # This is domain is used for testing, so for these purposes, count it as a CS domain
+else:
+    ALLOWED_CIVIL_SERVICE_DOMAINS = allowed_domains.CIVIL_SERVICE_DOMAINS
+
+SEND_VERIFICATION_EMAIL = env.bool("SEND_VERIFICATION_EMAIL", default=False)
+
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24
+
+# Email
+
+EMAIL_BACKEND_TYPE = env.str("EMAIL_BACKEND_TYPE")
+
+if EMAIL_BACKEND_TYPE == "FILE":
+    EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+    EMAIL_FILE_PATH = env.str("EMAIL_FILE_PATH")
+elif EMAIL_BACKEND_TYPE == "CONSOLE":
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+elif EMAIL_BACKEND_TYPE == "GOVUKNOTIFY":
+    EMAIL_BACKEND = "django_gov_notify.backends.NotifyEmailBackend"
+    GOVUK_NOTIFY_API_KEY = env.str("GOVUK_NOTIFY_API_KEY")
+    GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = env.str("GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
+else:
+    if EMAIL_BACKEND_TYPE not in ("FILE", "CONSOLE", "GOVUKNOTIFY"):
+        raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
+
+SEND_VERIFICATION_EMAIL = env.bool("SEND_VERIFICATION_EMAIL", default=False)
