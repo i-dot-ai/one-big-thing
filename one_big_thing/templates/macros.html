@@ -162,16 +162,16 @@
       </h2>
       <div class="govuk-error-summary__body">
         <ul class="govuk-list govuk-error-summary__list">
-        {% for error in errors.values() %}
-          {% if error is iterable and error is not string and error is not number %}
-              {% for inner_error in error %}
-                <p id="question-{{error}}-error-{{loop.index}}" class="govuk-error-message">
+        {% for key, value in errors.items() %}
+          {% if value is iterable and value is not string and value is not number %}
+              {% for inner_error in value %}
+                <p id="question-{{value}}-error-{{loop.index}}" class="govuk-error-message">
                   <span class="govuk-visually-hidden">Error:</span> {{inner_error}}
                 </p>
               {% endfor %}
             {% else %}
-            <p id="question-{{error}}-error" class="govuk-error-message">
-              <span class="govuk-visually-hidden">Error:</span> {{errors[error]}}
+            <p id="question-{{key}}-error" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> {{value}}
             </p>
           {% endif %}
         {% endfor %}
