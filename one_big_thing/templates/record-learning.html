@@ -1,0 +1,32 @@
+{% import "macros.html" as macros with context %}
+{% extends "base_generic_gov.html" %}
+
+{% block content %}
+  <div class="govuk-notification-banner" role="region"
+    aria-labelledby="govuk-notification-banner-title"
+    data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner__header">
+      <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+        Hours done
+      </h2>
+    </div>
+    <div class="govuk-notification-banner__content">
+      <p class="govuk-notification-banner__heading">
+        You have completed {{(data.time_completed // 60) | int}} hours {{(data.time_completed % 60.0) | int}} minutes so far.
+      </p>
+    </div>
+  </div>
+  {% call macros.form_wrapper(prev_url, "Save") -%}
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-heading-l">
+          Record learning I've done:
+        </h1>
+      </legend>
+      {{macros.input('title', 'Title of learning', data, errors)}}
+      {{macros.input('time_to_complete', 'How long it took (minutes)', data, errors, type="number")}}
+      {{macros.input('link', 'URL (optional)', data, errors, type="url")}}
+      {{macros.select_from_list('learning_type', 'Format (optional)', data.learning_types)}}
+    </fieldset>
+  {%- endcall %}
+{% endblock %}

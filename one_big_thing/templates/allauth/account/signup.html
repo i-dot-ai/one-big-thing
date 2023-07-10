@@ -1,0 +1,56 @@
+{% extends "account/base.html" %}
+
+{% block head_title %}Register{% endblock %}
+
+{% block content %}
+
+  <section class="wrapper">
+
+    <form class="login" method="POST">
+      {% csrf_token %}
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-fieldset__heading">
+            Register
+          </h1>
+        </legend>
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="id_email">
+            Email
+          </label>
+          <input class="govuk-input" id="id_email" name="email" type="email" autocomplete="off" required>
+        </div>
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="id_password1">
+            Password
+          </label>
+          <input class="govuk-input" id="id_password1" name="password1" type="password" required autocomplete="off">
+        </div>
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="id_password2">
+            Password
+          </label>
+          <input class="govuk-input" id="id_password2" name="password2" type="password" required autocomplete="off">
+        </div>
+        <div class="govuk-list govuk-list--bullet">
+          <ul>
+            <li>8 or more characters</li>
+            <li>Cannot be only numbers</li>
+            <li>Cannot be any common user information such as email</li>
+          </ul>
+        </div>
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>
+        {% endif %}
+
+        <p class="govuk-body">By registering you accept our <a target="_blank" rel="noopener noreferrer" href="#">terms and conditions</a>.</p>
+
+        <div class="govuk-button-group">
+          <button class="govuk-button" data-module="govuk-button">
+            Register
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  </section>
+{% endblock %}
