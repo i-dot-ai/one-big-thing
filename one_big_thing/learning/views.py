@@ -73,7 +73,12 @@ class RecordLearningView(utils.MethodDispatcher):
         user = request.user
         time_completed = user.get_time_completed()
         learning_types = choices.CourseType.choices
-        data = {"time_completed": time_completed, "learning_types": learning_types}
+        courses = models.Course.objects.filter(completion__user=user)
+        data = {
+            "time_completed": time_completed,
+            "learning_types": learning_types,
+            "courses": courses,
+        }
         return render(
             request,
             template_name="record-learning.html",
@@ -87,7 +92,6 @@ class RecordLearningView(utils.MethodDispatcher):
     def post(self, request):
         data = request.POST.dict()
         # data = {key: value for key, value in data.items() if value }
-        print("data", data)
         errors = validate(request, "record-learning", data)
         if errors:
             return self.get(request, data=data, errors=errors)
@@ -95,12 +99,11 @@ class RecordLearningView(utils.MethodDispatcher):
         course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
         try:
             serialized_course = course_schema.load(data, partial=True)
-            print("serialized_course", serialized_course)
         except marshmallow.exceptions.ValidationError as err:
-            print(err)
             errors = dict(err.messages)
         else:
-            _ = interface.facade.course.create(serialized_course)
+            course = interface.api.course.create(serialized_course)
+            _ = interface.api.completion.create(user.id, course["id"], user.id)
             return redirect(
                 "record-learning"
             )  # TODO: Use class get to show success message when creating course instead of using redirect
