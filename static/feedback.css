@@ -1,0 +1,44 @@
+@media (min-width: 40.0625em) {
+  form#feedback .govuk-radios {
+    display: flex;
+  }
+  form#feedback .govuk-radios .govuk-radios__item {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding-left: 0;
+  }
+
+  form#feedback .govuk-radios__label:before {
+    top: auto;
+    bottom: 0;
+    left: 35%;
+  }
+
+  form#feedback .govuk-radios__input:checked + .govuk-radios__label:after {
+    opacity: 1;
+  }
+
+  form#feedback .govuk-radios__label:after {
+    content: "";
+    position: absolute;
+    top: auto;
+    bottom: 10px;
+    left: calc(35% + 10px);
+    width: 0;
+    height: 0;
+    border: 10px solid;
+    border-radius: 50%;
+    opacity: 0;
+    background: currentcolor;
+  }
+
+  form#feedback .govuk-radios__label {
+    margin-bottom: 40px;
+    flex: 1;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+  }
+}

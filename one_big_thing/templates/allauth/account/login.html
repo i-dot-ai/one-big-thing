@@ -1,0 +1,57 @@
+{% extends "account/base.html" %}
+
+{% load account %}
+
+{% block head_title %}Log in{% endblock %}
+
+{% block content %}
+
+  <section class="wrapper">
+
+    <form class="login" method="POST">
+      {% csrf_token %}
+    <p class="govuk-body">If you have not created an account yet, then please <a href="{% url 'account_signup' %}">register</a> first.</p>
+
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-fieldset__heading">
+            Log in
+          </h1>
+        </legend>
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="id_login">
+            Email
+          </label>
+          <input class="govuk-input" id="id_login" name="login" type="email" required>
+        </div>
+        <div class="govuk-form-group">
+          <label class="govuk-label" for="id_password">
+            Password
+          </label>
+          <input class="govuk-input" id="id_password" name="password" type="password" required autocomplete="off">
+        </div>
+
+        <div class="govuk-checkboxes__item">
+          <input class="govuk-checkboxes__input" id="id_remember" name="remember" type="checkbox">
+          <label class="govuk-label govuk-checkboxes__label" for="remember">
+            Remember me
+          </label>
+        </div>
+        {% if redirect_field_value %}
+          <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>
+        {% endif %}
+
+        <div class="govuk-button-group">
+          <button class="govuk-button" data-module="govuk-button">
+            Log in
+          </button>
+        </div>
+      </fieldset>
+    </form>
+    <div class="govuk-button-group">
+      <a class="govuk-link" href="{% url 'password-reset' %}">Request password reset</a>
+    </div>
+  </section>
+
+
+{% endblock %}

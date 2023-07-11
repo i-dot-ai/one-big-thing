@@ -1,0 +1,31 @@
+{% import "macros.html" as macros %}
+{% extends "base_generic_gov.html" %}
+
+{% block content %}
+  <h1 class="govuk-heading-l">Courses</h1>
+
+  <table class="govuk-table">
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Title</th>
+      <th scope="col" class="govuk-table__header govuk-table__header--numeric">Type</th>
+      <th scope="col" class="govuk-table__header govuk-table__header--numeric">Duration (Hours)</th>
+      <th scope="col" class="govuk-table__header"></th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+  {% for course in data.courses %}
+    <tr class="govuk-table__row">
+      <th scope="row" class="govuk-table__header"><a href="{{course.link}}" target="_blank" rel="noopener noreferrer">{{course.title}}</a></th>
+      <td class="govuk-table__cell govuk-table__cell--numeric">{{course.learning_type}}</td>
+      <td class="govuk-table__cell govuk-table__cell--numeric">{{(course.time_to_complete // 60) | int}}:{{(course.time_to_complete % 60.0) | int}}</td>
+      <td class="govuk-table__cell govuk-table__cell--numeric">
+        <div class="govuk-button-group govuk-!-display-block">
+          <a href="#" class="govuk-link">Complete<span class="govuk-visually-hidden"> course</span></a>
+        </div>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

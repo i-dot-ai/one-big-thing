@@ -1,0 +1,28 @@
+{% extends "account/base.html" %}
+
+{% block head_title %}Accept invite{% endblock %}
+
+{% block content %}
+
+  <form method="POST">
+    {% csrf_token %}
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-fieldset__heading">
+          Accept invite
+        </h1>
+      </legend>
+      {{csrf_input}}
+      <p class="govuk-body">If you wish to accept this invite, please enter your email address</p>
+      <div class="govuk-form-group">
+        <label class="govuk-label" for="id_email">
+          Email address
+        </label>
+        <input required class="govuk-input govuk-!-width-one-half" id="id_email" name="email" type="email">
+      </div>
+      <div class="govuk-button-group">
+        <button class="govuk-button" data-module="govuk-button" type="submit">Accept invite</button>
+      </div>
+    </fieldset>
+  </form>
+{% endblock %}

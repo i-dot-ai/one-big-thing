@@ -6,6 +6,8 @@ from markdown_it import MarkdownIt
 
 markdown_converter = MarkdownIt()
 
+DEFAULT = object()
+
 
 def url(path, *args, **kwargs):
     assert not (args and kwargs)
@@ -39,6 +41,18 @@ def is_checked(data, name, value):
         return ""
 
 
+def is_empty_selected(data, name):
+    if data.get(name) in ("", None):
+        return "selected"
+    else:
+        return ""
+
+
+def list_to_options(iterable):
+    result = tuple({"value": item[0], "text": item[1]} for item in iterable)
+    return result
+
+
 def environment(**options):
     extra_options = dict()
     env = jinja2.Environment(
@@ -55,6 +69,9 @@ def environment(**options):
             "is_in": is_in,
             "is_selected": is_selected,
             "slugify": slugify,
+            "list_to_options": list_to_options,
+            "is_empty_selected": is_empty_selected,
+            "DEFAULT": DEFAULT,
         }
     )
     return env
