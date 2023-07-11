@@ -58,6 +58,7 @@ def test_view(request):
     )
 
 
+@login_required
 class RecordLearningView(utils.MethodDispatcher):
     def get(
         self,
