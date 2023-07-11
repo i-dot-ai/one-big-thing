@@ -6,6 +6,6 @@ pep8-naming
 black
 nose
 httpx
-testino
+testino==0.3.9
 
 -r ./requirements.lock
