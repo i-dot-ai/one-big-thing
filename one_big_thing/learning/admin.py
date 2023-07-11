@@ -1,6 +1,5 @@
 from django.contrib import admin
 
-from . import models
-
+from one_big_thing.learning import models
 
 admin.site.register(models.User)

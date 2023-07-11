@@ -15,6 +15,9 @@ STATIC_ROOT = STATIC_ROOT
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
+VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
+BASE_URL = env.str("BASE_URL")
+
 ALLOWED_HOSTS = [
     "one-big-thing-testserver",
     "one-big-thing-develop.london.cloudapps.digital",
