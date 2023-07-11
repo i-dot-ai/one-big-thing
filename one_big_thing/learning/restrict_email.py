@@ -8,6 +8,6 @@ def clean_email(email):
     email_allowed = domain in settings.ALLOWED_CIVIL_SERVICE_DOMAINS
     if not email_allowed:
         raise ValidationError(
-            f"Currently you need a Civil Service email address to register. If you think your email address should be allowed contact us on <a href='mailto:{settings.FEEDBACK_EMAIL}'>{settings.FEEDBACK_EMAIL}</a>"
+            f"Currently you need a Civil Service email address to register. If you think your email address should be allowed contact us on <a href='mailto:{settings.FEEDBACK_EMAIL}'>{settings.FEEDBACK_EMAIL}</a>"  # noqa: E501
         )
     return email
