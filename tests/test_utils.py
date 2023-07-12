@@ -1,5 +1,4 @@
 import datetime
-import itertools
 
 import marshmallow
 from nose.tools import assert_raises
