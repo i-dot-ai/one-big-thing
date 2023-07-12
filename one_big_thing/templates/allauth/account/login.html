@@ -41,6 +41,10 @@
           <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>
         {% endif %}
 
+      {% if resend_verification is True and resend_email is not None %}
+        <p class="govuk-body">Your account is not verified. <a class="govuk-link" href="{% url 'resend-verify-email' %}?email={{resend_email|urlencode}}">Request a new verification link</a>.</p>
+      {% endif %}
+
         <div class="govuk-button-group">
           <button class="govuk-button" data-module="govuk-button">
             Log in

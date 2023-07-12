@@ -1,0 +1,21 @@
+{% extends "account/base.html" %}
+
+{% block head_title %}Verify email address{% endblock %}
+
+{% block content %}
+    <h1 class="govuk-heading-l">
+      Verify email address
+    </h1>
+    {% if verify_result %}
+    <p class="govuk-body">
+      Your account has been successfully verified. Please return to the
+      <a class="govuk-link" href="{% url 'account_login' %}">login</a> page and log in to use the
+      system.
+    </p>
+    {% else %}
+    <p class="govuk-body">
+      An issue has occurred or this request has already been used, please try
+      again or contact an administrator if the issue persists.
+    </p>
+    {% endif %}
+{% endblock %}
