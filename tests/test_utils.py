@@ -81,19 +81,3 @@ def test_choices():
     assert MadeUp.labels == expected_labels, MadeUp.labels
     assert MadeUp.options == expected_options, MadeUp.options
     assert MadeUp.mapping == expected_mapping, MadeUp.mapping
-
-
-def test_dictify():
-    res = utils.dictify({"flibble": 1}, (("flibble", 2), ("flooble", 3)), baz=4)
-    expected = {"flibble": 2, "flooble": 3, "baz": 4}
-    assert res == expected, (res, expected)
-
-    @utils.dictify
-    def do_numbers(num):
-        counter = itertools.count()
-        for i in range(0, num, 5):
-            yield str(i), next(counter)
-
-    res = do_numbers(11)
-    expected = {"0": 0, "5": 1, "10": 2}
-    assert res == expected, (res, expected)

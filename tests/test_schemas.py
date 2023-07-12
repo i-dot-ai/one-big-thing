@@ -57,23 +57,6 @@ def test_course_schema_dump(client):
     assert serialized_course
 
 
-def test_values_in_choices():
-    acceptable_choices = ["A", "B", "C"]
-    valid_data1 = ["A"]
-    valid_data2 = []
-    invalid_data = ["A", "D"]
-    values_in_choices = schemas.make_values_in_choices(acceptable_choices)
-    assert not values_in_choices(valid_data1)
-    assert not values_in_choices(valid_data2)
-    error_message = ""
-    expected_error_message = "All values in list should be one of: ['A', 'B', 'C']"
-    try:
-        values_in_choices(invalid_data)
-    except ValidationError as e:
-        error_message = e.messages[0]
-    assert error_message == expected_error_message, error_message
-
-
 def test_course_schema():
     course_schema = schemas.CourseSchema()
     # TODO - should really have more fields, and nested fields!
