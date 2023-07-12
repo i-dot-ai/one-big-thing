@@ -47,4 +47,4 @@ def register(client, email, password):
     form["password1"] = password
     form["password2"] = password
     page = form.submit().follow().follow()
-    assert page.has_text(f"Welcome to your One Big Thing Learning Record")
+    assert page.has_text("Welcome to your One Big Thing Learning Record")
