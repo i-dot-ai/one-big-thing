@@ -1,21 +1,20 @@
-from datetime import datetime
 import logging
+from datetime import datetime
 
-import segno
 from allauth.account.views import SignupView
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.shortcuts import redirect, render
-from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 
 from one_big_thing.learning import email_handler, models, restrict_email
-from one_big_thing.learning.email_handler import send_account_already_exists_email
+from one_big_thing.learning.email_handler import (
+    send_account_already_exists_email,
+)
 from one_big_thing.learning.utils import MethodDispatcher
 
 logger = logging.getLogger(__name__)
