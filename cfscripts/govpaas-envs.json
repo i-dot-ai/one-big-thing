@@ -1,0 +1,10 @@
+{
+    "develop": {
+        "one-big-thing": {
+            "DJANGO_SECRET_KEY": "DJANGO_SECRET_KEY",
+            "EMAIL_BACKEND_TYPE": "GOVUKNOTIFY",
+            "GOVUK_NOTIFY_API_KEY": "TEAM_NOTIFY_API_KEY",
+            "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID": "NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+        }
+    }
+}
