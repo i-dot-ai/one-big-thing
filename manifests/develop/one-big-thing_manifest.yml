@@ -1,0 +1,11 @@
+---
+applications:
+- name: one-big-thing-develop
+  services:
+    - one-big-thing-postgres-develop
+  routes:
+  - route: one-big-thing-develop.london.cloudapps.digital
+    protocol: http1
+  disk_quota: 4092M
+  memory: 512M
+  health-check-type: port
