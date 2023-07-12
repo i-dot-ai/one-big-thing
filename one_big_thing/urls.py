@@ -8,10 +8,15 @@ account_urlpatterns = [
     path("accounts/verify/", authentication_views.CustomVerifyUserEmail, name="verify-email"),
     path("accounts/password-reset/", authentication_views.PasswordReset, name="password-reset"),
     path("accounts/change-password/reset/", authentication_views.PasswordChange, name="password-set"),
+    path("accounts/password-reset-done/", authentication_views.password_reset_done, name="password-reset-done"),
+    path(
+        "accounts/password-reset-from-key-done/",
+        authentication_views.password_reset_from_key_done,
+        name="password-reset-from-key-done",
+    ),
     path("accounts/login/", authentication_views.CustomLoginView, name="account_login"),
     path("accounts/signup/", authentication_views.CustomSignupView.as_view(), name="account_signup"),
     path("accounts/verify/resend/", authentication_views.CustomResendVerificationView, name="resend-verify-email"),
-    path("accounts/accept-invite/", authentication_views.AcceptInviteSignupView, name="accept-invite"),
     path("accounts/", include("allauth.urls")),
 ]
 
