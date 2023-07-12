@@ -38,3 +38,13 @@ def with_authenticated_client(func):
 def make_testino_client():
     client = testino.WSGIAgent(wsgi.application, TEST_SERVER_URL)
     return client
+
+
+def register(client, email, password):
+    page = client.get("/accounts/signup/")
+    form = page.get_form()
+    form["email"] = email
+    form["password1"] = password
+    form["password2"] = password
+    page = form.submit().follow().follow()
+    assert page.has_text(f"Welcome to your One Big Thing Learning Record")
