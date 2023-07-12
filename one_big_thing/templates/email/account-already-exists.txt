@@ -1,0 +1,13 @@
+Hi,
+
+Someone using this email address has just tried to register for One Big Thing, you can find this at the following link.
+{{url|safe}}
+
+There is already an account for One Big Thing using this email address, you can reset your password at the following link.
+{{reset_link|safe}}
+
+If you didn't try to register then someone else has, we suggest you change your password to make sure your account remains secure. Contact One Big Thing on {{contact_address}} if you are worried about your account.
+
+Regards
+
+One Big Thing
