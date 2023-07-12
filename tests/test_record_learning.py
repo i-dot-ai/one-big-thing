@@ -69,4 +69,3 @@ def test_enter_valid_learning_record():
     assert submitted_page.has_text("Link")
 
     user.delete()
-
