@@ -93,7 +93,6 @@ class RecordLearningView(utils.MethodDispatcher):
 
     def post(self, request):
         data = request.POST.dict()
-        # data = {key: value for key, value in data.items() if value }
         errors = validate(request, "record-learning", data)
         if errors:
             return self.get(request, data=data, errors=errors)
