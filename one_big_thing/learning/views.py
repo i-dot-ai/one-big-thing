@@ -1,4 +1,5 @@
 import marshmallow
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -75,6 +76,7 @@ class RecordLearningView(utils.MethodDispatcher):
         time_completed = user.get_time_completed()
         learning_types = choices.CourseType.choices
         courses = models.Course.objects.filter(completion__user=user)
+
         data = {
             "time_completed": time_completed,
             "learning_types": learning_types,
@@ -127,3 +129,16 @@ def validate(request, page_name, data):
     missing_fields = tuple(field for field in fields if not data.get(field))
     errors = {field: missing_item_errors[field] for field in missing_fields}
     return errors
+
+
+@login_required
+@require_http_methods(["GET"])
+def complete_hours_view(request):
+    user = request.user
+    if user.has_completed_required_time():
+        user.has_marked_complete = True
+        user.save()
+        return redirect("record-learning")
+    else:
+        messages.info(request, "You have not completed the required hours, please try again.")
+        return redirect("record-learning")
