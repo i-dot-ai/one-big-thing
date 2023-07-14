@@ -69,7 +69,7 @@ MIDDLEWARE = [
 ]
 
 if BASIC_AUTH:
-    MIDDLEWARE = ["help_to_heat.auth.basic_auth_middleware"] + MIDDLEWARE
+    MIDDLEWARE = ["one_big_thing.auth.basic_auth_middleware"] + MIDDLEWARE
 
 ROOT_URLCONF = "one_big_thing.urls"
 
