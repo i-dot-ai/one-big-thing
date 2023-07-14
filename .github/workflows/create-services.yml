@@ -1,0 +1,57 @@
+name: Create one-big-thing Services
+
+env:
+  DOCKER_BUILDKIT: 1
+
+on:
+  workflow_dispatch:
+    branches:
+      - develop
+
+jobs:
+  create_cfservices:
+    if:  ${{ github.event_name != 'release' && github.ref_name != 'prod' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get non-prod space name
+        if:  ${{ github.event_name != 'release' }}
+        uses: kanga333/variable-mapper@v0.2.2
+        with:
+          key: "${{github.ref_name}}"
+          map: |
+            {
+              "sandbox": {"CF_SPACE": "sandbox"},
+              "demo": {"CF_SPACE": "demo"},
+              "temp": {"CF_SPACE": "temp"},
+              "develop": {"CF_SPACE": "develop"},
+              "staging": {"CF_SPACE": "staging"},
+              "testing": {"CF_SPACE": "testing"},
+              "feature/deploy-from-main": {"CF_SPACE": "flibble"}
+            }
+
+      - name: Get prod space name
+        if:  ${{ github.event_name == 'release' }}
+        uses: kanga333/variable-mapper@v0.2.2
+        with:
+          key: "${{github.ref_name}}"
+          map: |
+            {
+              "v?.?.?": {"CF_SPACE": "prod"},
+              "feature/deploy-from-main": {"CF_SPACE": "flibble"}
+            }
+
+      - name: Download CF CLI
+        working-directory: ./scripts
+        run: curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&version=v7&source=github" | tar -zx
+
+      - name: CF login
+        working-directory: ./scripts
+        run: ./cf login -a api.london.cloud.service.gov.uk -u "${{ secrets.CF_USER }}" -p "${{ secrets.CF_PASSWORD }}" -o co-i-ai -s "$CF_SPACE"
+
+      - name: Run one-big-thing Services Script
+        working-directory: ./cfscripts
+        run: |
+            ./one-big-thing-services.sh
