@@ -22,6 +22,8 @@ FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
 
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 
+BASIC_AUTH = env.str("BASIC_AUTH", default="")
+
 BASE_URL = env.str("BASE_URL")
 
 APPEND_SLASH = True
@@ -65,6 +67,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if BASIC_AUTH:
+    MIDDLEWARE = ["help_to_heat.auth.basic_auth_middleware"] + MIDDLEWARE
 
 ROOT_URLCONF = "one_big_thing.urls"
 
