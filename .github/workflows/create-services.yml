@@ -52,6 +52,6 @@ jobs:
         run: ./cf login -a api.london.cloud.service.gov.uk -u "${{ secrets.CF_USER }}" -p "${{ secrets.CF_PASSWORD }}" -o co-i-ai -s "$CF_SPACE"
 
       - name: Run one-big-thing Services Script
-        working-directory: ./cfscripts
+        working-directory: ./scripts
         run: |
             ./one-big-thing-services.sh
