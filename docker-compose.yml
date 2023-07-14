@@ -27,7 +27,7 @@ services:
       - "5432"
 
   requirements:
-    image: python:3.8-buster
+    image: python:3.9-buster
     profiles:
       - utils
     volumes:

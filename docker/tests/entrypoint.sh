@@ -3,6 +3,6 @@
 set -o errexit
 set -o nounset
 
-timeout 60s bash -c "until pg_isready -d $DATABASE_URL; do sleep 5; done"
+wait-for-db --mode postgres --connection-string $DATABASE_URL --timeout 60 --sql-query "select 1;"
 
 exec "$@"
