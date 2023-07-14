@@ -2,7 +2,7 @@
 {% extends "base_generic_gov.html" %}
 
 {% block content %}
-  {% if request.user.has_completed_required_time() and not request.user.has_marked_complete %}
+  {% if not request.user.has_completed_required_time() and not request.user.has_marked_complete %}
     <div class="govuk-notification-banner" role="region"
       aria-labelledby="govuk-notification-banner-title"
       data-module="govuk-notification-banner">
@@ -17,10 +17,10 @@
         </p>
       </div>
     </div>
+  {% elif request.user.has_completed_required_time() and not request.user.has_marked_complete %}
     <h2 class="govuk-heading-m">Now that you've completed 7 hours you can mark your One Big Thing learning as complete.</h2>
     <a class="govuk-button govuk-button--secondary" href="{{url('complete-hours')}}">Mark One Big Thing as complete</a>
-  {% endif %}
-  {% if request.user.has_marked_complete %}
+  {% else %}
     <div class="govuk-panel govuk-panel--confirmation">
       <h1 class="govuk-panel__title">
         You've now completed your One Big Thing!
