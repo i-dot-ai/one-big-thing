@@ -1,3 +1,5 @@
+import types
+
 import marshmallow
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -5,7 +7,12 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from . import choices, interface, models, schemas, utils
+from . import choices, interface, models, schemas, utils, survey_handling
+
+
+def frozendict(*args, **kwargs):
+    return types.MappingProxyType(dict(*args, **kwargs))
+
 
 page_compulsory_field_map = {
     "record-learning": (
@@ -140,3 +147,82 @@ def complete_hours_view(request):
     else:
         messages.info(request, "You have not completed the required hours, please try again.")
         return redirect("record-learning")
+
+
+@login_required
+@require_http_methods(["GET"])
+def survey_completed_view(request):
+    return render(request, "survey-completed.html", {})
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def questions_view(request, survey_type, page_number=1):
+    if request.method == "GET":
+        return questions_view_get(request, survey_type, page_number)
+    elif request.method == "POST":
+        return questions_view_post(request, survey_type, page_number)
+
+
+def questions_view_get(request, survey_type, page_number, errors=frozendict()):
+    survey_type = survey_type.lower()
+    section = survey_handling.questions_data[survey_type][page_number - 1]
+    data = get_data(request.user, survey_type, page_number)
+    return render(
+        request,
+        template_name="questions.html",
+        context={
+            "request": request,
+            "data": data,
+            "section": section,
+            "survey_type": survey_type,
+            "competencies": survey_handling.competencies,
+            "page_number": page_number,
+            "errors": errors,
+            "answer_labels": survey_handling.answer_labels,
+        },
+    )
+
+
+def questions_view_post(request, survey_type, page_number, errors=frozendict()):
+    data = request.POST
+    survey_type = survey_type.lower()
+    errors, data = clean_data(page_number, survey_type, data, validate=False)
+    if errors:
+        return questions_view_get(request, survey_type, page_number, errors=errors)
+    else:
+        save_data(survey_type, request.user, page_number, data)
+    if page_number >= len(survey_handling.questions_data[survey_type]):
+        return redirect("survey-completed")
+    else:
+        next_page_number = page_number + 1
+        return redirect("questions", survey_type=survey_type, page_number=next_page_number)
+
+
+def get_data(user, survey_type, page_number):
+    if models.SurveyResult.objects.filter(survey_type=survey_type, user=user, page_number=page_number).exists():
+        item = models.SurveyResult.objects.get(survey_type=survey_type, user=user, page_number=page_number)
+        return item.data
+    else:
+        return {}
+
+
+def clean_data(page_number, survey_type, data, validate=False):
+    section = survey_handling.questions_data[survey_type][page_number - 1]
+    question_ids = tuple(q["id"] for q in section["questions"])
+    if validate:
+        errors = {qid: "Please answer this question" for qid in question_ids if qid not in data}
+    else:
+        errors = {}
+    data = {k: data.get(k, "") for k in question_ids}
+    return errors, data
+
+
+def save_data(survey_type, user, page_number, data):
+    if models.SurveyResult.objects.filter(survey_type=survey_type, user=user, page_number=page_number).exists():
+        item = models.SurveyResult.objects.get(survey_type=survey_type, user=user, page_number=page_number)
+    else:
+        item = models.SurveyResult(survey_type=survey_type, user=user, page_number=page_number)
+    item.data = data
+    item.save()
+    return item
