@@ -81,3 +81,9 @@ class Completion(TimeStampedModel, UUIDPrimaryKeyBase):
 class Event(TimeStampedModel):
     name = models.CharField(max_length=256)
     data = models.JSONField(encoder=DjangoJSONEncoder)
+
+
+class SurveyResult(UUIDPrimaryKeyBase, TimeStampedModel):
+    data = models.JSONField(null=True, blank=True)
+    # session_id = models.UUIDField(default=uuid.uuid4, editable=False)  Don't think we need sessions?
+    page_number = models.IntegerField()
