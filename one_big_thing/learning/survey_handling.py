@@ -1,10 +1,10 @@
 import yaml
 from django.conf import settings
 
-with (settings.BASE_DIR / "pre_questions.yaml").open() as f:
+with (settings.BASE_DIR / "pre-questions.yaml").open() as f:
     pre_questions_data = yaml.safe_load(f)
 
-with (settings.BASE_DIR / "post_questions.yaml").open() as f:
+with (settings.BASE_DIR / "post-questions.yaml").open() as f:
     post_questions_data = yaml.safe_load(f)
 
 _competencies = (
@@ -13,15 +13,20 @@ _competencies = (
     ("expert", "Expert"),
 )
 
+questions_data = {
+    "pre": pre_questions_data,
+    "post": post_questions_data,
+}
+
 competencies = tuple({"label": label, "name": name} for (label, name) in _competencies)
 pre_questions = tuple(q for section in pre_questions_data for q in section["questions"])
 post_questions = tuple(q for section in pre_questions_data for q in section["questions"])
-all_questions = tuple(*pre_questions, *post_questions)
+all_questions = pre_questions + post_questions
 section_pre_questions_map = {
-    section["title"]: tuple(question["id"] for question in section["questions"]) for section in pre_questions
+    section["title"]: tuple(question["id"] for question in section["questions"]) for section in pre_questions_data
 }
 section_post_questions_map = {
-    section["title"]: tuple(question["id"] for question in section["questions"]) for section in post_questions
+    section["title"]: tuple(question["id"] for question in section["questions"]) for section in post_questions_data
 }
 section_all_questions_map = {
     **section_pre_questions_map,
@@ -45,7 +50,7 @@ agree_post_questions = tuple(item["id"] for item in post_questions if item["answ
 competency_labels = tuple(item["label"] for item in competencies)
 pre_question_sections = tuple(item["title"] for item in pre_questions_data if item["title"] != "Competency")
 post_question_sections = tuple(item["title"] for item in post_questions_data if item["title"] != "Competency")
-all_question_sections = tuple(*pre_question_sections, *post_question_sections)
+all_question_sections = pre_question_sections + post_question_sections
 
 
 def get_competency_name(competency_label):
