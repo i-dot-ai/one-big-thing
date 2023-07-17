@@ -118,7 +118,7 @@
     {{error_summary(errors)}}
   {% endif %}
   <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+    <div class="govuk-grid-column-full">
       <form method="post" novalidate>
         {{csrf_input}}
 
@@ -179,4 +179,60 @@
       </div>
     </div>
   </div>
+{%- endmacro%}
+
+{% macro agree_1_5(question, loop) -%}
+  {% set help_text = 'How far do you agree or disagree with the following?' %}
+  {{question_1_5(question, answer_labels['agree-1-5'], help_text, loop)}}
+{%- endmacro %}
+
+{% macro question_1_5(question, labels, help_text, loop) -%}
+
+  {% if not (loop.previtem and loop.previtem.answer_type == question.answer_type) %}
+    {% if help_text %}
+      <div class="i-ai-range custom-help-text">
+        <p>{{help_text}}</p>
+      </div>
+    {% endif %}
+
+    <div class="i-ai-range custom-legend">
+      {% for i, label in labels.items() %}
+        <div>
+          <label>{{label}}</label>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="i-ai-range govuk-form-group">
+    <span>
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+        <h1 class="govuk-fieldset__heading">
+          {{question.text}}
+        </h1>
+      </legend>
+
+      {% if errors[question.id] %}
+        <p id="where-do-you-live-error" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
+        </p>
+      {% endif %}
+
+      {% if question.hint %}
+        <div class="govuk-hint">
+          {{question.hint}}
+        </div>
+      {% endif %}
+    </span>
+
+    <div class="govuk-radios govuk-radios--small " data-module="govuk-radios">
+      {% for i, label in labels.items() %}
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="{{question.id}}-{{i}}" name="{{question.id}}" type="radio" value="{{i}}" {{(data.get(question.id)==i) and "checked" or ""}}/>
+          <label class="govuk-label govuk-radios__label" for="{{question.id}}-{{i}}">{{label}}</label>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
 {%- endmacro%}
