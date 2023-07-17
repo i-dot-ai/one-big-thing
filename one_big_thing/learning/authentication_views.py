@@ -1,36 +1,51 @@
+import logging
 from datetime import datetime
-from urllib.parse import urlencode
 
 from allauth.account.views import SignupView
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from one_big_thing import settings
 from one_big_thing.learning import email_handler, models, restrict_email
 from one_big_thing.learning.email_handler import (
     send_account_already_exists_email,
 )
 from one_big_thing.learning.utils import MethodDispatcher
 
+logger = logging.getLogger(__name__)
+
+
+def _strip_microseconds(dt):
+    if not dt:
+        return None
+    return dt.replace(microsecond=0, tzinfo=None)
+
 
 @require_http_methods(["GET", "POST"])
 class CustomLoginView(MethodDispatcher):
+    template_name = "account/login.html"
+    error_message = "Something has gone wrong.  Please contact your team leader."
+
+    def error(self, request):
+        messages.error(request, self.error_message)
+        return render(request, self.template_name)
+
     def get(self, request):
-        return render(request, "account/login.html")
+        return render(request, self.template_name)
 
     def post(self, request):
         password = request.POST.get("password", None)
         email = request.POST.get("login", None)
         if not password or not email:
             messages.error(request, "Please enter an email and password.")
-            return render(request, "account/login.html", {})
+            return render(request, self.template_name, {})
         else:
+            email = email.lower()
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 if settings.SEND_VERIFICATION_EMAIL:
@@ -42,8 +57,7 @@ class CustomLoginView(MethodDispatcher):
                 request.session["session_created_at"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
                 return redirect("index")
             else:
-                messages.error(request, "The email address or password you entered is incorrect. Please try again.")
-                return render(request, "account/login.html", {})
+                return self.error(request)
 
 
 @require_http_methods(["GET", "POST"])
@@ -159,21 +173,6 @@ class CustomVerifyUserEmail(MethodDispatcher):
 
 
 @require_http_methods(["GET", "POST"])
-class PasswordReset(MethodDispatcher):
-    def get(self, request):
-        return render(request, "account/password_reset.html", {})
-
-    def post(self, request):
-        email = request.POST.get("email")
-        try:
-            user = models.User.objects.get(email=email)
-        except models.User.DoesNotExist:
-            return render(request, "account/password_reset_done.html", {})
-        email_handler.send_password_reset_email(user)
-        return render(request, "account/password_reset_done.html", {})
-
-
-@require_http_methods(["GET", "POST"])
 class PasswordChange(MethodDispatcher):
     password_reset_error_message = (
         "This link is not valid. It may have expired or have already been used. Please try again."
@@ -223,70 +222,25 @@ class PasswordChange(MethodDispatcher):
 
 
 @require_http_methods(["GET", "POST"])
-class AcceptInviteSignupView(MethodDispatcher):
-    password_signup_error_message = (
-        "This link is not valid. It may have expired or have already been used. Please request another one."
-    )
-
-    def get_token_request_args(self, request):
-        user_id = request.GET.get("user_id", None)
-        token = request.GET.get("code", None)
-        valid_request = False
-        if not user_id or not token:
-            messages.error(request, self.password_signup_error_message)
-            return user_id, token, valid_request
-        else:
-            result = email_handler.verify_token(user_id, token, "invite-user")
-            if not result:
-                messages.error(request, self.password_signup_error_message)
-                return user_id, token, valid_request
-            else:
-                valid_request = True
-        return user_id, token, valid_request
-
+class PasswordReset(MethodDispatcher):
     def get(self, request):
-        contact_email = settings.CONTACT_EMAIL
-        try:
-            _, _, valid_request = self.get_token_request_args(request)
-            return render(
-                request, "account/accept_signup_invite.html", {"valid": valid_request, "contact_address": contact_email}
-            )
-        except models.User.DoesNotExist:
-            return render(
-                request, "account/accept_signup_invite.html", {"valid": False, "contact_address": contact_email}
-            )
+        return render(request, "account/password_reset.html", {})
 
     def post(self, request):
-        user_id, token, valid_request = self.get_token_request_args(request)
-        pwd1 = request.POST.get("password1", None)
-        pwd2 = request.POST.get("password2", None)
-        if pwd1 != pwd2:
-            messages.error(request, "Passwords must match.")
-            query_params = urlencode({"user_id": user_id, "code": token})
-            redirect_url = reverse("accept-invite") + "?" + query_params
-            response = redirect(redirect_url)
-            messages.middleware.MessageMiddleware().process_response(request, response)
-            return response
-        if not valid_request:
-            messages.error(request, self.password_signup_error_message)
-            query_params = urlencode({"user_id": user_id, "code": token})
-            redirect_url = reverse("accept-invite") + "?" + query_params
-            response = redirect(redirect_url)
-            messages.middleware.MessageMiddleware().process_response(request, response)
-            return response
-        user = models.User.objects.get(pk=user_id)
+        email = request.POST.get("email")
         try:
-            validate_password(pwd1, user)
-        except ValidationError as e:
-            for msg in e:
-                messages.error(request, str(msg))
-            query_params = urlencode({"user_id": user_id, "code": token})
-            redirect_url = reverse("accept-invite") + "?" + query_params
-            response = redirect(redirect_url)
-            messages.middleware.MessageMiddleware().process_response(request, response)
-            return response
-        user.set_password(pwd1)
-        user.invite_accepted_at = datetime.now()
-        user.verified = True
-        user.save()
-        return render(request, "account/accept_signup_invite_done.html", {})
+            user = models.User.objects.get(email=email)
+        except models.User.DoesNotExist:
+            return redirect("password-reset-done")
+        email_handler.send_password_reset_email(user)
+        return redirect("password-reset-done")
+
+
+@require_http_methods(["GET"])
+def password_reset_done(request):
+    return render(request, "account/password_reset_done.html", {})
+
+
+@require_http_methods(["GET"])
+def password_reset_from_key_done(request):
+    return render(request, "account/password_reset_from_key_done.html", {})

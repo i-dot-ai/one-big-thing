@@ -14,3 +14,4 @@ FROM_EMAIL="test@example.com"
 EMAIL_BACKEND_TYPE=CONSOLE
 BASE_URL=http://localhost:8055/
 VCAP_APPLICATION='{"space_name": "local"}'
+SEND_VERIFICATION_EMAIL=True

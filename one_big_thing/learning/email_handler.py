@@ -1,11 +1,10 @@
-import datetime
-
-import furl as furl
-import pytz
+import furl
 from django.conf import settings
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils import timezone
 
 from one_big_thing.learning import models
 
@@ -31,17 +30,8 @@ class PasswordResetTokenGenerator(PasswordResetTokenGenerator):
         return f"{user.pk}{user.password}{login_timestamp}{timestamp}{email}{token_timestamp}"
 
 
-class InviteTokenGenerator(PasswordResetTokenGenerator):
-    def _make_hash_value(self, user, timestamp):
-        invited_timestamp = _strip_microseconds(user.invited_at)
-        email = user.email or ""
-        token_timestamp = _strip_microseconds(user.last_token_sent_at)
-        return f"{user.pk}{invited_timestamp}{timestamp}{email}{token_timestamp}"
-
-
 EMAIL_VERIFY_TOKEN_GENERATOR = EmailVerifyTokenGenerator()
 PASSWORD_RESET_TOKEN_GENERATOR = PasswordResetTokenGenerator()
-INVITE_TOKEN_GENERATOR = InviteTokenGenerator()
 
 
 EMAIL_MAPPING = {
@@ -49,42 +39,31 @@ EMAIL_MAPPING = {
         "from_address": settings.FROM_EMAIL,
         "subject": "Evaluation Registry: confirm your email address",
         "template_name": "email/verification.txt",
-        "url_path": "/accounts/verify/",
+        "url_name": "verify-email",
         "token_generator": EMAIL_VERIFY_TOKEN_GENERATOR,
     },
     "password-reset": {
         "from_address": settings.FROM_EMAIL,
-        "subject": "Evaluation Registry: password reset",
+        "subject": "Help to heat: password reset",
         "template_name": "email/password-reset.txt",
-        "url_path": "/accounts/change-password/reset/",
+        "url_name": "password-set",
         "token_generator": PASSWORD_RESET_TOKEN_GENERATOR,
-    },
-    "add-contributor": {
-        "from_address": settings.FROM_EMAIL,
-        "subject": "Evaluation Registry: invited to contribute",
-        "template_name": "email/invite-to-evaluation.txt",
-    },
-    "invite-user": {
-        "from_address": settings.FROM_EMAIL,
-        "subject": "Evaluation Registry: invited to join",
-        "template_name": "email/invite-user.txt",
-        "url_path": "/accounts/accept-invite/",
-        "token_generator": INVITE_TOKEN_GENERATOR,
     },
     "account-already-exists": {
         "from_address": settings.FROM_EMAIL,
         "subject": "Evaluation Registry: registration attempt",
         "template_name": "email/account-already-exists.txt",
-        "url_path": "/accounts/password-reset/",
+        "url_name": "password-reset",
     },
 }
 
 
-def _send_token_email(user, subject, template_name, from_address, url_path, token_generator):
-    user.last_token_sent_at = datetime.datetime.now(tz=pytz.UTC)
+def _send_token_email(user, subject, template_name, from_address, url_name, token_generator):
+    user.last_token_sent_at = timezone.now()
     user.save()
     token = token_generator.make_token(user)
     base_url = settings.BASE_URL
+    url_path = reverse(url_name)
     url = str(furl.furl(url=base_url, path=url_path, query_params={"code": token, "user_id": str(user.id)}))
     context = dict(user=user, url=url, contact_address=settings.CONTACT_EMAIL)
     body = render_to_string(template_name, context)
@@ -108,11 +87,6 @@ def _send_normal_email(subject, template_name, from_address, to_address, context
     return response
 
 
-def send_verification_email(user):
-    data = EMAIL_MAPPING["email-verification"]
-    return _send_token_email(user, **data)
-
-
 def send_password_reset_email(user):
     data = EMAIL_MAPPING["password-reset"]
     return _send_token_email(user, **data)
@@ -120,20 +94,14 @@ def send_password_reset_email(user):
 
 def send_invite_email(user):
     data = EMAIL_MAPPING["invite-user"]
-    user.invited_at = datetime.datetime.now()
+    user.invited_at = timezone.now()
     user.save()
     return _send_token_email(user, **data)
 
 
-def send_contributor_added_email(user, evaluation_id):
-    data = EMAIL_MAPPING["add-contributor"]
-    base_url = settings.BASE_URL
-    url = furl.furl(url=base_url)
-    url.path.add(f"evaluation/{evaluation_id}")
-    url = str(url)
-    context = {"url": url}
-    response = _send_normal_email(to_address=user.email, context=context, **data)
-    return response
+def send_verification_email(user):
+    data = EMAIL_MAPPING["email-verification"]
+    return _send_token_email(user, **data)
 
 
 def send_account_already_exists_email(user):
