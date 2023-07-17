@@ -1,0 +1,14 @@
+{% import "macros.html" as macros %}
+{% extends "base_generic_gov.html" %}
+
+{% block content %}
+  <div class="govuk-panel govuk-panel--confirmation">
+    <h1 class="govuk-panel__title">
+      Survey completed!
+    </h1>
+    <div class="govuk-panel__body">
+      Thanks for completing your survey. You may now add learning you've completed to your One Big Thing.
+    </div>
+  </div>
+  <p class="govuk-body">Return <a class="govuk-link" href="{{url('homepage')}}">home</a> to view your progress or <a class="govuk-link" href="{{url('record-learning')}}">start adding learning.</a></p>
+{% endblock %}
