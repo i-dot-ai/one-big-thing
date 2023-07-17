@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from . import choices, interface, models, schemas, utils, survey_handling
+from . import choices, interface, models, schemas, survey_handling, utils
 
 
 def frozendict(*args, **kwargs):
