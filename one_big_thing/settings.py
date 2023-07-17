@@ -16,6 +16,8 @@ STATIC_ROOT = STATIC_ROOT
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
+REQUIRED_LEARNING_TIME = env.int("REQUIRED_LEARNING_TIME", default=420)
+
 CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
 FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
 FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")

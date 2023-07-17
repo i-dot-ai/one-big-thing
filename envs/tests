@@ -14,3 +14,4 @@ FROM_EMAIL="test@example.com"
 EMAIL_BACKEND_TYPE=CONSOLE
 BASE_URL=http://localhost:8055/
 VCAP_APPLICATION='{"space_name": "tests"}'
+REQUIRED_LEARNING_TIME=420
