@@ -18,3 +18,8 @@ class Grade(utils.Choices):
     SCS_DIRECTOR_GENERAL = "SCS: director general"
     SCS_PERMANENT_SECRETARY = "SCS: permanent secretary"
     SENIOR_EXECUTIVE_OFFICER = "Senior executive officer"
+
+
+class SurveyType(utils.Choices):
+    PRE = "Pre"
+    POST = "Post"
