@@ -35,6 +35,8 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
     is_external_user = models.BooleanField(editable=True, default=False)
     has_marked_complete = models.BooleanField(editable=True, default=False)
+    department = models.CharField(max_length=254, blank=True, null=True)
+    grade = models.CharField(max_length=25, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
