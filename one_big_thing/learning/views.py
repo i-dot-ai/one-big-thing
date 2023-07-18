@@ -165,7 +165,7 @@ def questions_view(request, survey_type, page_number=1):
 
 
 def questions_view_get(request, survey_type, page_number, errors=frozendict()):
-    survey_type = survey_type.lower()
+    survey_type = survey_type
     section = survey_handling.questions_data[survey_type][page_number - 1]
     data = get_data(request.user, survey_type, page_number)
     return render(
@@ -186,7 +186,7 @@ def questions_view_get(request, survey_type, page_number, errors=frozendict()):
 
 def questions_view_post(request, survey_type, page_number, errors=frozendict()):
     data = request.POST
-    survey_type = survey_type.lower()
+    survey_type = survey_type
     errors, data = clean_data(page_number, survey_type, data, validate=False)
     if errors:
         return questions_view_get(request, survey_type, page_number, errors=errors)
