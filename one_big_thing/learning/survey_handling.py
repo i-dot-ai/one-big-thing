@@ -54,17 +54,13 @@ all_question_sections = pre_question_sections + post_question_sections
 
 
 def get_competency_name(competency_label):
-    matching = [item["name"] for item in competencies if item["label"] == competency_label]
-    if not matching:
-        return None
-    return matching[0]
+    competency_map = {k: v for k, v in _competencies}
+    return competency_map.get(competency_label, None)
 
 
 def get_question(question_number):
-    matching = [item["text"] for item in all_questions if item["id"] == question_number]
-    if not matching:
-        return None
-    return matching[0]
+    question_map = {question["id"]: question["text"] for question in all_questions}
+    return question_map.get(question_number, None)
 
 
 def get_question_ids_for_section(section):
