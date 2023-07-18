@@ -86,5 +86,5 @@ class Event(TimeStampedModel):
 class SurveyResult(UUIDPrimaryKeyBase, TimeStampedModel):
     data = models.JSONField(null=True, blank=True)
     page_number = models.IntegerField()
-    survey_type = models.CharField(max_length=4)
+    survey_type = models.CharField(max_length=128)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

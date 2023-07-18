@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ("modified_at", models.DateTimeField(auto_now=True)),
                 ("data", models.JSONField(blank=True, null=True)),
                 ("page_number", models.IntegerField()),
-                ("survey_type", models.CharField(max_length=4)),
+                ("survey_type", models.CharField(max_length=128)),
                 ("user", models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
