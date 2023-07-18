@@ -85,7 +85,6 @@ class Event(TimeStampedModel):
 
 class SurveyResult(UUIDPrimaryKeyBase, TimeStampedModel):
     data = models.JSONField(null=True, blank=True)
-    # session_id = models.UUIDField(default=uuid.uuid4, editable=False)  Don't think we need sessions?
     page_number = models.IntegerField()
     survey_type = models.CharField(max_length=4)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
