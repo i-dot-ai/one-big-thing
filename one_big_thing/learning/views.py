@@ -44,9 +44,17 @@ def index_view(request):
 @login_required
 @require_http_methods(["GET"])
 def homepage_view(request):
-    data = {}
     errors = {}
     special_courses = special_course_handler.get_special_course_information()
+    user_completed_courses = [learning.course_id for learning in request.user.learning_set.all() if learning.course_id]
+    incomplete_special_courses = [
+        special_course for special_course in special_courses if special_course.id not in user_completed_courses
+    ]
+    completed_special_courses = list(set(special_courses) - set(incomplete_special_courses))
+    data = {
+        "incomplete_special_courses": incomplete_special_courses,
+        "complete_special_courses": completed_special_courses,
+    }
     return render(
         request,
         template_name="homepage.html",
@@ -54,7 +62,6 @@ def homepage_view(request):
             "request": request,
             "data": data,
             "errors": errors,
-            "special_courses": special_courses,
         },
     )
 
@@ -105,9 +112,9 @@ class RecordLearningView(utils.MethodDispatcher):
                 data = {
                     **data,
                     "title": course.title,
-                    "learning_type": course.learning_type,
+                    "learning_type": course.learning_type or "",
                     "time_to_complete": course.time_to_complete,
-                    "link": course.link,
+                    "link": course.link or "",
                 }
         return render(
             request,
@@ -137,7 +144,7 @@ class RecordLearningView(utils.MethodDispatcher):
                 "learning_type": data.get("learning_type", None),
                 "time_to_complete": data.get("time_to_complete", None),
             }
-            _ = interface.api.learning.create(user.id, user.id, learning_data, course_id)  # course id
+            _ = interface.api.learning.create(user.id, user.id, learning_data, course_id)
             return redirect(
                 "record-learning"
             )  # TODO: Use class get to show success message when creating course instead of using redirect
