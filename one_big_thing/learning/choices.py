@@ -4,6 +4,8 @@ from . import utils
 class CourseType(utils.Choices):
     VIDEO = "Video"
     LINK = "Link"
+    IN_PERSON = "In person"
+    MULTIPLE = "Multiple"
 
 
 class Grade(utils.Choices):

@@ -71,6 +71,7 @@ class RecordLearningView(utils.MethodDispatcher):
     def get(
         self,
         request,
+        course_id=None,
         data=None,
         errors=None,
     ):
