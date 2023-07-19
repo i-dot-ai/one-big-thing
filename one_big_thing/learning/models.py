@@ -1,6 +1,7 @@
 import logging
 import uuid
 
+from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django_use_email_as_username.models import BaseUser, BaseUserManager
@@ -33,6 +34,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
     is_external_user = models.BooleanField(editable=True, default=False)
+    has_marked_complete = models.BooleanField(editable=True, default=False)
 
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
@@ -41,6 +43,12 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 
     def has_signed_up(self):
         return self.last_login is not None
+
+    def has_completed_required_time(self):
+        completions = self.completion_set.all()
+        total_time = sum([completion.course.time_to_complete for completion in completions])
+        required_time = settings.REQUIRED_LEARNING_TIME
+        return total_time >= required_time
 
     def get_time_completed(self):
         completions = self.completion_set.all()

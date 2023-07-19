@@ -28,6 +28,7 @@ other_urlpatterns = [
     path("", views.index_view, name="index"),
     path("home/", views.homepage_view, name="homepage"),
     path("record-learning/", views.RecordLearningView, name="record-learning"),
+    path("complete-hours/", views.complete_hours_view, name="complete-hours"),
     path("test/", views.test_view, name="test"),
 ]
 

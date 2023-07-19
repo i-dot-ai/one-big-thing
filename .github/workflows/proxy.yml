@@ -82,16 +82,3 @@ jobs:
         working-directory: ./proxy
         run: |
             ./proxy-deploy.sh
-
-      - uses: actions/checkout@v2
-      - name: Slack Notification
-        continue-on-error: true
-        if: ${{ failure() && github.ref_name == 'prod' || failure() && github.ref_name == 'develop' }}
-        uses: rtCamp/action-slack-notify@v2
-        env:
-          SLACK_COLOR: '#FF0000'
-          SLACK_ICON: https://avatars0.githubusercontent.com/u/818058?s=200&v=4
-          SLACK_TITLE: '${{ github.ref_name }} deployment ${{ job.status }} :warning:'
-          SLACK_USERNAME: ${{ github.actor }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SLACK_MESSAGE: '${{ github.ref_name }} Action ${{ job.status }}'
