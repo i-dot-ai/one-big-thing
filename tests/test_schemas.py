@@ -21,7 +21,7 @@ def test_date_and_blank_field():
 
 
 # Might not always want schemas to match, but we do for now
-def check_schema_model_match_fields(model_name, schema_name, related_fields_to_ignore={"completion"}):
+def check_schema_model_match_fields(model_name, schema_name, related_fields_to_ignore={"learning"}):
     model = getattr(models, model_name)
     schema = getattr(schemas, schema_name)
     model_field_names = {f.name for f in model._meta.get_fields()}
