@@ -3,7 +3,7 @@ from tests import utils
 
 
 def test_enter_invalid_time_to_complete():
-    test_email = "test-evaluation-data-entry@example.com"
+    test_email = "test-learning-record-invalid-time-entry@example.com"
     authenticated_user = {"email": test_email, "password": "giraffe47"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
@@ -25,7 +25,7 @@ def test_enter_invalid_time_to_complete():
 
 
 def test_enter_invalid_values():
-    test_email = "test-evaluation-data-entry@example.com"
+    test_email = "test-learning-record-invalid-data-entry@example.com"
     authenticated_user = {"email": test_email, "password": "giraffe47"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
@@ -46,7 +46,7 @@ def test_enter_invalid_values():
 
 
 def test_enter_valid_learning_record():
-    test_email = "test-evaluation-data-entry@example.com"
+    test_email = "test-learning-record-valid-data-entry@example.com"
     authenticated_user = {"email": test_email, "password": "giraffe47"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
