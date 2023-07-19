@@ -51,21 +51,3 @@ competency_labels = tuple(item["label"] for item in competencies)
 pre_question_sections = tuple(item["title"] for item in pre_questions_data if item["title"] != "Competency")
 post_question_sections = tuple(item["title"] for item in post_questions_data if item["title"] != "Competency")
 all_question_sections = pre_question_sections + post_question_sections
-
-
-def get_competency_name(competency_label):
-    competency_map = {k: v for k, v in _competencies}
-    return competency_map.get(competency_label, None)
-
-
-def get_question(question_number):
-    question_map = {question["id"]: question["text"] for question in all_questions}
-    return question_map.get(question_number, None)
-
-
-def get_question_ids_for_section(section):
-    return section_all_questions_map[section]
-
-
-# Excludes team
-section_map = {k: get_question_ids_for_section(k) for k in all_question_sections}
