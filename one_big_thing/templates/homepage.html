@@ -7,13 +7,25 @@
     <h2 class="govuk-heading-m">Based on your survey we recommend you do this learning first</h2>
     <div class="govuk-width-container">
       <main class="govuk-main-wrapper">
-        {% for course in special_courses %}
+        {% for course in data.incomplete_special_courses %}
           <div class="govuk-grid-row">
             <div class="govuk-grid-column-two-thirds">
               <p class="govuk-body">{% if course.link %}<a class="govuk-link" href="{{course.link}}">{{course.title}}</a>{% else %}{{course.title}}{% endif %}</p>
             </div>
             <div class="govuk-grid-column-one-third">
               <a class="govuk-button" href="{{url('record-learning', course.id)}}">Mark as done</a>
+            </div>
+          </div>
+        {% endfor %}
+        {% for course in data.complete_special_courses %}
+          <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+              <p class="govuk-body">{% if course.link %}<a class="govuk-link" href="{{course.link}}">{{course.title}}</a>{% else %}{{course.title}}{% endif %}</p>
+            </div>
+            <div class="govuk-grid-column-one-third">
+              <strong class="govuk-tag govuk-tag--green">
+                Done
+              </strong>
             </div>
           </div>
         {% endfor %}
