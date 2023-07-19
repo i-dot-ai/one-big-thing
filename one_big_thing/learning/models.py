@@ -47,14 +47,14 @@ class User(BaseUser, UUIDPrimaryKeyBase):
         return self.last_login is not None
 
     def has_completed_required_time(self):
-        completions = self.completion_set.all()
-        total_time = sum([completion.course.time_to_complete for completion in completions])
+        learnings = self.learning_set.all()
+        total_time = sum([learning.time_to_complete for learning in learnings])
         required_time = settings.REQUIRED_LEARNING_TIME
         return total_time >= required_time
 
     def get_time_completed(self):
-        completions = self.completion_set.all()
-        total_time = sum([completion.course.time_to_complete for completion in completions])
+        learnings = self.learning_set.all()
+        total_time = sum([learning.time_to_complete for learning in learnings])
         return total_time
 
 
@@ -72,10 +72,19 @@ class Course(TimeStampedModel, UUIDPrimaryKeyBase):
             return ""
 
 
-class Completion(TimeStampedModel, UUIDPrimaryKeyBase):
+class Learning(TimeStampedModel, UUIDPrimaryKeyBase):
+    title = models.CharField(max_length=100)
+    link = models.URLField(blank=True, null=True)
+    learning_type = models.CharField(max_length=5, blank=True, null=True)
+    time_to_complete = models.IntegerField()
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    completed_at = models.DateTimeField(auto_now_add=True)
+
+    def get_learning_type_display_name(self):
+        if self.learning_type in choices.CourseType.names:
+            return choices.CourseType.mapping[self.learning_type]
+        else:
+            return ""
 
 
 class Event(TimeStampedModel):
