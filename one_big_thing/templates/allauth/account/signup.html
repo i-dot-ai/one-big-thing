@@ -14,6 +14,7 @@
             Register
           </h1>
         </legend>
+      <p class="govuk-body">You need to register with your work email address.</p>
         <div class="govuk-form-group">
           <label class="govuk-label" for="id_email">
             Email
@@ -38,6 +39,33 @@
             <li>Cannot be only numbers</li>
             <li>Cannot be any common user information such as email</li>
           </ul>
+        </div>
+        <div class="govuk-form-group {% if 'department' in errors.keys %}error{% endif %}">
+          <label class="govuk-label" for="department">Department</label>
+          <div id="select-field">
+            <select name="department" id="department" class="govuk-select govuk-!-width-full">
+              <option value="" disabled class="govuk-button--disabled" {% if not data.departments%}selected{% endif %}>Please select an organisation you belong to</option>
+              {% for option in departments %}
+                <option value="{{option.0}}" {% if 'department' in data.keys and data.departments == option.0 %}selected{% endif %}>{{option.1}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="govuk-list govuk-list--bullet">
+          <ul>
+            <li>If you work for more than one Department, please choose the one where you spend the most time. If your role is split equally, you can select either Department.</li>
+          </ul>
+        </div>
+        <div class="govuk-form-group {% if 'grades' in errors.keys %}error{% endif %}">
+          <label class="govuk-label" for="grade">Grade</label>
+          <div id="select-field">
+            <select name="grade" id="grade" class="govuk-select govuk-!-width-full">
+              <option value="" disabled class="govuk-button--disabled" {% if not data.grades%}selected{% endif %}>Please select your grade</option>
+              {% for option in grades %}
+                <option value="{{option.0}}" {% if 'grade' in data.keys and data.grades == option.0 %}selected{% endif %}>{{option.1}}</option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
         {% if redirect_field_value %}
           <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>

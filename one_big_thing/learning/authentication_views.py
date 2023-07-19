@@ -11,7 +11,13 @@ from django.core.validators import validate_email
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_http_methods
 
-from one_big_thing.learning import email_handler, models, restrict_email
+from one_big_thing.learning import (
+    choices,
+    departments,
+    email_handler,
+    models,
+    restrict_email,
+)
 from one_big_thing.learning.email_handler import (
     send_account_already_exists_email,
 )
@@ -103,35 +109,48 @@ class CustomResendVerificationView(MethodDispatcher):
 
 
 class CustomSignupView(SignupView):
+    def get_context_data(self, **kwargs):
+        department_choices = departments.Department.choices
+        context = super(CustomSignupView, self).get_context_data(**kwargs)
+        context["departments"] = department_choices
+        context["grades"] = choices.Grade.choices
+        return context
+
     def dispatch(self, request, *args, **kwargs):
         if request.method == "POST":
             email = request.POST.get("email")
             password1 = request.POST.get("password1")
             password2 = request.POST.get("password2")
+            department = request.POST.get("department")
+            grade = request.POST.get("grade")
+            context = {
+                "departments": departments.Department.choices,
+                "grades": choices.Grade.choices,
+            }
             try:
                 validate_email(email)
             except ValidationError as exc:
                 for errors in exc.error_list:
                     for error in errors:
                         messages.error(request, error)
-                return render(request, self.template_name)
+                return render(request, self.template_name, context)
             try:
                 restrict_email.clean_email(email=email)
             except ValidationError as exc:
                 for errors in exc.error_list:
                     for error in errors:
                         messages.error(request, error)
-                return render(request, self.template_name)
+                return render(request, self.template_name, context)
             try:
                 validate_password(password1)
             except ValidationError as exc:
                 for errors in exc.error_list:
                     for error in errors:
                         messages.error(request, error)
-                return render(request, self.template_name)
+                return render(request, self.template_name, context)
             if password1 != password2:
                 messages.error(request, "You must type the same password each time.")
-                return render(request, self.template_name)
+                return render(request, self.template_name, context)
             existing_user = models.User.objects.filter(email=email)
             if existing_user.exists():
                 send_account_already_exists_email(existing_user.first())
@@ -140,7 +159,13 @@ class CustomSignupView(SignupView):
                     "account/signup_complete.html",
                     {},
                 )
-            user = models.User.objects.create_user(email=email, password=password1)
+            if not department or not grade:
+                if not department:
+                    messages.error(request, "You must select a department.")
+                if not grade:
+                    messages.error(request, "You must select a grade.")
+                return render(request, self.template_name, context)
+            user = models.User.objects.create_user(email=email, password=password1, department=department, grade=grade)
             user.save()
             if settings.SEND_VERIFICATION_EMAIL:
                 email_handler.send_verification_email(user)
@@ -153,7 +178,7 @@ class CustomSignupView(SignupView):
             login(request, user)
             messages.success(request, f"Successfully signed in as {user.email}.")
             return redirect("index")
-        response = super().dispatch(request, *args, **kwargs)
+        response = super().dispatch(request, errors={}, *args, **kwargs)
         return response
 
 
