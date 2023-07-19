@@ -37,6 +37,8 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     has_marked_complete = models.BooleanField(editable=True, default=False)
     department = models.CharField(max_length=254, blank=True, null=True)
     grade = models.CharField(max_length=25, blank=True, null=True)
+    has_completed_pre_survey = models.BooleanField(default=False, auto_created=False)
+    has_completed_post_survey = models.BooleanField(default=False, auto_created=False)
 
     def save(self, *args, **kwargs):
         self.email = self.email.lower()

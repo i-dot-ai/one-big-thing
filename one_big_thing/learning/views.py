@@ -143,6 +143,8 @@ def complete_hours_view(request):
     if user.has_completed_required_time():
         user.has_marked_complete = True
         user.save()
+        if not user.has_completed_post_survey:
+            return redirect("questions", "post")
         return redirect("record-learning")
     else:
         messages.info(request, "You have not completed the required hours, please try again.")
@@ -193,6 +195,8 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
     else:
         save_data(survey_type, request.user, page_number, data)
     if page_number >= len(survey_handling.questions_data[survey_type]):
+        setattr(request.user, f"has_completed_{survey_type}_survey", True)
+        request.user.save()
         return redirect("survey-completed")
     else:
         next_page_number = page_number + 1
