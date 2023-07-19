@@ -57,7 +57,7 @@
       <tbody class="govuk-table__body">
       {% for course in data.courses %}
         <tr class="govuk-table__row">
-          <th scope="row" class="govuk-table__header"><a href="{{course.link}}" target="_blank" rel="noopener noreferrer">{{course.title}}</a></th>
+          <th scope="row" class="govuk-table__header">{% if course.link %}<a href="{{course.link}}" target="_blank" rel="noopener noreferrer">{{course.title}} {{ course.course }}</a>{% else %}{{course.title}}{% endif %}</th>
           <td class="govuk-table__cell">{{course.get_learning_type_display_name()}}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric">{{(course.time_to_complete // 60) | int}}:{% if (course.time_to_complete % 60.0) | int < 10 %}0{{(course.time_to_complete % 60.0) | int}}{% else %}{{(course.time_to_complete % 60.0) | int}}{% endif %}</td>
         </tr>
