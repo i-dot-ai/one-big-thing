@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from . import choices, interface, models, schemas, survey_handling, utils
+from . import choices, interface, models, schemas, utils, special_course_handler, survey_handling
 
 
 def frozendict(*args, **kwargs):
@@ -38,6 +38,7 @@ def index_view(request):
 def homepage_view(request):
     data = {}
     errors = {}
+    special_courses = special_course_handler.get_saved_course_information()
     return render(
         request,
         template_name="homepage.html",
@@ -45,6 +46,7 @@ def homepage_view(request):
             "request": request,
             "data": data,
             "errors": errors,
+            "special_courses": special_courses,
         },
     )
 
@@ -89,6 +91,15 @@ class RecordLearningView(utils.MethodDispatcher):
             "learning_types": learning_types,
             "courses": courses,
         }
+        if course_id:
+            course = models.Course.objects.get(pk=course_id)
+            data = {
+                **data,
+                "title": course.title,
+                "learning_type": course.learning_type,
+                "time_to_complete": course.time_to_complete,
+                "link": course.link,
+            }
         return render(
             request,
             template_name="record-learning.html",

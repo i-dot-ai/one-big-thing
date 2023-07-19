@@ -7,30 +7,16 @@
     <h2 class="govuk-heading-m">Based on your survey we recommend you do this learning first</h2>
     <div class="govuk-width-container">
       <main class="govuk-main-wrapper">
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-two-thirds">
-            <p class="govuk-body">A basic course title (and time)</p>
+        {% for course in special_courses %}
+          <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+              <p class="govuk-body"><a class="govuk-link" href="{{course.link}}">{{course.title}}</a></p>
+            </div>
+            <div class="govuk-grid-column-one-third">
+              <a class="govuk-button" href="{{url('record-learning', course.id)}}">Mark as done</a>
+            </div>
           </div>
-          <div class="govuk-grid-column-one-third">
-            <a class="govuk-button" href="{{url('record-learning', "3e17e50d-7bde-4c1b-844b-21cd52057bb7")}}">Mark as done</a>
-          </div>
-        </div>
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-two-thirds">
-            <p class="govuk-body">A basic course title (and time)</p>
-          </div>
-          <div class="govuk-grid-column-one-third">
-            <a class="govuk-button" href="#">Mark as done</a>
-          </div>
-        </div>
-        <div class="govuk-grid-row">
-          <div class="govuk-grid-column-two-thirds">
-            <p class="govuk-body">A basic course title (and time)</p>
-          </div>
-          <div class="govuk-grid-column-one-third">
-            <a class="govuk-button" href="#">Mark as done</a>
-          </div>
-        </div>
+        {% endfor %}
       </main>
     </div>
   </div>
