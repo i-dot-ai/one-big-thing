@@ -20,7 +20,7 @@ questions_data = {
 
 competencies = tuple({"label": label, "name": name} for (label, name) in _competencies)
 pre_questions = tuple(q for section in pre_questions_data for q in section["questions"])
-post_questions = tuple(q for section in pre_questions_data for q in section["questions"])
+post_questions = tuple(q for section in post_questions_data for q in section["questions"])
 all_questions = pre_questions + post_questions
 section_pre_questions_map = {
     section["title"]: tuple(question["id"] for question in section["questions"]) for section in pre_questions_data
