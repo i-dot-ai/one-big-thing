@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("learning", "0003_user_last_token_sent_at"),
+        ("learning", "0003_add_user_fields"),
     ]
 
     operations = [
