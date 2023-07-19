@@ -12,10 +12,8 @@ class Command(BaseCommand):
         with (settings.BASE_DIR / "one_big_thing" / "learning" / "special-courses.yaml").open() as f:
             special_courses = yaml.safe_load(f)
             for special_course in special_courses:
-                course = models.Course(
-                    title=special_course["title"],
-                    link=special_course["link"],
-                    learning_type=special_course["learning_type"],
-                    time_to_complete=special_course["time_to_complete"],
-                )
+                course, _ = models.Course.objects.get_or_create(title=special_course["title"])
+                course.link = special_course["link"]
+                course.learning_type = special_course["learning_type"]
+                course.time_to_complete = special_course["time_to_complete"]
                 course.save()
