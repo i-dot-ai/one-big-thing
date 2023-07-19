@@ -16,7 +16,12 @@ def test_learning_api():
     assert result["title"] == "Test title", result["title"]
     assert result["time_to_complete"] == "120", result["time_to_complete"]
 
-    learning_result = interface.api.learning.create(user_id=user.id, user_to_add=user.id, data={"title": "Test title", "time_to_complete": "120"}, course_id=result["id"])
+    learning_result = interface.api.learning.create(
+        user_id=user.id,
+        user_to_add=user.id,
+        data={"title": "Test title", "time_to_complete": "120"},
+        course_id=result["id"],
+    )
 
     learning = models.Learning.objects.get(pk=learning_result["learning_id"])
     assert learning.course.title == "Test title", learning.course.title
