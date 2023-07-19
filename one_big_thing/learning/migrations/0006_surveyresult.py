@@ -9,7 +9,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("learning", "0004_auto_20230718_1324"),
+        ("learning", "0005_alter_course_learning_type"),
     ]
 
     operations = [
