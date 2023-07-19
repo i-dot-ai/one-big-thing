@@ -38,7 +38,7 @@ def index_view(request):
 def homepage_view(request):
     data = {}
     errors = {}
-    special_courses = special_course_handler.get_saved_course_information()
+    special_courses = special_course_handler.get_special_course_information()
     return render(
         request,
         template_name="homepage.html",
