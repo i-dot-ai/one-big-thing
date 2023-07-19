@@ -28,6 +28,9 @@ other_urlpatterns = [
     path("", views.index_view, name="index"),
     path("home/", views.homepage_view, name="homepage"),
     path("record-learning/", views.RecordLearningView, name="record-learning"),
+    path("questions/<str:survey_type>/", views.questions_view, name="questions"),
+    path("questions/<str:survey_type>/<int:page_number>/", views.questions_view, name="questions"),
+    path("completed", views.survey_completed_view, name="survey-completed"),
     path("complete-hours/", views.complete_hours_view, name="complete-hours"),
     path("test/", views.test_view, name="test"),
 ]

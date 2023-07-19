@@ -1,0 +1,20 @@
+- title: Competency
+  questions:
+    - id: competency
+      text: How well do you know Data?
+      answer_type: competency
+
+- title: Question 1
+  questions:
+    - id: sentient
+      text: I would recommend my organisation as a great place to work?
+      answer_type: agree-1-5
+
+- title: Question 2
+  questions:
+    - id: big
+      text: How big is data?
+      answer_type: agree-1-5
+    - id: wide
+      text: How wide is data?
+      answer_type: agree-1-5

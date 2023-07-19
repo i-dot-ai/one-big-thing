@@ -81,3 +81,10 @@ class Completion(TimeStampedModel, UUIDPrimaryKeyBase):
 class Event(TimeStampedModel):
     name = models.CharField(max_length=256)
     data = models.JSONField(encoder=DjangoJSONEncoder)
+
+
+class SurveyResult(UUIDPrimaryKeyBase, TimeStampedModel):
+    data = models.JSONField(null=True, blank=True)
+    page_number = models.IntegerField()
+    survey_type = models.CharField(max_length=128)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
