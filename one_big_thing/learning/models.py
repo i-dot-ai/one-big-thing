@@ -61,7 +61,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 class Course(TimeStampedModel, UUIDPrimaryKeyBase):
     title = models.CharField(max_length=100)
     link = models.URLField(blank=True, null=True)
-    learning_type = models.CharField(max_length=5, blank=True, null=True)
+    learning_type = models.CharField(max_length=128, blank=True, null=True)
     time_to_complete = models.IntegerField()
     # strengths = models.CharField(max_length=255)
 

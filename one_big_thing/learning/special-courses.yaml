@@ -1,12 +1,12 @@
 - title: E learning Intermediate Data course on CS Learn
   link: https://learn.civilservice.gov.uk/courses/GyZgKWc0Tz6ZIfvDSiuO1Q
   time_to_complete: 80
-  course_type: link
+  learning_type: link
 - title: Discussion with your team, lead by your manager
   link: null
   time_to_complete: 90
-  course_type: in-person
+  learning_type: in-person
 - title: Attend a Civil Service Live or Data Connect event in person, virtually or by watching a recording
   link: null
   time_to_complete: 60
-  course_type: multiple
+  learning_type: multiple
