@@ -97,7 +97,6 @@ class RecordLearningView(utils.MethodDispatcher):
         if not errors:
             errors = {}
         if not data:
-            # _ = interface.api.session.get_answer(session_id, page_name) # TODO: Replace with call to get course data
             data = {}
         user = request.user
         time_completed = user.get_time_completed()
@@ -115,7 +114,8 @@ class RecordLearningView(utils.MethodDispatcher):
                     **data,
                     "title": course.title,
                     "learning_type": course.learning_type or "",
-                    "time_to_complete": course.time_to_complete,
+                    "time_to_complete_minutes": course.time_to_complete % 60,
+                    "time_to_complete_hours": course.time_to_complete // 60,
                     "link": course.link or "",
                 }
         return render(
@@ -137,7 +137,9 @@ class RecordLearningView(utils.MethodDispatcher):
         course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
         manipulated_data = {
             "title": data["title"],
-            "time_to_complete": (data["time_to_complete_hours"] * 60) + (data["time_to_complete_minutes"]),
+            "time_to_complete": str(
+                (int(data["time_to_complete_hours"]) * 60) + int((data["time_to_complete_minutes"]))
+            ),
             "link": data.get("link"),
             "learning_type": data.get("learning_type", None),
         }
