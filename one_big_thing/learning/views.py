@@ -134,7 +134,7 @@ class RecordLearningView(utils.MethodDispatcher):
         user = request.user
         course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
         try:
-            _ = course_schema.load(data, partial=True)
+            course_schema.load(data, partial=True)
         except marshmallow.exceptions.ValidationError as err:
             errors = dict(err.messages)
         else:
