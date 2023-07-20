@@ -8,14 +8,15 @@ class CreateCourseSchema(marshmallow.Schema):
     data = marshmallow.fields.Nested(schemas.CourseSchema)
 
 
-class CreateCompletionSchema(marshmallow.Schema):
+class CreateLearningSchema(marshmallow.Schema):
     user_id = marshmallow.fields.UUID()
-    course_id = marshmallow.fields.UUID()
+    course_id = marshmallow.fields.UUID(allow_none=True)
+    data = marshmallow.fields.Nested(schemas.CourseSchema)
     user_to_add = marshmallow.fields.UUID()
 
 
-class CreateCompletionResponseSchema(marshmallow.Schema):
-    completion_id = marshmallow.fields.UUID()
+class CreateLearningResponseSchema(marshmallow.Schema):
+    learning_id = marshmallow.fields.UUID()
 
 
 class Course(Entity):
@@ -29,18 +30,22 @@ class Course(Entity):
         return course
 
 
-class Completion(Entity):
-    @with_schema(load=CreateCompletionSchema, dump=CreateCompletionResponseSchema)
-    @register_event("Completion created")
-    def create(self, user_id, course_id, user_to_add):
-        completion = models.Completion()
+class Learning(Entity):
+    @with_schema(load=CreateLearningSchema, dump=CreateLearningResponseSchema)
+    @register_event("Learning created")
+    def create(self, user_id, user_to_add, data, course_id=None):
+        learning = models.Learning()
         user = models.User.objects.get(pk=user_to_add)
-        course = models.Course.objects.get(pk=course_id)
-        completion.course = course
-        completion.user = user
-        completion.save()
-        response = {"completion_id": completion.id}
+        for key, value in data.items():
+            setattr(learning, key, value)
+        if course_id:
+            course = models.Course.objects.filter(pk=course_id).first()
+            if course:
+                learning.course = course
+        learning.user = user
+        learning.save()
+        response = {"learning_id": learning.id}
         return response
 
 
-api = Interface(course=Course(), completion=Completion())
+api = Interface(course=Course(), learning=Learning())

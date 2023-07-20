@@ -8,12 +8,12 @@ def test_model_fields():
     user, _ = models.User.objects.get_or_create(email="mrs.tiggywinkle@cabinetoffice.gov.uk")
     user.save()
 
-    completion = models.Completion(course=course, user=user)
-    completion.save()
+    learning = models.Learning(title=course.title, user=user, time_to_complete=course.time_to_complete, course=course)
+    learning.save()
 
-    assert completion.course == course
-    assert completion.course.title == "Test course"
-    assert completion.course.time_to_complete == 120
+    assert learning.course == course
+    assert learning.course.title == "Test course"
+    assert learning.course.time_to_complete == 120
     course.title = "New course title"
     course.save()
     assert course.title == "New course title"

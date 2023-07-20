@@ -7,7 +7,15 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from . import choices, interface, models, schemas, survey_handling, utils
+from . import (
+    choices,
+    interface,
+    models,
+    schemas,
+    special_course_handler,
+    survey_handling,
+    utils,
+)
 
 
 def frozendict(*args, **kwargs):
@@ -36,8 +44,17 @@ def index_view(request):
 @login_required
 @require_http_methods(["GET"])
 def homepage_view(request):
-    data = {}
     errors = {}
+    special_courses = special_course_handler.get_special_course_information()
+    user_completed_courses = [learning.course_id for learning in request.user.learning_set.all() if learning.course_id]
+    incomplete_special_courses = [
+        special_course for special_course in special_courses if special_course.id not in user_completed_courses
+    ]
+    completed_special_courses = list(set(special_courses) - set(incomplete_special_courses))
+    data = {
+        "incomplete_special_courses": incomplete_special_courses,
+        "complete_special_courses": completed_special_courses,
+    }
     return render(
         request,
         template_name="homepage.html",
@@ -71,6 +88,7 @@ class RecordLearningView(utils.MethodDispatcher):
     def get(
         self,
         request,
+        course_id=None,
         data=None,
         errors=None,
     ):
@@ -82,12 +100,22 @@ class RecordLearningView(utils.MethodDispatcher):
         user = request.user
         time_completed = user.get_time_completed()
         learning_types = choices.CourseType.choices
-        courses = models.Course.objects.filter(completion__user=user)
+        courses = models.Learning.objects.filter(user=user)
         data = {
             "time_completed": time_completed,
             "learning_types": learning_types,
             "courses": courses,
         }
+        if course_id:
+            course = models.Course.objects.filter(pk=course_id).first()
+            if course:
+                data = {
+                    **data,
+                    "title": course.title,
+                    "learning_type": course.learning_type or "",
+                    "time_to_complete": course.time_to_complete,
+                    "link": course.link or "",
+                }
         return render(
             request,
             template_name="record-learning.html",
@@ -98,7 +126,7 @@ class RecordLearningView(utils.MethodDispatcher):
             },
         )
 
-    def post(self, request):
+    def post(self, request, course_id=None):
         data = request.POST.dict()
         errors = validate(request, "record-learning", data)
         if errors:
@@ -106,12 +134,17 @@ class RecordLearningView(utils.MethodDispatcher):
         user = request.user
         course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
         try:
-            serialized_course = course_schema.load(data, partial=True)
+            course_schema.load(data, partial=True)
         except marshmallow.exceptions.ValidationError as err:
             errors = dict(err.messages)
         else:
-            course = interface.api.course.create(serialized_course)
-            _ = interface.api.completion.create(user.id, course["id"], user.id)
+            learning_data = {
+                "title": data.get("title", None),
+                "link": data.get("link", None),
+                "learning_type": data.get("learning_type", None),
+                "time_to_complete": data.get("time_to_complete", None),
+            }
+            _ = interface.api.learning.create(user.id, user.id, learning_data, course_id)
             return redirect(
                 "record-learning"
             )  # TODO: Use class get to show success message when creating course instead of using redirect
