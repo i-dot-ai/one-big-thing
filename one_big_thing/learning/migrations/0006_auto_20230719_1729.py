@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("learning", "0005_surveyresult"),
+        ("learning", "0005_alter_course_learning_type"),
     ]
 
     operations = [
