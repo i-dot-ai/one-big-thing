@@ -25,13 +25,15 @@ def frozendict(*args, **kwargs):
 page_compulsory_field_map = {
     "record-learning": (
         "title",
-        "time_to_complete",
+        "time_to_complete_minutes",
+        "time_to_complete_hours",
     ),
 }
 
 missing_item_errors = {
     "title": "Please provide a title for this course",
-    "time_to_complete": "Please enter the time this course took to complete in minutes, e.g. 15",
+    "time_to_complete_hours": "Please enter the hours this course took to complete, e.g. 2",
+    "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 0 or 45",
 }
 
 
@@ -133,16 +135,22 @@ class RecordLearningView(utils.MethodDispatcher):
             return self.get(request, data=data, errors=errors)
         user = request.user
         course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
+        manipulated_data = {
+            "title": data["title"],
+            "time_to_complete": (data["time_to_complete_hours"] * 60) + (data["time_to_complete_minutes"]),
+            "link": data.get("link"),
+            "learning_type": data.get("learning_type", None),
+        }
         try:
-            course_schema.load(data, partial=True)
+            course_schema.load(manipulated_data, partial=True)
         except marshmallow.exceptions.ValidationError as err:
             errors = dict(err.messages)
         else:
             learning_data = {
-                "title": data.get("title", None),
-                "link": data.get("link", None),
-                "learning_type": data.get("learning_type", None),
-                "time_to_complete": data.get("time_to_complete", None),
+                "title": manipulated_data.get("title", None),
+                "link": manipulated_data.get("link", None),
+                "learning_type": manipulated_data.get("learning_type", None),
+                "time_to_complete": manipulated_data.get("time_to_complete", None),
             }
             _ = interface.api.learning.create(user.id, user.id, learning_data, course_id)
             return redirect(

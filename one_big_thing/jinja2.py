@@ -53,6 +53,20 @@ def list_to_options(iterable):
     return result
 
 
+def format_time(minutes):
+    hours = int(minutes // 60)
+    minutes_remainder = int(minutes % 60)
+    pluralised_hour = "hours" if hours > 1 else "hour"
+    pluralised_minutes = "minutes" if minutes_remainder > 1 else "minute"
+
+    if hours == 0:
+        return f"{minutes_remainder} {pluralised_minutes}"
+    elif minutes_remainder == 0:
+        return f"{hours} {pluralised_hour}"
+    else:
+        return f"{hours} {pluralised_hour} {minutes_remainder} {pluralised_minutes}"
+
+
 def environment(**options):
     extra_options = dict()
     env = jinja2.Environment(
@@ -72,6 +86,7 @@ def environment(**options):
             "list_to_options": list_to_options,
             "is_empty_selected": is_empty_selected,
             "DEFAULT": DEFAULT,
+            "format_time": format_time,
         }
     )
     return env
