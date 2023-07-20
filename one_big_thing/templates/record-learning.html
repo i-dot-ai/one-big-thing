@@ -51,8 +51,6 @@
           </div>
         </main>
       </div>
-
-{#      {{macros.input('time_to_complete', 'How long it took (minutes)', data, errors, type="number")}}#}
       {{macros.input('link', 'URL (optional)', data, errors, type="url")}}
       {{macros.select_from_list('learning_type', 'Format (optional)', data.learning_types)}}
     </fieldset>
