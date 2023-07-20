@@ -61,6 +61,8 @@ class CustomLoginView(MethodDispatcher):
                         )
                 login(request, user)
                 request.session["session_created_at"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+                if not request.user.has_completed_pre_survey:
+                    return redirect("questions", "pre")
                 return redirect("index")
             else:
                 return self.error(request)

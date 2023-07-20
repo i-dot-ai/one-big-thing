@@ -2,6 +2,40 @@
 {% extends "base_generic_gov.html" %}
 
 {% block content %}
+  {% if not request.user.has_completed_pre_survey %}
+    <div class="govuk-notification-banner" role="region"
+      aria-labelledby="govuk-notification-banner-title"
+      data-module="govuk-notification-banner">
+      <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+          Important
+        </h2>
+      </div>
+      <div class="govuk-notification-banner__content">
+        <p class="govuk-notification-banner__heading">
+          You haven't completed your initial survey. Please use
+          <a class="govuk-notification-banner__link" href="{{url('questions', 'pre')}}">this link</a> to complete it.
+        </p>
+      </div>
+    </div>
+  {% endif %}
+  {% if not request.user.has_completed_post_survey and request.user.has_completed_required_time() %}
+    <div class="govuk-notification-banner" role="region"
+      aria-labelledby="govuk-notification-banner-title"
+      data-module="govuk-notification-banner">
+      <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+          Important
+        </h2>
+      </div>
+      <div class="govuk-notification-banner__content">
+        <p class="govuk-notification-banner__heading">
+          You haven't completed your post-completion survey. Please use
+          <a class="govuk-notification-banner__link" href="{{url('questions', 'post')}}">this link</a> to complete it.
+        </p>
+      </div>
+    </div>
+  {% endif %}
   <h1 class="govuk-heading-l">Welcome to your One Big Thing Learning Record</h1>
   <div>
     <h2 class="govuk-heading-m">Based on your survey we recommend you do this learning first</h2>
