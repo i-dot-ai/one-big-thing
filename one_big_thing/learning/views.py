@@ -136,16 +136,13 @@ class RecordLearningView(utils.MethodDispatcher):
         try:
             int(data["time_to_complete_hours"])
         except ValueError:
-            errors = {
-                **errors,
-                "time_to_complete_hours": "Please enter the hours this course took to complete, e.g. 2"
-            }
+            errors = {**errors, "time_to_complete_hours": "Please enter the hours this course took to complete, e.g. 2"}
         try:
             int(data["time_to_complete_minutes"])
         except ValueError:
             errors = {
                 **errors,
-                "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 0 or 45"
+                "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 0 or 45",
             }
         if errors:
             return self.get(request, data=data, errors=errors)
