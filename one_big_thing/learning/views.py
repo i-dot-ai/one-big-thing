@@ -133,6 +133,22 @@ class RecordLearningView(utils.MethodDispatcher):
         errors = validate(request, "record-learning", data)
         if errors:
             return self.get(request, data=data, errors=errors)
+        try:
+            int(data["time_to_complete_hours"])
+        except ValueError:
+            errors = {
+                **errors,
+                "time_to_complete_hours": "Please enter the hours this course took to complete, e.g. 2"
+            }
+        try:
+            int(data["time_to_complete_minutes"])
+        except ValueError:
+            errors = {
+                **errors,
+                "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 0 or 45"
+            }
+        if errors:
+            return self.get(request, data=data, errors=errors)
         user = request.user
         course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
         manipulated_data = {

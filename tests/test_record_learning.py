@@ -15,8 +15,8 @@ def test_enter_invalid_time_to_complete():
 
     record_learning_form = record_learning_page.get_form()
     record_learning_form["title"] = "Test incorrect time"
-    record_learning_form["time_to_complete_minutes"] = "Incorrect value"
-    record_learning_form["time_to_complete_hours"] = "Incorrect value"
+    record_learning_form["time_to_complete_minutes"] = "e"
+    record_learning_form["time_to_complete_hours"] = "e"
 
     submitted_page = record_learning_form.submit()
     assert submitted_page.status_code == 200, submitted_page.status_code
