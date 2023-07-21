@@ -1,3 +1,6 @@
+import datetime
+
+import humanize
 import jinja2
 from django.templatetags.static import static
 from django.urls import reverse
@@ -67,6 +70,11 @@ def format_time(minutes):
         return f"{hours} {pluralised_hour} {minutes_remainder} {pluralised_minutes}"
 
 
+def humanize_timedelta(minutes=0):
+    delta = datetime.timedelta(minutes=minutes)
+    return humanize.precisedelta(delta, minimum_unit="minutes")
+
+
 def environment(**options):
     extra_options = dict()
     env = jinja2.Environment(
@@ -86,7 +94,7 @@ def environment(**options):
             "list_to_options": list_to_options,
             "is_empty_selected": is_empty_selected,
             "DEFAULT": DEFAULT,
-            "format_time": format_time,
+            "humanize_timedelta": humanize_timedelta,
         }
     )
     return env

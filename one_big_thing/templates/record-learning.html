@@ -13,7 +13,7 @@
       </div>
       <div class="govuk-notification-banner__content">
         <p class="govuk-notification-banner__heading">
-          You have completed {{format_time(data.time_completed)}} so far.
+          You have completed {{humanize_timedelta(data.time_completed)}} so far.
         </p>
       </div>
     </div>
@@ -71,7 +71,7 @@
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">{% if course.link | length > 0 %}<a href="{{course.link}}" target="_blank" rel="noopener noreferrer">{{course.title}}</a>{% else %}{{course.title}}{% endif %}</th>
           <td class="govuk-table__cell">{{course.get_learning_type_display_name()}}</td>
-          <td class="govuk-table__cell govuk-table__cell--numeric">{{format_time(course.time_to_complete)}}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">{{humanize_timedelta(course.time_to_complete)}}</td>
         </tr>
       {% endfor %}
       </tbody>
