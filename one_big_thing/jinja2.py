@@ -57,6 +57,7 @@ def environment(**options):
     extra_options = dict()
     env = jinja2.Environment(
         **{
+            "autoescape": True,
             **options,
             **extra_options,
         }
