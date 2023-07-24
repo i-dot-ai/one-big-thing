@@ -1,5 +1,6 @@
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
+
 from . import allowed_domains
 from .settings_base import (
     BASE_DIR,
