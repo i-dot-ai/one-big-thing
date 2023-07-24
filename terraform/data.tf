@@ -21,4 +21,8 @@ data "terraform_remote_state" "universal" {
 locals {
   team    = "i-dot-ai"
   project = "one-big-thing"
+
+  db_port = 5432
+  db_user = "postgres"
+  db_name = "obt"
 }
