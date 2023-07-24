@@ -1,5 +1,16 @@
 include envs/web
 
+ACCOUNT_ID=817650998681
+AWS_REGION=eu-west-2
+
+# Docker
+ECR_URL=$(ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
+ECR_REPO_NAME=i-dot-ai-one-big-thing
+ECR_REPO_URL=$(ECR_URL)/$(ECR_REPO_NAME)
+IMAGE_TAG=$$(git rev-parse HEAD)
+IMAGE=$(ECR_REPO_URL):$(IMAGE_TAG)
+
+
 define _update_requirements
 	docker-compose run requirements bash -c "pip install -U pip setuptools && pip install -U -r /app/$(1).txt && pip freeze > /app/$(1).lock"
 endef
@@ -18,7 +29,7 @@ reset-db:
 
 # -------------------------------------- Code Style  -------------------------------------
 
-.PHONY: check-python-code
+.PHONY: check-python-codess
 check-python-code:
 	isort --check .
 	black --check .
@@ -36,3 +47,46 @@ test:
 	docker-compose down
 	docker-compose build tests-one_big_thing one_big_thing-test-db && docker-compose run --rm tests-one_big_thing
 	docker-compose down
+
+
+# -------------------------------------- Docker  -------------------------------------
+
+docker/login:
+	aws ecr get-login-password --region $(AWS_REGION) | docker login --username AWS --password-stdin $(ECR_URL)
+
+docker/build:
+	docker build -t $(IMAGE) -f ./docker/web/Dockerfile .
+
+docker/push:
+	docker push $(IMAGE)
+
+
+# -------------------------------------- Terraform  -------------------------------------
+
+tf_build_args=-var "image_tag=$(IMAGE_TAG)" -var-file=variables/${env}.tfvars
+
+tf/new-workspace:
+	terraform -chdir=terraform workspace new $(env)
+
+tf/set-workspace:
+	terraform -chdir=terraform workspace select $(env)
+
+# Will create a new workspace if one does not already exist
+# Note: only works in github actions
+tf/set-or-create-workspace:
+	make tf/set-workspace || make tf/new-workspace
+
+tf/init:
+	terraform -chdir=./terraform init
+
+tf/plan:
+	make tf/set-workspace && \
+	terraform -chdir=./terraform plan $(tf_build_args)
+
+tf/apply:
+	make tf/set-workspace && \
+	terraform -chdir=./terraform apply ${tf_build_args}
+
+tf/destroy:
+	make tf/set-workspace && \
+	terraform -chdir=./terraform destroy ${tf_build_args}
