@@ -43,6 +43,39 @@ module "ecs" {
               name  = "DB_PASSWORD_SECRET_NAME"
               value = module.db.db_instance_master_user_secret_arn
             },
+            {
+              name  = "DJANGO_SECRET_KEY"
+              value = "1n53cur3K3y"
+            },
+            {
+              name  = "CONTACT_EMAIL"
+              value = "test@example.com"
+            },
+            {
+              name  = "FROM_EMAIL"
+              value = "test@example.com"
+            },
+            {
+              name  = "EMAIL_BACKEND_TYPE"
+              value = "CONSOLE"
+            },
+            {
+              # TODO: Change this when we have route 53
+              name  = "BASE_URL"
+              value = aws_alb.this.dns_name
+            },
+            {
+              name  = "VCAP_APPLICATION"
+              value = "{'space_name': 'local'}"
+            },
+            {
+              name  = "REQUIRED_LEARNING_TIME"
+              value = 420
+            },
+            {
+              name  = "SEND_VERIFICATION_EMAIL"
+              value = true
+            },
           ]
         }
 
