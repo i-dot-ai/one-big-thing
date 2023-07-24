@@ -18,6 +18,32 @@ module "ecs" {
           image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:${var.image_tag}"
           readonly_root_filesystem  = true
           enable_cloudwatch_logging = true
+          environment = [
+            {
+              name  = "ENVIRONMENT"
+              value = var.env
+            },
+            {
+              name  = "DB_HOST"
+              value = module.db.db_instance_address
+            },
+            {
+              name  = "DB_PORT"
+              value = local.db_port
+            },
+            {
+              name  = "DB_USER"
+              value = local.db_user
+            },
+            {
+              name  = "DB_NAME"
+              value = local.db_name
+            },
+            {
+              name  = "DB_PASSWORD_SECRET_NAME"
+              value = module.db.db_instance_master_user_secret_arn
+            },
+          ]
         }
 
       }

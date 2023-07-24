@@ -1,6 +1,7 @@
 anyio==3.7.1
 asgiref==3.7.2
 black==23.7.0
+boto3==1.28.9
 certifi==2023.5.7
 cffi==1.15.1
 charset-normalizer==3.2.0
@@ -60,7 +61,7 @@ sqlparse==0.4.4
 testino==0.3.9
 tomli==2.0.1
 typing_extensions==4.7.1
-urllib3==2.0.3
+urllib3==1.26.15
 w3lib==2.1.1
 waitress==2.1.2
 watchdog==3.0.0

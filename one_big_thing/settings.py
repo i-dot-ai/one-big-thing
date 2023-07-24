@@ -7,6 +7,7 @@ from .settings_base import (
     STATICFILES_DIRS,
     env,
 )
+from .db import fetch_db_password
 
 SECRET_KEY = SECRET_KEY
 STATIC_URL = STATIC_URL
@@ -15,6 +16,8 @@ STATIC_ROOT = STATIC_ROOT
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
+
+ENVIRONMENT = env.str("ENVIRONMENT", default=None)
 
 REQUIRED_LEARNING_TIME = env.int("REQUIRED_LEARNING_TIME", default=420)
 
@@ -104,7 +107,14 @@ WSGI_APPLICATION = "one_big_thing.wsgi.application"
 
 DATABASES = {
     "default": {
-        **env.db("DATABASE_URL"),
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env.str("DB_NAME"),
+        "USER": env.str("DB_USER"),
+        "PASSWORD": env.str("DB_PASSWORD")
+        if not ENVIRONMENT
+        else fetch_db_password(env.str("DB_PASSWORD_SECRET_NAME")),
+        "HOST": env.str("DB_HOST"),
+        "PORT": env.str("DB_PORT"),
         **{"ATOMIC_REQUESTS": True},
     }
 }
