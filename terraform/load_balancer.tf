@@ -6,7 +6,7 @@ resource "aws_alb" "this" {
   drop_invalid_header_fields = true
   load_balancer_type         = "application"
   subnets                    = data.terraform_remote_state.vpc.outputs.public_subnets
-  security_groups            = concat([aws_security_group.load_balancer_security_group.id], var.alb_additional_security_groups)
+  security_groups            = [aws_security_group.load_balancer_security_group.id]
 
   # TODO: Create log bucket
   #   access_logs {
@@ -55,11 +55,30 @@ resource "aws_security_group_rule" "allow_egress" {
   security_group_id = aws_security_group.load_balancer_security_group.id
 }
 
+resource "aws_lb_target_group" "this" {
+  name        = "${local.team}-${local.project}-tg"
+  port        = 8055
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id
+
+  health_check {
+    healthy_threshold   = 3
+    interval            = 300
+    protocol            = "HTTP"
+    matcher             = "200"
+    timeout             = 5
+    path                = "/"
+    unhealthy_threshold = 3
+  }
+}
+
+
 resource "aws_lb_listener" "http" {
   load_balancer_arn = aws_alb.this.id
   port              = "80"
   protocol          = "HTTP"
-#   TODO: Re-enable when we have https
+  #   TODO: Re-enable when we have https
   #   default_action {
   #     type = "redirect"
 
@@ -69,4 +88,9 @@ resource "aws_lb_listener" "http" {
   #       status_code = "HTTP_301"
   #     }
   #   }
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.this.id
+  }
 }
