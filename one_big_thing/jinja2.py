@@ -55,8 +55,9 @@ def list_to_options(iterable):
 
 def environment(**options):
     extra_options = dict()
-    env = jinja2.Environment(
+    env = jinja2.Environment(  # nosec B701
         **{
+            "autoescape": True,
             **options,
             **extra_options,
         }
