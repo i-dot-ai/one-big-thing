@@ -13,12 +13,12 @@ pre_questions_data = [
                 "answer_type": "agree-1-7",
             },
             {
-                "id": "shared_identity",
+                "id": "shared-identity",
                 "text": 'I feel a sense of "shared identity" with other Civil Servants',
                 "answer_type": "agree-1-7",
             },
             {
-                "id": "identity_is_important",
+                "id": "identity-is-important",
                 "text": "My identity as a Civil Servant is important to me",
                 "answer_type": "agree-1-7",
             },

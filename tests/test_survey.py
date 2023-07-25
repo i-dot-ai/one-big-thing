@@ -21,18 +21,20 @@ def test_submit_survey():
 
     third_page = step_survey_page(
         second_page,
-        "Question 1",
+        "Create a unifying experience and build a shared identity (or create a shared vision, define shared goals)",
         {
-            "sentient": 3,
+            "aims": 3,
+            "shared-identity": 3,
+            "identity-is-important": 3,
         },
     )
 
     completed_page = step_survey_page(
         third_page,
-        "Question 2",
+        "Uplift in data awareness",
         {
-            "big": 1,
-            "wide": 5,
+            "positive-day-to-day": 1,
+            "effective-day-to-day": 5,
         },
     )
 
@@ -45,10 +47,10 @@ def test_submit_survey():
     assert competency_data.data == {"competency": "beginner"}, competency_data.data
 
     question_1_data = completed_surveys.get(page_number=2)
-    assert question_1_data.data == {"sentient": "3"}, question_1_data.data
+    assert question_1_data.data == {"aims": "3", "shared-identity": "3", "identity-is-important": "3"}, question_1_data.data
 
     question_2_data = completed_surveys.get(page_number=3)
-    assert question_2_data.data == {"big": "1", "wide": "5"}, question_2_data.data
+    assert question_2_data.data == {"positive-day-to-day": "1", "effective-day-to-day": "5"}, question_2_data.data
 
 
 def step_survey_page(page, title, fields):
