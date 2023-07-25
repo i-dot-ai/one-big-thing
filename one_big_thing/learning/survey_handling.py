@@ -1,13 +1,11 @@
-import yaml
-from django.conf import settings
-
 pre_questions_data = [
     {
         "title": "Competency",
         "questions": [{"id": "competency", "text": "How well do you know Data?", "answer_type": "competency"}],
     },
     {
-        "title": "Create a unifying experience and build a shared identity (or create a shared vision, define shared goals)",
+        "title": "Create a unifying experience and build a shared identity"
+        " (or create a shared vision, define shared goals)",
         "questions": [
             {
                 "id": "aims",
