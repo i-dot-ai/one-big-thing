@@ -45,27 +45,6 @@ def save_url_to_data_dir(url):
     return filepath
 
 
-def get_sheet_headers(filename):
-    """
-    Gets the headers from the given file
-    Args:
-        filename: The given filename to read from
-
-    Returns:
-        A list of headers from the given CSV
-    """
-    file_extension = os.path.splitext(filename)[1]
-    if file_extension.endswith(".csv"):
-        with open(filename, "r") as file:
-            reader = csv.reader(file)
-            headers = next(reader)
-            headers = [header for header in headers if header != ""]
-    else:
-        print("The uploaded file must be a CSV file")  # noqa: T201
-        sys.exit(1)
-    return headers
-
-
 def get_data_rows(filename):
     """
     Takes in a filename and returns the rows of that CSV
@@ -96,7 +75,6 @@ def download_and_parse_domains(url):
         url: The url to get the file from
     """
     filename = save_url_to_data_dir(url)
-    headers = get_sheet_headers(filename)
     rows = get_data_rows(filename)
     # Prints the value out to the console in a format that can be copy-pasted into any file you want
     print("CIVIL_SERVICE_DOMAINS = frozenset([")
