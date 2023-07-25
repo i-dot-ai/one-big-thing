@@ -3,7 +3,6 @@ import json
 
 import boto3
 
-
 AWS_REGION = "eu-west-2"
 
 

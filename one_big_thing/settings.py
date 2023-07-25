@@ -1,4 +1,5 @@
 from . import allowed_domains
+from .db import fetch_db_password
 from .settings_base import (
     BASE_DIR,
     SECRET_KEY,
@@ -7,7 +8,6 @@ from .settings_base import (
     STATICFILES_DIRS,
     env,
 )
-from .db import fetch_db_password
 
 SECRET_KEY = SECRET_KEY
 STATIC_URL = STATIC_URL
