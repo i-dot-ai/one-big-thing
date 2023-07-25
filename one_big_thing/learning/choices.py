@@ -53,7 +53,7 @@ class Profession(utils.Choices):
     SECURITY = "Security"
     SOCIAL_RESEARCH = "Social research"
     STATISTICS = "Statistics"
-    TAZ = "Tax"
+    TAX = "Tax"
     VETERINARY = "Veterinary"
     OTHER = "Other"
 
