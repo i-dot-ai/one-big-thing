@@ -44,7 +44,7 @@
           <label class="govuk-label" for="department">Department</label>
           <div id="select-field">
             <select name="department" id="department" class="govuk-select govuk-!-width-full">
-              <option value="" disabled class="govuk-button--disabled" {% if not data.departments%}selected{% endif %}>Please select an organisation you belong to</option>
+              <option value="" disabled class="govuk-button--disabled" {% if not data.departments%}selected{% endif %}>Please select a department you belong to</option>
               {% for option in departments %}
                 <option value="{{option.0}}" {% if 'department' in data.keys and data.departments == option.0 %}selected{% endif %}>{{option.1}}</option>
               {% endfor %}
