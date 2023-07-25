@@ -22,9 +22,9 @@ update-requirements:
 
 .PHONY: reset-db
 reset-db:
-	docker-compose up --detach ${POSTGRES_HOST}
-	docker-compose run ${POSTGRES_HOST} dropdb -U ${POSTGRES_USER} -h ${POSTGRES_HOST} ${POSTGRES_DB}
-	docker-compose run ${POSTGRES_HOST} createdb -U ${POSTGRES_USER} -h ${POSTGRES_HOST} ${POSTGRES_DB}
+	docker-compose up --detach ${DB_HOST}
+	docker-compose run ${DB_HOST} dropdb -U ${DB_USER} -h ${DB_HOST} ${DB_NAME}
+	docker-compose run ${DB_HOST} createdb -U ${DB_USER} -h ${DB_HOST} ${DB_NAME}
 	docker-compose kill
 
 # -------------------------------------- Code Style  -------------------------------------
