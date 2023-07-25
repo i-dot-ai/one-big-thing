@@ -91,10 +91,10 @@ def get_data_rows(filename):
 
 def download_and_parse_domains(url):
     """
-        Parses the data rows of the file to get the domain
-        Args:
-            url: The url to get the file from
-        """
+    Parses the data rows of the file to get the domain
+    Args:
+        url: The url to get the file from
+    """
     filename = save_url_to_data_dir(url)
     headers = get_sheet_headers(filename)
     rows = get_data_rows(filename)
