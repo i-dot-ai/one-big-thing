@@ -6,6 +6,7 @@ class CourseType(utils.Choices):
     LINK = "Link"
     IN_PERSON = "In person"
     MULTIPLE = "Multiple"
+    OTHER = "Other"
 
 
 class Grade(utils.Choices):
@@ -20,6 +21,41 @@ class Grade(utils.Choices):
     SCS_DIRECTOR_GENERAL = "SCS: director general"
     SCS_PERMANENT_SECRETARY = "SCS: permanent secretary"
     SENIOR_EXECUTIVE_OFFICER = "Senior executive officer"
+    OTHER = "Other"
+
+
+class Profession(utils.Choices):
+    ANALYSIS = "Analysis"
+    COMMERCIAL = "Commercial"
+    COMMUNICATIONS = "Communications"
+    CORPORATE_FINANCE = "Corporate finance"
+    COUNTER_FRAUD = "Counter fraud"
+    DIGITAL_DATA_AND_TECHNOLOGY = "Digital, data and technology"
+    ECONOMICS = "Economics"
+    FINANCE = "Finance"
+    FRAUD_ERROR_DEBTS_AND_GRANTS = "Fraud, error, debts and grants"
+    HUMAN_RESOURCES = "Human resources"
+    INTELLIGENCE_ANALYSIS = "Intelligence analysis"
+    INTERNAL_AUDIT = "Internal audit"
+    INTERNATIONAL_TRADE = "International trade"
+    KNOWLEDGE_AND_INFORMATION_MANAGEMENT = "Knowledge and information management"
+    LEGAL = "Legal"
+    MEDICAL = "Medical"
+    OCCUPATIONAL_PSYCHOLOGY = "Occupational psychology"
+    Operational_delivery = "Operational delivery"
+    Operational_research = "Operational research"
+    Planning = "Planning"
+    Planning_inspection = "Planning inspection"
+    Policy = "Policy"
+    Project_delivery = "Project delivery"
+    Property = "Property"
+    Science_AND_engineering = "Science and engineering"
+    Security = "Security"
+    Social_research = "Social research"
+    Statistics = "Statistics"
+    Tax = "Tax"
+    Veterinary = "Veterinary"
+    Other = "Other"
 
 
 class SurveyType(utils.Choices):

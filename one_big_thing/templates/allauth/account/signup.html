@@ -67,6 +67,17 @@
             </select>
           </div>
         </div>
+        <div class="govuk-form-group {% if 'professions' in errors.keys %}error{% endif %}">
+          <label class="govuk-label" for="profession">Profession</label>
+          <div id="select-field">
+            <select name="profession" id="profession" class="govuk-select govuk-!-width-full">
+              <option value="" disabled class="govuk-button--disabled" {% if not data.professions%}selected{% endif %}>Please select your profession</option>
+              {% for option in professions %}
+                <option value="{{option.0}}" {% if 'profession' in data.keys and data.professions == option.0 %}selected{% endif %}>{{option.1}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
         {% if redirect_field_value %}
           <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>
         {% endif %}
