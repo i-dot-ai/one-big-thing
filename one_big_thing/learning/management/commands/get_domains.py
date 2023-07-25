@@ -77,8 +77,7 @@ def download_and_parse_domains(url):
     filename = save_url_to_data_dir(url)
     rows = get_data_rows(filename)
     # Prints the value out to the console in a format that can be copy-pasted into any file you want
-    print("CIVIL_SERVICE_DOMAINS = frozenset([")
+    print("CIVIL_SERVICE_DOMAINS = frozenset([")  # noqa: T201
     for row in rows:
-        print(f'    "{row[2]}",')
-
-    print("])")
+        print(f'    "{row[2]}",')  # noqa: T201
+    print("])")  # noqa: T201
