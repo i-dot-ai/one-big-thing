@@ -47,7 +47,11 @@ def test_submit_survey():
     assert competency_data.data == {"competency": "beginner"}, competency_data.data
 
     question_1_data = completed_surveys.get(page_number=2)
-    assert question_1_data.data == {"aims": "3", "shared-identity": "3", "identity-is-important": "3"}, question_1_data.data
+    assert question_1_data.data == {
+        "aims": "3",
+        "shared-identity": "3",
+        "identity-is-important": "3",
+    }, question_1_data.data
 
     question_2_data = completed_surveys.get(page_number=3)
     assert question_2_data.data == {"positive-day-to-day": "1", "effective-day-to-day": "5"}, question_2_data.data
