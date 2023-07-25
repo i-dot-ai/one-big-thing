@@ -56,20 +56,6 @@ def list_to_options(iterable):
     return result
 
 
-def format_time(minutes):
-    hours = int(minutes // 60)
-    minutes_remainder = int(minutes % 60)
-    pluralised_hour = "hours" if hours > 1 else "hour"
-    pluralised_minutes = "minutes" if minutes_remainder > 1 else "minute"
-
-    if hours == 0:
-        return f"{minutes_remainder} {pluralised_minutes}"
-    elif minutes_remainder == 0:
-        return f"{hours} {pluralised_hour}"
-    else:
-        return f"{hours} {pluralised_hour} {minutes_remainder} {pluralised_minutes}"
-
-
 def humanize_timedelta(minutes=0):
     delta = datetime.timedelta(minutes=minutes)
     return humanize.precisedelta(delta, minimum_unit="minutes")
