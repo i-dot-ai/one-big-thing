@@ -1,7 +1,6 @@
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
-from . import allowed_domains
 from .settings_base import (
     BASE_DIR,
     SECRET_KEY,
@@ -27,6 +26,9 @@ FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
 
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 
+ALLOWED_DOMAINS = env.list("ALLOWED_DOMAINS", default=list())
+CIVIL_SERVICE_DOMAINS = frozenset(ALLOWED_DOMAINS)
+
 BASIC_AUTH = env.str("BASIC_AUTH", default="")
 
 BASE_URL = env.str("BASE_URL")
@@ -42,10 +44,6 @@ ALLOWED_HOSTS = [
 
 # CSRF settings
 CSRF_COOKIE_HTTPONLY = True
-
-CORS_MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
-]
 
 if VCAP_APPLICATION.get("space_name", "unknown") not in ["tests", "local"]:
     SESSION_COOKIE_SECURE = True
@@ -66,6 +64,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
+CORS_APPS = [
+    "corsheaders",
+]
+
+if DEBUG:
+    INSTALLED_APPS = INSTALLED_APPS + CORS_APPS
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -75,6 +80,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+CORS_MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 if DEBUG:
@@ -170,10 +179,10 @@ LOGIN_REDIRECT_URL = "homepage"
 ALLOW_EXAMPLE_EMAILS = env.bool("ALLOW_EXAMPLE_EMAILS", default=True)
 
 if ALLOW_EXAMPLE_EMAILS:
-    ALLOWED_CIVIL_SERVICE_DOMAINS = allowed_domains.CIVIL_SERVICE_DOMAINS.union({"example.com"})
+    ALLOWED_CIVIL_SERVICE_DOMAINS = CIVIL_SERVICE_DOMAINS.union({"example.com"})
     # This is domain is used for testing, so for these purposes, count it as a CS domain
 else:
-    ALLOWED_CIVIL_SERVICE_DOMAINS = allowed_domains.CIVIL_SERVICE_DOMAINS
+    ALLOWED_CIVIL_SERVICE_DOMAINS = CIVIL_SERVICE_DOMAINS
 
 SEND_VERIFICATION_EMAIL = env.bool("SEND_VERIFICATION_EMAIL", default=False)
 
