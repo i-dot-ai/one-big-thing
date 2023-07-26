@@ -116,6 +116,7 @@ class CustomSignupView(SignupView):
         context = super(CustomSignupView, self).get_context_data(**kwargs)
         context["departments"] = department_choices
         context["grades"] = choices.Grade.choices
+        context["professions"] = choices.Profession.choices
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -125,9 +126,11 @@ class CustomSignupView(SignupView):
             password2 = request.POST.get("password2")
             department = request.POST.get("department")
             grade = request.POST.get("grade")
+            profession = request.POST.get("profession")
             context = {
                 "departments": departments.Department.choices,
                 "grades": choices.Grade.choices,
+                "professions": choices.Profession.choices,
             }
             try:
                 validate_email(email)
@@ -161,13 +164,17 @@ class CustomSignupView(SignupView):
                     "account/signup_complete.html",
                     {},
                 )
-            if not department or not grade:
+            if not department or not grade or not profession:
                 if not department:
                     messages.error(request, "You must select a department.")
                 if not grade:
                     messages.error(request, "You must select a grade.")
+                if not profession:
+                    messages.error(request, "You must select a profession.")
                 return render(request, self.template_name, context)
-            user = models.User.objects.create_user(email=email, password=password1, department=department, grade=grade)
+            user = models.User.objects.create_user(
+                email=email, password=password1, department=department, grade=grade, profession=profession
+            )
             user.save()
             if settings.SEND_VERIFICATION_EMAIL:
                 email_handler.send_verification_email(user)
