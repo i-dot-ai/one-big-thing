@@ -44,8 +44,8 @@ The list of domains are needed in an env var, currently stored in a github secre
 - Copy the list into the scratch file
 - Add the following code to the scratch file
 
-        domains = ', '.join(CIVIL_SERVICE_DOMAINS)
-        print(domains)
+      domains = ','.join(CIVIL_SERVICE_DOMAINS)
+      print(f"\"{domains}\"")
 
 - run the scratch file
 - Copy the resulting string into a github secret called `ALLOWED_DOMAINS`
@@ -56,4 +56,4 @@ If there is a domain that isn't in the given list, run the above scenario, then 
 
 Example
 
-        ["example.com", "test.com", "desired-domain.com"]
+    "example.com,test.com,desired-domain.com"
