@@ -35,7 +35,7 @@ def _strip_microseconds(dt):
 @require_http_methods(["GET", "POST"])
 class CustomLoginView(MethodDispatcher):
     template_name = "account/login.html"
-    error_message = "Something has gone wrong.  Please contact your team leader."
+    error_message = "Something has gone wrong.  Please contact an admin."
 
     def error(self, request):
         messages.error(request, self.error_message)
