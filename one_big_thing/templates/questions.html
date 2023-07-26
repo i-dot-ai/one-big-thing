@@ -15,11 +15,17 @@
       </legend>
       {% for question in section.questions %}
 {#        {{ question }}#}
-{#        {{ answer_labels[question.id] }}#}
+{#        {{ answer_labels["useful-learning-formats"] }}#}
         {% if question.answer_type == "radio" %}
           {{macros.question_radios(question)}}
+        {% elif question.answer_type == "checkboxes" %}
+          {{macros.checkboxes(question)}}
         {% elif question.answer_type == "agree-1-7" %}
             {{macros.agree_1_7(question, loop)}}
+        {% elif question.answer_type == "likely-1-7" %}
+            {{macros.likely_1_7(question, loop)}}
+        {% elif question.answer_type == "textarea" %}
+          {{macros.question_textarea(question)}}
         {% endif %}
       {% endfor %}
     </fieldset>

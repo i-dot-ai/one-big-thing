@@ -181,6 +181,10 @@
   </div>
 {%- endmacro%}
 
+{% macro likely_1_7(question, loop, help_text="") -%}
+  {{question_1_7(question, answer_labels['likely-1-7'], help_text, loop)}}
+{%- endmacro %}
+
 {% macro agree_1_7(question, loop) -%}
   {% set help_text = 'How far do you agree or disagree with the following?' %}
   {{question_1_7(question, answer_labels['agree-1-7'], help_text, loop)}}
@@ -256,4 +260,53 @@
       {% endfor %}
     </div>
   </div>
+{%- endmacro %}
+
+{% macro checkboxes(question) -%}
+<div class="govuk-form-group">
+  <fieldset class="govuk-fieldset" aria-describedby="{{question.id}}-hint">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+      <h1 class="govuk-fieldset__heading">
+        {{question.text}}
+      </h1>
+    </legend>
+    <div id="{{question.id}}-hint" class="govuk-hint">
+      Select all that apply.
+    </div>
+    {% if errors[question.id] %}
+      <p id="{{question.id}}-error" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
+      </p>
+    {% endif %}
+    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+      {% for answer in answer_labels[question.id].items() %}
+        <div class="govuk-checkboxes__item">
+          <input class="govuk-checkboxes__input" {% if answer[0] in data.get(question.id) %} checked {% endif %} id="{{question.id}}-{{answer[0]}}" name="{{question.id}}" type="checkbox" value="{{answer[0]}}">
+          <label class="govuk-label govuk-checkboxes__label" for="{{question.id}}-{{answer[0]}}">
+            {{answer[1]}}
+          </label>
+        </div>
+      {% endfor %}
+    </div>
+  </fieldset>
+</div>
+{%- endmacro %}
+
+{% macro question_textarea(question) -%}
+<div class="govuk-form-group">
+  <h1 class="govuk-label-wrapper">
+    <label class="govuk-label govuk-label--l" for="{{question.id}}">
+      {{question.text}}
+    </label>
+  </h1>
+  {% if errors[question.id] %}
+      <p id="{{question.id}}-error" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
+      </p>
+    {% endif %}
+  <div id="question.title" class="govuk-hint">
+    Please enter your information below.{% if question.max_length %} Max {{question.max_length}} characters.{% endif %}
+  </div>
+  <textarea class="govuk-textarea" {% if question.max_length %}maxlength="{{question.max_length}}"{% endif %} id="{{question.id}}" name="{{question.id}}" rows="5" aria-describedby="{{question.id}}-hint">{{data.get(question.id, "")}}</textarea>
+</div>
 {%- endmacro %}

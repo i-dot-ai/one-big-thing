@@ -58,6 +58,6 @@ class Profession(utils.Choices):
     OTHER = "Other"
 
 
-class SurveyType(utils.Choices):
-    PRE = "Pre"
-    POST = "Post"
+class YesNo(utils.Choices):
+    YES = "Yes"
+    NO = "No"
