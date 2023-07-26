@@ -1,7 +1,9 @@
 pre_questions_data = [
     {
         "title": "Competency",
-        "questions": [{"id": "competency", "text": "How well do you understand data topics?", "answer_type": "competency"}],
+        "questions": [
+            {"id": "competency", "text": "How well do you understand data topics?", "answer_type": "competency"}
+        ],
     },
     {
         "title": "Create a unifying experience and build a shared identity"
