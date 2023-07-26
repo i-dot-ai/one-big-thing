@@ -281,7 +281,7 @@
     <div class="govuk-checkboxes" data-module="govuk-checkboxes">
       {% for answer in answer_labels[question.id].items() %}
         <div class="govuk-checkboxes__item">
-          <input class="govuk-checkboxes__input" {% if answer[0] in data.get(question.id) %} checked {% endif %} id="{{question.id}}-{{answer[0]}}" name="{{question.id}}" type="checkbox" value="{{answer[0]}}">
+          <input class="govuk-checkboxes__input" {% if answer[0] in data.get(question.id, []) %} checked {% endif %} id="{{question.id}}-{{answer[0]}}" name="{{question.id}}" type="checkbox" value="{{answer[0]}}">
           <label class="govuk-label govuk-checkboxes__label" for="{{question.id}}-{{answer[0]}}">
             {{answer[1]}}
           </label>
