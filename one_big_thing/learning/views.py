@@ -251,6 +251,14 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
     else:
         save_data(survey_type, request.user, page_number, data)
     if page_number >= len(survey_handling.questions_data[survey_type]):
+        print(survey_type)
+        if survey_type == "post":
+            completed_post_survey = models.SurveyResult.objects.filter(
+                page_number=1, survey_type=survey_type, user=request.user
+            ).first()
+            if completed_post_survey:
+                completed_level = completed_post_survey.data["training-level"]
+                return redirect("questions", completed_level)
         setattr(request.user, f"has_completed_{survey_type}_survey", True)
         request.user.save()
         return redirect("survey-completed")

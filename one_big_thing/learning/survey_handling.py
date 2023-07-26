@@ -68,7 +68,8 @@ post_questions_data = [
         ],
     },
     {
-        "title": 'Following "One Big Thing", please rate how much you agree or disagree with each of the following statements:',
+        "title": 'Following "One Big Thing", '
+                 'please rate how much you agree or disagree with each of the following statements:',
         "questions": [
             {
                 "id": "confident",
