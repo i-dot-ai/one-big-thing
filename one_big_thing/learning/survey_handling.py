@@ -393,7 +393,7 @@ answer_labels = {
     "competency": dict(_competencies),
     "training-level": dict(_training_levels),
     "useful-learning-formats": choices.CourseType.mapping,
-    "willing-to-follow-up": choices.YesNo.mapping
+    "willing-to-follow-up": choices.YesNo.mapping,
 }
 
 agree_pre_questions = tuple(item["id"] for item in pre_questions if item["answer_type"] == "agree-1-5")
