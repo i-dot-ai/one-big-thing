@@ -236,3 +236,24 @@
   </div>
 
 {%- endmacro%}
+
+{% macro question_radios(question) -%}
+  <div class="govuk-form-group">
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">{{question.text}}</legend>
+
+    {% if errors[question.id] %}
+      <p id="{{question.id}}-error" class="govuk-error-message">
+        <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
+      </p>
+    {% endif %}
+
+    <div class="govuk-radios" data-module="govuk-radios">
+      {% for answer in answer_labels[question.id].items() %}
+        <div class="govuk-radios__item">
+          <input required class="govuk-radios__input" id="{{question.id}}-{{answer[0]}}" name="{{question.id}}" type="radio" value="{{answer[0]}}">
+          <label class="govuk-label govuk-radios__label" for="{{question.id}}-{{answer[0]}}">{{answer[1]}}</label>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{%- endmacro %}

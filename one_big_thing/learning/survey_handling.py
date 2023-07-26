@@ -1,9 +1,7 @@
 pre_questions_data = [
     {
         "title": "Competency",
-        "questions": [
-            {"id": "competency", "text": "How well do you understand data topics?", "answer_type": "competency"}
-        ],
+        "questions": [{"id": "competency", "text": "How well do you understand data topics?", "answer_type": "radio"}],
     },
     {
         "title": "Create a unifying experience and build a shared identity"
@@ -45,24 +43,48 @@ pre_questions_data = [
 
 post_questions_data = [
     {
-        "title": "Competency",
-        "questions": [{"id": "competency", "text": "How well do you know Data?", "answer_type": "competency"}],
-    },
-    {
-        "title": "Question 1",
+        "title": "Training completed",
         "questions": [
             {
-                "id": "sentient",
-                "text": "I would recommend my organisation as a great place to work?",
-                "answer_type": "agree-1-5",
+                "id": "training-level",
+                "text": "Which level of training did you take part in?",
+                "answer_type": "radio",
             }
         ],
     },
     {
-        "title": "Question 2",
+        "title": "Create a unifying experience and build a shared identity",
         "questions": [
-            {"id": "big", "text": "How big is data?", "answer_type": "agree-1-5"},
-            {"id": "wide", "text": "How wide is data?", "answer_type": "agree-1-5"},
+            {
+                "id": "shared-identity",
+                "text": 'I feel a sense of "shared identity" with other civil servants',
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "own-identity",
+                "text": "My identity as a civil servant is important to me",
+                "answer_type": "agree-1-7",
+            },
+        ],
+    },
+    {
+        "title": 'Following "One Big Thing", please rate how much you agree or disagree with each of the following statements:',
+        "questions": [
+            {
+                "id": "confident",
+                "text": "I feel confident about using data in my day-to-day role",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "how-to-use-data",
+                "text": "I know how to use data effectively in my day-to-day role",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "how-data-can-support",
+                "text": "I am aware of how data can support my day-to-day role",
+                "answer_type": "agree-1-7",
+            },
         ],
     },
 ]
@@ -71,6 +93,13 @@ _competencies = (
     ("beginner", "Beginner"),
     ("intermediate", "Intermediate"),
     ("expert", "Expert"),
+)
+
+_training_levels = (
+    ("awareness", "Awareness"),
+    ("working", "Working"),
+    ("practitioner", "Practitioner"),
+    ("unknown", "Don't know"),
 )
 
 questions_data = {
@@ -105,6 +134,7 @@ answer_labels = {
     },
     "rating-1-5": {"1": "Poor", "2": "Fair", "3": "Good", "4": "Very good", "5": "Excellent"},
     "competency": dict(_competencies),
+    "training-level": dict(_training_levels),
 }
 
 agree_pre_questions = tuple(item["id"] for item in pre_questions if item["answer_type"] == "agree-1-5")

@@ -14,25 +14,10 @@
         </h1>
       </legend>
       {% for question in section.questions %}
-        {% if question.answer_type == "competency" %}
-          <div class="govuk-form-group">
-                <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">Please select your level of competency with data topics:</legend>
-
-                {% if errors[question.id] %}
-                  <p id="competency-error" class="govuk-error-message">
-                    <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
-                  </p>
-                {% endif %}
-
-                <div class="govuk-radios" data-module="govuk-radios">
-                  {% for competency in competencies %}
-                    <div class="govuk-radios__item">
-                      <input required class="govuk-radios__input" id="competency-{{competency.label}}" name="competency" type="radio" value="{{competency.label}}">
-                      <label class="govuk-label govuk-radios__label" for="competency-{{competency.label}}">{{competency.name}}</label>
-                    </div>
-                  {% endfor %}
-                </div>
-              </div>
+{#        {{ question }}#}
+{#        {{ answer_labels[question.id] }}#}
+        {% if question.answer_type == "radio" %}
+          {{macros.question_radios(question)}}
         {% elif question.answer_type == "agree-1-7" %}
             {{macros.agree_1_7(question, loop)}}
         {% endif %}
