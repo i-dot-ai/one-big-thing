@@ -276,13 +276,15 @@ def get_data(user, survey_type, page_number):
 
 def clean_data(page_number, survey_type, data, validate=False):
     section = survey_handling.questions_data[survey_type][page_number - 1]
-    question_ids = tuple(q["id"] for q in section["questions"])
+    question_ids = tuple(q["id"] for q in section["questions"] if q["answer_type"] != "checkboxes")
+    list_question_ids = tuple(q["id"] for q in section["questions"] if q["answer_type"] == "checkboxes")
     if validate:
         errors = {qid: "Please answer this question" for qid in question_ids if qid not in data}
     else:
         errors = {}
-    data = {k: data.get(k, "") for k in question_ids}
-    return errors, data
+    context = {k: data.get(k, "") for k in question_ids}
+    context = {k: data.getlist(k, "") for k in list_question_ids} | context
+    return errors, context
 
 
 def save_data(survey_type, user, page_number, data):
