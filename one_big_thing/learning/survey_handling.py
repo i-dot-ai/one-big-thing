@@ -402,3 +402,11 @@ competency_labels = tuple(item["label"] for item in competencies)
 pre_question_sections = tuple(item["title"] for item in pre_questions_data if item["title"] != "Competency")
 post_question_sections = tuple(item["title"] for item in post_questions_data if item["title"] != "Competency")
 all_question_sections = pre_question_sections + post_question_sections
+
+survey_completion_map = {
+    "pre": "pre",
+    "working": "post",
+    "awareness": "post",
+    "practitioner": "post",
+    "unknown": "post",
+}
