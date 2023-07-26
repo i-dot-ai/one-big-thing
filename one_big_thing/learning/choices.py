@@ -56,3 +56,8 @@ class Profession(utils.Choices):
     TAX = "Tax"
     VETERINARY = "Veterinary"
     OTHER = "Other"
+
+
+class YesNo(utils.Choices):
+    YES = "Yes"
+    NO = "No"
