@@ -251,6 +251,13 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
     else:
         save_data(survey_type, request.user, page_number, data)
     if page_number >= len(survey_handling.questions_data[survey_type]):
+        if survey_type == "post":
+            completed_post_survey = models.SurveyResult.objects.filter(
+                page_number=1, survey_type=survey_type, user=request.user
+            ).first()
+            if completed_post_survey:
+                completed_level = completed_post_survey.data["training-level"]
+                return redirect("questions", completed_level)
         setattr(request.user, f"has_completed_{survey_type}_survey", True)
         request.user.save()
         return redirect("survey-completed")
@@ -269,13 +276,15 @@ def get_data(user, survey_type, page_number):
 
 def clean_data(page_number, survey_type, data, validate=False):
     section = survey_handling.questions_data[survey_type][page_number - 1]
-    question_ids = tuple(q["id"] for q in section["questions"])
+    question_ids = tuple(q["id"] for q in section["questions"] if q["answer_type"] != "checkboxes")
+    list_question_ids = tuple(q["id"] for q in section["questions"] if q["answer_type"] == "checkboxes")
     if validate:
         errors = {qid: "Please answer this question" for qid in question_ids if qid not in data}
     else:
         errors = {}
-    data = {k: data.get(k, "") for k in question_ids}
-    return errors, data
+    context = {k: data.get(k, "") for k in question_ids}
+    context = {k: data.getlist(k, "") for k in list_question_ids} | context
+    return errors, context
 
 
 def save_data(survey_type, user, page_number, data):
