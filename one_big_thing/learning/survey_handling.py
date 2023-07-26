@@ -1,7 +1,7 @@
 pre_questions_data = [
     {
         "title": "Competency",
-        "questions": [{"id": "competency", "text": "How well do you know Data?", "answer_type": "competency"}],
+        "questions": [{"id": "competency", "text": "How well do you understand data topics?", "answer_type": "competency"}],
     },
     {
         "title": "Create a unifying experience and build a shared identity"
@@ -14,12 +14,12 @@ pre_questions_data = [
             },
             {
                 "id": "shared-identity",
-                "text": 'I feel a sense of "shared identity" with other Civil Servants',
+                "text": 'I feel a sense of "shared identity" with other civil servants',
                 "answer_type": "agree-1-7",
             },
             {
                 "id": "identity-is-important",
-                "text": "My identity as a Civil Servant is important to me",
+                "text": "My identity as a civil servant is important to me",
                 "answer_type": "agree-1-7",
             },
         ],
