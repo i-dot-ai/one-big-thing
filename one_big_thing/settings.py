@@ -46,10 +46,6 @@ ALLOWED_HOSTS = [
 # CSRF settings
 CSRF_COOKIE_HTTPONLY = True
 
-CORS_MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
-]
-
 if VCAP_APPLICATION.get("space_name", "unknown") not in ["tests", "local"]:
     SESSION_COOKIE_SECURE = True
 
@@ -69,6 +65,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
+CORS_APPS = [
+    "corsheaders",
+]
+
+if DEBUG:
+    INSTALLED_APPS = INSTALLED_APPS + CORS_APPS
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -78,6 +81,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+
+CORS_MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 if DEBUG:
