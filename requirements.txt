@@ -5,6 +5,7 @@ watchdog[watchmedo]
 jinja2~=3.1.2
 django-environ
 django-allauth~=0.54.0
+django-gov-notify==0.3.0
 django_use_email_as_username
 waitress
 psycopg2-binary
