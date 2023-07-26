@@ -1,11 +1,71 @@
-import yaml
-from django.conf import settings
+pre_questions_data = [
+    {
+        "title": "Competency",
+        "questions": [
+            {"id": "competency", "text": "How well do you understand data topics?", "answer_type": "competency"}
+        ],
+    },
+    {
+        "title": "Create a unifying experience and build a shared identity"
+        " (or create a shared vision, define shared goals)",
+        "questions": [
+            {
+                "id": "aims",
+                "text": "I am aware of the aims of One Big Thing",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "shared-identity",
+                "text": 'I feel a sense of "shared identity" with other civil servants',
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "identity-is-important",
+                "text": "My identity as a civil servant is important to me",
+                "answer_type": "agree-1-7",
+            },
+        ],
+    },
+    {
+        "title": "Uplift in data awareness",
+        "questions": [
+            {
+                "id": "positive-day-to-day",
+                "text": "I feel positive about using data in my day-to-day role",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "effective-day-to-day",
+                "text": "I know how to use data effectively in my day-to-day role",
+                "answer_type": "agree-1-7",
+            },
+        ],
+    },
+]
 
-with (settings.BASE_DIR / "pre-questions.yaml").open() as f:
-    pre_questions_data = yaml.safe_load(f)
-
-with (settings.BASE_DIR / "post-questions.yaml").open() as f:
-    post_questions_data = yaml.safe_load(f)
+post_questions_data = [
+    {
+        "title": "Competency",
+        "questions": [{"id": "competency", "text": "How well do you know Data?", "answer_type": "competency"}],
+    },
+    {
+        "title": "Question 1",
+        "questions": [
+            {
+                "id": "sentient",
+                "text": "I would recommend my organisation as a great place to work?",
+                "answer_type": "agree-1-5",
+            }
+        ],
+    },
+    {
+        "title": "Question 2",
+        "questions": [
+            {"id": "big", "text": "How big is data?", "answer_type": "agree-1-5"},
+            {"id": "wide", "text": "How wide is data?", "answer_type": "agree-1-5"},
+        ],
+    },
+]
 
 _competencies = (
     ("beginner", "Beginner"),
@@ -34,12 +94,14 @@ section_all_questions_map = {
 }
 
 answer_labels = {
-    "agree-1-5": {
-        "1": "Strongly disagree",
-        "2": "Disagree",
-        "3": "Neither agree nor disagree",
-        "4": "Agree",
-        "5": "Strongly agree",
+    "agree-1-7": {
+        "1": "Totally disagree",
+        "2": "Strongly disagree",
+        "3": "Disagree",
+        "4": "Neither agree nor disagree",
+        "5": "Agree",
+        "6": "Strongly agree",
+        "7": "Totally agree",
     },
     "rating-1-5": {"1": "Poor", "2": "Fair", "3": "Good", "4": "Very good", "5": "Excellent"},
     "competency": dict(_competencies),

@@ -37,21 +37,21 @@ PASSWORD_RESET_TOKEN_GENERATOR = PasswordResetTokenGenerator()
 EMAIL_MAPPING = {
     "email-verification": {
         "from_address": settings.FROM_EMAIL,
-        "subject": "Evaluation Registry: confirm your email address",
+        "subject": "One Big Thing: confirm your email address",
         "template_name": "email/verification.txt",
         "url_name": "verify-email",
         "token_generator": EMAIL_VERIFY_TOKEN_GENERATOR,
     },
     "password-reset": {
         "from_address": settings.FROM_EMAIL,
-        "subject": "Help to heat: password reset",
+        "subject": "One Big Thing: password reset",
         "template_name": "email/password-reset.txt",
         "url_name": "password-set",
         "token_generator": PASSWORD_RESET_TOKEN_GENERATOR,
     },
     "account-already-exists": {
         "from_address": settings.FROM_EMAIL,
-        "subject": "Evaluation Registry: registration attempt",
+        "subject": "One Big Thing: registration attempt",
         "template_name": "email/account-already-exists.txt",
         "url_name": "password-reset",
     },
