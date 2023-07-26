@@ -1,3 +1,6 @@
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 from . import allowed_domains
 from .settings_base import (
     BASE_DIR,
@@ -40,6 +43,10 @@ ALLOWED_HOSTS = [
 # CSRF settings
 CSRF_COOKIE_HTTPONLY = True
 
+CORS_MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+]
+
 if VCAP_APPLICATION.get("space_name", "unknown") not in ["tests", "local"]:
     SESSION_COOKIE_SECURE = True
 
@@ -70,8 +77,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-if BASIC_AUTH:
-    MIDDLEWARE = ["one_big_thing.auth.basic_auth_middleware"] + MIDDLEWARE
+if DEBUG:
+    MIDDLEWARE = MIDDLEWARE + CORS_MIDDLEWARE
 
 ROOT_URLCONF = "one_big_thing.urls"
 
@@ -129,6 +136,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SENTRY_DSN = env.str("SENTRY_DSN", default="")
+SENTRY_ENVIRONMENT = env.str("SENTRY_ENVIRONMENT", default="")
+
+sentry_sdk.init(
+    dsn=SENTRY_DSN,
+    integrations=[
+        DjangoIntegration(),
+    ],
+    environment=SENTRY_ENVIRONMENT,
+    send_default_pii=False,
+    traces_sample_rate=0.0,
+)
+
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
@@ -177,3 +197,10 @@ else:
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
 
 SEND_VERIFICATION_EMAIL = env.bool("SEND_VERIFICATION_EMAIL", default=False)
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_AGE = 60 * 10  # 10 minutes
+    SESSION_COOKIE_SAMESITE = "Strict"

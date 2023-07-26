@@ -8,5 +8,6 @@ nose
 httpx
 testino==0.3.9
 bandit
+sentry-sdk
 
 -r ./requirements.lock
