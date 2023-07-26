@@ -20,6 +20,8 @@
           {{macros.question_radios(question)}}
         {% elif question.answer_type == "agree-1-7" %}
             {{macros.agree_1_7(question, loop)}}
+        {% elif question.answer_type == "likely-1-7" %}
+            {{macros.likely_1_7(question, loop)}}
         {% endif %}
       {% endfor %}
     </fieldset>

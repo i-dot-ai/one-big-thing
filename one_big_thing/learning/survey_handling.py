@@ -90,6 +90,141 @@ post_questions_data = [
     },
 ]
 
+shared_level_questions_data = {
+    "title": "How likely are you to do the following?",
+    "questions": [
+        {"id": "create-development-plan", "text": "I will create a development plan", "answer_type": "likely-1-7"},
+        {
+            "id": "add-new-learning-to-development-plan",
+            "text": "I will add a new area of learning to my development plan",
+            "answer_type": "likely-1-7",
+        },
+        {"id": "book-related-training", "text": "I will book a related training course", "answer_type": "likely-1-7"},
+        {"id": "find-mentor", "text": "I will find a mentor", "answer_type": "likely-1-7"},
+    ],
+}
+
+awareness_level_questions_data = [
+    {
+        "title": 'Following "One Big Thing", '
+        "please rate how much you agree or disagree with each of the following statements:",
+        "questions": [
+            {
+                "id": "I-understand-what-data-means",
+                "text": "I have a better understanding of what data is",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "data-is-not-relevant-to-my-role",
+                "text": "I do not think data is relevant to my role",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "better-understand-what-data-is-showing",
+                "text": "I am better at understanding what data is showing",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "I-am-more-interested-in-data",
+                "text": "I am more interested in working with data in my day-to-day role",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "more-confident-using-data-for-decisions",
+                "text": "I am more confident to analyse data to influence decisions",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "more-confident-communicating-data-to-influence-decisions",
+                "text": "I am more able to confidently communicate data findings to influence decisions",
+                "answer_type": "agree-1-7",
+            },
+        ],
+    },
+    shared_level_questions_data,
+]
+
+working_level_questions_data = [
+    {
+        "title": 'Following "One Big Thing", '
+        "please rate how much you agree or disagree with each of the following statements:",
+        "questions": [
+            {
+                "id": "I-understand-different-data-techniques",
+                "text": "I understand better how different data analysis techniques can transform data into insights",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "I-understand-critically-assessing-data",
+                "text": "I understand better how to critically assess data collection, "
+                "analysis and the insights derived from it",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "I-know-visualising-data",
+                "text": "I know more about visualising and presenting data in a clear and concise way",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "importance-of-evaluating-outcomes-of-data-informed-decisions",
+                "text": "I have learned about the importance of evaluating the outcomes of data-informed-decisions",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "obt-knowledge-drives-change",
+                "text": "I will do something differently as a result of knowledge gained from One Big Thing",
+                "answer_type": "agree-1-7",
+            },
+        ],
+    },
+    shared_level_questions_data,
+]
+
+practitioner_level_questions_data = [
+    {
+        "title": 'Following "One Big Thing", '
+        "please rate how much you agree or disagree with each of the following statements:",
+        "questions": [
+            {
+                "id": "more-effectively-communicate-data-insights-to-improve-decisions",
+                "text": "I understand better how to communicate data "
+                "insights more effectively to improve data-driven decision-making",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "use-data-to-develop-a-clear-narrative",
+                "text": "I can more confidently use data to develop a clear narrative",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "committed-to-high-quality-data",
+                "text": "I am more committed to ensuring high data quality",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "better-identify-weakening-data",
+                "text": "I can better anticipate what will weaken data quality through the data lifecycle",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "understanding-ethics-for-data",
+                "text": "I am more confident in my understanding of ethics in relation to data",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "obt-knowledge-drives-change",
+                "text": "I will do something differently as a result of knowledge gained from One Big Thing",
+                "answer_type": "agree-1-7",
+            },
+        ],
+    },
+    shared_level_questions_data,
+]
+
+unknown_level_questions_data = [
+    shared_level_questions_data,
+]
+
 _competencies = (
     ("beginner", "Beginner"),
     ("intermediate", "Intermediate"),
@@ -106,6 +241,10 @@ _training_levels = (
 questions_data = {
     "pre": pre_questions_data,
     "post": post_questions_data,
+    "awareness": awareness_level_questions_data,
+    "working": working_level_questions_data,
+    "practitioner": practitioner_level_questions_data,
+    "unknown": unknown_level_questions_data,
 }
 
 competencies = tuple({"label": label, "name": name} for (label, name) in _competencies)
@@ -133,7 +272,15 @@ answer_labels = {
         "6": "Strongly agree",
         "7": "Totally agree",
     },
-    "rating-1-5": {"1": "Poor", "2": "Fair", "3": "Good", "4": "Very good", "5": "Excellent"},
+    "likely-1-7": {
+        "1": "Very unlikely",
+        "2": "Unlikely",
+        "3": "Somewhat unlikely",
+        "4": "Neither likely or unlikely",
+        "5": "Somewhat likely",
+        "6": "Likely",
+        "7": "Very likely",
+    },
     "competency": dict(_competencies),
     "training-level": dict(_training_levels),
 }

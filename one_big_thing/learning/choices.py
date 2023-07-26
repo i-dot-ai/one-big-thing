@@ -56,8 +56,3 @@ class Profession(utils.Choices):
     TAX = "Tax"
     VETERINARY = "Veterinary"
     OTHER = "Other"
-
-
-class SurveyType(utils.Choices):
-    PRE = "Pre"
-    POST = "Post"
