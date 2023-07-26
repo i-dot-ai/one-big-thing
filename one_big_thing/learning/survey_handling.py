@@ -1,3 +1,5 @@
+from one_big_thing.learning import choices
+
 pre_questions_data = [
     {
         "title": "Competency",
@@ -90,19 +92,126 @@ post_questions_data = [
     },
 ]
 
-shared_level_questions_data = {
-    "title": "How likely are you to do the following?",
-    "questions": [
-        {"id": "create-development-plan", "text": "I will create a development plan", "answer_type": "likely-1-7"},
-        {
-            "id": "add-new-learning-to-development-plan",
-            "text": "I will add a new area of learning to my development plan",
-            "answer_type": "likely-1-7",
-        },
-        {"id": "book-related-training", "text": "I will book a related training course", "answer_type": "likely-1-7"},
-        {"id": "find-mentor", "text": "I will find a mentor", "answer_type": "likely-1-7"},
-    ],
-}
+shared_level_questions_data = [
+    {
+        "title": "How likely are you to do the following?",
+        "questions": [
+            {"id": "create-development-plan", "text": "I will create a development plan", "answer_type": "likely-1-7"},
+            {
+                "id": "add-new-learning-to-development-plan",
+                "text": "I will add a new area of learning to my development plan",
+                "answer_type": "likely-1-7",
+            },
+            {
+                "id": "book-related-training",
+                "text": "I will book a related training course",
+                "answer_type": "likely-1-7",
+            },
+            {"id": "find-mentor", "text": "I will find a mentor", "answer_type": "likely-1-7"},
+        ],
+    },
+    {
+        "title": "Please rate how much you agree or disagree that each component of the training was helpful",
+        "questions": [
+            {
+                "id": "training-helped-learning",
+                "text": "The online training helped my learning",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "conversations-helped-learning",
+                "text": "Conversations with my team or line manager helped my learning",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "additional-resources-helped-learning",
+                "text": "Additional learning resources helped my learning",
+                "answer_type": "agree-1-7",
+            },
+        ],
+    },
+    {
+        "title": "Were there any formats of additional training you found useful?",
+        "questions": [
+            {
+                "id": "useful-learning-formats",
+                "text": "",
+                "answer_type": "checkboxes",
+            },
+        ],
+    },
+    {
+        "title": "Please rate how much you agree or disagree with the below statements",
+        "questions": [
+            {
+                "id": "obt-good-use-of-time",
+                "text": "I felt that One Big Thing training was a good use of my time",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "improved-understanding-of-using-data",
+                "text": "I have an improved understanding of how to use data in my day-to-day role",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "intend-to-participate-in-further-training",
+                "text": "I intend to participate in further data training and initiatives",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "content-was-relevant-to-my-role",
+                "text": "I felt the content was relevant to my role",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "intend-to-apply-learning-in-my-role",
+                "text": "I intend to apply learning from this training as I go forward in my role",
+                "answer_type": "agree-1-7",
+            },
+        ],
+    },
+    {
+        "title": "Please rate how much you agree or disagree with the below statements",
+        "questions": [
+            {
+                "id": "aware-of-aims",
+                "text": "I am aware of the aims of One Big Thing",
+                "answer_type": "agree-1-7",
+            },
+            {
+                "id": "time-to-participate",
+                "text": "I had the time to participate in One Big Thing during Autumn",
+                "answer_type": "agree-1-7",
+            },
+        ],
+    },
+    {
+        "title": "Further questions",
+        "questions": [
+            {
+                "id": "what-went-well",
+                "text": "What if anything, went well about the training?",
+                "answer_type": "textarea",
+                "max_length": 150,
+            },
+            {
+                "id": "what-can-be-improved",
+                "text": "Was there anything that could have been improved?",
+                "answer_type": "textarea",
+            },
+        ],
+    },
+    {
+        "title": "Would you be willing to take part in a follow-up discussion?",
+        "questions": [
+            {
+                "id": "willing-to-follow-up",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
+]
 
 awareness_level_questions_data = [
     {
@@ -141,7 +250,7 @@ awareness_level_questions_data = [
             },
         ],
     },
-    shared_level_questions_data,
+    *shared_level_questions_data,
 ]
 
 working_level_questions_data = [
@@ -177,7 +286,7 @@ working_level_questions_data = [
             },
         ],
     },
-    shared_level_questions_data,
+    *shared_level_questions_data,
 ]
 
 practitioner_level_questions_data = [
@@ -218,11 +327,11 @@ practitioner_level_questions_data = [
             },
         ],
     },
-    shared_level_questions_data,
+    *shared_level_questions_data,
 ]
 
 unknown_level_questions_data = [
-    shared_level_questions_data,
+    *shared_level_questions_data,
 ]
 
 _competencies = (
@@ -283,6 +392,8 @@ answer_labels = {
     },
     "competency": dict(_competencies),
     "training-level": dict(_training_levels),
+    "useful-learning-formats": choices.CourseType.mapping,
+    "willing-to-follow-up": choices.YesNo.mapping
 }
 
 agree_pre_questions = tuple(item["id"] for item in pre_questions if item["answer_type"] == "agree-1-5")
