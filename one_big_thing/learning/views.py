@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
-from django.http import FileResponse, HttpResponse
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
@@ -373,14 +373,13 @@ def download_learning_view(request):
     print(filepath)
 
     if os.path.exists(filepath):
-        with open(filepath, 'rb') as worddoc:  # read as binary
+        with open(filepath, "rb") as worddoc:  # read as binary
             content = worddoc.read()  # Read the file
             response = HttpResponse(
-                content,
-                content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                content, content_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             )
-            response['Content-Disposition'] = f'attachment; filename={file_name}'
-            response['Content-Length'] = len(content)  # calculate length of content
+            response["Content-Disposition"] = f"attachment; filename={file_name}"
+            response["Content-Length"] = len(content)  # calculate length of content
             return response
     else:
         return HttpResponse("File not found", status=404)
