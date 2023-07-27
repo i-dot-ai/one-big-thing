@@ -66,7 +66,7 @@ resource "aws_lb_target_group" "this" {
     healthy_threshold   = 3
     interval            = 300
     protocol            = "HTTP"
-    matcher             = "200"
+    matcher             = "200,302"
     timeout             = 5
     path                = "/"
     unhealthy_threshold = 3
