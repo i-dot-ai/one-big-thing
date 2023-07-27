@@ -12,9 +12,16 @@ module "ecs" {
       container_definitions = {
 
         one-big-thing = {
-          cpu                       = 1024
-          memory                    = 4096
-          essential                 = true
+          cpu       = 1024
+          memory    = 4096
+          essential = true
+          port_mappings = [
+            {
+              name          = "application"
+              containerPort = 8055
+              protocol      = "tcp"
+            }
+          ]
           image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:${var.image_tag}"
           readonly_root_filesystem  = true
           enable_cloudwatch_logging = true
@@ -60,13 +67,12 @@ module "ecs" {
               value = "CONSOLE"
             },
             {
-              # TODO: Change this when we have route 53
               name  = "BASE_URL"
-              value = aws_alb.this.dns_name
+              value = aws_route53_record.this.fqdn
             },
             {
               name  = "VCAP_APPLICATION"
-              value = "{'space_name': 'local'}"
+              value = jsonencode({ "space_name" : "local" })
             },
             {
               name  = "REQUIRED_LEARNING_TIME"
@@ -76,12 +82,23 @@ module "ecs" {
               name  = "SEND_VERIFICATION_EMAIL"
               value = true
             },
+            {
+              name  = "PORT"
+              value = 8055
+            }
           ]
         }
 
       }
 
       subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnets
+      load_balancer = {
+        service = {
+          target_group_arn = aws_lb_target_group.this.arn
+          container_name   = "one-big-thing"
+          container_port   = 8055
+        }
+      }
       security_group_rules = {
         alb_ingress = {
           type                     = "ingress"

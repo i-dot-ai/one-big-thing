@@ -41,11 +41,14 @@ DEPARTMENTS_USING_INTRANET = dict(env.json("DEPARTMENTS_USING_INTRANET", default
 
 APPEND_SLASH = True
 
+ALLOWED_CIDR_NETS = ["10.0.0.0/16"]
+
 ALLOWED_HOSTS = [
     "one-big-thing-testserver",
     "one-big-thing-develop.london.cloudapps.digital",
     "localhost",
     "127.0.0.1",
+    "obt-dev.i.ai.10ds.cabinetoffice.gov.uk",
 ]
 
 # CSRF settings
@@ -86,6 +89,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allow_cidr.middleware.AllowCIDRMiddleware",
 ]
 
 CORS_MIDDLEWARE = [
