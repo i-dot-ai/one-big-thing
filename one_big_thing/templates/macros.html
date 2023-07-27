@@ -194,7 +194,7 @@
 
   {% if not (loop.previtem and loop.previtem.answer_type == question.answer_type) %}
     {% if help_text %}
-      <div class="i-ai-range custom-help-text">
+      <div class="i-ai-range custom-help-text govuk-body">
         <p>{{help_text}}</p>
       </div>
     {% endif %}
@@ -202,7 +202,7 @@
     <div class="i-ai-range custom-legend">
       {% for i, label in labels.items() %}
         <div>
-          <label>{{label}}</label>
+          <label class="govuk-body">{{label}}</label>
         </div>
       {% endfor %}
     </div>
