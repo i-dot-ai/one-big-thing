@@ -29,12 +29,12 @@ reset-db:
 
 # -------------------------------------- Code Style  -------------------------------------
 
-.PHONY: check-python-codess
+.PHONY: check-python-codes
 check-python-code:
 	isort --check .
 	black --check .
 	flake8
-	bandit -ll -r one_big_thing
+	bandit -ll -r ./one_big_thing
 
 .PHONY: check-migrations
 check-migrations:

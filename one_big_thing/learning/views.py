@@ -3,6 +3,8 @@ import types
 import marshmallow
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
@@ -16,6 +18,7 @@ from . import (
     survey_handling,
     utils,
 )
+from .email_handler import send_learning_record_email
 
 
 def frozendict(*args, **kwargs):
@@ -25,13 +28,15 @@ def frozendict(*args, **kwargs):
 page_compulsory_field_map = {
     "record-learning": (
         "title",
-        "time_to_complete",
+        "time_to_complete_minutes",
+        "time_to_complete_hours",
     ),
 }
 
 missing_item_errors = {
     "title": "Please provide a title for this course",
-    "time_to_complete": "Please enter the time this course took to complete in minutes, e.g. 15",
+    "time_to_complete_hours": "Please enter the hours this course took to complete, e.g. 2",
+    "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 0 or 45",
 }
 
 
@@ -95,7 +100,6 @@ class RecordLearningView(utils.MethodDispatcher):
         if not errors:
             errors = {}
         if not data:
-            # _ = interface.api.session.get_answer(session_id, page_name) # TODO: Replace with call to get course data
             data = {}
         user = request.user
         time_completed = user.get_time_completed()
@@ -113,7 +117,8 @@ class RecordLearningView(utils.MethodDispatcher):
                     **data,
                     "title": course.title,
                     "learning_type": course.learning_type or "",
-                    "time_to_complete": course.time_to_complete,
+                    "time_to_complete_minutes": course.time_to_complete % 60,
+                    "time_to_complete_hours": course.time_to_complete // 60,
                     "link": course.link or "",
                 }
         return render(
@@ -131,18 +136,39 @@ class RecordLearningView(utils.MethodDispatcher):
         errors = validate(request, "record-learning", data)
         if errors:
             return self.get(request, data=data, errors=errors)
+        try:
+            int(data["time_to_complete_hours"])
+        except ValueError:
+            errors = {**errors, "time_to_complete_hours": "Please enter the hours this course took to complete, e.g. 2"}
+        try:
+            int(data["time_to_complete_minutes"])
+        except ValueError:
+            errors = {
+                **errors,
+                "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 0 or 45",
+            }
+        if errors:
+            return self.get(request, data=data, errors=errors)
         user = request.user
         course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
+        manipulated_data = {
+            "title": data["title"],
+            "time_to_complete": str(
+                (int(data["time_to_complete_hours"]) * 60) + int((data["time_to_complete_minutes"]))
+            ),
+            "link": data.get("link"),
+            "learning_type": data.get("learning_type", None),
+        }
         try:
-            course_schema.load(data, partial=True)
+            course_schema.load(manipulated_data, partial=True)
         except marshmallow.exceptions.ValidationError as err:
             errors = dict(err.messages)
         else:
             learning_data = {
-                "title": data.get("title", None),
-                "link": data.get("link", None),
-                "learning_type": data.get("learning_type", None),
-                "time_to_complete": data.get("time_to_complete", None),
+                "title": manipulated_data.get("title", None),
+                "link": manipulated_data.get("link", None),
+                "learning_type": manipulated_data.get("learning_type", None),
+                "time_to_complete": manipulated_data.get("time_to_complete", None),
             }
             _ = interface.api.learning.create(user.id, user.id, learning_data, course_id)
             return redirect(
@@ -228,9 +254,16 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
     else:
         save_data(survey_type, request.user, page_number, data)
     if page_number >= len(survey_handling.questions_data[survey_type]):
-        setattr(request.user, f"has_completed_{survey_type}_survey", True)
+        if survey_type == "post":
+            completed_post_survey = models.SurveyResult.objects.filter(
+                page_number=1, survey_type=survey_type, user=request.user
+            ).first()
+            if completed_post_survey:
+                completed_level = completed_post_survey.data["training-level"]
+                return redirect("questions", completed_level)
+        setattr(request.user, f"has_completed_{survey_handling.survey_completion_map[survey_type]}_survey", True)
         request.user.save()
-        return redirect("survey-completed")
+        return redirect("homepage")
     else:
         next_page_number = page_number + 1
         return redirect("questions", survey_type=survey_type, page_number=next_page_number)
@@ -246,13 +279,15 @@ def get_data(user, survey_type, page_number):
 
 def clean_data(page_number, survey_type, data, validate=False):
     section = survey_handling.questions_data[survey_type][page_number - 1]
-    question_ids = tuple(q["id"] for q in section["questions"])
+    question_ids = tuple(q["id"] for q in section["questions"] if q["answer_type"] != "checkboxes")
+    list_question_ids = tuple(q["id"] for q in section["questions"] if q["answer_type"] == "checkboxes")
     if validate:
         errors = {qid: "Please answer this question" for qid in question_ids if qid not in data}
     else:
         errors = {}
-    data = {k: data.get(k, "") for k in question_ids}
-    return errors, data
+    context = {k: data.get(k, "") for k in question_ids}
+    context = {k: data.getlist(k, "") for k in list_question_ids} | context
+    return errors, context
 
 
 def save_data(survey_type, user, page_number, data):
@@ -263,3 +298,45 @@ def save_data(survey_type, user, page_number, data):
     item.data = data
     item.save()
     return item
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def send_learning_record_view(request):
+    user = request.user
+    courses = models.Learning.objects.filter(user=user)
+    data = {
+        "courses": courses,
+    }
+    errors = {}
+    if request.method == "POST":
+        email_validator = EmailValidator()
+        email_address = request.POST.get("email")
+        try:
+            email_validator(email_address)
+            send_learning_record_email(user)
+            data = {
+                "successfully_sent": True,
+                "sent_to": email_address,
+            } | data
+            return render(
+                request, "email-learning-record.html", context={"request": request, "data": data, "errors": errors}
+            )
+        except ValidationError:
+            errors = {"email": "Please enter a valid email address"}
+            return render(
+                request, "email-learning-record.html", context={"request": request, "data": data, "errors": errors}
+            )
+    else:
+        return render(
+            request, "email-learning-record.html", context={"request": request, "data": data, "errors": errors}
+        )
+
+
+@login_required
+@require_http_methods(["POST"])
+def remove_learning_view(request, learning_id):
+    learning_record = models.Learning.objects.filter(pk=learning_id, user=request.user).first()
+    if learning_record:
+        learning_record.delete()
+    return redirect("record-learning")

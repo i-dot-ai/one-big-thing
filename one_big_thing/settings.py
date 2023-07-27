@@ -1,5 +1,9 @@
 from . import allowed_domains
 from .db import fetch_db_password
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
 from .settings_base import (
     BASE_DIR,
     SECRET_KEY,
@@ -26,6 +30,9 @@ FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
 FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
 
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
+
+ALLOWED_DOMAINS = env.list("ALLOWED_DOMAINS", default=list())
+CIVIL_SERVICE_DOMAINS = frozenset(ALLOWED_DOMAINS)
 
 BASIC_AUTH = env.str("BASIC_AUTH", default="")
 
@@ -62,6 +69,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
+CORS_APPS = [
+    "corsheaders",
+]
+
+if DEBUG:
+    INSTALLED_APPS = INSTALLED_APPS + CORS_APPS
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
@@ -73,8 +87,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-if BASIC_AUTH:
-    MIDDLEWARE = ["one_big_thing.auth.basic_auth_middleware"] + MIDDLEWARE
+CORS_MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+]
+
+if DEBUG:
+    MIDDLEWARE = MIDDLEWARE + CORS_MIDDLEWARE
 
 ROOT_URLCONF = "one_big_thing.urls"
 
@@ -139,6 +157,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SENTRY_DSN = env.str("SENTRY_DSN", default="")
+SENTRY_ENVIRONMENT = env.str("SENTRY_ENVIRONMENT", default="")
+
+sentry_sdk.init(
+    dsn=SENTRY_DSN,
+    integrations=[
+        DjangoIntegration(),
+    ],
+    environment=SENTRY_ENVIRONMENT,
+    send_default_pii=False,
+    traces_sample_rate=0.0,
+)
+
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
@@ -160,10 +191,10 @@ LOGIN_REDIRECT_URL = "homepage"
 ALLOW_EXAMPLE_EMAILS = env.bool("ALLOW_EXAMPLE_EMAILS", default=True)
 
 if ALLOW_EXAMPLE_EMAILS:
-    ALLOWED_CIVIL_SERVICE_DOMAINS = allowed_domains.CIVIL_SERVICE_DOMAINS.union({"example.com"})
+    ALLOWED_CIVIL_SERVICE_DOMAINS = CIVIL_SERVICE_DOMAINS.union({"example.com"})
     # This is domain is used for testing, so for these purposes, count it as a CS domain
 else:
-    ALLOWED_CIVIL_SERVICE_DOMAINS = allowed_domains.CIVIL_SERVICE_DOMAINS
+    ALLOWED_CIVIL_SERVICE_DOMAINS = CIVIL_SERVICE_DOMAINS
 
 SEND_VERIFICATION_EMAIL = env.bool("SEND_VERIFICATION_EMAIL", default=False)
 
@@ -187,3 +218,10 @@ else:
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
 
 SEND_VERIFICATION_EMAIL = env.bool("SEND_VERIFICATION_EMAIL", default=False)
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_AGE = 60 * 10  # 10 minutes
+    SESSION_COOKIE_SAMESITE = "Strict"

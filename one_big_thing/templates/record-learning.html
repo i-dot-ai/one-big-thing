@@ -13,7 +13,7 @@
       </div>
       <div class="govuk-notification-banner__content">
         <p class="govuk-notification-banner__heading">
-          You have completed {{(data.time_completed // 60) | int}} hours {{(data.time_completed % 60.0) | int}} minutes so far.
+          You have completed {{humanize_timedelta(data.time_completed)}} so far.
         </p>
       </div>
     </div>
@@ -38,7 +38,19 @@
         </h1>
       </legend>
       {{macros.input('title', 'Title of learning', data, errors)}}
-      {{macros.input('time_to_complete', 'How long it took (minutes)', data, errors, type="number")}}
+      <div class="govuk-width-container">
+        <main class="govuk-main-wrapper govuk-main-wrapper--l" style="padding: 0px !important;">
+          <label class="govuk-label" for="time_to_complete">How long it took:</label>
+          <div class="govuk-grid-row" id="time_to_complete">
+            <div class="govuk-grid-column-one-half">
+              {{macros.input('time_to_complete_hours', 'Hours', data, errors, type="number")}}
+            </div>
+            <div class="govuk-grid-column-one-half">
+              {{macros.input('time_to_complete_minutes', 'Minutes', data, errors, type="number")}}
+            </div>
+          </div>
+        </main>
+      </div>
       {{macros.input('link', 'URL (optional)', data, errors, type="url")}}
       {{macros.select_from_list('learning_type', 'Format (optional)', data.learning_types)}}
     </fieldset>
@@ -46,12 +58,14 @@
         <h1 class="govuk-heading-l">
           Learning I've recorded:
         </h1>
+    <a class="govuk-button govuk-button--secondary" href="{{url('send-learning-record')}}">Email my learning record</a>
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
           <th scope="col" class="govuk-table__header">Title</th>
           <th scope="col" class="govuk-table__header">Type</th>
           <th scope="col" class="govuk-table__header govuk-table__header--numeric">Duration (Hours)</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric"></th>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
@@ -59,7 +73,8 @@
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">{% if course.link | length > 0 %}<a href="{{course.link}}" target="_blank" rel="noopener noreferrer">{{course.title}}</a>{% else %}{{course.title}}{% endif %}</th>
           <td class="govuk-table__cell">{{course.get_learning_type_display_name()}}</td>
-          <td class="govuk-table__cell govuk-table__cell--numeric">{{(course.time_to_complete // 60) | int}}:{% if (course.time_to_complete % 60.0) | int < 10 %}0{{(course.time_to_complete % 60.0) | int}}{% else %}{{(course.time_to_complete % 60.0) | int}}{% endif %}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">{{humanize_timedelta(course.time_to_complete)}}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric"><form method="post" action="{{url('remove-learning', course.id)}}">{{csrf_input}}<button type="submit" class="govuk-button govuk-button--warning" data-module="govuk-button">Delete</button></form></td>
         </tr>
       {% endfor %}
       </tbody>
