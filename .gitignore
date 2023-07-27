@@ -1,4 +1,5 @@
 *.pyc
 /staticfiles/
 db.sqlite3
+.terraform
 /temp-data/
