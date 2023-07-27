@@ -12,7 +12,7 @@ provider "aws" {
   default_tags {
     tags = {
       Environment = var.env
-      Project     = "ai-dot-ai"
+      Project     = "i-dot-ai"
       Name        = "one-big-thing"
     }
   }

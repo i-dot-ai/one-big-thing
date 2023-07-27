@@ -29,7 +29,7 @@ reset-db:
 
 # -------------------------------------- Code Style  -------------------------------------
 
-.PHONY: check-python-codess
+.PHONY: check-python-codes
 check-python-code:
 	isort --check .
 	black --check .
