@@ -17,5 +17,6 @@ class Command(BaseCommand):
                     link=special_course["link"],
                     learning_type=special_course["learning_type"],
                     time_to_complete=special_course["time_to_complete"],
+                    is_special_course=True,
                 )
                 course.save()
