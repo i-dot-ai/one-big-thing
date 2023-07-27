@@ -66,6 +66,8 @@ class Course(TimeStampedModel, UUIDPrimaryKeyBase):
     link = models.URLField(blank=True, null=True)
     learning_type = models.CharField(max_length=128, blank=True, null=True)
     time_to_complete = models.IntegerField()
+    competency_level = models.CharField(max_length=254, blank=True, null=True)
+    is_special_course = models.BooleanField(default=False)
     # strengths = models.CharField(max_length=255)
 
     def get_learning_type_display_name(self):
