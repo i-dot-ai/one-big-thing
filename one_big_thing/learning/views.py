@@ -3,6 +3,8 @@ import types
 import marshmallow
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
+from django.core.validators import EmailValidator
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
@@ -16,6 +18,7 @@ from . import (
     survey_handling,
     utils,
 )
+from .email_handler import send_learning_record_email
 
 
 def frozendict(*args, **kwargs):
@@ -295,3 +298,36 @@ def save_data(survey_type, user, page_number, data):
     item.data = data
     item.save()
     return item
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+def send_learning_record_view(request):
+    user = request.user
+    courses = models.Learning.objects.filter(user=user)
+    data = {
+        "courses": courses,
+    }
+    errors = {}
+    if request.method == "POST":
+        email_validator = EmailValidator()
+        email_address = request.POST.get("email")
+        try:
+            email_validator(email_address)
+            send_learning_record_email(user)
+            data = {
+                "successfully_sent": True,
+                "sent_to": email_address,
+            } | data
+            return render(
+                request, "email-learning-record.html", context={"request": request, "data": data, "errors": errors}
+            )
+        except ValidationError:
+            errors = {"email": "Please enter a valid email address"}
+            return render(
+                request, "email-learning-record.html", context={"request": request, "data": data, "errors": errors}
+            )
+    else:
+        return render(
+            request, "email-learning-record.html", context={"request": request, "data": data, "errors": errors}
+        )

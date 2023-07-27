@@ -1,0 +1,50 @@
+{% import "macros.html" as macros with context %}
+{% extends "base_generic_gov.html" %}
+
+{% block content %}
+    {% if data.successfully_sent %}
+        <div class="govuk-panel govuk-panel--confirmation">
+          <h1 class="govuk-panel__title">
+            Learning record sent!
+          </h1>
+          <div class="govuk-panel__body">
+            Your learning record has successfully been sent to {{data.sent_to}}
+          </div>
+        </div>
+    {% endif %}
+  {% call macros.form_wrapper(prev_url, "Send") -%}
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-heading-l">
+          Send your learning record
+        </h1>
+      </legend>
+      <p class="govuk-body">Enter the email address below that you would like to send your learning record to.</p>
+      {{macros.input('email', 'Email address', data, errors, type="email")}}
+    </fieldset>
+  {%- endcall %}
+    <h2 class="govuk-heading-m">Training you've completed</h2>
+    <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Title</th>
+          <th scope="col" class="govuk-table__header">Type</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric">Duration (Hours)</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+      {% if not data.courses %}
+          <tr class="govuk-table__row">
+            <td colspan="3" class="govuk-table__cell">No learning recorded, start recording some <a class="govuk-link" href="{{url('record-learning')}}">here</a></td>
+          </tr>
+      {% endif %}
+      {% for course in data.courses %}
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">{% if course.link | length > 0 %}<a href="{{course.link}}" target="_blank" rel="noopener noreferrer">{{course.title}}</a>{% else %}{{course.title}}{% endif %}</th>
+          <td class="govuk-table__cell">{{course.get_learning_type_display_name()}}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">{{humanize_timedelta(course.time_to_complete)}}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

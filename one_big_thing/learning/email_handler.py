@@ -55,6 +55,11 @@ EMAIL_MAPPING = {
         "template_name": "email/account-already-exists.txt",
         "url_name": "password-reset",
     },
+    "send-learning-record": {
+        "from_address": settings.FROM_EMAIL,
+        "subject": "One Big Thing: Your learning record",
+        "template_name": "email/send-learning-record.txt",
+    },
 }
 
 
@@ -111,6 +116,19 @@ def send_account_already_exists_email(user):
     reset_url.path.add(data["url_name"])
     reset_url = str(reset_url)
     context = {"contact_address": settings.CONTACT_EMAIL, "url": base_url, "reset_link": reset_url}
+    response = _send_normal_email(
+        subject=data["subject"],
+        template_name=data["template_name"],
+        from_address=data["from_address"],
+        to_address=user.email,
+        context=context,
+    )
+    return response
+
+
+def send_learning_record_email(user):
+    data = EMAIL_MAPPING["send-learning-record"]
+    context = {"sending_user": user, "learnings": user.learning_set.all()}
     response = _send_normal_email(
         subject=data["subject"],
         template_name=data["template_name"],
