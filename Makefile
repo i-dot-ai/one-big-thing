@@ -57,6 +57,9 @@ docker/login:
 docker/build:
 	docker build -t $(IMAGE) -f ./docker/web/Dockerfile .
 
+docker/build-m1:
+	docker buildx build --platform linux/amd64 -t $(IMAGE) -f ./docker/web/Dockerfile .
+
 docker/push:
 	docker push $(IMAGE)
 
