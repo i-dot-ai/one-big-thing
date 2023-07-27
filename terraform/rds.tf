@@ -13,6 +13,15 @@ resource "aws_security_group_rule" "rds" {
   security_group_id = aws_security_group.rds.id
 }
 
+resource "aws_security_group_rule" "ecs" {
+  type                     = "ingress"
+  description              = "Allow access to the ECS task"
+  from_port                = local.db_port
+  to_port                  = local.db_port
+  protocol                 = "TCP"
+  source_security_group_id = module.ecs.services["one-big-thing"].security_group_id
+  security_group_id        = aws_security_group.rds.id
+}
 
 module "db" {
   source     = "terraform-aws-modules/rds/aws"
