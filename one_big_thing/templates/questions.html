@@ -14,8 +14,6 @@
         </h1>
       </legend>
       {% for question in section.questions %}
-{#        {{ question }}#}
-{#        {{ answer_labels["useful-learning-formats"] }}#}
         {% if question.answer_type == "radio" %}
           {{macros.question_radios(question)}}
         {% elif question.answer_type == "checkboxes" %}
