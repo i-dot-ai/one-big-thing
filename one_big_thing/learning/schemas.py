@@ -65,4 +65,6 @@ class CourseSchema(TimeStampedModelSchema, UUIDPrimaryKeyBaseModelSchema):
     link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
     learning_type = make_choice_field(max_len=256, values=choices.CourseType.values, allow_none=True)
     time_to_complete = fields.Str(required=True, validate=validate_time_to_complete)
+    competency_level = make_choice_field(max_len=256, values=choices.CompetencyLevel.values, allow_none=True)
+    is_special_course = fields.Boolean()
     # strengths = fields.Str()  # Figure out if we're using these or not

@@ -9,6 +9,12 @@ class CourseType(utils.Choices):
     OTHER = "Other"
 
 
+class CompetencyLevel(utils.Choices):
+    AWARENESS = "Awareness"
+    WORKING = "Working"
+    PRACTITIONER = "Practitioner"
+
+
 class Grade(utils.Choices):
     ADMINISTRATIVE_ASSISTANT = "Administrative assistant"
     ADMINISTRATIVE_OFFICER = "Administrative officer"
