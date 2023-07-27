@@ -331,3 +331,12 @@ def send_learning_record_view(request):
         return render(
             request, "email-learning-record.html", context={"request": request, "data": data, "errors": errors}
         )
+
+
+@login_required
+@require_http_methods(["POST"])
+def remove_learning_view(request, learning_id):
+    learning_record = models.Learning.objects.filter(pk=learning_id, user=request.user).first()
+    if learning_record:
+        learning_record.delete()
+    return redirect("record-learning")
