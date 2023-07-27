@@ -1384,6 +1384,7 @@ department_tuples = (
     ("youth-justice-agency-of-northern-ireland", "Youth Justice Agency of Northern Ireland"),
     ("youth-justice-board-for-england-and-wales", "Youth Justice Board for England and Wales (YJB)"),
     ("zahid-mubarek-inquiry", "Zahid Mubarek Inquiry"),
+    ("other", "Other"),
 )
 
 Department = utils.Choices("Department", department_tuples)

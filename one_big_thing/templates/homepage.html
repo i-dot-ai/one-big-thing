@@ -63,6 +63,14 @@
             </div>
           </div>
         {% endfor %}
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+              <p class="govuk-body">You can record more learning that you've completed on Civil Service Learning, TED Talk, live events and more</p>
+            </div>
+            <div class="govuk-grid-column-one-third">
+              <a class="govuk-button" href="{{url('record-learning')}}">Record learning</a>
+            </div>
+          </div>
       </main>
     </div>
   </div>
@@ -70,9 +78,5 @@
     <h2 class="govuk-heading-m">Other learning available for you</h2>
     <p class="govuk-body">Civil Service Learning have put together an <a class="govuk-link" href="#">Additional Learning Catalogue</a> which groups CSL resources by learning level.</p>
     <p class="govuk-body">Your Department might be hosting data events. Check your intranet for the latest news.</p>
-  </div>
-  <div>
-    <h2 class="govuk-heading-m">Your Learning Record</h2>
-    <p class="govuk-body">You can <a class="govuk-link" href="{{url('record-learning')}}">record your learning</a> as you work towards your day's worth of data training this autumn.</p>
   </div>
 {% endblock %}

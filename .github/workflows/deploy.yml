@@ -27,6 +27,7 @@ jobs:
       IMAGE_TAG: ${{ github.ref_name }}
       DOCKER_REPOSITORY: ghcr.io
       BASE_URL: https://one-big-thing-${{ github.ref_name }}.london.cloudapps.digital
+      ALLOWED_DOMAINS: ${{ secrets.ALLOWED_DOMAINS }}
 
     steps:
       - uses: actions/checkout@v3

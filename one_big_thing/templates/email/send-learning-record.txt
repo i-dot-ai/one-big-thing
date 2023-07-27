@@ -1,0 +1,11 @@
+Hi,
+
+The user with email "{{sending_user.email}}" has sent you their One Big Thing learning record.
+
+{% for learning in learnings %}
+- {{learning.title}}, {{learning.get_learning_type_display_name() and learning.get_learning_type_display_name() + ", "}}{{humanize_timedelta(learning.time_to_complete)}}
+{% endfor %}
+
+Regards
+
+One Big Thing
