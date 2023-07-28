@@ -84,6 +84,11 @@ def test_view(request):
 
 @login_required
 class RecordLearningView(utils.MethodDispatcher):
+    time_errors_map = {
+        "time_to_complete_hours": "Please enter the hours this course took to complete e.g. 2",
+        "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 45",
+    }
+
     def get(
         self,
         request,
@@ -128,15 +133,15 @@ class RecordLearningView(utils.MethodDispatcher):
     def post(self, request, course_id=None):
         data = request.POST.dict()
         errors = validate(request, "record-learning", data)
-        if errors:
-            return self.get(request, data=data, errors=errors)
         if not data["time_to_complete_hours"] and not data["time_to_complete_minutes"]:
             errors = {
                 **errors,
-                "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 45",
-                "time_to_complete_hours": "Please enter the hours this course took to complete e.g. 2",
+                "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
+                "time_to_complete_hours": self.time_errors_map["time_to_complete_hours"],
             }
-        else:
+        if errors:
+            return self.get(request, data=data, errors=errors)
+        if data["time_to_complete_hours"] or data["time_to_complete_minutes"]:
             if data["time_to_complete_hours"]:
                 try:
                     value = int(data["time_to_complete_hours"])
@@ -145,7 +150,7 @@ class RecordLearningView(utils.MethodDispatcher):
                 except ValueError:
                     errors = {
                         **errors,
-                        "time_to_complete_hours": "Please enter the hours this course took to complete, e.g. 2",
+                        "time_to_complete_hours": self.time_errors_map["time_to_complete_hours"],
                     }
             else:
                 data["time_to_complete_hours"] = 0
@@ -157,7 +162,7 @@ class RecordLearningView(utils.MethodDispatcher):
                 except ValueError:
                     errors = {
                         **errors,
-                        "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 45",
+                        "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
                     }
             else:
                 data["time_to_complete_minutes"] = 0
