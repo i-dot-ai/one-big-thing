@@ -1,7 +1,7 @@
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
-from .db import fetch_db_password, get_secret
+from .db import fetch_db_password, fetch_generic_secret
 from .settings_base import (
     BASE_DIR,
     SECRET_KEY,
@@ -31,7 +31,7 @@ VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 if not ENVIRONMENT:
     ALLOWED_DOMAINS = env.list("ALLOWED_DOMAINS", default=list())
 else:
-    ALLOWED_DOMAINS = get_secret("ALLOWED_DOMAINS")
+    ALLOWED_DOMAINS = fetch_generic_secret("ALLOWED_DOMAINS")
 
 CIVIL_SERVICE_DOMAINS = frozenset(ALLOWED_DOMAINS)
 
@@ -222,8 +222,8 @@ elif EMAIL_BACKEND_TYPE == "GOVUKNOTIFY":
         GOVUK_NOTIFY_API_KEY = env.str("GOVUK_NOTIFY_API_KEY")
         GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = env.str("GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
     else:
-        GOVUK_NOTIFY_API_KEY = get_secret("GOVUK_NOTIFY_API_KEY")
-        GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = get_secret("GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
+        GOVUK_NOTIFY_API_KEY = fetch_generic_secret("GOVUK_NOTIFY_API_KEY")
+        GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = fetch_generic_secret("GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
 else:
     if EMAIL_BACKEND_TYPE not in ("FILE", "CONSOLE", "GOVUKNOTIFY"):
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
