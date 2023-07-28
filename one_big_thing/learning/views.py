@@ -367,10 +367,8 @@ def remove_learning_view(request, learning_id):
 @login_required
 @require_http_methods(["GET"])
 def download_learning_view(request):
-    file_name = "test.docx"
-    print(settings.STATICFILES_DIRS[0])
+    file_name = settings.SELF_REFLECTION_FILENAME
     filepath = os.path.join(settings.STATICFILES_DIRS[0], file_name)
-    print(filepath)
 
     if os.path.exists(filepath):
         with open(filepath, "rb") as worddoc:  # read as binary

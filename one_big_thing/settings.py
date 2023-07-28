@@ -19,6 +19,7 @@ STATIC_ROOT = STATIC_ROOT
 DEBUG = env.bool("DEBUG", default=False)
 
 REQUIRED_LEARNING_TIME = env.int("REQUIRED_LEARNING_TIME", default=420)
+SELF_REFLECTION_FILENAME = env.str("SELF_REFLECTION_FILENAME")
 
 CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
 FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
