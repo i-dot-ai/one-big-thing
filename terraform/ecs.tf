@@ -56,15 +56,27 @@ module "ecs" {
             },
             {
               name  = "CONTACT_EMAIL"
-              value = "test@example.com"
+              value = "CONTACT_EMAIL"
+            },
+            {
+              name  = "FEEDBACK_EMAIL"
+              value = "FEEDBACK_EMAIL"
             },
             {
               name  = "FROM_EMAIL"
-              value = "test@example.com"
+              value = "FROM_EMAIL"
             },
             {
               name  = "EMAIL_BACKEND_TYPE"
-              value = "CONSOLE"
+              value = "GOVUKNOTIFY"
+            },
+            {
+              name  = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
+              value = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
+            },
+            {
+              name  = "GOVUK_NOTIFY_API_KEY"
+              value = "GOVUK_NOTIFY_API_KEY"
             },
             {
               name  = "BASE_URL"
@@ -72,7 +84,7 @@ module "ecs" {
             },
             {
               name  = "VCAP_APPLICATION"
-              value = jsonencode({ "space_name" : "local" })
+              value = jsonencode({ "space_name" : vars.env })
             },
             {
               name  = "REQUIRED_LEARNING_TIME"
@@ -85,7 +97,11 @@ module "ecs" {
             {
               name  = "PORT"
               value = 8055
-            }
+            },
+            {
+              name  = "ALLOWED_DOMAINS"
+              value = "ALLOWED_DOMAINS"
+            },
           ]
         }
 
