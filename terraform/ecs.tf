@@ -106,6 +106,10 @@ module "ecs" {
               name = "SELF_REFLECTION_FILENAME"
               value = "Test_self_reflection_for_download_on_OBT_platform_July 2023.docx"
             },
+            {
+              name = "BASE_URL"
+              value = "obt-${var.env}.i.ai.10ds.cabinetoffice.gov.uk"
+            },
           ]
         }
 
