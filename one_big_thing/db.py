@@ -21,4 +21,4 @@ def fetch_db_password(secret_name):
 
 
 def fetch_generic_secret(secret_name):
-    return json.loads(get_secret(secret_name))
+    return json.loads(get_secret(secret_name))[secret_name]

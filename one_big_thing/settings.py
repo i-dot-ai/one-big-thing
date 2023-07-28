@@ -29,9 +29,15 @@ FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
 FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 if not ENVIRONMENT:
+    CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
+    FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
+    FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
     ALLOWED_DOMAINS = env.list("ALLOWED_DOMAINS", default=list())
 else:
     ALLOWED_DOMAINS = fetch_generic_secret("ALLOWED_DOMAINS")
+    CONTACT_EMAIL = fetch_generic_secret("CONTACT_EMAIL")
+    FROM_EMAIL = fetch_generic_secret("FROM_EMAIL")
+    FEEDBACK_EMAIL = fetch_generic_secret("FEEDBACK_EMAIL")
 
 CIVIL_SERVICE_DOMAINS = frozenset(ALLOWED_DOMAINS)
 
