@@ -26,17 +26,11 @@ def frozendict(*args, **kwargs):
 
 
 page_compulsory_field_map = {
-    "record-learning": (
-        "title",
-        "time_to_complete_minutes",
-        "time_to_complete_hours",
-    ),
+    "record-learning": ("title",),
 }
 
 missing_item_errors = {
     "title": "Please provide a title for this course",
-    "time_to_complete_hours": "Please enter the hours this course took to complete, e.g. 2",
-    "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 0 or 45",
 }
 
 
@@ -90,6 +84,11 @@ def test_view(request):
 
 @login_required
 class RecordLearningView(utils.MethodDispatcher):
+    time_errors_map = {
+        "time_to_complete_hours": "Please enter the hours this course took to complete e.g. 2",
+        "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 45",
+    }
+
     def get(
         self,
         request,
@@ -134,19 +133,39 @@ class RecordLearningView(utils.MethodDispatcher):
     def post(self, request, course_id=None):
         data = request.POST.dict()
         errors = validate(request, "record-learning", data)
-        if errors:
-            return self.get(request, data=data, errors=errors)
-        try:
-            int(data["time_to_complete_hours"])
-        except ValueError:
-            errors = {**errors, "time_to_complete_hours": "Please enter the hours this course took to complete, e.g. 2"}
-        try:
-            int(data["time_to_complete_minutes"])
-        except ValueError:
+        if not data["time_to_complete_hours"] and not data["time_to_complete_minutes"]:
             errors = {
                 **errors,
-                "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 0 or 45",
+                "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
+                "time_to_complete_hours": self.time_errors_map["time_to_complete_hours"],
             }
+        if errors:
+            return self.get(request, data=data, errors=errors)
+        if data["time_to_complete_hours"] or data["time_to_complete_minutes"]:
+            if data["time_to_complete_hours"]:
+                try:
+                    value = int(data["time_to_complete_hours"])
+                    if value < 0:
+                        raise ValueError
+                except ValueError:
+                    errors = {
+                        **errors,
+                        "time_to_complete_hours": self.time_errors_map["time_to_complete_hours"],
+                    }
+            else:
+                data["time_to_complete_hours"] = 0
+            if data["time_to_complete_minutes"]:
+                try:
+                    value = int(data["time_to_complete_minutes"])
+                    if value < 0:
+                        raise ValueError
+                except ValueError:
+                    errors = {
+                        **errors,
+                        "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
+                    }
+            else:
+                data["time_to_complete_minutes"] = 0
         if errors:
             return self.get(request, data=data, errors=errors)
         user = request.user
