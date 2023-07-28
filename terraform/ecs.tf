@@ -84,7 +84,7 @@ module "ecs" {
             },
             {
               name  = "VCAP_APPLICATION"
-              value = jsonencode({ "space_name" : vars.env })
+              value = jsonencode({ "space_name" : var.env })
             },
             {
               name  = "REQUIRED_LEARNING_TIME"
