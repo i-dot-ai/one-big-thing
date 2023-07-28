@@ -1,10 +1,13 @@
+import os
 import types
 
 import marshmallow
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
@@ -359,3 +362,22 @@ def remove_learning_view(request, learning_id):
     if learning_record:
         learning_record.delete()
     return redirect("record-learning")
+
+
+@login_required
+@require_http_methods(["GET"])
+def download_learning_view(request):
+    file_name = settings.SELF_REFLECTION_FILENAME
+    filepath = os.path.join(settings.STATICFILES_DIRS[0], file_name)
+
+    if os.path.exists(filepath):
+        with open(filepath, "rb") as worddoc:  # read as binary
+            content = worddoc.read()  # Read the file
+            response = HttpResponse(
+                content, content_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            )
+            response["Content-Disposition"] = f"attachment; filename={file_name}"
+            response["Content-Length"] = len(content)  # calculate length of content
+            return response
+    else:
+        return HttpResponse("File not found", status=404)
