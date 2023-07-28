@@ -1,7 +1,7 @@
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
-from .db import fetch_db_password
+from .db import fetch_db_password, get_secret
 from .settings_base import (
     BASE_DIR,
     SECRET_KEY,
@@ -27,10 +27,12 @@ SELF_REFLECTION_FILENAME = env.str("SELF_REFLECTION_FILENAME")
 CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
 FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
 FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
-
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
+if not ENVIRONMENT:
+    ALLOWED_DOMAINS = env.list("ALLOWED_DOMAINS", default=list())
+else:
+    ALLOWED_DOMAINS = get_secret("ALLOWED_DOMAINS")
 
-ALLOWED_DOMAINS = env.list("ALLOWED_DOMAINS", default=list())
 CIVIL_SERVICE_DOMAINS = frozenset(ALLOWED_DOMAINS)
 
 BASIC_AUTH = env.str("BASIC_AUTH", default="")
@@ -216,8 +218,12 @@ elif EMAIL_BACKEND_TYPE == "CONSOLE":
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 elif EMAIL_BACKEND_TYPE == "GOVUKNOTIFY":
     EMAIL_BACKEND = "django_gov_notify.backends.NotifyEmailBackend"
-    GOVUK_NOTIFY_API_KEY = env.str("GOVUK_NOTIFY_API_KEY")
-    GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = env.str("GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
+    if not ENVIRONMENT:
+        GOVUK_NOTIFY_API_KEY = env.str("GOVUK_NOTIFY_API_KEY")
+        GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = env.str("GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
+    else:
+        GOVUK_NOTIFY_API_KEY = get_secret("GOVUK_NOTIFY_API_KEY")
+        GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = get_secret("GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
 else:
     if EMAIL_BACKEND_TYPE not in ("FILE", "CONSOLE", "GOVUKNOTIFY"):
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
