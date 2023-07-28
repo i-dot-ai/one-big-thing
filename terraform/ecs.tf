@@ -102,6 +102,10 @@ module "ecs" {
               name  = "ALLOWED_DOMAINS"
               value = "ALLOWED_DOMAINS"
             },
+            {
+              name = "SELF_REFLECTION_FILENAME"
+              value = "Test_self_reflection_for_download_on_OBT_platform_July 2023.docx"
+            },
           ]
         }
 
