@@ -9,5 +9,6 @@ httpx
 testino==0.3.9
 bandit
 sentry-sdk
+coverage
 
 -r ./requirements.lock
