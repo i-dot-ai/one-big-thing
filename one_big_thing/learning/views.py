@@ -107,6 +107,8 @@ class RecordLearningView(utils.MethodDispatcher):
         time_completed = user.get_time_completed()
         learning_types = choices.CourseType.choices
         courses = models.Learning.objects.filter(user=user)
+        print("courses")
+        print(courses)
         data = {
             "time_completed": time_completed,
             "learning_types": learning_types,
@@ -358,7 +360,7 @@ def send_learning_record_view(request):
 @login_required
 @require_http_methods(["POST"])
 def remove_learning_view(request, learning_id):
-    interface.Learning.delete("learning_id")
+    interface.api.learning.delete(user_id=request.user.id, learning_id=learning_id)
     return redirect("record-learning")
 
 

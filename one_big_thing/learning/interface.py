@@ -61,6 +61,8 @@ class Learning(Entity):
     def delete(self, user_id, learning_id):
         learning_record = models.Learning.objects.get(user__id=user_id, pk=learning_id)
         learning_record.delete()
+        response = {"user_id": user_id}
+        return response
 
 
 api = Interface(course=Course(), learning=Learning())
