@@ -107,8 +107,6 @@ class RecordLearningView(utils.MethodDispatcher):
         time_completed = user.get_time_completed()
         learning_types = choices.CourseType.choices
         courses = models.Learning.objects.filter(user=user)
-        print("courses")
-        print(courses)
         data = {
             "time_completed": time_completed,
             "learning_types": learning_types,

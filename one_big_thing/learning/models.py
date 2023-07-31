@@ -65,7 +65,7 @@ class Course(TimeStampedModel, UUIDPrimaryKeyBase):
     title = models.CharField(max_length=100)
     link = models.URLField(blank=True, null=True)
     learning_type = models.CharField(max_length=128, blank=True, null=True)
-    time_to_complete = models.IntegerField() # minutes
+    time_to_complete = models.IntegerField()  # minutes
     # strengths = models.CharField(max_length=255)
 
     def get_learning_type_display_name(self):
@@ -79,7 +79,7 @@ class Learning(TimeStampedModel, UUIDPrimaryKeyBase):
     title = models.CharField(max_length=100)
     link = models.URLField(blank=True, null=True)
     learning_type = models.CharField(max_length=128, blank=True, null=True)
-    time_to_complete = models.IntegerField() # minutes
+    time_to_complete = models.IntegerField()  # minutes
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 

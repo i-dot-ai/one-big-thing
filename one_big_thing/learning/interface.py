@@ -55,7 +55,7 @@ class Learning(Entity):
         learning.save()
         response = {"learning_id": learning.id}
         return response
-    
+
     @with_schema(load=DeleteLearningSchema, dump=DeleteLearningSchemaResponse)
     @register_event("Delete learning")
     def delete(self, user_id, learning_id):
