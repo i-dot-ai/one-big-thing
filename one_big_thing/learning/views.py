@@ -53,9 +53,11 @@ def homepage_view(request):
         special_course for special_course in special_courses if special_course.id not in user_completed_courses
     ]
     completed_special_courses = list(set(special_courses) - set(incomplete_special_courses))
+    time_completed = request.user.get_time_completed()
     data = {
         "incomplete_special_courses": incomplete_special_courses,
         "complete_special_courses": completed_special_courses,
+        "time_completed": time_completed,
     }
     return render(
         request,

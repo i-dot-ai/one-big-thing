@@ -37,43 +37,117 @@
     </div>
   {% endif %}
   <h1 class="govuk-heading-l">Welcome to your One Big Thing Learning Record</h1>
-  <div>
-    <h2 class="govuk-heading-m">Based on your survey we recommend you do this learning first</h2>
-    <div class="govuk-width-container">
-      <main class="govuk-main-wrapper">
-        {% for course in data.incomplete_special_courses %}
-          <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-              <p class="govuk-body">{% if course.link %}<a class="govuk-link" href="{{course.link}}">{{course.title}}</a>{% else %}{{course.title}}{% endif %}</p>
-            </div>
-            <div class="govuk-grid-column-one-third">
-              <a class="govuk-button" href="{{url('record-learning', course.id)}}">Mark as done</a>
-            </div>
-          </div>
-        {% endfor %}
-        {% for course in data.complete_special_courses %}
-          <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-              <p class="govuk-body">{% if course.link %}<a class="govuk-link" href="{{course.link}}">{{course.title}}</a>{% else %}{{course.title}}{% endif %}</p>
-            </div>
-            <div class="govuk-grid-column-one-third">
-              <strong class="govuk-tag govuk-tag--green">
-                Done
-              </strong>
-            </div>
-          </div>
-        {% endfor %}
-        <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-              <p class="govuk-body">You can record more learning that you've completed on Civil Service Learning, TED Talk, live events and more</p>
-            </div>
-            <div class="govuk-grid-column-one-third">
-              <a class="govuk-button" href="{{url('record-learning')}}">Record learning</a>
-            </div>
-          </div>
-      </main>
+    <div class="govuk-notification-banner" role="region"
+      aria-labelledby="govuk-notification-banner-title"
+      data-module="govuk-notification-banner">
+      <div class="govuk-notification-banner__header">
+        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+          Hours done
+        </h2>
+      </div>
+      <div class="govuk-notification-banner__content">
+        <p class="govuk-notification-banner__heading">
+          You have completed {{humanize_timedelta(data.time_completed)}} so far.
+        </p>
+      </div>
     </div>
-  </div>
+    <h2 class="govuk-heading-m">Check what you need to do for One Big Thing</h2>
+    <div class="step-by-step">
+        <div class="step-by-step--step-label">
+          <div class="step-by-step--step-circle">
+            <span class="step-by-step--step-number govuk-body">1</span>
+          </div>
+        </div>
+        <div class="step-by-step--content">
+            <div class="step-by-step--content-title">
+                <h2 class="govuk-heading-m">Do your course on data</h2>
+                <a class="govuk-button" href="{{url('record-learning')}}">Record learning</a>
+            </div>
+
+            <p class="govuk-body">Based on your survey results, we recommend you do the following:</p>
+            <p class="govuk-body"><a class="govuk-link" href="#">Practitioner level course</a> (opens in Civil Service Learning)</p>
+            <details class="govuk-details" data-module="govuk-details">
+              <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  See other learning levels you could do
+                </span>
+              </summary>
+              <div class="govuk-details__text">
+                <p class="govuk-body"><a class="govuk-link" href="#">Working level course</a> (opens in Civil Service Learning)</p>
+                <p class="govuk-body"><a class="govuk-link" href="#">Awareness level course</a> (opens in Civil Service Learning)</p>
+              </div>
+            </details>
+            <p class="govuk-body">The course will take 1 hour 30 minutes</p>
+            <p class="govuk-body">Once you've completed the course, click the 'Mark as done' button</p>
+        </div>
+        <div class="step-by-step--step-label">
+          <div class="step-by-step--step-circle">
+            <span class="step-by-step--step-number govuk-body">2</span>
+          </div>
+        </div>
+        <div class="step-by-step--content">
+            <div class="step-by-step--content-title">
+                <h2 class="govuk-heading-m">Do your departmental learning offer</h2>
+                <a class="govuk-button" href="{{url('record-learning')}}">Record learning</a>
+            </div>
+            <p class="govuk-body">You should do your department learning offer for One Big Thing, if they have one</p>
+            <p class="govuk-body"><a class="govuk-link" href="#">Link to departmental intranets</a></p>
+        </div>
+        <div class="step-by-step--step-label">
+          <div class="step-by-step--step-circle">
+            <span class="step-by-step--step-number govuk-body">or</span>
+          </div>
+        </div>
+        <div class="step-by-step--content">
+            <div class="step-by-step--content-title">
+                <h2 class="govuk-heading-m">Do your additional learning</h2>
+                <a class="govuk-button" href="{{url('record-learning')}}">Record learning</a>
+            </div>
+            <p class="govuk-body">You should complete 4 hours of learning on the topic of data</p>
+            <p class="govuk-body"><a class="govuk-link" href="{{url('test')}}">Additional learning catalogue</a></p>
+            <p class="govuk-body"><a class="govuk-link" href="{{url('download-learning')}}">Self reflection exercise</a></p>
+            <p class="govuk-body">You should record your learning as you complete it</p>
+        </div>
+        <div class="step-by-step--step-label">
+          <div class="step-by-step--step-circle">
+            <span class="step-by-step--step-number govuk-body">or</span>
+          </div>
+        </div>
+        <div class="step-by-step--content">
+            <div class="step-by-step--content-title">
+                <h2 class="govuk-heading-m">Record learning you have already done</h2>
+                <a class="govuk-button" href="{{url('record-learning')}}">Record learning</a>
+            </div>
+            <p class="govuk-body">Learning on the topic of data that you did from 1 April 2023 counts towards One Big Thing.</p>
+            <p class="govuk-body">You should record this learning.</p>
+        </div>
+        <div class="step-by-step--step-label">
+          <div class="step-by-step--step-circle">
+            <span class="step-by-step--step-number govuk-body">3</span>
+          </div>
+        </div>
+        <div class="step-by-step--content">
+            <div class="step-by-step--content-title">
+                <h2 class="govuk-heading-m">Attend your team conversation</h2>
+                <a class="govuk-button" href="{{url('record-learning')}}">Record team conversation</a>
+            </div>
+            <p class="govuk-body">You should be invited to a conversation to explore how data is used in your team.</p>
+            <p class="govuk-body">Your department will decide who leads this conversation, how long it is, and when it takes place. Please ask your line manager for information.</p>
+            <p class="govuk-body">Once you've completed the course, click the 'Mark as done' button.</p>
+        </div>
+        <div class="step-by-step--step-label">
+          <div class="step-by-step--step-circle">
+            <span class="step-by-step--step-number govuk-body">4</span>
+          </div>
+        </div>
+        <div class="step-by-step--content">
+            <div class="step-by-step--content-title">
+                <h2 class="govuk-heading-m">Do your survey</h2>
+                <a class="govuk-button" href="{{url('questions', 'post')}}">Do exit survey</a>
+            </div>
+            <p class="govuk-body">Once you have recorded all of your learning, do your survey.</p>
+        </div>
+    </div>
   <div>
     <h2 class="govuk-heading-m">Other learning available for you</h2>
     <p class="govuk-body">Civil Service Learning have put together an <a class="govuk-link" href="#">Additional Learning Catalogue</a> which groups CSL resources by learning level.</p>
