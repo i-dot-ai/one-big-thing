@@ -108,7 +108,7 @@ module "ecs" {
             },
             {
               name = "BASE_URL"
-              value = "obt-${var.env}.i.ai.10ds.cabinetoffice.gov.uk"
+              value = "https://obt-${var.env}.i.ai.10ds.cabinetoffice.gov.uk"
             },
           ]
         }
