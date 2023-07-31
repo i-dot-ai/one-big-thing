@@ -39,7 +39,7 @@ def test_submit_survey():
     )
 
     assert completed_page.has_text("Welcome to your One Big Thing Learning Record")
-    assert completed_page.has_text("Based on your survey we recommend you do this learning first")
+    assert completed_page.has_text("Based on your survey results, we recommend you do the following:")
 
     completed_surveys = models.SurveyResult.objects.filter(user=user, survey_type="pre")
     assert len(completed_surveys) > 0, completed_surveys
