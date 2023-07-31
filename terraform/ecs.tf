@@ -31,19 +31,19 @@ module "ecs" {
               value = var.env
             },
             {
-              name  = "DB_HOST"
+              name  = "POSTGRES_HOST"
               value = module.db.db_instance_address
             },
             {
-              name  = "DB_PORT"
+              name  = "POSTGRES_PORT"
               value = local.db_port
             },
             {
-              name  = "DB_USER"
+              name  = "POSTGRES_USER"
               value = local.db_user
             },
             {
-              name  = "DB_NAME"
+              name  = "POSTGRES_DB"
               value = local.db_name
             },
             {
