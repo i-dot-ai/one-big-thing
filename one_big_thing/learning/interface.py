@@ -19,6 +19,15 @@ class CreateLearningResponseSchema(marshmallow.Schema):
     learning_id = marshmallow.fields.UUID()
 
 
+class DeleteLearningSchema(marshmallow.Schema):
+    user_id = marshmallow.fields.UUID()
+    learning_id = marshmallow.fields.UUID()
+
+
+class DeleteLearningSchemaResponse(marshmallow.Schema):
+    user_id = marshmallow.fields.UUID()
+
+
 class Course(Entity):
     @with_schema(load=CreateCourseSchema, dump=schemas.CourseSchema)
     @register_event("Course created")
@@ -46,6 +55,12 @@ class Learning(Entity):
         learning.save()
         response = {"learning_id": learning.id}
         return response
+    
+    @with_schema(load=DeleteLearningSchema, dump=DeleteLearningSchemaResponse)
+    @register_event("Delete learning")
+    def delete(self, user_id, learning_id):
+        learning_record = models.Learning.objects.get(user__id=user_id, pk=learning_id)
+        learning_record.delete()
 
 
 api = Interface(course=Course(), learning=Learning())
