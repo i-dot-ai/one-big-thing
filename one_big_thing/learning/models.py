@@ -34,7 +34,6 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
     is_external_user = models.BooleanField(editable=True, default=False)
-    has_marked_complete = models.BooleanField(editable=True, default=False)
     department = models.CharField(max_length=254, blank=True, null=True)
     grade = models.CharField(max_length=254, blank=True, null=True)
     profession = models.CharField(max_length=254, blank=True, null=True)
