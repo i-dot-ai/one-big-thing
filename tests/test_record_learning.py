@@ -1,5 +1,25 @@
+import httpx
+from nose import with_setup
+
+from one_big_thing import wsgi
 from one_big_thing.learning import models
 from tests import utils
+
+
+def setup_user_and_learning_record():
+    user, _ = models.User.objects.get_or_create(email="peter.rabbit@example.com")
+    user.set_password("P455W0rd")
+    user.save()
+    models.Learning(user=user, title="Learning about data 1", link="http://example.com", time_to_complete=60).save()
+    models.Learning(user=user, title="Learning about data 2", link="http://example.com", time_to_complete=120).save()
+    models.Learning(user=user, title="Learning about data 3", link="http://example.com", time_to_complete=240).save()
+    models.Course(title="Course 1", time_to_complete=60).save()
+
+
+def teardown_user_and_learning_record():
+    user = models.User.objects.get(email="peter.rabbit@example.com")
+    user.delete()
+    models.Course.objects.filter(title="Course 1").delete()
 
 
 def test_enter_invalid_time_to_complete():
@@ -73,3 +93,32 @@ def test_enter_valid_learning_record():
     assert submitted_page.has_text("Link")
 
     user.delete()
+
+
+@utils.with_authenticated_client
+def test_download_learning_document(client):
+    response = client.get("/download-learning/")
+    assert response.status_code == 200, response.status_code
+    assert (
+        response.headers["Content-Type"] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ), response["Content-Type"]
+
+
+@with_setup(setup_user_and_learning_record, teardown_user_and_learning_record)
+def test_delete_learning():
+    user_email = "peter.rabbit@example.com"
+    learning_to_delete = models.Learning.objects.get(user__email=user_email, title="Learning about data 1")
+    with httpx.Client(app=wsgi.application, base_url=utils.TEST_SERVER_URL, follow_redirects=True) as client:
+        response = client.get("/accounts/login/")
+        csrf = response.cookies["csrftoken"]
+        data = {"login": user_email, "password": "P455W0rd"}
+        headers = {"X-CSRFToken": csrf}
+        response = client.post("/accounts/login/", data=data, headers=headers)
+        csrf = response.cookies["csrftoken"]
+        headers = {"X-CSRFToken": csrf}
+        response = client.post(f"remove-learning/{learning_to_delete.pk}/", headers=headers)
+        assert response.status_code == 200, response.status_code
+        learning_for_user_qs = models.Learning.objects.filter(user__email="peter.rabbit@example.com")
+        assert learning_for_user_qs.count() == 2, learning_for_user_qs.count()
+        titles = learning_for_user_qs.values_list("title", flat=True)
+        assert "Learning about data 1" not in titles, titles
