@@ -203,6 +203,8 @@ class CustomVerifyUserEmail(MethodDispatcher):
             user = models.User.objects.get(pk=user_id)
             user.verified = True
             user.save()
+            login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+            return redirect("index")
         return render(request, "account/verify_email_from_token.html", {"verify_result": verify_result})
 
 
