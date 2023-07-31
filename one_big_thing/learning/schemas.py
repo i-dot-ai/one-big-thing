@@ -55,7 +55,7 @@ class UUIDPrimaryKeyBaseModelSchema(Schema):
 
 def validate_time_to_complete(value):
     try:
-        _ = int(value)
+        int(value)
     except ValueError:
         raise ValidationError("Please enter the time this course took to complete in minutes, e.g. 15")
 
@@ -64,5 +64,5 @@ class CourseSchema(TimeStampedModelSchema, UUIDPrimaryKeyBaseModelSchema):
     title = SingleLineStr(required=True, validate=validate.Length(max=1024))
     link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
     learning_type = make_choice_field(max_len=256, values=choices.CourseType.values, allow_none=True)
-    time_to_complete = fields.Str(required=True, validate=validate_time_to_complete)
+    time_to_complete = fields.Str(required=False, validate=validate_time_to_complete)
     # strengths = fields.Str()  # Figure out if we're using these or not
