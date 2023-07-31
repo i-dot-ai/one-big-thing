@@ -139,13 +139,13 @@ WSGI_APPLICATION = "one_big_thing.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env.str("DB_NAME"),
-        "USER": env.str("DB_USER"),
-        "PASSWORD": env.str("DB_PASSWORD")
+        "NAME": env.str("POSTGRES_DB"),
+        "USER": env.str("POSTGRES_USER"),
+        "PASSWORD": env.str("POSTGRES_PASSWORD")
         if not ENVIRONMENT
         else fetch_db_password(env.str("DB_PASSWORD_SECRET_NAME")),
-        "HOST": env.str("DB_HOST"),
-        "PORT": env.str("DB_PORT"),
+        "HOST": env.str("POSTGRES_HOST"),
+        "PORT": env.str("POSTGRES_PORT"),
         **{"ATOMIC_REQUESTS": True},
     }
 }
