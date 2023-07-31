@@ -1,3 +1,5 @@
+import io
+
 from one_big_thing.learning import models
 from tests import utils
 
@@ -73,3 +75,11 @@ def test_enter_valid_learning_record():
     assert submitted_page.has_text("Link")
 
     user.delete()
+
+
+@utils.with_authenticated_client
+def test_download_learning_document(client):
+    response = client.get("/download-learning/")
+    assert response.status_code == 200, response.status_code
+    assert response.headers["Content-Type"]== "application/vnd.openxmlformats-officedocument.wordprocessingml.document", response["Content-Type"]
+
