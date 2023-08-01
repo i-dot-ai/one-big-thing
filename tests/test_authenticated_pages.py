@@ -1,5 +1,4 @@
 from tests import utils
-from one_big_thing.learning import models
 
 LOGIN_REQUIRED_PAGES = [
     "/",

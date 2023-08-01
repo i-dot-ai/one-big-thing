@@ -1,5 +1,5 @@
-from .utils import with_client
 from . import utils
+
 
 OTHER_URLS_LOGIN_NOT_REQUIRED = ["/"]
 ACCOUNT_URLS_LOGIN_NOT_REQUIRED = [
@@ -20,7 +20,5 @@ ACCOUNT_URLS_LOGIN_NOT_REQUIRED = [
 @utils.with_client
 def test_get_account_urls_login_not_required(client):
     for url in ACCOUNT_URLS_LOGIN_NOT_REQUIRED:
-        print(url)
         response = client.get(url)
-        print(url)
         assert response.status_code == 200, response.status_code
