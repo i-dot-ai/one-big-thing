@@ -33,6 +33,14 @@ page_compulsory_field_map = {
     "record-learning": ("title",),
 }
 
+survey_questions_compulsory_field_map = {
+    "pre": {
+        1: [
+            "competency",
+        ],
+    },
+}
+
 missing_item_errors = {
     "title": "Please provide a title for this course",
 }
@@ -269,13 +277,6 @@ def complete_hours_view(request):
 
 
 @login_required
-@require_http_methods(["GET"])
-@enforce_user_completes_pre_survey()
-def survey_completed_view(request):
-    return render(request, "survey-completed.html", {})
-
-
-@login_required
 @require_http_methods(["GET", "POST"])
 def questions_view(request, survey_type, page_number=1):
     if request.method == "GET":
@@ -307,7 +308,7 @@ def questions_view_get(request, survey_type, page_number, errors=frozendict()):
 def questions_view_post(request, survey_type, page_number, errors=frozendict()):
     data = request.POST
     survey_type = survey_type
-    errors, data = clean_data(page_number, survey_type, data, validate=False)
+    errors, data = clean_data(page_number, survey_type, data, validate=True)
     if errors:
         return questions_view_get(request, survey_type, page_number, errors=errors)
     else:
@@ -341,7 +342,11 @@ def clean_data(page_number, survey_type, data, validate=False):
     question_ids = tuple(q["id"] for q in section["questions"] if q["answer_type"] != "checkboxes")
     list_question_ids = tuple(q["id"] for q in section["questions"] if q["answer_type"] == "checkboxes")
     if validate:
-        errors = {qid: "Please answer this question" for qid in question_ids if qid not in data}
+        errors = {
+            qid: "Please answer this question"
+            for qid in survey_questions_compulsory_field_map.get(survey_type, {}).get(page_number, {})
+            if qid not in data
+        }
     else:
         errors = {}
     context = {k: data.get(k, "") for k in question_ids}
