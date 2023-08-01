@@ -5,11 +5,27 @@ import types
 
 import marshmallow
 from django.http import HttpResponseNotAllowed
+from django.shortcuts import redirect
 
 from one_big_thing.learning import models
 from one_big_thing.settings import ALLOWED_CIVIL_SERVICE_DOMAINS
 
 event_names = set()
+
+
+def enforce_user_completes_pre_survey():
+    def decorator(view_func):
+        @functools.wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            user = request.user
+            if not user.has_completed_pre_survey:
+                return redirect("questions", "pre")
+            else:
+                return view_func(request, *args, **kwargs)
+
+        return _wrapped_view
+
+    return decorator
 
 
 class Interface:
