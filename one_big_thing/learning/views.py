@@ -22,7 +22,7 @@ from . import (
     utils,
 )
 from .email_handler import send_learning_record_email
-from .utils import enforce_user_completes_pre_survey
+from .decorators import enforce_user_completes_pre_survey
 
 
 def frozendict(*args, **kwargs):
@@ -48,14 +48,14 @@ missing_item_errors = {
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey()
+@enforce_user_completes_pre_survey
 def index_view(request):
     return redirect(reverse("homepage"))
 
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey()
+@enforce_user_completes_pre_survey
 def homepage_view(request):
     user = request.user
     errors = {}
@@ -110,7 +110,7 @@ def homepage_view(request):
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey()
+@enforce_user_completes_pre_survey
 def test_view(request):
     courses = models.Course.objects.all()
     data = {"courses": courses}
@@ -128,7 +128,7 @@ def test_view(request):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-@enforce_user_completes_pre_survey()
+@enforce_user_completes_pre_survey
 class RecordLearningView(utils.MethodDispatcher):
     time_errors_map = {
         "time_to_complete_hours": "Please enter the hours this course took to complete e.g. 2",
@@ -261,7 +261,7 @@ def validate(request, page_name, data):
 
 
 @login_required
-@enforce_user_completes_pre_survey()
+@enforce_user_completes_pre_survey
 @require_http_methods(["GET"])
 def complete_hours_view(request):
     user = request.user
@@ -366,7 +366,7 @@ def save_data(survey_type, user, page_number, data):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-@enforce_user_completes_pre_survey()
+@enforce_user_completes_pre_survey
 def send_learning_record_view(request):
     user = request.user
     courses = models.Learning.objects.filter(user=user)
@@ -400,7 +400,7 @@ def send_learning_record_view(request):
 
 @login_required
 @require_http_methods(["POST"])
-@enforce_user_completes_pre_survey()
+@enforce_user_completes_pre_survey
 def remove_learning_view(request, learning_id):
     interface.api.learning.delete(user_id=request.user.id, learning_id=learning_id)
     return redirect("record-learning")
@@ -408,7 +408,7 @@ def remove_learning_view(request, learning_id):
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey()
+@enforce_user_completes_pre_survey
 def download_learning_view(request):
     file_name = settings.SELF_REFLECTION_FILENAME
     filepath = os.path.join(settings.STATICFILES_DIRS[0], file_name)

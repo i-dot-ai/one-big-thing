@@ -13,21 +13,6 @@ from one_big_thing.settings import ALLOWED_CIVIL_SERVICE_DOMAINS
 event_names = set()
 
 
-def enforce_user_completes_pre_survey():
-    def decorator(view_func):
-        @functools.wraps(view_func)
-        def _wrapped_view(request, *args, **kwargs):
-            user = request.user
-            if not user.has_completed_pre_survey:
-                return redirect("questions", "pre")
-            else:
-                return view_func(request, *args, **kwargs)
-
-        return _wrapped_view
-
-    return decorator
-
-
 class Interface:
     def __init__(self, **kwargs):
         for key, value in kwargs.items():
