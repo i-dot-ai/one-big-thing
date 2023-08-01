@@ -1,0 +1,91 @@
+.step-by-step--step-label {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 250px;
+    margin-top: 4px;
+}
+
+.step-by-step--step-circle {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #d4d4d4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .govuk-body {
+        margin: 0 !important;
+    }
+}
+
+.step-by-step--step-no-circle {
+    position: relative;
+    width: var(--circle-size);
+    height: var(--circle-size);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .govuk-body {
+        margin: 0 !important;
+    }
+}
+
+.step-by-step--step-number {
+    font-size: 19px;
+    font-weight: bold;
+    color: #000000;
+}
+
+.step-by-step--step-label:not(:first-of-type)::before,
+.step-by-step--step-label:not(:last-of-type)::after {
+    content: "";
+    position: absolute;
+    width: 4px;
+    background-color: #d4d4d4;
+}
+
+.step-by-step--step-label::before {
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 50%;
+}
+
+.step-by-step--step-label::after {
+    top: calc(var(--circle-size) + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    height: calc(100% - 150px);
+}
+
+div.step-by-step {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 12fr;
+    margin-top: 3em;
+
+    --circle-size: 40px;
+}
+
+.step-by-step--content {
+    padding: 10px;
+    border-bottom: 2px solid #d4d4d4;
+
+    .step-by-step--content-title {
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.step-by-step--content:last-of-type {
+        border-bottom: none;
+    }
+
+.step-by-step--step-label:nth-last-of-type(2)::after {
+    display: none;
+}

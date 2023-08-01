@@ -46,16 +46,45 @@ def index_view(request):
 @login_required
 @require_http_methods(["GET"])
 def homepage_view(request):
+    user = request.user
     errors = {}
-    special_courses = special_course_handler.get_special_course_information()
-    user_completed_courses = [learning.course_id for learning in request.user.learning_set.all() if learning.course_id]
-    incomplete_special_courses = [
-        special_course for special_course in special_courses if special_course.id not in user_completed_courses
+    survey_answer = models.SurveyResult.objects.get(user=user, survey_type="pre", page_number=1)
+    selected_level = survey_answer.data["competency"]
+    recommended_course_title = special_course_handler.competency_level_courses[selected_level]
+    recommended_course = special_course_handler.get_special_course_information(recommended_course_title)
+    extra_recommended_course_titles = [
+        value
+        for key, value in special_course_handler.competency_level_courses.items()
+        if value != recommended_course_title
     ]
-    completed_special_courses = list(set(special_courses) - set(incomplete_special_courses))
+    extra_recommended_courses = [
+        special_course_handler.get_special_course_information(course_title)
+        for course_title in extra_recommended_course_titles
+    ]
+    extra_recommended_courses_information = [
+        {
+            "title": extra_course.title,
+            "link": extra_course.link,
+            "id": extra_course.id,
+            "is_complete": user.has_completed_course(extra_course.id),
+        }
+        for extra_course in extra_recommended_courses
+    ]
+    recommended_course_information = {
+        "title": recommended_course.title,
+        "link": recommended_course.link,
+        "id": recommended_course.id,
+        "is_complete": user.has_completed_course(recommended_course.id),
+    }
+    team_meeting_course = special_course_handler.get_special_course_information(
+        special_course_handler.team_meeting_course_title
+    )
+    time_completed = user.get_time_completed()
     data = {
-        "incomplete_special_courses": incomplete_special_courses,
-        "complete_special_courses": completed_special_courses,
+        "time_completed": time_completed,
+        "recommended_course": recommended_course_information,
+        "extra_recommended_courses": extra_recommended_courses_information,
+        "team_meeting_course": team_meeting_course,
     }
     return render(
         request,
