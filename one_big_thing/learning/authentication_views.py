@@ -186,7 +186,9 @@ class CustomSignupView(SignupView):
             user = authenticate(request, email=email, password=password1)
             login(request, user)
             messages.success(request, f"Successfully signed in as {user.email}.")
-            return redirect("questions", "pre")
+            if not request.user.has_completed_pre_survey:
+                return redirect("questions", "pre")
+            return redirect("index")
         response = super().dispatch(request, errors={}, *args, **kwargs)
         return response
 
@@ -204,6 +206,8 @@ class CustomVerifyUserEmail(MethodDispatcher):
             user.verified = True
             user.save()
             login(request, user, backend="django.contrib.auth.backends.ModelBackend")
+            if not request.user.has_completed_pre_survey:
+                return redirect("questions", "pre")
             return redirect("index")
         return render(request, "account/verify_email_from_token.html", {"verify_result": verify_result})
 
