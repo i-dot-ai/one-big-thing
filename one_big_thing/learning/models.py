@@ -34,7 +34,6 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
     is_external_user = models.BooleanField(editable=True, default=False)
-    has_marked_complete = models.BooleanField(editable=True, default=False)
     department = models.CharField(max_length=254, blank=True, null=True)
     grade = models.CharField(max_length=254, blank=True, null=True)
     profession = models.CharField(max_length=254, blank=True, null=True)
@@ -70,7 +69,7 @@ class Course(TimeStampedModel, UUIDPrimaryKeyBase):
     title = models.CharField(max_length=100)
     link = models.URLField(blank=True, null=True)
     learning_type = models.CharField(max_length=128, blank=True, null=True)
-    time_to_complete = models.IntegerField()  # minutes
+    time_to_complete = models.IntegerField(blank=True, null=True)  # minutes
     # strengths = models.CharField(max_length=255)
 
     def get_learning_type_display_name(self):
