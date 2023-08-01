@@ -1,6 +1,5 @@
 from . import utils
 
-
 OTHER_URLS_LOGIN_NOT_REQUIRED = ["/"]
 ACCOUNT_URLS_LOGIN_NOT_REQUIRED = [
     "/accounts/verify/",
