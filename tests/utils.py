@@ -23,6 +23,7 @@ def with_authenticated_client(func):
     def _inner(*args, **kwargs):
         user, _ = User.objects.get_or_create(email="peter.rabbit@example.com")
         user.set_password("P455W0rd")
+        user.has_completed_pre_survey = True
         user.save()
         SurveyResult.objects.get_or_create(
             user=user,
@@ -62,5 +63,8 @@ def register(client, email, password):
     form = page.get_form()
     form["competency"] = "intermediate"
     form.submit().follow()
+    user = User.objects.get(email=email)
+    user.has_completed_pre_survey = True
+    user.save()
     page = client.get("/").follow()
     assert page.has_text("Welcome to your One Big Thing Learning Record")
