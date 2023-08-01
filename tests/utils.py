@@ -58,7 +58,7 @@ def register(client, email, password):
     form["grade"] = "GRADE6"
     form["department"] = "visitengland"
     form["profession"] = "LEGAL"
-    page = form.submit().follow().follow()
+    page = form.submit().follow()
     assert page.has_text("How well do you understand data topics?")
     form = page.get_form()
     form["competency"] = "intermediate"

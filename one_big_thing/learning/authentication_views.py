@@ -61,7 +61,10 @@ class CustomLoginView(MethodDispatcher):
                         )
                 login(request, user)
                 request.session["session_created_at"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-                return redirect("index")
+                if not user.has_completed_pre_survey:
+                    return redirect("questions", "pre")
+                else:
+                    return redirect("homepage")
             else:
                 return self.error(request)
 
@@ -184,7 +187,10 @@ class CustomSignupView(SignupView):
             user = authenticate(request, email=email, password=password1)
             login(request, user)
             messages.success(request, f"Successfully signed in as {user.email}.")
-            return redirect("index")
+            if not user.has_completed_pre_survey:
+                return redirect("questions", "pre")
+            else:
+                return redirect("homepage")
         response = super().dispatch(request, errors={}, *args, **kwargs)
         return response
 
@@ -202,7 +208,10 @@ class CustomVerifyUserEmail(MethodDispatcher):
             user.verified = True
             user.save()
             login(request, user)
-            return redirect("index")
+            if not user.has_completed_pre_survey:
+                return redirect("questions", "pre")
+            else:
+                return redirect("homepage")
         return render(request, "account/verify_email_from_token.html", {"verify_result": verify_result})
 
 
