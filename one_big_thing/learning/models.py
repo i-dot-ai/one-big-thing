@@ -60,6 +60,11 @@ class User(BaseUser, UUIDPrimaryKeyBase):
         total_time = sum([learning.time_to_complete for learning in learnings])
         return total_time
 
+    def has_completed_course(self, course_id):
+        learnings = self.learning_set.all()
+        course_ids = [learning.course_id for learning in learnings if learning.course_id]
+        return course_id in course_ids
+
 
 class Course(TimeStampedModel, UUIDPrimaryKeyBase):
     title = models.CharField(max_length=100)

@@ -65,7 +65,7 @@
             </div>
 
             <p class="govuk-body">Based on your survey results, we recommend you do the following:</p>
-            <p class="govuk-body"><a class="govuk-link" href="#">Practitioner level course</a> (opens in Civil Service Learning)</p>
+            <p class="govuk-body"><a target="_blank" rel="noopener noreferrer" class="govuk-link" href="{{data.recommended_course.link}}">{{data.recommended_course.title}}</a> (opens in Civil Service Learning)</p>
             <details class="govuk-details" data-module="govuk-details">
               <summary class="govuk-details__summary">
                 <span class="govuk-details__summary-text">
@@ -73,8 +73,9 @@
                 </span>
               </summary>
               <div class="govuk-details__text">
-                <p class="govuk-body"><a class="govuk-link" href="#">Working level course</a> (opens in Civil Service Learning)</p>
-                <p class="govuk-body"><a class="govuk-link" href="#">Awareness level course</a> (opens in Civil Service Learning)</p>
+                  {% for extra_course in data.extra_recommended_courses %}
+                    <p class="govuk-body"><a target="_blank" rel="noopener noreferrer" class="govuk-link" href="{{extra_course.link}}">{{extra_course.title}}</a> (opens in Civil Service Learning)</p>
+                  {% endfor %}
               </div>
             </details>
             <p class="govuk-body">The course will take 1 hour 30 minutes</p>
@@ -129,7 +130,7 @@
         <div class="step-by-step--content">
             <div class="step-by-step--content-title">
                 <h2 class="govuk-heading-m">Attend your team conversation</h2>
-                <a class="govuk-button" href="{{url('record-learning')}}">Record team conversation</a>
+                <a class="govuk-button" href="{{url('record-learning', data.team_meeting_course.id)}}">Record team conversation</a>
             </div>
             <p class="govuk-body">You should be invited to a conversation to explore how data is used in your team.</p>
             <p class="govuk-body">Your department will decide who leads this conversation, how long it is, and when it takes place. Please ask your line manager for information.</p>

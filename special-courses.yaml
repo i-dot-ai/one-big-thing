@@ -1,12 +1,18 @@
-- title: E learning Intermediate Data course on CS Learn
+# Ensure you update the special_courses_handler.py file with the course names
+
+- title: Practitioner level course
   link: https://learn.civilservice.gov.uk/courses/GyZgKWc0Tz6ZIfvDSiuO1Q
   time_to_complete: 80
   learning_type: LINK
-- title: Discussion with your team, lead by your manager
+- title: Working level course
+  link: https://learn.civilservice.gov.uk/courses/GyZgKWc0Tz6ZIfvDSiuO1Q
+  time_to_complete: 80
+  learning_type: LINK
+- title: Awareness level course
+  link: https://learn.civilservice.gov.uk/courses/GyZgKWc0Tz6ZIfvDSiuO1Q
+  time_to_complete: 80
+  learning_type: LINK
+- title: Discussion with your team
   link: null
   time_to_complete: 90
   learning_type: IN_PERSON
-- title: Attend a Civil Service Live or Data Connect event in person, virtually or by watching a recording
-  link: null
-  time_to_complete: 60
-  learning_type: MULTIPLE
