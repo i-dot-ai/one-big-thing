@@ -9,6 +9,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.shortcuts import redirect, render
+from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
 from one_big_thing.learning import (
@@ -62,9 +63,9 @@ class CustomLoginView(MethodDispatcher):
                 login(request, user)
                 request.session["session_created_at"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
                 if not user.has_completed_pre_survey:
-                    return redirect("questions", "pre")
+                    return redirect(reverse("questions", kwargs={"survey_type": "pre"}))
                 else:
-                    return redirect("homepage")
+                    return redirect(reverse("homepage"))
             else:
                 return self.error(request)
 
@@ -188,9 +189,9 @@ class CustomSignupView(SignupView):
             login(request, user)
             messages.success(request, f"Successfully signed in as {user.email}.")
             if not user.has_completed_pre_survey:
-                return redirect("questions", "pre")
+                return redirect(reverse("questions", kwargs={"survey_type": "pre"}))
             else:
-                return redirect("homepage")
+                return redirect(reverse("homepage"))
         response = super().dispatch(request, errors={}, *args, **kwargs)
         return response
 
@@ -209,9 +210,9 @@ class CustomVerifyUserEmail(MethodDispatcher):
             user.save()
             login(request, user)
             if not user.has_completed_pre_survey:
-                return redirect("questions", "pre")
+                return redirect(reverse("questions", kwargs={"survey_type": "pre"}))
             else:
-                return redirect("homepage")
+                return redirect(reverse("homepage"))
         return render(request, "account/verify_email_from_token.html", {"verify_result": verify_result})
 
 
