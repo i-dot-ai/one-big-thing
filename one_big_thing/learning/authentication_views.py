@@ -186,7 +186,7 @@ class CustomSignupView(SignupView):
             user = authenticate(request, email=email, password=password1)
             login(request, user)
             messages.success(request, f"Successfully signed in as {user.email}.")
-            return redirect("index")
+            return redirect("questions", "pre")
         response = super().dispatch(request, errors={}, *args, **kwargs)
         return response
 
