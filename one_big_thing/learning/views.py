@@ -21,8 +21,8 @@ from . import (
     survey_handling,
     utils,
 )
-from .email_handler import send_learning_record_email
 from .decorators import enforce_user_completes_pre_survey
+from .email_handler import send_learning_record_email
 
 
 def frozendict(*args, **kwargs):

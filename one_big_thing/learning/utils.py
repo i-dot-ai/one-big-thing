@@ -5,7 +5,6 @@ import types
 
 import marshmallow
 from django.http import HttpResponseNotAllowed
-from django.shortcuts import redirect
 
 from one_big_thing.learning import models
 from one_big_thing.settings import ALLOWED_CIVIL_SERVICE_DOMAINS
