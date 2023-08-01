@@ -4,7 +4,7 @@ import httpx
 import testino
 
 from one_big_thing import wsgi
-from one_big_thing.learning.models import User, SurveyResult
+from one_big_thing.learning.models import SurveyResult, User
 
 TEST_SERVER_URL = "http://one-big-thing-testserver:8055/"
 
