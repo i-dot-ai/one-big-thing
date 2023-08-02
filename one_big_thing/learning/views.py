@@ -56,20 +56,72 @@ survey_questions_compulsory_field_map = {
         7: [
             "do-you-use-coding-language",
         ],
-        8: [
-            "aware-of-the-aims",
-        ],
-        9: [
-            "shared-identity",
-            "identity-is-important",
-        ],
-        10: [
-            "confident-day-to-day",
-            "data-is-relevant-to-role",
-            "use-data-effectively-day-to-day",
-            "data-support-day-to-day",
-        ],
+        # 8: [
+        #     "aware-of-the-aims",
+        # ],
+        # 9: [
+        #     "shared-identity",
+        #     "identity-is-important",
+        # ],
+        # 10: [
+        #     "confident-day-to-day",
+        #     "data-is-relevant-to-role",
+        #     "use-data-effectively-day-to-day",
+        #     "data-support-day-to-day",
+        # ],
     },
+    # "post": {
+    #     1: [
+    #         "training-level",
+    #     ],
+    #     2: [
+    #         "shared-identity",
+    #         "own-identity",
+    #         "taking-part-made-me-feel-connected",
+    #     ],
+    #     3: [
+    #         "confident-day-to-day",
+    #         "data-is-relevant-to-role",
+    #         "use-data-effectively-day-to-day",
+    #         "data-support-day-to-day",
+    #     ],
+    #     4: [
+    #         "create-development-plan",
+    #         "add-new-learning-to-development-plan",
+    #         "book-related-training",
+    #         "find-mentor",
+    #     ],
+    #     5: [
+    #         "training-helped-learning",
+    #         "conversations-helped-learning",
+    #         "additional-resources-helped-learning",
+    #     ],
+    #     6: [
+    #         "useful-learning-formats",
+    #     ],
+    #     7: [
+    #         "obt-good-use-of-time",
+    #         "improved-understanding-of-using-data",
+    #         "intend-to-participate-in-further-training",
+    #         "content-was-relevant-to-my-role",
+    #         "intend-to-apply-learning-in-my-role",
+    #     ],
+    #     8: [
+    #         "aware-of-aims",
+    #         "time-to-participate",
+    #     ],
+    #     9: [
+    #         "what-went-well",
+    #         "what-can-be-improved",
+    #     ],
+    #     10: [
+    #         "willing-to-follow-up",
+    #     ],
+    # },
+    # "awareness": {},
+    # "working": {},
+    # "practitioner": {},
+    # "unknown": {},
 }
 
 missing_item_errors = {
