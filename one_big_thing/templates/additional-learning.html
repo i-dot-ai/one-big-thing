@@ -17,34 +17,48 @@
                 <div class="govuk-grid-column-two-thirds">
                     <h1 class="govuk-heading-xl">Additional learning</h1>
                     {% for additional_learning_section in data.additional_learning %}
-                        <section id="{{additional_learning_section}}">
+                        <section id="{{ additional_learning_section }}">
                             <div class="govuk-width-container">
                                 <div class="govuk-grid-row">
                                     <div class="govuk-grid-column-full">
                                         <h2 class="govuk-heading-m">
                                             {{ data.additional_learning[additional_learning_section]["section_title"]}}</h2>
 
-                                            <table class="govuk-table">
-                                                    <thead class="govuk-table__head">
-                                                    <tr class="govuk-table__row">
-                                                        <th scope="col" class="govuk-table__header govuk-!-width-two-thirds">Title</th>
-                                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Type</th>
-                                                        <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Duration</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody class="govuk-table__body">
-                                                    {% for course in data.additional_learning[additional_learning_section]["courses"] %}
-                                                        <tr class="govuk-table__row">
-                                                            <td class="govuk-table__cell">{% if course.link %}<a href="{{course.link}}" class="govuk-link" target="_blank"
-                                                                                                           rel="noopener noreferrer">{{course.title}}</a>{% else %}{{course.title}}{% endif %}</td>
-                                                            <td class="govuk-table__cell govuk-table__cell">{{course.type}}</td>
-                                                            <td class="govuk-table__cell govuk-table__cell">
-                                                                {% if course.duration %}
-                                                                {{humanize_timedelta(course.duration)}} {% endif %}</td>
-                                                        </tr>
-                                                    {% endfor %}
-                                                    </tbody>
-                                                </table>
+                                        <table class="govuk-table">
+                                            <thead class="govuk-table__head">
+                                            <tr class="govuk-table__row">
+                                                <th scope="col" class="govuk-table__header govuk-!-width-two-thirds">
+                                                    Title
+                                                </th>
+                                                <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">
+                                                    Type
+                                                </th>
+                                                <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">
+                                                    Duration
+                                                </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="govuk-table__body">
+                                            {% for course in data.additional_learning[additional_learning_section]["courses"] %}
+                                                <tr class="govuk-table__row">
+                                                    <td class="govuk-table__cell">{% if course.link %}
+                                                        <a href="{{ course.link }}" class="govuk-link" target="_blank"
+                                                           rel="noopener noreferrer">{{ course.title }}</a>{% else %}
+                                                        {{ course.title }}{% endif %}</td>
+                                                    <td class="govuk-table__cell govuk-table__cell">{{ course.type }}</td>
+                                                    <td class="govuk-table__cell govuk-table__cell">
+                                                        {% if course.duration %}
+                                                            {% if course.duration | int != 0 %}
+                                                                {{ humanize_timedelta(course.duration)}}
+                                                            {% else %}
+                                                                {{course.duration}}
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

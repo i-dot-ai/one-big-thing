@@ -2,7 +2,7 @@ additional_learning = {
     "any": {
         "section_title": "Courses for all levels",
         "courses": [
-            {"title": "Civil Service Live recording", "link": None, "type": "Video", "duration": None},
+            {"title": "Civil Service Live recording", "link": None, "type": "Video", "duration": "Various"},
             {
                 "title": "Why data matters in government with Dr Hannah Fry",
                 "link": "https://www.youtube.com/watch?v=K1ZpTkr1urY",
@@ -19,13 +19,13 @@ additional_learning = {
                 "title": "Statistically speaking from ONS",
                 "link": "https://sites.libsyn.com/397223/website",
                 "type": "Podcast",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "5 great TED talks about data visualisation",
                 "link": "https://coolinfographics.com/blog/2016/10/10/5-great-ted-talks-about-dataviz.html",
                 "type": "Multiple",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "How juries are fooled by statistics with Peter Donnelly",
@@ -37,13 +37,13 @@ additional_learning = {
                 "title": "Digital garage from Google",
                 "link": "https://learndigital.withgoogle.com/digitalgarage/courses?category=data",
                 "type": "Multiple",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "Byte sized learning from the Government Analytical Function",
                 "link": "https://www.youtube.com/playlist?list=PLxXq2x8c-H0JRa0YX3RO8KSYVoEnuYtjw",
                 "type": "Video",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "Analytical literacy from the Government Analytical Function",
@@ -61,7 +61,7 @@ additional_learning = {
                 "title": "Role of the Data Standards Authority",
                 "link": "https://www.gov.uk/government/groups/data-standards-authority",
                 "type": "Webpage",
-                "duration": None,
+                "duration": "Various",
             },
         ],
     },
@@ -84,7 +84,7 @@ additional_learning = {
                 "title": "YouTube Playlist from the Government Analytical Function",
                 "link": "https://www.youtube.com/channel/UCVY5YwwgpprO_2KEYz-cVrw/videos?view=0",
                 "type": "Video",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "Awareness of new coding tools from the Government Analytical Function",
@@ -107,7 +107,7 @@ additional_learning = {
                 "title": "Multiply Numeracy Quiz from Skills for Life Campaign",
                 "link": "https://skillsforlife.campaign.gov.uk/courses/multiply/",
                 "type": "Webpage",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "Awareness in data linkage from the Government Analysis Function",
@@ -131,13 +131,13 @@ additional_learning = {
                 "title": "Data Skills from the UK Data Service",
                 "link": "https://ukdataservice.ac.uk/learning-hub/data-skills-modules/",
                 "type": "Course",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "Data visualisation from the Government Analysis Function",
                 "link": "https://analysisfunction.civilservice.gov.uk/support/communicating-analysis/introduction-to-data-visualisation-e-learning/",  # noqa: E501
                 "type": "Course",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "Gathering and analysing customer information from Civil Service Learning",
@@ -155,13 +155,13 @@ additional_learning = {
                 "title": "Resources from the National Numeracy Organisation",
                 "link": "https://www.nationalnumeracy.org.uk/",
                 "type": "Webpage",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "Skills wise from the BBC",
                 "link": "https://www.bbc.co.uk/teach/skillswise/maths/zfdymfr",
                 "type": "Webpage",
-                "duration": None,
+                "duration": "Various",
             },
         ],
     },
@@ -172,49 +172,49 @@ additional_learning = {
                 "title": "Blogs from the Open Data Institute",
                 "link": "https://www.theodi.org/",
                 "type": "Webpage",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "The work of DataKind",
                 "link": "https://www.datakind.org/",
                 "type": "Webpage",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "Transformers United, Stanford University’s CS25 Lectures",
                 "link": "https://www.youtube.com/playlist?list=PLoROMvodv4rNiJRchCzutFw5ItR_Z27CM",
                 "type": "Video",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "Building resilience in government using data science, the Alan Turing Institute",
                 "link": "https://www.turing.ac.uk/news/data-science-should-be-used-build-resilience-government-decision-making-new-turing-white-paper",  # noqa: E501
                 "type": "White paper",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "The Data Playbook toolkit from the Global Disaster Preparedness Centre",
                 "link": "https://preparecenter.org/toolkit/data-playbook-beta-toolkit/",
                 "type": "Course",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "LLM University",
                 "link": "https://docs.cohere.com/docs/llmu",
                 "type": "Course",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "Introduction to LLM with Mark Reidl",
                 "link": "https://mark-riedl.medium.com/a-very-gentle-introduction-to-large-language-models-without-the-hype-5f67941fa59e",  # noqa: E501
                 "type": "Webpage",
-                "duration": None,
+                "duration": "Various",
             },
             {
                 "title": "LangChain tutorials from Data Independent",
                 "link": "https://www.youtube.com/watch?v=_v_fgW2SkkQ&list=PLqZXAkvF1bPNQER9mLmDbntNfSpzdDIU5",
                 "type": "Video",
-                "duration": None,
+                "duration": "Various",
             },
         ],
     },
