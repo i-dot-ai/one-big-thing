@@ -208,6 +208,7 @@ class CustomVerifyUserEmail(MethodDispatcher):
             user = models.User.objects.get(pk=user_id)
             user.verified = True
             user.save()
+            user.backend = "django.contrib.auth.backends.ModelBackend"
             login(request, user)
             if not user.has_completed_pre_survey:
                 return redirect(reverse("questions", kwargs={"survey_type": "pre"}))
