@@ -18,9 +18,9 @@
           {{macros.question_radios(question)}}
         {% elif question.answer_type == "checkboxes" %}
           {{macros.checkboxes(question)}}
-        {% elif question.answer_type == "agree-1-7" %}
+        {% elif question.answer_type == "agree-1-5" %}
             {{macros.agree_1_7(question, loop)}}
-        {% elif question.answer_type == "likely-1-7" %}
+        {% elif question.answer_type == "likely-1-5" %}
             {{macros.likely_1_7(question, loop)}}
         {% elif question.answer_type == "textarea" %}
           {{macros.question_textarea(question)}}

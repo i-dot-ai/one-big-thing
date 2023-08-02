@@ -182,12 +182,12 @@
 {%- endmacro%}
 
 {% macro likely_1_7(question, loop, help_text="") -%}
-  {{question_1_7(question, answer_labels['likely-1-7'], help_text, loop)}}
+  {{question_1_7(question, answer_labels['likely-1-5'], help_text, loop)}}
 {%- endmacro %}
 
 {% macro agree_1_7(question, loop) -%}
   {% set help_text = 'How far do you agree or disagree with the following?' %}
-  {{question_1_7(question, answer_labels['agree-1-7'], help_text, loop)}}
+  {{question_1_7(question, answer_labels['agree-1-5'], help_text, loop)}}
 {%- endmacro %}
 
 {% macro question_1_7(question, labels, help_text, loop) -%}
