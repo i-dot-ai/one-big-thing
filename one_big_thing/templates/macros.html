@@ -181,16 +181,16 @@
   </div>
 {%- endmacro%}
 
-{% macro likely_1_7(question, loop, help_text="") -%}
-  {{question_1_7(question, answer_labels['likely-1-5'], help_text, loop)}}
+{% macro likely_1_5(question, loop, help_text="") -%}
+  {{question_1_5(question, answer_labels['likely-1-5'], help_text, loop)}}
 {%- endmacro %}
 
-{% macro agree_1_7(question, loop) -%}
+{% macro agree_1_5(question, loop) -%}
   {% set help_text = 'How far do you agree or disagree with the following?' %}
-  {{question_1_7(question, answer_labels['agree-1-5'], help_text, loop)}}
+  {{question_1_5(question, answer_labels['agree-1-5'], help_text, loop)}}
 {%- endmacro %}
 
-{% macro question_1_7(question, labels, help_text, loop) -%}
+{% macro question_1_5(question, labels, help_text, loop) -%}
 
   {% if not (loop.previtem and loop.previtem.answer_type == question.answer_type) %}
     {% if help_text %}
