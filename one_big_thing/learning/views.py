@@ -33,10 +33,29 @@ page_compulsory_field_map = {
     "record-learning": ("title",),
 }
 
+# TODO: Finalise mandatory question list
 survey_questions_compulsory_field_map = {
     "pre": {
         1: [
-            "competency",
+            "confident-in-decisions",
+        ],
+        2: [
+            "confidence-explaining-graph",
+        ],
+        3: [
+            "have-you-designed-a-survey",
+        ],
+        4: [
+            "believed-something-incorrect-online",
+        ],
+        5: [
+            "do-you-use-spreadsheets",
+        ],
+        6: [
+            "do-you-use-dashboard-tools",
+        ],
+        7: [
+            "do-you-use-coding-language",
         ],
     },
 }
@@ -59,8 +78,10 @@ def index_view(request):
 def homepage_view(request):
     user = request.user
     errors = {}
-    survey_answer = models.SurveyResult.objects.get(user=user, survey_type="pre", page_number=1)
-    selected_level = survey_answer.data["competency"]
+    # survey_answer = models.SurveyResult.objects.get(user=user, survey_type="pre", page_number=1)
+    # selected_level = survey_answer.data["competency"]
+    # TODO: Add level calculation and remove hard-coded level
+    selected_level = "beginner"
     recommended_course_title = special_course_handler.competency_level_courses[selected_level]
     recommended_course = special_course_handler.get_special_course_information(recommended_course_title)
     extra_recommended_course_titles = [

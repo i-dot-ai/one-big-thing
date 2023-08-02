@@ -8,33 +8,94 @@ def test_submit_survey():
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=test_email)
+    complete_survey(client, user)
 
-    competency_page = client.get("/questions/pre/")
+
+def complete_survey(client, user):
+    first_page = client.get("/questions/pre/")
 
     second_page = step_survey_page(
-        competency_page,
-        "Competency",
+        first_page,
+        "Do you feel confident to make a decision based on information you are presented with? For example, statistics or customer feedback",  # noqa: E501
+        # noqa: E501
         {
-            "competency": "beginner",
+            "confident-in-decisions": "confident",
         },
     )
 
     third_page = step_survey_page(
         second_page,
-        "Create a unifying experience and build a shared identity (or create a shared vision, define shared goals)",
+        "How would you feel about explaining to someone in your team what a graph is showing?",
         {
-            "aims": 3,
-            "shared-identity": 3,
-            "identity-is-important": 3,
+            "confidence-explaining-graph": "reluctant",
+        },
+    )
+
+    fourth_page = step_survey_page(
+        third_page,
+        "Have you designed a survey to gather responses and make a decision?",
+        {
+            "have-you-designed-a-survey": "yes-i-could-teach-others",
+        },
+    )
+
+    fifth_page = step_survey_page(
+        fourth_page,
+        "Have you ever believed something you read online that turned out not to be true?",
+        {
+            "believed-something-incorrect-online": "yes",
+        },
+    )
+
+    sixth_page = step_survey_page(
+        fifth_page,
+        "Do you use any of the following? Spreadsheets (for example, Excel or Google Sheets)",
+        {
+            "do-you-use-spreadsheets": "create",
+        },
+    )
+
+    seventh_page = step_survey_page(
+        sixth_page,
+        "Do you use any of the following? Dashboard tools (for example, Tableau, PowerBI, Looker or Qlik Sense)",
+        {
+            "do-you-use-dashboard-tools": "create",
+        },
+    )
+
+    eighth_page = step_survey_page(
+        seventh_page,
+        "Do you use any of the following? A coding language to explore data (for example, Python, R, SQL , SPSS or STATA)",  # noqa: E501
+        {
+            "do-you-use-coding-language": "create",
+        },
+    )
+
+    ninth_page = step_survey_page(
+        eighth_page,
+        "I am aware of the aims of One Big Thing",
+        {
+            "aware-of-the-aims": 1,
+        },
+    )
+
+    tenth_page = step_survey_page(
+        ninth_page,
+        "Create a unifying experience and build a shared identity",
+        {
+            "shared-identity": 1,
+            "identity-is-important": 1,
         },
     )
 
     completed_page = step_survey_page(
-        third_page,
-        "Uplift in data awareness",
+        tenth_page,
+        "Uplift in data awareness, confidence and knowledge",
         {
-            "positive-day-to-day": 1,
-            "effective-day-to-day": 5,
+            "confident-day-to-day": 1,
+            "data-is-relevant-to-role": 1,
+            "use-data-effectively-day-to-day": 1,
+            "data-support-day-to-day": 1,
         },
     )
 
@@ -45,17 +106,15 @@ def test_submit_survey():
     assert len(completed_surveys) > 0, completed_surveys
 
     competency_data = completed_surveys.get(page_number=1)
-    assert competency_data.data == {"competency": "beginner"}, competency_data.data
+    assert competency_data.data == {"confident-in-decisions": "confident"}, competency_data.data
 
     question_1_data = completed_surveys.get(page_number=2)
     assert question_1_data.data == {
-        "aims": "3",
-        "shared-identity": "3",
-        "identity-is-important": "3",
+        "confidence-explaining-graph": "reluctant",
     }, question_1_data.data
 
     question_2_data = completed_surveys.get(page_number=3)
-    assert question_2_data.data == {"positive-day-to-day": "1", "effective-day-to-day": "5"}, question_2_data.data
+    assert question_2_data.data == {"have-you-designed-a-survey": "yes-i-could-teach-others"}, question_2_data.data
 
 
 def step_survey_page(page, title, fields):
