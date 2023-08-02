@@ -1,9 +1,27 @@
 from tests import utils
 
+LOGIN_REQUIRED_PAGES = [
+    "/",
+    "/home/",
+    "/record-learning/",
+    "/questions/pre/",
+    "/questions/post/",
+    "/complete-hours/",
+    "/send-learning-record/",
+    "/download-learning/",
+    "/test/",
+]
+
 
 @utils.with_authenticated_client
 def test_get_pages_logged_in(client):
-    urls_to_test = ["/", "/record-learning/", "/questions/pre/", "/questions/post/"]
-    for url in urls_to_test:
+    for url in LOGIN_REQUIRED_PAGES:
         response = client.get(url)
         assert response.status_code == 200
+
+
+@utils.with_client
+def test_get_pages_require_login(client):
+    for url in LOGIN_REQUIRED_PAGES:
+        response = client.get(url)
+        assert response.status_code == 302
