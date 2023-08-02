@@ -5,6 +5,7 @@ import testino
 
 from one_big_thing import wsgi
 from one_big_thing.learning.models import SurveyResult, User
+from tests import test_survey
 
 TEST_SERVER_URL = "http://one-big-thing-testserver:8055/"
 
@@ -58,13 +59,8 @@ def register(client, email, password):
     form["grade"] = "GRADE6"
     form["department"] = "visitengland"
     form["profession"] = "LEGAL"
-    page = form.submit().follow()
-    assert page.has_text("How well do you understand data topics?")
-    form = page.get_form()
-    form["competency"] = "intermediate"
     form.submit().follow()
     user = User.objects.get(email=email)
-    user.has_completed_pre_survey = True
-    user.save()
+    test_survey.complete_survey(client, user)
     page = client.get("/").follow()
     assert page.has_text("Welcome to your One Big Thing Learning Record")
