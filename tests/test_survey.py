@@ -71,8 +71,36 @@ def complete_survey(client, user):
         },
     )
 
-    assert eighth_page.has_text("Welcome to your One Big Thing Learning Record")
-    assert eighth_page.has_text("Based on your survey results, we recommend you do the following:")
+    ninth_page = step_survey_page(
+        eighth_page,
+        "I am aware of the aims of One Big Thing",
+        {
+            "aware-of-the-aims": 1,
+        },
+    )
+
+    tenth_page = step_survey_page(
+        ninth_page,
+        "Create a unifying experience and build a shared identity",
+        {
+            "shared-identity": 1,
+            "identity-is-important": 1,
+        },
+    )
+
+    completed_page = step_survey_page(
+        tenth_page,
+        "Uplift in data awareness, confidence and knowledge",
+        {
+            "confident-day-to-day": 1,
+            "data-is-relevant-to-role": 1,
+            "use-data-effectively-day-to-day": 1,
+            "data-support-day-to-day": 1,
+        },
+    )
+
+    assert completed_page.has_text("Welcome to your One Big Thing Learning Record")
+    assert completed_page.has_text("Based on your survey results, we recommend you do the following:")
 
     completed_surveys = models.SurveyResult.objects.filter(user=user, survey_type="pre")
     assert len(completed_surveys) > 0, completed_surveys
