@@ -1,6 +1,5 @@
 from . import utils
 
-
 ACCOUNT_URLS_LOGIN_NOT_REQUIRED = [
     "/accounts/verify/",
     "/accounts/password-reset/",
