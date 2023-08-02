@@ -144,6 +144,7 @@ def homepage_view(request):
     errors = {}
     # survey_answer = models.SurveyResult.objects.get(user=user, survey_type="pre", page_number=1)
     # selected_level = survey_answer.data["competency"]
+    # TODO: Add level calculation and remove hard-coded level
     selected_level = "beginner"
     recommended_course_title = special_course_handler.competency_level_courses[selected_level]
     recommended_course = special_course_handler.get_special_course_information(recommended_course_title)
