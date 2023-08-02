@@ -2,42 +2,72 @@ from one_big_thing.learning import choices
 
 pre_questions_data = [
     {
-        "title": "Competency",
-        "questions": [{"id": "competency", "text": "How well do you understand data topics?", "answer_type": "radio"}],
-    },
-    {
-        "title": "Create a unifying experience and build a shared identity"
-        " (or create a shared vision, define shared goals)",
+        "title": "Do you feel confident to make a decision based on information you are presented with? For example, statistics or customer feedback",  # noqa: E501
         "questions": [
             {
-                "id": "aims",
-                "text": "I am aware of the aims of One Big Thing",
-                "answer_type": "agree-1-7",
-            },
-            {
-                "id": "shared-identity",
-                "text": 'I feel a sense of "shared identity" with other civil servants',
-                "answer_type": "agree-1-7",
-            },
-            {
-                "id": "identity-is-important",
-                "text": "My identity as a civil servant is important to me",
-                "answer_type": "agree-1-7",
+                "id": "confident-in-decisions",
+                "text": "",
+                "answer_type": "radio",
             },
         ],
     },
     {
-        "title": "Uplift in data awareness",
+        "title": "How would you feel about explaining to someone in your team what a graph is showing?",
         "questions": [
             {
-                "id": "positive-day-to-day",
-                "text": "I feel positive about using data in my day-to-day role",
-                "answer_type": "agree-1-7",
+                "id": "confidence-explaining-graph",
+                "text": "",
+                "answer_type": "radio",
             },
+        ],
+    },
+    {
+        "title": "Have you designed a survey to gather responses and make a decision?",
+        "questions": [
             {
-                "id": "effective-day-to-day",
-                "text": "I know how to use data effectively in my day-to-day role",
-                "answer_type": "agree-1-7",
+                "id": "have-you-designed-a-survey",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
+    {
+        "title": "Have you ever believed something you read online that turned out not to be true?",
+        "questions": [
+            {
+                "id": "believed-something-incorrect-online",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
+    {
+        "title": "Do you use any of the following? Spreadsheets (for example, Excel or Google Sheets)",
+        "questions": [
+            {
+                "id": "do-you-use-spreadsheets",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
+    {
+        "title": "Do you use any of the following? Dashboard tools (for example, Tableau, PowerBI, Looker or Qlik Sense)",  # noqa: E501
+        "questions": [
+            {
+                "id": "do-you-use-dashboard-tools",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
+    {
+        "title": "Do you use any of the following? A coding language to explore data (for example, Python, R, SQL , SPSS or STATA)",  # noqa: E501
+        "questions": [
+            {
+                "id": "do-you-use-coding-language",
+                "text": "",
+                "answer_type": "radio",
             },
         ],
     },
@@ -347,6 +377,70 @@ _training_levels = (
     ("unknown", "Don't know"),
 )
 
+_confident_in_decisions = (
+    ("not-confident", "Not confident"),
+    (
+        "confident",
+        "Confident",
+    ),
+    (
+        "very-confident",
+        "Very confident",
+    ),
+)
+
+_confident_explaining_graph = (
+    ("reluctant", "Reluctant"),
+    (
+        "willing-to-give-it-a-go",
+        "Willing to give it a go",
+    ),
+    (
+        "confident",
+        "Confident",
+    ),
+)
+
+_have_you_created_survey = (
+    ("no-i-couldnt-do-that", "No, I couldn't do that"),
+    (
+        "yes-i-could-do-that",
+        "Yes I could do that",
+    ),
+    (
+        "yes-i-could-teach-others",
+        "Yes, I could teach others how to do that",
+    ),
+)
+
+_have_you_believed_something_online = (
+    ("yes", "Yes"),
+    (
+        "no",
+        "No",
+    ),
+    (
+        "i-dont-think-so",
+        "I don't think so",
+    ),
+)
+
+_have_you_used_any_of_these = (
+    ("never-used", "Never used"),
+    (
+        "view",
+        "View",
+    ),
+    (
+        "create",
+        "Create",
+    ),
+    (
+        "automate",
+        "Automate",
+    ),
+)
+
 questions_data = {
     "pre": pre_questions_data,
     "post": post_questions_data,
@@ -394,6 +488,13 @@ answer_labels = {
     "training-level": dict(_training_levels),
     "useful-learning-formats": choices.CourseType.mapping,
     "willing-to-follow-up": choices.YesNo.mapping,
+    "confident-in-decisions": dict(_confident_in_decisions),
+    "confidence-explaining-graph": dict(_confident_explaining_graph),
+    "have-you-designed-a-survey": dict(_have_you_created_survey),
+    "believed-something-incorrect-online": dict(_have_you_believed_something_online),
+    "do-you-use-spreadsheets": dict(_have_you_used_any_of_these),
+    "do-you-use-dashboard-tools": dict(_have_you_used_any_of_these),
+    "do-you-use-coding-language": dict(_have_you_used_any_of_these),
 }
 
 agree_pre_questions = tuple(item["id"] for item in pre_questions if item["answer_type"] == "agree-1-5")
