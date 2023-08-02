@@ -56,6 +56,19 @@ survey_questions_compulsory_field_map = {
         7: [
             "do-you-use-coding-language",
         ],
+        8: [
+            "aware-of-the-aims",
+        ],
+        9: [
+            "shared-identity",
+            "identity-is-important",
+        ],
+        10: [
+            "confident-day-to-day",
+            "data-is-relevant-to-role",
+            "use-data-effectively-day-to-day",
+            "data-support-day-to-day",
+        ],
     },
 }
 
