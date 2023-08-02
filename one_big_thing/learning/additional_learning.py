@@ -135,7 +135,7 @@ additional_learning = {
             },
             {
                 "title": "Data visualisation from the Government Analysis Function",
-                "link": "https://analysisfunction.civilservice.gov.uk/support/communicating-analysis/introduction-to-data-visualisation-e-learning/",
+                "link": "https://analysisfunction.civilservice.gov.uk/support/communicating-analysis/introduction-to-data-visualisation-e-learning/",  # noqa: E501
                 "type": "Course",
                 "duration": None,
             },
@@ -188,7 +188,7 @@ additional_learning = {
             },
             {
                 "title": "Building resilience in government using data science, the Alan Turing Institute",
-                "link": "https://www.turing.ac.uk/news/data-science-should-be-used-build-resilience-government-decision-making-new-turing-white-paper",
+                "link": "https://www.turing.ac.uk/news/data-science-should-be-used-build-resilience-government-decision-making-new-turing-white-paper",  # noqa: E501
                 "type": "White paper",
                 "duration": None,
             },
@@ -206,7 +206,7 @@ additional_learning = {
             },
             {
                 "title": "Introduction to LLM with Mark Reidl",
-                "link": "https://mark-riedl.medium.com/a-very-gentle-introduction-to-large-language-models-without-the-hype-5f67941fa59e",
+                "link": "https://mark-riedl.medium.com/a-very-gentle-introduction-to-large-language-models-without-the-hype-5f67941fa59e",  # noqa: E501
                 "type": "Webpage",
                 "duration": None,
             },
