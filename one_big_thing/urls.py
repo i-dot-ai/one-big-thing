@@ -17,7 +17,7 @@ account_urlpatterns = [
     path("accounts/login/", authentication_views.CustomLoginView, name="account_login"),
     path("accounts/signup/", authentication_views.CustomSignupView.as_view(), name="account_signup"),
     path("accounts/verify/resend/", authentication_views.CustomResendVerificationView, name="resend-verify-email"),
-    path("accounts/", include("allauth.urls")),  # TODO - do we need these?
+    path("accounts/", include("allauth.urls")),
 ]
 
 admin_urlpatterns = [
