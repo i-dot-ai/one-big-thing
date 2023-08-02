@@ -16,7 +16,7 @@ def complete_survey(client, user):
 
     second_page = step_survey_page(
         first_page,
-        "Do you feel confident to make a decision based on information you are presented with? For example, statistics or customer feedback",
+        "Do you feel confident to make a decision based on information you are presented with? For example, statistics or customer feedback",  # noqa: E501
         # noqa: E501
         {
             "confident-in-decisions": "confident",
@@ -65,7 +65,7 @@ def complete_survey(client, user):
 
     eighth_page = step_survey_page(
         seventh_page,
-        "Do you use any of the following? A coding language to explore data (for example, Python, R, SQL , SPSS or STATA)",
+        "Do you use any of the following? A coding language to explore data (for example, Python, R, SQL , SPSS or STATA)",  # noqa: E501
         {
             "do-you-use-coding-language": "create",
         },
