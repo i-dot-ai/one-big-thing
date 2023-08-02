@@ -110,6 +110,9 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 
+if BASIC_AUTH:
+    MIDDLEWARE = ["one_big_thing.auth.basic_auth_middleware"] + MIDDLEWARE
+
 ROOT_URLCONF = "one_big_thing.urls"
 
 TEMPLATES = [
