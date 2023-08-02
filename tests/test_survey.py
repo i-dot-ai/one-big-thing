@@ -8,54 +8,85 @@ def test_submit_survey():
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=test_email)
+    complete_survey(client, user)
 
-    competency_page = client.get("/questions/pre/")
+
+def complete_survey(client, user):
+    first_page = client.get("/questions/pre/")
 
     second_page = step_survey_page(
-        competency_page,
-        "Competency",
+        first_page,
+        "Do you feel confident to make a decision based on information you are presented with? For example, statistics or customer feedback",
+        # noqa: E501
         {
-            "competency": "beginner",
+            "confident-in-decisions": "confident",
         },
     )
 
     third_page = step_survey_page(
         second_page,
-        "Create a unifying experience and build a shared identity (or create a shared vision, define shared goals)",
+        "How would you feel about explaining to someone in your team what a graph is showing?",
         {
-            "aims": 3,
-            "shared-identity": 3,
-            "identity-is-important": 3,
+            "confidence-explaining-graph": "reluctant",
         },
     )
 
-    completed_page = step_survey_page(
+    fourth_page = step_survey_page(
         third_page,
-        "Uplift in data awareness",
+        "Have you designed a survey to gather responses and make a decision?",
         {
-            "positive-day-to-day": 1,
-            "effective-day-to-day": 5,
+            "have-you-designed-a-survey": "yes-i-could-teach-others",
         },
     )
 
-    assert completed_page.has_text("Welcome to your One Big Thing Learning Record")
-    assert completed_page.has_text("Based on your survey results, we recommend you do the following:")
+    fifth_page = step_survey_page(
+        fourth_page,
+        "Have you ever believed something you read online that turned out not to be true?",
+        {
+            "believed-something-incorrect-online": "yes",
+        },
+    )
+
+    sixth_page = step_survey_page(
+        fifth_page,
+        "Do you use any of the following? Spreadsheets (for example, Excel or Google Sheets)",
+        {
+            "do-you-use-spreadsheets": "create",
+        },
+    )
+
+    seventh_page = step_survey_page(
+        sixth_page,
+        "Do you use any of the following? Dashboard tools (for example, Tableau, PowerBI, Looker or Qlik Sense)",
+        {
+            "do-you-use-dashboard-tools": "create",
+        },
+    )
+
+    eighth_page = step_survey_page(
+        seventh_page,
+        "Do you use any of the following? A coding language to explore data (for example, Python, R, SQL , SPSS or STATA)",
+        {
+            "do-you-use-coding-language": "create",
+        },
+    )
+
+    assert eighth_page.has_text("Welcome to your One Big Thing Learning Record")
+    assert eighth_page.has_text("Based on your survey results, we recommend you do the following:")
 
     completed_surveys = models.SurveyResult.objects.filter(user=user, survey_type="pre")
     assert len(completed_surveys) > 0, completed_surveys
 
     competency_data = completed_surveys.get(page_number=1)
-    assert competency_data.data == {"competency": "beginner"}, competency_data.data
+    assert competency_data.data == {"confident-in-decisions": "confident"}, competency_data.data
 
     question_1_data = completed_surveys.get(page_number=2)
     assert question_1_data.data == {
-        "aims": "3",
-        "shared-identity": "3",
-        "identity-is-important": "3",
+        "confidence-explaining-graph": "reluctant",
     }, question_1_data.data
 
     question_2_data = completed_surveys.get(page_number=3)
-    assert question_2_data.data == {"positive-day-to-day": "1", "effective-day-to-day": "5"}, question_2_data.data
+    assert question_2_data.data == {"have-you-designed-a-survey": "yes-i-could-teach-others"}, question_2_data.data
 
 
 def step_survey_page(page, title, fields):
