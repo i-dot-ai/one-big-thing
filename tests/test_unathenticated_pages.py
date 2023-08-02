@@ -1,6 +1,6 @@
 from . import utils
 
-OTHER_URLS_LOGIN_NOT_REQUIRED = ["/"]
+
 ACCOUNT_URLS_LOGIN_NOT_REQUIRED = [
     "/accounts/verify/",
     "/accounts/password-reset/",
@@ -11,9 +11,6 @@ ACCOUNT_URLS_LOGIN_NOT_REQUIRED = [
     "/accounts/signup/",
     "/accounts/verify/resend/",
 ]
-
-# TODO - all auth urls?
-# TODO - should we need login for some of these views?
 
 
 @utils.with_client
