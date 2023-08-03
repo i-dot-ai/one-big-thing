@@ -21,6 +21,7 @@ from . import (
     survey_handling,
     utils,
 )
+from .additional_learning import additional_learning
 from .decorators import enforce_user_completes_pre_survey
 from .email_handler import send_learning_record_email
 
@@ -462,3 +463,14 @@ def download_learning_view(request):
             return response
     else:
         return HttpResponse("File not found", status=404)
+
+
+@login_required
+@require_http_methods(["GET"])
+@enforce_user_completes_pre_survey
+def additional_learning_view(request):
+    additional_learning_records = additional_learning
+    data = {
+        "additional_learning": additional_learning_records,
+    }
+    return render(request, "additional-learning.html", {"data": data})
