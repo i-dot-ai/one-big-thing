@@ -34,6 +34,8 @@ BASIC_AUTH = env.str("BASIC_AUTH", default="")
 
 BASE_URL = env.str("BASE_URL")
 
+DEPARTMENTS_USING_INTRANET = dict(env.json("DEPARTMENTS_USING_INTRANET"))
+
 APPEND_SLASH = True
 
 ALLOWED_HOSTS = [
