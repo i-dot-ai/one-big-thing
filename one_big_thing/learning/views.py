@@ -258,12 +258,12 @@ class RecordLearningView(utils.MethodDispatcher):
                     value = int(data["time_to_complete_minutes"])
                     if value < 0:
                         raise ValueError
+                    if int(data["time_to_complete_minutes"]) > 59:
+                        errors = {
+                            **errors,
+                            "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
+                        }
                 except ValueError:
-                    errors = {
-                        **errors,
-                        "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
-                    }
-                if int(data["time_to_complete_minutes"]) > 59:
                     errors = {
                         **errors,
                         "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
