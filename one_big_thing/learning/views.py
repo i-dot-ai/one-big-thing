@@ -181,7 +181,7 @@ def external_test_view(request):
 class RecordLearningView(utils.MethodDispatcher):
     time_errors_map = {
         "time_to_complete_hours": "Please enter the hours this course took to complete e.g. 2",
-        "time_to_complete_minutes": "Please enter the minutes this course took to complete e.g. 45",
+        "time_to_complete_minutes": "Please enter the minutes this course took to complete, between 1 and 59",
     }
 
     def get(
@@ -259,6 +259,11 @@ class RecordLearningView(utils.MethodDispatcher):
                     if value < 0:
                         raise ValueError
                 except ValueError:
+                    errors = {
+                        **errors,
+                        "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
+                    }
+                if int(data["time_to_complete_minutes"]) > 59:
                     errors = {
                         **errors,
                         "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
