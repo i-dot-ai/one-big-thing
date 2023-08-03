@@ -2,7 +2,6 @@
 {% extends "base_generic_gov.html" %}
 
 {% block content %}
-  {% if not request.user.has_completed_required_time() and not request.user.has_marked_complete %}
     <div class="govuk-notification-banner" role="region"
       aria-labelledby="govuk-notification-banner-title"
       data-module="govuk-notification-banner">
@@ -17,19 +16,6 @@
         </p>
       </div>
     </div>
-  {% elif request.user.has_completed_required_time() and not request.user.has_marked_complete %}
-    <h2 class="govuk-heading-m">Now that you've completed 7 hours you can mark your One Big Thing learning as complete.</h2>
-    <a class="govuk-button govuk-button--secondary" href="{{url('complete-hours')}}">Mark One Big Thing as complete</a>
-  {% else %}
-    <div class="govuk-panel govuk-panel--confirmation">
-      <h1 class="govuk-panel__title">
-        You've now completed your One Big Thing!
-      </h1>
-      <div class="govuk-panel__body">
-        Thank you for marking your required learning time as complete.
-      </div>
-    </div>
-  {% endif %}
   {% call macros.form_wrapper(prev_url, "Save") -%}
     <fieldset class="govuk-fieldset">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
@@ -37,7 +23,6 @@
           Record learning I've done:
         </h1>
       </legend>
-      {{macros.input('title', 'Title of learning', data, errors)}}
       <div class="govuk-width-container">
         <main class="govuk-main-wrapper govuk-main-wrapper--l" style="padding: 0px !important;">
           <label class="govuk-label" for="time_to_complete">How long it took:</label>
@@ -51,8 +36,7 @@
           </div>
         </main>
       </div>
-      {{macros.input('link', 'URL (optional)', data, errors, type="url")}}
-      {{macros.select_from_list('learning_type', 'Format (optional)', data.learning_types)}}
+    <input type="hidden" name="title" id="title" value="Completed department content" />
     </fieldset>
   {%- endcall %}
         <h1 class="govuk-heading-l">

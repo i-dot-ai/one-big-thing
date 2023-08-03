@@ -78,56 +78,66 @@ def index_view(request):
 @enforce_user_completes_pre_survey
 def homepage_view(request):
     user = request.user
-    errors = {}
-    # survey_answer = models.SurveyResult.objects.get(user=user, survey_type="pre", page_number=1)
-    # selected_level = survey_answer.data["competency"]
-    # TODO: Add level calculation and remove hard-coded level
-    selected_level = "beginner"
-    recommended_course_title = special_course_handler.competency_level_courses[selected_level]
-    recommended_course = special_course_handler.get_special_course_information(recommended_course_title)
-    extra_recommended_course_titles = [
-        value
-        for key, value in special_course_handler.competency_level_courses.items()
-        if value != recommended_course_title
-    ]
-    extra_recommended_courses = [
-        special_course_handler.get_special_course_information(course_title)
-        for course_title in extra_recommended_course_titles
-    ]
-    extra_recommended_courses_information = [
-        {
-            "title": extra_course.title,
-            "link": extra_course.link,
-            "id": extra_course.id,
-            "is_complete": user.has_completed_course(extra_course.id),
+    if user.department in settings.DEPARTMENTS_USING_INTRANET.keys():
+        time_completed = user.get_time_completed()
+        department_link = settings.DEPARTMENTS_USING_INTRANET[user.department]
+        data = {
+            "time_completed": time_completed,
+            "intranet_link": department_link,
         }
-        for extra_course in extra_recommended_courses
-    ]
-    recommended_course_information = {
-        "title": recommended_course.title,
-        "link": recommended_course.link,
-        "id": recommended_course.id,
-        "is_complete": user.has_completed_course(recommended_course.id),
-    }
-    team_meeting_course = special_course_handler.get_special_course_information(
-        special_course_handler.team_meeting_course_title
-    )
-    time_completed = user.get_time_completed()
-    data = {
-        "time_completed": time_completed,
-        "recommended_course": recommended_course_information,
-        "extra_recommended_courses": extra_recommended_courses_information,
-        "team_meeting_course": team_meeting_course,
-    }
-    return render(
-        request,
-        template_name="homepage.html",
-        context={
-            "request": request,
-            "data": data,
-            "errors": errors,
-        },
-    )
+        errors = {}
+        return render(request, "streamlined-homepage.html", {"data": data, "errors": errors})
+    else:
+        errors = {}
+        # survey_answer = models.SurveyResult.objects.get(user=user, survey_type="pre", page_number=1)
+        # selected_level = survey_answer.data["competency"]
+        # TODO: Add level calculation and remove hard-coded level
+        selected_level = "beginner"
+        recommended_course_title = special_course_handler.competency_level_courses[selected_level]
+        recommended_course = special_course_handler.get_special_course_information(recommended_course_title)
+        extra_recommended_course_titles = [
+            value
+            for key, value in special_course_handler.competency_level_courses.items()
+            if value != recommended_course_title
+        ]
+        extra_recommended_courses = [
+            special_course_handler.get_special_course_information(course_title)
+            for course_title in extra_recommended_course_titles
+        ]
+        extra_recommended_courses_information = [
+            {
+                "title": extra_course.title,
+                "link": extra_course.link,
+                "id": extra_course.id,
+                "is_complete": user.has_completed_course(extra_course.id),
+            }
+            for extra_course in extra_recommended_courses
+        ]
+        recommended_course_information = {
+            "title": recommended_course.title,
+            "link": recommended_course.link,
+            "id": recommended_course.id,
+            "is_complete": user.has_completed_course(recommended_course.id),
+        }
+        team_meeting_course = special_course_handler.get_special_course_information(
+            special_course_handler.team_meeting_course_title
+        )
+        time_completed = user.get_time_completed()
+        data = {
+            "time_completed": time_completed,
+            "recommended_course": recommended_course_information,
+            "extra_recommended_courses": extra_recommended_courses_information,
+            "team_meeting_course": team_meeting_course,
+        }
+        return render(
+            request,
+            template_name="homepage.html",
+            context={
+                "request": request,
+                "data": data,
+                "errors": errors,
+            },
+        )
 
 
 @login_required
@@ -186,6 +196,10 @@ class RecordLearningView(utils.MethodDispatcher):
         if not data:
             data = {}
         user = request.user
+        if user.department in settings.DEPARTMENTS_USING_INTRANET.keys():
+            template_name = "streamlined-record-learning.html"
+        else:
+            template_name = "record-learning.html"
         time_completed = user.get_time_completed()
         learning_types = choices.CourseType.choices
         courses = models.Learning.objects.filter(user=user)
@@ -207,7 +221,7 @@ class RecordLearningView(utils.MethodDispatcher):
                 }
         return render(
             request,
-            template_name="record-learning.html",
+            template_name=template_name,
             context={
                 "request": request,
                 "data": data,
@@ -254,6 +268,10 @@ class RecordLearningView(utils.MethodDispatcher):
         if errors:
             return self.get(request, data=data, errors=errors)
         user = request.user
+        if user.department in settings.DEPARTMENTS_USING_INTRANET.keys():
+            template_name = "streamlined-record-learning.html"
+        else:
+            template_name = "record-learning.html"
         course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
         manipulated_data = {
             "title": data["title"],
@@ -283,7 +301,7 @@ class RecordLearningView(utils.MethodDispatcher):
         data = {"time_completed": time_completed, "learning_types": learning_types, **data}
         return render(
             request,
-            template_name="record-learning.html",
+            template_name=template_name,
             context={
                 "request": request,
                 "data": data,
