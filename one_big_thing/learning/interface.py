@@ -11,7 +11,7 @@ class CreateCourseSchema(marshmallow.Schema):
 class CreateLearningSchema(marshmallow.Schema):
     user_id = marshmallow.fields.UUID()
     course_id = marshmallow.fields.UUID(allow_none=True)
-    data = marshmallow.fields.Nested(schemas.CourseSchema)
+    data = marshmallow.fields.Nested(schemas.LearningSchema)
     user_to_add = marshmallow.fields.UUID()
 
 
@@ -57,7 +57,7 @@ class Learning(Entity):
         return response
 
     @with_schema(load=DeleteLearningSchema, dump=DeleteLearningSchemaResponse)
-    @register_event("Delete learning")
+    @register_event("Deleted learning")
     def delete(self, user_id, learning_id):
         learning_record = models.Learning.objects.get(user__id=user_id, pk=learning_id)
         learning_record.delete()

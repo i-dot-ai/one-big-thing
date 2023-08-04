@@ -285,6 +285,7 @@ class RecordLearningView(utils.MethodDispatcher):
             ),
             "link": data.get("link"),
             "learning_type": data.get("learning_type", None),
+            "rating": data.get("rating", None),
         }
         try:
             course_schema.load(manipulated_data, partial=True)
@@ -296,6 +297,7 @@ class RecordLearningView(utils.MethodDispatcher):
                 "link": manipulated_data.get("link", None),
                 "learning_type": manipulated_data.get("learning_type", None),
                 "time_to_complete": manipulated_data.get("time_to_complete", None),
+                "rating": manipulated_data.get("rating", None),
             }
             _ = interface.api.learning.create(user.id, user.id, learning_data, course_id)
             return redirect(
