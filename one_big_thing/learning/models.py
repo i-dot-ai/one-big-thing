@@ -86,6 +86,7 @@ class Learning(TimeStampedModel, UUIDPrimaryKeyBase):
     time_to_complete = models.IntegerField()  # minutes
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.IntegerField(blank=True, null=True)
 
     def get_learning_type_display_name(self):
         if self.learning_type in choices.CourseType.names:
