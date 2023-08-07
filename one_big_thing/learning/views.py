@@ -181,7 +181,7 @@ def external_test_view(request):
 class RecordLearningView(utils.MethodDispatcher):
     time_errors_map = {
         "time_to_complete_hours": "Please enter the hours this course took to complete e.g. 2",
-        "time_to_complete_minutes": "Please enter the minutes this course took to complete, between 1 and 59",
+        "time_to_complete_minutes": "Please enter the minutes this course took to complete, between 0 and 59",
     }
 
     def get(

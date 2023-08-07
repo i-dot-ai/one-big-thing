@@ -21,7 +21,7 @@ def test_enter_invalid_time_to_complete():
     submitted_page = record_learning_form.submit()
     assert submitted_page.status_code == 200, submitted_page.status_code
     assert submitted_page.has_text("Please enter the hours this course took to complete e.g. 2")
-    assert submitted_page.has_text("Please enter the minutes this course took to complete, between 1 and 59")
+    assert submitted_page.has_text("Please enter the minutes this course took to complete, between 0 and 59")
 
     user.delete()
 
@@ -42,7 +42,7 @@ def test_enter_invalid_values():
     submitted_page = record_learning_form.submit()
     assert submitted_page.status_code == 200, submitted_page.status_code
     assert submitted_page.has_text("Please enter the hours this course took to complete e.g. 2")
-    assert submitted_page.has_text("Please enter the minutes this course took to complete, between 1 and 59")
+    assert submitted_page.has_text("Please enter the minutes this course took to complete, between 0 and 59")
     assert submitted_page.has_text("Please provide a title for this course")
 
     user.delete()
