@@ -15,7 +15,4 @@ echo "Starting app"
 
 echo "Using '$ENVIRONMENT' environment settings"
 
-PORT_VARIABLE_NAME="${ENVIRONMENT}_PORT"
-PORT_VALUE=$(eval "echo \$$PORT_VARIABLE_NAME")
-
-watchmedo auto-restart --directory=./  --pattern=""*.py"" --recursive -- waitress-serve --port=$PORT_VALUE --threads=8 one_big_thing.wsgi:application
+watchmedo auto-restart --directory=./  --pattern=""*.py"" --recursive -- waitress-serve --port="$PORT" --threads=8 one_big_thing.wsgi:application

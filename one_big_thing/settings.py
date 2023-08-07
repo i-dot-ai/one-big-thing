@@ -17,7 +17,7 @@ STATIC_ROOT = STATIC_ROOT
 ENVIRONMENT = env.str("ENVIRONMENT", default=None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool(f"{ENVIRONMENT}_DEBUG", default=False)
+DEBUG = env.bool("DEBUG", default=False)
 
 SECRET_KEY = env.str(f"{ENVIRONMENT}_DJANGO_SECRET_KEY")
 
@@ -136,13 +136,13 @@ WSGI_APPLICATION = "one_big_thing.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": env.str(f"{ENVIRONMENT}_POSTGRES_DB"),
-        "USER": env.str(f"{ENVIRONMENT}_POSTGRES_USER"),
-        "PASSWORD": env.str(f"{ENVIRONMENT}_POSTGRES_PASSWORD")
+        "NAME": env.str("POSTGRES_DB"),
+        "USER": env.str("POSTGRES_USER"),
+        "PASSWORD": env.str("POSTGRES_PASSWORD")
         if ENVIRONMENT in ["TESTS", "LOCAL"]
-        else fetch_db_password(env.str(f"{ENVIRONMENT}_DB_PASSWORD_SECRET_NAME")),
-        "HOST": env.str(f"{ENVIRONMENT}_POSTGRES_HOST"),
-        "PORT": env.str(f"{ENVIRONMENT}_POSTGRES_PORT"),
+        else fetch_db_password(env.str("DB_PASSWORD_SECRET_NAME")),
+        "HOST": env.str("POSTGRES_HOST"),
+        "PORT": env.str("POSTGRES_PORT"),
         **{"ATOMIC_REQUESTS": True},
     }
 }
