@@ -43,15 +43,15 @@
             <label class="govuk-label">Rating (optional)</label>
             <div class="rate">
                 <input type="radio" id="star1" name="rating" value="1"/>
-                <label for="star1" title="text">1 star</label>
+                <label for="star1">1 star</label>
                 <input type="radio" id="star2" name="rating" value="2"/>
-                <label for="star2" title="text">2 stars</label>
+                <label for="star2">2 stars</label>
                 <input type="radio" id="star3" name="rating" value="3"/>
-                <label for="star3" title="text">3 stars</label>
+                <label for="star3">3 stars</label>
                 <input type="radio" id="star4" name="rating" value="4"/>
-                <label for="star4" title="text">4 stars</label>
+                <label for="star4">4 stars</label>
                 <input type="radio" id="star5" name="rating" value="5"/>
-                <label for="star5" title="text">5 stars</label>
+                <label for="star5">5 stars</label>
             </div>
             </div>
         </fieldset>
@@ -81,16 +81,16 @@
                 <td class="govuk-table__cell govuk-table__cell--numeric">{{ humanize_timedelta(course.time_to_complete) }}</td>
                 <td class="govuk-table__cell govuk-table__cell--numeric">
                     <div class="rate disabled">
-                        <input class="disabled" disabled {% if course.rating == 1 %} checked {% endif %} type="radio" id="star1" name="rating" value="1"/>
-                        <label class="disabled" for="star1">1 star</label>
-                        <input class="disabled" disabled {% if course.rating == 2 %} checked {% endif %} type="radio" id="star2" name="rating" value="2"/>
-                        <label class="disabled" for="star2">2 stars</label>
-                        <input class="disabled" disabled {% if course.rating == 3 %} checked {% endif %} type="radio" id="star3" name="rating" value="3"/>
-                        <label class="disabled" for="star3">3 stars</label>
-                        <input class="disabled" disabled {% if course.rating == 4 %} checked {% endif %} type="radio" id="star4" name="rating" value="4"/>
-                        <label class="disabled" for="star4">4 stars</label>
-                        <input class="disabled" disabled {% if course.rating == 5 %} checked {% endif %} type="radio" id="star5" name="rating" value="5"/>
-                        <label class="disabled" for="star5">5 stars</label>
+                        <input class="disabled" disabled {% if course.rating == 1 %} checked {% endif %} type="radio" id="{{loop.index}}-{{course.title}}-display-star1"/>
+                        <label class="disabled" for="{{loop.index}}-{{course.title}}-display-star1">1 star</label>
+                        <input class="disabled" disabled {% if course.rating == 2 %} checked {% endif %} type="radio" id="{{loop.index}}-{{course.title}}-display-star2"/>
+                        <label class="disabled" for="{{loop.index}}-{{course.title}}-display-star2">2 stars</label>
+                        <input class="disabled" disabled {% if course.rating == 3 %} checked {% endif %} type="radio" id="{{loop.index}}-{{course.title}}-display-star3"/>
+                        <label class="disabled" for="{{loop.index}}-{{course.title}}-display-star3">3 stars</label>
+                        <input class="disabled" disabled {% if course.rating == 4 %} checked {% endif %} type="radio" id="{{loop.index}}-{{course.title}}-display-star4"/>
+                        <label class="disabled" for="{{loop.index}}-{{course.title}}-display-star4">4 stars</label>
+                        <input class="disabled" disabled {% if course.rating == 5 %} checked {% endif %} type="radio" id="{{loop.index}}-{{course.title}}-display-star5"/>
+                        <label class="disabled" for="{{loop.index}}-{{course.title}}-display-star5">5 stars</label>
                     </div>
                 </td>
                 <td class="govuk-table__cell govuk-table__cell--numeric">
