@@ -7,19 +7,20 @@
 }
 
 #i-dot-ai .space-warning {
-    float: right;
-    background-color: #d4351c;
-    padding: 0.5rem 1rem;
+  float: right;
+  background-color: #d4351c;
+  padding: 0.5rem 1rem;
 }
 
 #i-dot-ai .flex-justify-end {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 #i-dot-ai .govuk-cookie-banner.hidden {
   display: none;
 }
+
 #i-dot-ai .govuk-cookie-banner.visible {
   display: block;
 }
