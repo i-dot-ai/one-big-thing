@@ -7,10 +7,51 @@
     }
 }
 
-.rate:not(:checked) > input {
+/* .rate:not(:checked) > input {
     position:absolute;
     top:-9999px;
-}
+} */
+
+
+/* Hide radio inputs */
+.rate input[type="radio"] {
+    /* position: absolute; */
+    width: 10px; 
+    height: 10px;
+    padding: 0; 
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+  }
+  
+  /* Create larger clickable area */
+  .rate label {
+    display: inline-block;
+    padding: 5px 10px;
+  }
+  
+  /* Change cursor to pointer */  
+  .rate label:hover {
+    cursor: pointer; 
+  }
+  
+  /* Indicate focus */
+  .rate label:focus {
+    outline: 2px solid #blue;
+  }
+
+
+/* .rate:not(:checked) > input {
+    position: absolute;
+    clip-path: inset(100%);
+    clip: rect(1px, 1px, 1px, 1px);
+    padding: 0;
+    border: 0;
+    height: 1px; 
+    width: 1px; 
+    overflow: hidden;
+} */
 
 .rate:not(:checked) > label {
     float:right;
