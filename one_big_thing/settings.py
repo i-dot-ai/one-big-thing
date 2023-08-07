@@ -24,9 +24,6 @@ SECRET_KEY = env.str(f"{ENVIRONMENT}_DJANGO_SECRET_KEY")
 REQUIRED_LEARNING_TIME = env.int(f"{ENVIRONMENT}_REQUIRED_LEARNING_TIME", default=420)
 SELF_REFLECTION_FILENAME = env.str(f"{ENVIRONMENT}_SELF_REFLECTION_FILENAME")
 
-CONTACT_EMAIL = env.str(f"{ENVIRONMENT}_CONTACT_EMAIL", default="test@example.com")
-FROM_EMAIL = env.str(f"{ENVIRONMENT}_FROM_EMAIL", default="test@example.com")
-FEEDBACK_EMAIL = env.str(f"{ENVIRONMENT}_FEEDBACK_EMAIL", default="test@example.com")
 VCAP_APPLICATION = env.json(f"{ENVIRONMENT}_VCAP_APPLICATION", default={})
 if ENVIRONMENT in ["TESTS", "LOCAL"]:
     CONTACT_EMAIL = env.str(f"{ENVIRONMENT}_CONTACT_EMAIL", default="test@example.com")
