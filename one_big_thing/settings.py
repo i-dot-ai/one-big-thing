@@ -166,18 +166,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-SENTRY_DSN = env.str(f"{ENVIRONMENT}_SENTRY_DSN", default="")
-SENTRY_ENVIRONMENT = env.str(f"{ENVIRONMENT}_SENTRY_ENVIRONMENT", default="")
+if not DEBUG:
+    SENTRY_DSN = env.str(f"{ENVIRONMENT}_SENTRY_DSN", default="")
+    SENTRY_ENVIRONMENT = env.str(f"{ENVIRONMENT}_SENTRY_ENVIRONMENT", default="")
 
-sentry_sdk.init(
-    dsn=SENTRY_DSN,
-    integrations=[
-        DjangoIntegration(),
-    ],
-    environment=SENTRY_ENVIRONMENT,
-    send_default_pii=False,
-    traces_sample_rate=0.0,
-)
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[
+            DjangoIntegration(),
+        ],
+        environment=SENTRY_ENVIRONMENT,
+        send_default_pii=False,
+        traces_sample_rate=0.0,
+    )
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
