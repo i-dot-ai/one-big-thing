@@ -3,10 +3,10 @@
 
 {% block content %}
     <div class="govuk-notification-banner" role="region"
-      aria-labelledby="govuk-notification-banner-title"
+      aria-labelledby="govuk-hours-done-notification-banner-title"
       data-module="govuk-notification-banner">
       <div class="govuk-notification-banner__header">
-        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+        <h2 class="govuk-notification-banner__title" id="govuk-hours-done-notification-banner-title">
           Hours done
         </h2>
       </div>
@@ -18,10 +18,10 @@
     </div>
     {% if not request.user.has_completed_post_survey and request.user.has_completed_required_time() %}
     <div class="govuk-notification-banner" role="region"
-      aria-labelledby="govuk-notification-banner-title"
+      aria-labelledby="govuk-post-survey-notification-banner-title"
       data-module="govuk-notification-banner">
       <div class="govuk-notification-banner__header">
-        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+        <h2 class="govuk-notification-banner__title" id="govuk-post-survey-notification-banner-title">
           Important
         </h2>
       </div>
