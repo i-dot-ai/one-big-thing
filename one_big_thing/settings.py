@@ -1,7 +1,6 @@
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
-from .AWS import fetch_generic_secret
 from .settings_base import (
     BASE_DIR,
     STATIC_ROOT,
@@ -19,25 +18,16 @@ ENVIRONMENT = env.str("ENVIRONMENT", default=None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-if ENVIRONMENT in ["TESTS", "LOCAL"]:
-    SECRET_KEY = env.str("DJANGO_SECRET_KEY")
-else:
-    SECRET_KEY = fetch_generic_secret(ENVIRONMENT, "DJANGO_SECRET_KEY")
+SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 
 REQUIRED_LEARNING_TIME = env.int("REQUIRED_LEARNING_TIME", default=420)
 SELF_REFLECTION_FILENAME = env.str("SELF_REFLECTION_FILENAME")
 
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
-if ENVIRONMENT in ["TESTS", "LOCAL"]:
-    CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
-    FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
-    FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
-    ALLOWED_DOMAINS = env.list("ALLOWED_DOMAINS", default=list())
-else:
-    ALLOWED_DOMAINS = fetch_generic_secret(ENVIRONMENT, "ALLOWED_DOMAINS")
-    CONTACT_EMAIL = fetch_generic_secret(ENVIRONMENT, "CONTACT_EMAIL")
-    FROM_EMAIL = fetch_generic_secret(ENVIRONMENT, "FROM_EMAIL")
-    FEEDBACK_EMAIL = fetch_generic_secret(ENVIRONMENT, "FEEDBACK_EMAIL")
+CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
+FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
+FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
+ALLOWED_DOMAINS = env.list("ALLOWED_DOMAINS", default=list())
 
 CIVIL_SERVICE_DOMAINS = frozenset(ALLOWED_DOMAINS)
 
@@ -141,9 +131,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": env.str("POSTGRES_DB"),
         "USER": env.str("POSTGRES_USER"),
-        "PASSWORD": env.str("POSTGRES_PASSWORD")
-        if ENVIRONMENT in ["TESTS", "LOCAL"]
-        else fetch_generic_secret(ENVIRONMENT, env.str("DB_PASSWORD_SECRET_NAME")),
+        "PASSWORD": env.str("POSTGRES_PASSWORD"),
         "HOST": env.str("POSTGRES_HOST"),
         "PORT": env.str("POSTGRES_PORT"),
         **{"ATOMIC_REQUESTS": True},
@@ -225,12 +213,8 @@ elif EMAIL_BACKEND_TYPE == "CONSOLE":
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 elif EMAIL_BACKEND_TYPE == "GOVUKNOTIFY":
     EMAIL_BACKEND = "django_gov_notify.backends.NotifyEmailBackend"
-    if ENVIRONMENT not in ["TESTS", "LOCAL"]:
-        GOVUK_NOTIFY_API_KEY = env.str("GOVUK_NOTIFY_API_KEY")
-        GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = env.str("GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
-    else:
-        GOVUK_NOTIFY_API_KEY = fetch_generic_secret(ENVIRONMENT, "GOVUK_NOTIFY_API_KEY")
-        GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = fetch_generic_secret(ENVIRONMENT, "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
+    GOVUK_NOTIFY_API_KEY = env.str("GOVUK_NOTIFY_API_KEY")
+    GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = env.str("GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
 else:
     if EMAIL_BACKEND_TYPE not in ("FILE", "CONSOLE", "GOVUKNOTIFY"):
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
