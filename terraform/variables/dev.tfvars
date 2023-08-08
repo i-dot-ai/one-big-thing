@@ -21,4 +21,4 @@ required_learning_time = 420
 send_verification_email = true
 port = 8055
 self_reflection_filename = "Test_self_reflection_for_download_on_OBT_platform_July 2023.docx"
-
+region="eu-west-2"

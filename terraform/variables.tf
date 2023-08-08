@@ -43,6 +43,16 @@ variable "self_reflection_filename" {
   type        = string
 }
 
+variable "region" {
+  description = "The region this instance is deployed to"
+  type        = string
+}
+
+variable "aws_account_id" {
+  description = "The account id to use to access the AWS resources"
+  type        = string
+}
+
 locals {
   base_url = "https://obt-${var.env}.i.ai.10ds.cabinetoffice.gov.uk"
 }
