@@ -6,10 +6,10 @@
     <div class="govuk-body">
         <h2 class="govuk-heading-m">Are you sure you want to delete this learning?</h2>
         <form method="post">{{ csrf_input }}
-          <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="delete">
+          <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" name="delete-learning">
             Yes, delete
           </button>
-          <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" id="cancel">
+          <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" name="cancel">
             Cancel
           </button>
       </form>

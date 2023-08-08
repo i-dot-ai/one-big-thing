@@ -466,11 +466,10 @@ def send_learning_record_view(request):
 @require_http_methods(["GET", "POST"])
 @enforce_user_completes_pre_survey
 def check_delete_learning_view(request, learning_id):
-    if request.POST:
-        # TODO
-        # Delete 
-        # or cancel
-        pass
+    if request.method == "POST":
+        if "delete-learning" in request.POST:
+            interface.api.learning.delete(user_id=request.user.id, learning_id=learning_id)
+        return redirect("record-learning")
     return render(request, "delete-learning-check.html")
 
 
