@@ -81,7 +81,7 @@ def complete_survey(client, user):
 
     tenth_page = step_survey_page(
         ninth_page,
-        "Create a unifying experience and build a shared identity",
+        "To what extent do you agree or disagree with the following statements?",
         {
             "shared-identity": 1,
             "identity-is-important": 1,
@@ -90,7 +90,7 @@ def complete_survey(client, user):
 
     completed_page = step_survey_page(
         tenth_page,
-        "Uplift in data awareness, confidence and knowledge",
+        "To what extent do you agree or disagree with the following statements?",
         {
             "confident-day-to-day": 1,
             "data-is-relevant-to-role": 1,
