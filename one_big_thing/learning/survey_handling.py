@@ -82,8 +82,7 @@ pre_questions_data = [
         ],
     },
     {
-        "title": "Create a unifying experience and build a shared identity"
-        " (or create a shared vision, define shared goals)",
+        "title": "To what extent do you agree or disagree with the following statements?",
         "questions": [
             {
                 "id": "shared-identity",
@@ -98,7 +97,7 @@ pre_questions_data = [
         ],
     },
     {
-        "title": "Uplift in data awareness, confidence and knowledge",
+        "title": "To what extent do you agree or disagree with the following statements?",
         "questions": [
             {
                 "id": "confident-day-to-day",
@@ -136,7 +135,7 @@ post_questions_data = [
         ],
     },
     {
-        "title": "Create a unifying experience and build a shared identity",
+        "title": "Please rate how much you agree or disagree with the following statements:",
         "questions": [
             {
                 "id": "shared-identity",
