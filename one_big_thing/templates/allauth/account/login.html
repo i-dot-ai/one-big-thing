@@ -4,24 +4,23 @@
 
 {% block head_title %}Log in{% endblock %}
 
+{% load static %}
+
 {% block content %}
 
   <section class="wrapper">
 
     <form class="login" method="POST">
+    <img src="{% static 'assets/OBT_LOGO.svg' %}" alt="One Big Thing logo"><svg width="1em" height="1em" viewBox="0 0 40 40" fill="currentColor"><use href="/static/assets/OBT_LOGO.svg"></use></svg>
       {% csrf_token %}
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
           <h1 class="govuk-fieldset__heading">
-            Welcome to the One Big Thing Learning Record
+            Welcome to One Big Thing
           </h1>
         </legend>
-        <p class="govuk-body">One Big Thing is a new annual initiative for civil servants to take shared action around a reform priority, as one Civil Service.</p>
-        <p class="govuk-body">The ‘One Big Thing’ for 2023 is data - every civil servant will complete at least one day’s worth of data training this autumn.</p>
-        <p class="govuk-body">The One Big Thing Learning Record is your space to record your learning.</p>
-        <p class="govuk-body">When you sign in for the first time you will complete a survey to find out what learning is best for you.</p>
-        <h2 class="govuk-heading-m">Sign in</h2>
         <p class="govuk-body">If you have not created an account yet, then please <a href="{% url 'account_signup' %}">register</a> first.</p>
+        <h2 class="govuk-heading-m">Sign in</h2>
         <div class="govuk-form-group">
           <label class="govuk-label" for="id_login">
             Email
@@ -41,13 +40,18 @@
             Remember me
           </label>
         </div>
-        {% if redirect_field_value %}
-          <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>
-        {% endif %}
 
-      {% if resend_verification is True and resend_email is not None %}
-        <p class="govuk-body">Your account is not verified. <a class="govuk-link" href="{% url 'resend-verify-email' %}?email={{resend_email|urlencode}}">Request a new verification link</a>.</p>
-      {% endif %}
+        <div class="govuk-body">
+          <p class="govuk-body">By signing in you accept our <a target="_blank" rel="noopener noreferrer" href="#">terms and conditions</a>.</p>
+          {% if redirect_field_value %}
+            <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>
+          {% endif %}
+          {% if resend_verification is True and resend_email is not None %}
+            <p class="govuk-body">Your account is not verified. <a class="govuk-link" href="{% url 'resend-verify-email' %}?email={{resend_email|urlencode}}">Request a new verification link</a>.</p>
+          {% else %}
+            <a class="govuk-link" href="{% url 'password-reset' %}">Forgot password?</a>
+          {% endif %}
+        </div>
 
         <div class="govuk-button-group">
           <button class="govuk-button" data-module="govuk-button">
@@ -56,10 +60,7 @@
         </div>
       </fieldset>
     </form>
-    <div class="govuk-button-group">
-      <a class="govuk-link" href="{% url 'password-reset' %}">Request password reset</a>
-    </div>
-  </section>
 
+  </section>
 
 {% endblock %}
