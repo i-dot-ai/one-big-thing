@@ -29,7 +29,7 @@ reset-db:
 
 # -------------------------------------- Code Style  -------------------------------------
 
-.PHONY: check-python-codes
+.PHONY: check-python-code
 check-python-code:
 	isort --check .
 	black --check .
@@ -56,6 +56,9 @@ docker/login:
 
 docker/build:
 	docker build -t $(IMAGE) -f ./docker/web/Dockerfile .
+
+docker/build-m1:
+	docker buildx build --platform linux/amd64 -t $(IMAGE) -f ./docker/web/Dockerfile .
 
 docker/push:
 	docker push $(IMAGE)

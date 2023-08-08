@@ -6,13 +6,22 @@ resource "aws_security_group" "rds" {
 resource "aws_security_group_rule" "rds" {
   type              = "ingress"
   description       = "Securelist for the RDS instance"
-  from_port         = 5432
-  to_port           = 5432
+  from_port         = local.db_port
+  to_port           = local.db_port
   protocol          = "TCP"
   cidr_blocks       = var.ip_securelist
   security_group_id = aws_security_group.rds.id
 }
 
+resource "aws_security_group_rule" "ecs" {
+  type                     = "ingress"
+  description              = "Allow access to the ECS task"
+  from_port                = local.db_port
+  to_port                  = local.db_port
+  protocol                 = "TCP"
+  source_security_group_id = module.ecs.services["one-big-thing"].security_group_id
+  security_group_id        = aws_security_group.rds.id
+}
 
 module "db" {
   source     = "terraform-aws-modules/rds/aws"
@@ -23,12 +32,13 @@ module "db" {
   engine_version    = "14"
   instance_class    = "db.t3.micro"
   family            = "postgres14"
-  db_name           = "obt"
-  username          = "postgres"
-  port              = "5432"
+  db_name           = local.db_name
+  username          = local.db_user
+  port              = local.db_port
   allocated_storage = 20
 
   vpc_security_group_ids = [aws_security_group.rds.id]
+  publicly_accessible    = true
 
   maintenance_window = "Mon:00:00-Mon:03:00"
   backup_window      = "03:00-06:00"

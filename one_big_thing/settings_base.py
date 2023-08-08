@@ -7,8 +7,6 @@ env = environ.Env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = env.str("DJANGO_SECRET_KEY")
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.contenttypes",

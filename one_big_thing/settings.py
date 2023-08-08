@@ -1,48 +1,59 @@
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
+from .db import fetch_db_password, fetch_generic_secret
 from .settings_base import (
     BASE_DIR,
-    SECRET_KEY,
     STATIC_ROOT,
     STATIC_URL,
     STATICFILES_DIRS,
     env,
 )
 
-SECRET_KEY = SECRET_KEY
 STATIC_URL = STATIC_URL
 STATICFILES_DIRS = STATICFILES_DIRS
 STATIC_ROOT = STATIC_ROOT
 
+ENVIRONMENT = env.str("ENVIRONMENT", default=None)
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-REQUIRED_LEARNING_TIME = env.int("REQUIRED_LEARNING_TIME", default=420)
-SELF_REFLECTION_FILENAME = env.str("SELF_REFLECTION_FILENAME")
+SECRET_KEY = env.str(f"{ENVIRONMENT}_DJANGO_SECRET_KEY")
 
-CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
-FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
-FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
+REQUIRED_LEARNING_TIME = env.int(f"{ENVIRONMENT}_REQUIRED_LEARNING_TIME", default=420)
+SELF_REFLECTION_FILENAME = env.str(f"{ENVIRONMENT}_SELF_REFLECTION_FILENAME")
 
-VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
+VCAP_APPLICATION = env.json(f"{ENVIRONMENT}_VCAP_APPLICATION", default={})
+if ENVIRONMENT in ["TESTS", "LOCAL"]:
+    CONTACT_EMAIL = env.str(f"{ENVIRONMENT}_CONTACT_EMAIL", default="test@example.com")
+    FROM_EMAIL = env.str(f"{ENVIRONMENT}_FROM_EMAIL", default="test@example.com")
+    FEEDBACK_EMAIL = env.str(f"{ENVIRONMENT}_FEEDBACK_EMAIL", default="test@example.com")
+    ALLOWED_DOMAINS = env.list(f"{ENVIRONMENT}_ALLOWED_DOMAINS", default=list())
+else:
+    ALLOWED_DOMAINS = fetch_generic_secret(f"{ENVIRONMENT}_ALLOWED_DOMAINS")
+    CONTACT_EMAIL = fetch_generic_secret(f"{ENVIRONMENT}_CONTACT_EMAIL")
+    FROM_EMAIL = fetch_generic_secret(f"{ENVIRONMENT}_FROM_EMAIL")
+    FEEDBACK_EMAIL = fetch_generic_secret(f"{ENVIRONMENT}_FEEDBACK_EMAIL")
 
-ALLOWED_DOMAINS = env.list("ALLOWED_DOMAINS", default=list())
 CIVIL_SERVICE_DOMAINS = frozenset(ALLOWED_DOMAINS)
 
-BASIC_AUTH = env.str("BASIC_AUTH", default="")
+BASIC_AUTH = env.str(f"{ENVIRONMENT}_BASIC_AUTH", default="")
 
-BASE_URL = env.str("BASE_URL")
+BASE_URL = env.str(f"{ENVIRONMENT}_BASE_URL")
 
-DEPARTMENTS_USING_INTRANET = dict(env.json("DEPARTMENTS_USING_INTRANET", default={}))
+DEPARTMENTS_USING_INTRANET = dict(env.json(f"{ENVIRONMENT}_DEPARTMENTS_USING_INTRANET", default={}))
 
 APPEND_SLASH = True
+
+ALLOWED_CIDR_NETS = ["10.0.0.0/16"]
 
 ALLOWED_HOSTS = [
     "one-big-thing-testserver",
     "one-big-thing-develop.london.cloudapps.digital",
     "localhost",
     "127.0.0.1",
+    "obt-dev.i.ai.10ds.cabinetoffice.gov.uk",
 ]
 
 # CSRF settings
@@ -83,6 +94,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allow_cidr.middleware.AllowCIDRMiddleware",
 ]
 
 CORS_MIDDLEWARE = [
@@ -123,7 +135,14 @@ WSGI_APPLICATION = "one_big_thing.wsgi.application"
 
 DATABASES = {
     "default": {
-        **env.db("DATABASE_URL"),
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": env.str("POSTGRES_DB"),
+        "USER": env.str("POSTGRES_USER"),
+        "PASSWORD": env.str("POSTGRES_PASSWORD")
+        if ENVIRONMENT in ["TESTS", "LOCAL"]
+        else fetch_db_password(env.str("DB_PASSWORD_SECRET_NAME")),
+        "HOST": env.str("POSTGRES_HOST"),
+        "PORT": env.str("POSTGRES_PORT"),
         **{"ATOMIC_REQUESTS": True},
     }
 }
@@ -147,18 +166,19 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-SENTRY_DSN = env.str("SENTRY_DSN", default="")
-SENTRY_ENVIRONMENT = env.str("SENTRY_ENVIRONMENT", default="")
+if not DEBUG:
+    SENTRY_DSN = env.str(f"{ENVIRONMENT}_SENTRY_DSN", default="")
+    SENTRY_ENVIRONMENT = env.str(f"{ENVIRONMENT}_SENTRY_ENVIRONMENT", default="")
 
-sentry_sdk.init(
-    dsn=SENTRY_DSN,
-    integrations=[
-        DjangoIntegration(),
-    ],
-    environment=SENTRY_ENVIRONMENT,
-    send_default_pii=False,
-    traces_sample_rate=0.0,
-)
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[
+            DjangoIntegration(),
+        ],
+        environment=SENTRY_ENVIRONMENT,
+        send_default_pii=False,
+        traces_sample_rate=0.0,
+    )
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
@@ -179,7 +199,7 @@ ACCOUNT_EMAIL_VERIFICATION = "none"
 LOGIN_REDIRECT_URL = "homepage"
 LOGIN_URL = "account_signup"
 
-ALLOW_EXAMPLE_EMAILS = env.bool("ALLOW_EXAMPLE_EMAILS", default=True)
+ALLOW_EXAMPLE_EMAILS = env.bool(f"{ENVIRONMENT}_ALLOW_EXAMPLE_EMAILS", default=True)
 
 if ALLOW_EXAMPLE_EMAILS:
     ALLOWED_CIVIL_SERVICE_DOMAINS = CIVIL_SERVICE_DOMAINS.union({"example.com"})
@@ -187,13 +207,13 @@ if ALLOW_EXAMPLE_EMAILS:
 else:
     ALLOWED_CIVIL_SERVICE_DOMAINS = CIVIL_SERVICE_DOMAINS
 
-SEND_VERIFICATION_EMAIL = env.bool("SEND_VERIFICATION_EMAIL", default=False)
+SEND_VERIFICATION_EMAIL = env.bool(f"{ENVIRONMENT}_SEND_VERIFICATION_EMAIL", default=False)
 
 PASSWORD_RESET_TIMEOUT = 60 * 60 * 24
 
 # Email
 
-EMAIL_BACKEND_TYPE = env.str("EMAIL_BACKEND_TYPE")
+EMAIL_BACKEND_TYPE = env.str(f"{ENVIRONMENT}_EMAIL_BACKEND_TYPE")
 
 if EMAIL_BACKEND_TYPE == "FILE":
     EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
@@ -202,13 +222,19 @@ elif EMAIL_BACKEND_TYPE == "CONSOLE":
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 elif EMAIL_BACKEND_TYPE == "GOVUKNOTIFY":
     EMAIL_BACKEND = "django_gov_notify.backends.NotifyEmailBackend"
-    GOVUK_NOTIFY_API_KEY = env.str("GOVUK_NOTIFY_API_KEY")
-    GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = env.str("GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
+    if ENVIRONMENT not in ["TESTS", "LOCAL"]:
+        GOVUK_NOTIFY_API_KEY = env.str(f"{ENVIRONMENT}_GOVUK_NOTIFY_API_KEY")
+        GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = env.str(f"{ENVIRONMENT}_GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID")
+    else:
+        GOVUK_NOTIFY_API_KEY = fetch_generic_secret(f"{ENVIRONMENT}_GOVUK_NOTIFY_API_KEY")
+        GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID = fetch_generic_secret(
+            f"{ENVIRONMENT}_GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
+        )
 else:
     if EMAIL_BACKEND_TYPE not in ("FILE", "CONSOLE", "GOVUKNOTIFY"):
         raise Exception(f"Unknown EMAIL_BACKEND_TYPE of {EMAIL_BACKEND_TYPE}")
 
-SEND_VERIFICATION_EMAIL = env.bool("SEND_VERIFICATION_EMAIL", default=False)
+SEND_VERIFICATION_EMAIL = env.bool(f"{ENVIRONMENT}_SEND_VERIFICATION_EMAIL", default=False)
 
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
