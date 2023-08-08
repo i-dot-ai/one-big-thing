@@ -51,72 +51,72 @@ module "ecs" {
               value = module.db.db_instance_master_user_secret_arn
             },
             {
-              name  = "${var.env}_DJANGO_SECRET_KEY"
-              value = "${var.env}_DJANGO_SECRET_KEY"
+              name  = "DJANGO_SECRET_KEY"
+              value = "DJANGO_SECRET_KEY"
             },
             {
-              name  = "${var.env}_CONTACT_EMAIL"
-              value = "${var.env}_CONTACT_EMAIL"
+              name  = "CONTACT_EMAIL"
+              value = "CONTACT_EMAIL"
             },
             {
-              name  = "${var.env}_FEEDBACK_EMAIL"
-              value = "${var.env}_FEEDBACK_EMAIL"
+              name  = "FEEDBACK_EMAIL"
+              value = "FEEDBACK_EMAIL"
             },
             {
-              name  = "${var.env}_FROM_EMAIL"
-              value = "${var.env}_FROM_EMAIL"
+              name  = "FROM_EMAIL"
+              value = "FROM_EMAIL"
             },
             {
-              name  = "${var.env}_EMAIL_BACKEND_TYPE"
-              value = "GOVUKNOTIFY"
+              name  = "EMAIL_BACKEND_TYPE"
+              value = var.email_backend_type
             },
             {
-              name  = "${var.env}_GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
-              value = "${var.env}_GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
+              name  = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
+              value = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
             },
             {
-              name  = "${var.env}_GOVUK_NOTIFY_API_KEY"
-              value = "${var.env}_GOVUK_NOTIFY_API_KEY"
+              name  = "GOVUK_NOTIFY_API_KEY"
+              value = "GOVUK_NOTIFY_API_KEY"
             },
             {
-              name  = "${var.env}_BASE_URL"
+              name  = "BASE_URL"
               value = aws_route53_record.this.fqdn
             },
             {
-              name  = "${var.env}_VCAP_APPLICATION"
+              name  = "VCAP_APPLICATION"
               value = jsonencode({ "space_name" : var.env })
             },
             {
-              name  = "${var.env}_REQUIRED_LEARNING_TIME"
-              value = 420
+              name  = "REQUIRED_LEARNING_TIME"
+              value = var.required_learning_time
             },
             {
-              name  = "${var.env}_SEND_VERIFICATION_EMAIL"
-              value = true
+              name  = "SEND_VERIFICATION_EMAIL"
+              value = var.send_verification_email
             },
             {
               name  = "PORT"
-              value = 8055
+              value = var.port
             },
             {
-              name  = "${var.env}_ALLOWED_DOMAINS"
-              value = "${var.env}_ALLOWED_DOMAINS"
+              name  = "ALLOWED_DOMAINS"
+              value = "ALLOWED_DOMAINS"
             },
             {
-              name = "${var.env}_SELF_REFLECTION_FILENAME"
-              value = "Test_self_reflection_for_download_on_OBT_platform_July 2023.docx"
+              name = "SELF_REFLECTION_FILENAME"
+              value = var.self_reflection_filename
             },
             {
-              name = "${var.env}_BASE_URL"
-              value = "https://obt-${var.env}.i.ai.10ds.cabinetoffice.gov.uk"
+              name = "BASE_URL"
+              value = local.base_url
             },
             {
-              name = "${var.env}_SENTRY_ENVIRONMENT"
-              value = "${var.env}_SENTRY_ENVIRONMENT"
+              name = "SENTRY_ENVIRONMENT"
+              value = "SENTRY_ENVIRONMENT"
             },
             {
-              name = "${var.env}_SENTRY_DSN"
-              value = "${var.env}_SENTRY_DSN"
+              name = "SENTRY_DSN"
+              value = "SENTRY_DSN"
             },
           ]
         }
