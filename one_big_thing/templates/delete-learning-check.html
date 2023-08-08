@@ -4,7 +4,7 @@
 {% block content %}
   <h1 class="govuk-heading-l">You are about to delete a learning record</h1>
     <div class="govuk-body">
-        <h2 class="govuk-heading-m">Are you sure you want to delete?</h2>
+        <p>Are you sure you want to delete?</p>
         <form method="post">{{ csrf_input }}
           <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" name="delete-learning">
             Yes
