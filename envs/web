@@ -19,3 +19,4 @@ LOCAL_SEND_VERIFICATION_EMAIL=True
 LOCAL_SELF_REFLECTION_FILENAME="Test_self_reflection_for_download_on_OBT_platform_July 2023.docx"
 LOCAL_DEPARTMENTS_USING_INTRANET='{"academy-for-justice-commissioning": "https://google.com/", "accelerated-access-review": "https://google.com/"}'
 ENVIRONMENT=LOCAL
+ALLOWED_DOMAINS=cabinetoffice.gov.uk,example.com
