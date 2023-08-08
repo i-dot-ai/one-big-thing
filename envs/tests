@@ -17,4 +17,5 @@ TESTS_VCAP_APPLICATION='{"space_name": "tests"}'
 TESTS_REQUIRED_LEARNING_TIME=420
 TESTS_SEND_VERIFICATION_EMAIL=False
 TESTS_SELF_REFLECTION_FILENAME="Test_self_reflection_for_download_on_OBT_platform_July 2023.docx"
+TESTS_DEPARTMENTS_USING_INTRANET='{"home-office": "https://example.com/"}'
 ENVIRONMENT=TESTS
