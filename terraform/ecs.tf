@@ -25,6 +25,45 @@ module "ecs" {
           image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:${var.image_tag}"
           readonly_root_filesystem  = true
           enable_cloudwatch_logging = true
+          secrets = [
+            {
+              name = "DJANGO_SECRET_KEY",
+              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:DJANGO_SECRET_KEY:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "CONTACT_EMAIL",
+              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:CONTACT_EMAIL:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "FEEDBACK_EMAIL",
+              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:FEEDBACK_EMAIL:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "FROM_EMAIL",
+              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:FROM_EMAIL:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "GOVUK_NOTIFY_API_KEY",
+              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_API_KEY:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "ALLOWED_DOMAINS",
+              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:ALLOWED_DOMAINS:AWSCURRENT:AWSCURRENT"
+            },
+
+            {
+              name = "SENTRY_DSN",
+              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:SENTRY_DSN:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "SENTRY_ENVIRONMENT",
+              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:SENTRY_ENVIRONMENT:AWSCURRENT:AWSCURRENT"
+            },
+          ]
           environment = [
             {
               name  = "ENVIRONMENT"
@@ -51,32 +90,8 @@ module "ecs" {
               value = module.db.db_instance_master_user_secret_arn
             },
             {
-              name  = "DJANGO_SECRET_KEY"
-              value = "DJANGO_SECRET_KEY"
-            },
-            {
-              name  = "CONTACT_EMAIL"
-              value = "CONTACT_EMAIL"
-            },
-            {
-              name  = "FEEDBACK_EMAIL"
-              value = "FEEDBACK_EMAIL"
-            },
-            {
-              name  = "FROM_EMAIL"
-              value = "FROM_EMAIL"
-            },
-            {
               name  = "EMAIL_BACKEND_TYPE"
               value = var.email_backend_type
-            },
-            {
-              name  = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
-              value = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
-            },
-            {
-              name  = "GOVUK_NOTIFY_API_KEY"
-              value = "GOVUK_NOTIFY_API_KEY"
             },
             {
               name  = "BASE_URL"
@@ -99,24 +114,12 @@ module "ecs" {
               value = var.port
             },
             {
-              name  = "ALLOWED_DOMAINS"
-              value = "ALLOWED_DOMAINS"
-            },
-            {
               name = "SELF_REFLECTION_FILENAME"
               value = var.self_reflection_filename
             },
             {
               name = "BASE_URL"
               value = local.base_url
-            },
-            {
-              name = "SENTRY_ENVIRONMENT"
-              value = "SENTRY_ENVIRONMENT"
-            },
-            {
-              name = "SENTRY_DSN"
-              value = "SENTRY_DSN"
             },
           ]
         }
