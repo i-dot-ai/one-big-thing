@@ -40,7 +40,7 @@ variable "port" {
 
 variable "self_reflection_filename" {
   description = "The filename to download for users for the self-reflection exercise"
-  type        = number
+  type        = string
 }
 
 locals {
