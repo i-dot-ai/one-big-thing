@@ -35,7 +35,6 @@ other_urlpatterns = [
     path("send-learning-record/", views.send_learning_record_view, name="send-learning-record"),
     path("download-learning/", views.download_learning_view, name="download-learning"),
     path("remove-learning-check/<uuid:learning_id>/", views.check_delete_learning_view, name="remove-learning-check"),
-    path("remove-learning/<uuid:learning_id>/", views.delete_learning_view, name="remove-learning"),
     path("test/", views.test_view, name="test"),
     path("external-test/", views.external_test_view, name="external-test"),
     path("additional-learning/", views.additional_learning_view, name="additional-learning"),
