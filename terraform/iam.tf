@@ -1,18 +1,18 @@
-data "aws_iam_policy_document" "additional" {
+data "aws_iam_policy_document" "secretsmanager" {
   statement {
-    effect    = "Allow"
     actions   = ["secretsmanager:GetSecretValue"]
-    resources = [module.db.db_instance_master_user_secret_arn]
+    resources = ["arn:aws:secretsmanager:eu-west-2:817650998681:*"]
+    effect = "Allow"
   }
 }
 
-resource "aws_iam_policy" "additional" {
-  name        = "${local.team}-${local.project}-additional-policy"
-  description = "Addtion IAM policy for ${local.team}-${local.project}"
-  policy      = data.aws_iam_policy_document.additional.json
+resource "aws_iam_policy" "password_policy_secretsmanager" {
+  name = "${local.team}-${local.project}-secretsmanager"
+  description = "Secretsmanager IAM policy for ${local.team}-${local.project}"
+  policy = data.aws_iam_policy_document.secretsmanager.json
 }
 
-resource "aws_iam_role_policy_attachment" "additional" {
+resource "aws_iam_role_policy_attachment" "secretsmanager" {
   role       = module.ecs.services["one-big-thing"].tasks_iam_role_name
-  policy_arn = aws_iam_policy.additional.arn
+  policy_arn = aws_iam_policy.password_policy_secretsmanager.arn
 }
