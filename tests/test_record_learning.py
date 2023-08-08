@@ -75,6 +75,65 @@ def test_enter_valid_learning_record():
     user.delete()
 
 
+def test_completed_learning_record_feedback_link():
+    test_email = "test@example.com"
+    authenticated_user = {"email": test_email, "password": "giraffe47"}
+    client = utils.make_testino_client()
+    utils.register(client, **authenticated_user)
+    user = models.User.objects.get(email=test_email)
+
+    record_learning_page = client.get("/record-learning/")
+    assert record_learning_page.status_code == 200
+    assert record_learning_page.has_text("Record learning I've done:")
+
+    record_learning_form = record_learning_page.get_form()
+    record_learning_form["title"] = "Test full day course"
+    record_learning_form["time_to_complete_minutes"] = 0
+    record_learning_form["time_to_complete_hours"] = 10
+    record_learning_form["link"] = "https://example.com"
+    record_learning_form["learning_type"] = "LINK"
+
+    submitted_page = record_learning_form.submit().follow()
+    assert submitted_page.status_code == 200, submitted_page.status_code
+    assert submitted_page.has_text("Test full day course")
+    assert submitted_page.has_text("10 hours")
+    assert submitted_page.has_text("Link")
+    assert submitted_page.has_text("You should provide feedback about your One Big Thing experience.")
+
+    user.delete()
+
+
+def test_enter_learning_record_streamlined():
+    test_email = "test@example.com"
+    authenticated_user = {"email": test_email, "password": "giraffe47"}
+    client = utils.make_testino_client()
+    utils.register(client, **authenticated_user)
+    user = models.User.objects.get(email=test_email)
+    user.department = "home-office"
+    user.save()
+
+    record_learning_page = client.get("/record-learning/")
+    assert record_learning_page.status_code == 200
+    assert record_learning_page.has_text("Record learning I've done:")
+
+    record_learning_form = record_learning_page.get_form()
+    record_learning_form["time_to_complete_minutes"] = 15
+    record_learning_form["time_to_complete_hours"] = 2
+    submitted_page = record_learning_form.submit().follow()
+    assert submitted_page.status_code == 200, submitted_page.status_code
+    assert submitted_page.has_text("Completed department content")
+    assert submitted_page.has_text("2 hours and 15 minutes")
+    assert not submitted_page.has_text("You should provide feedback about your One Big Thing experience.")
+
+    record_learning_form = record_learning_page.get_form()
+    record_learning_form["time_to_complete_minutes"] = 0
+    record_learning_form["time_to_complete_hours"] = 7
+    submitted_page = record_learning_form.submit().follow()
+    assert submitted_page.has_text("You should provide feedback about your One Big Thing experience.")
+    assert submitted_page.has_text("9 hours and 15 minutes")
+    user.delete()
+
+
 @utils.with_authenticated_client
 def test_download_learning_document(client):
     response = client.get("/download-learning/")
