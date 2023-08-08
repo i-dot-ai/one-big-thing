@@ -19,7 +19,10 @@ ENVIRONMENT = env.str("ENVIRONMENT", default=None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
 
-SECRET_KEY = env.str(f"{ENVIRONMENT}_DJANGO_SECRET_KEY")
+if ENVIRONMENT in ["TESTS", "LOCAL"]:
+    SECRET_KEY = env.str(f"{ENVIRONMENT}_DJANGO_SECRET_KEY")
+else:
+    SECRET_KEY = fetch_generic_secret(f"{ENVIRONMENT}_DJANGO_SECRET_KEY")
 
 REQUIRED_LEARNING_TIME = env.int(f"{ENVIRONMENT}_REQUIRED_LEARNING_TIME", default=420)
 SELF_REFLECTION_FILENAME = env.str(f"{ENVIRONMENT}_SELF_REFLECTION_FILENAME")
