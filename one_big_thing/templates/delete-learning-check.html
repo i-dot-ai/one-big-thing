@@ -2,12 +2,12 @@
 {% extends "base_generic_gov.html" %}
 
 {% block content %}
-  <h1 class="govuk-heading-l"></h1>
+  <h1 class="govuk-heading-l">You are about to delete a learning record</h1>
     <div class="govuk-body">
-        <h2 class="govuk-heading-m">Are you sure you want to delete this learning?</h2>
+        <h2 class="govuk-heading-m">Are you sure you want to delete?</h2>
         <form method="post">{{ csrf_input }}
           <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" name="delete-learning">
-            Yes, delete
+            Yes
           </button>
           <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" name="cancel">
             Cancel
