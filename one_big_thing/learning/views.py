@@ -201,12 +201,14 @@ class RecordLearningView(utils.MethodDispatcher):
         else:
             template_name = "record-learning.html"
         time_completed = user.get_time_completed()
+        completed_obt = time_completed >= settings.REQUIRED_LEARNING_TIME
         learning_types = choices.CourseType.choices
         courses = models.Learning.objects.filter(user=user)
         data = {
             "time_completed": time_completed,
             "learning_types": learning_types,
             "courses": courses,
+            "completed_obt": completed_obt,
         }
         if course_id:
             course = models.Course.objects.filter(pk=course_id).first()
