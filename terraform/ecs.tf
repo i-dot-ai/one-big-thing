@@ -28,40 +28,40 @@ module "ecs" {
           secrets = [
             {
               name = "DJANGO_SECRET_KEY",
-              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:DJANGO_SECRET_KEY:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:DJANGO_SECRET_KEY:AWSCURRENT:AWSCURRENT"
             },
             {
               name = "CONTACT_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:CONTACT_EMAIL:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:CONTACT_EMAIL:AWSCURRENT:AWSCURRENT"
             },
             {
               name = "FEEDBACK_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:FEEDBACK_EMAIL:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:FEEDBACK_EMAIL:AWSCURRENT:AWSCURRENT"
             },
             {
               name = "FROM_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:FROM_EMAIL:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:FROM_EMAIL:AWSCURRENT:AWSCURRENT"
             },
             {
               name = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
-              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID:AWSCURRENT:AWSCURRENT"
             },
             {
               name = "GOVUK_NOTIFY_API_KEY",
-              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_API_KEY:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_API_KEY:AWSCURRENT:AWSCURRENT"
             },
             {
               name = "ALLOWED_DOMAINS",
-              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:ALLOWED_DOMAINS:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:ALLOWED_DOMAINS:AWSCURRENT:AWSCURRENT"
             },
 
             {
               name = "SENTRY_DSN",
-              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:SENTRY_DSN:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:SENTRY_DSN:AWSCURRENT:AWSCURRENT"
             },
             {
               name = "SENTRY_ENVIRONMENT",
-              valueFrom = "arn:aws:secretsmanager:eu-west-2:817650998681:secret:one-big-thing-${var.env}:SENTRY_ENVIRONMENT:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:SENTRY_ENVIRONMENT:AWSCURRENT:AWSCURRENT"
             },
           ]
           environment = [
