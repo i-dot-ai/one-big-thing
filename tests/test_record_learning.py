@@ -64,13 +64,13 @@ def test_enter_valid_learning_record():
     record_learning_form["time_to_complete_minutes"] = 0
     record_learning_form["time_to_complete_hours"] = 2
     record_learning_form["link"] = "https://google.co.uk"
-    record_learning_form["learning_type"] = "LINK"
+    record_learning_form["learning_type"] = "OTHER"
 
     submitted_page = record_learning_form.submit().follow()
     assert submitted_page.status_code == 200, submitted_page.status_code
     assert submitted_page.has_text("Test correct course")
     assert submitted_page.has_text("2 hours")
-    assert submitted_page.has_text("Link")
+    assert submitted_page.has_text("Other")
 
     user.delete()
 
@@ -91,13 +91,13 @@ def test_completed_learning_record_feedback_link():
     record_learning_form["time_to_complete_minutes"] = 0
     record_learning_form["time_to_complete_hours"] = 10
     record_learning_form["link"] = "https://example.com"
-    record_learning_form["learning_type"] = "LINK"
+    record_learning_form["learning_type"] = "VIDEO"
 
     submitted_page = record_learning_form.submit().follow()
     assert submitted_page.status_code == 200, submitted_page.status_code
     assert submitted_page.has_text("Test full day course")
     assert submitted_page.has_text("10 hours")
-    assert submitted_page.has_text("Link")
+    assert submitted_page.has_text("Video or documentary")
     assert submitted_page.has_text("You should provide feedback about your One Big Thing experience.")
 
     user.delete()

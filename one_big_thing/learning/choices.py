@@ -2,10 +2,18 @@ from . import utils
 
 
 class CourseType(utils.Choices):
-    VIDEO = "Video"
-    LINK = "Link"
-    IN_PERSON = "In person"
-    MULTIPLE = "Multiple"
+    WRITTEN_RESOURCE = "Blog, article, book or other written resource"
+    CIVIL_SERVICE_LIVE = "Civil Service Live event"
+    CONVERSATION = "Conversation with colleagues"
+    EVENT_CENTRAL = "Event - central"
+    EVENT_DEPT = "Event - departmental"
+    EVENT_EXTERNAL = "Event - external"
+    FORMAL_TRAINING_CENTRAL = "Formal training - central"
+    FORMAL_TRAINING_DEPT = "Formal training - departmental"
+    FORMAL_TRAINING_EXTERNAL = "Formal training - external"
+    INFORMAL_TRAINING = "Informal training (on-the-job training)"
+    PODCAST_AUDIO = "Podcast or other audio"
+    VIDEO = "Video or documentary"
     OTHER = "Other"
 
 
