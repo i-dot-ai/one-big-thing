@@ -19,10 +19,5 @@ provider "aws" {
 }
 
 terraform {
-  backend "s3" {
-    dynamodb_table = "i-dot-ai-prod-tfstate"
-    bucket         = "i-dot-ai-prod-tfstate"
-    key            = "one-big-thing/terraform.tfstate"
-    region         = "eu-west-2"
-  }
+  backend "s3" {}
 }

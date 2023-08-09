@@ -1,4 +1,4 @@
-env = "dev"
+env = "prod"
 ip_securelist = [
   "51.149.8.0/25",    # CO
   "51.149.10.6/32",   # CO
@@ -14,7 +14,7 @@ ip_securelist = [
   "165.225.198.0/23", # No10
   "81.144.180.0/24",  # No10 desktop
 ]
-record_prefix = "obt-dev"
+record_prefix = "obt-prod"
 email_backend_type = "GOVUKNOTIFY"
 required_learning_time = 420
 send_verification_email = true

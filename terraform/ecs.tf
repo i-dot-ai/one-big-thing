@@ -25,6 +25,45 @@ module "ecs" {
           image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:${var.image_tag}"
           readonly_root_filesystem  = true
           enable_cloudwatch_logging = true
+          secrets = [
+            {
+              name = "DJANGO_SECRET_KEY",
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:DJANGO_SECRET_KEY:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "CONTACT_EMAIL",
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:CONTACT_EMAIL:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "FEEDBACK_EMAIL",
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:FEEDBACK_EMAIL:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "FROM_EMAIL",
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:FROM_EMAIL:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "GOVUK_NOTIFY_API_KEY",
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_API_KEY:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "ALLOWED_DOMAINS",
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:ALLOWED_DOMAINS:AWSCURRENT:AWSCURRENT"
+            },
+
+            {
+              name = "SENTRY_DSN",
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:SENTRY_DSN:AWSCURRENT:AWSCURRENT"
+            },
+            {
+              name = "SENTRY_ENVIRONMENT",
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:SENTRY_ENVIRONMENT:AWSCURRENT:AWSCURRENT"
+            },
+          ]
           environment = [
             {
               name  = "ENVIRONMENT"
@@ -51,32 +90,8 @@ module "ecs" {
               value = module.db.db_instance_master_user_secret_arn
             },
             {
-              name  = "DJANGO_SECRET_KEY"
-              value = "1n53cur3K3y"
-            },
-            {
-              name  = "CONTACT_EMAIL"
-              value = "CONTACT_EMAIL"
-            },
-            {
-              name  = "FEEDBACK_EMAIL"
-              value = "FEEDBACK_EMAIL"
-            },
-            {
-              name  = "FROM_EMAIL"
-              value = "FROM_EMAIL"
-            },
-            {
               name  = "EMAIL_BACKEND_TYPE"
-              value = "GOVUKNOTIFY"
-            },
-            {
-              name  = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
-              value = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID"
-            },
-            {
-              name  = "GOVUK_NOTIFY_API_KEY"
-              value = "GOVUK_NOTIFY_API_KEY"
+              value = var.email_backend_type
             },
             {
               name  = "BASE_URL"
@@ -88,27 +103,23 @@ module "ecs" {
             },
             {
               name  = "REQUIRED_LEARNING_TIME"
-              value = 420
+              value = var.required_learning_time
             },
             {
               name  = "SEND_VERIFICATION_EMAIL"
-              value = true
+              value = var.send_verification_email
             },
             {
               name  = "PORT"
-              value = 8055
-            },
-            {
-              name  = "ALLOWED_DOMAINS"
-              value = "ALLOWED_DOMAINS"
+              value = var.port
             },
             {
               name = "SELF_REFLECTION_FILENAME"
-              value = "Test_self_reflection_for_download_on_OBT_platform_July 2023.docx"
+              value = var.self_reflection_filename
             },
             {
               name = "BASE_URL"
-              value = "https://obt-${var.env}.i.ai.10ds.cabinetoffice.gov.uk"
+              value = local.base_url
             },
           ]
         }

@@ -26,3 +26,9 @@ locals {
   db_user = "postgres"
   db_name = "obt"
 }
+
+data "aws_caller_identity" "current" {}
+
+output "account_id" {
+  value = data.aws_caller_identity.current.account_id
+}
