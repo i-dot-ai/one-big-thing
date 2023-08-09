@@ -63,7 +63,7 @@ def test_course_schema():
     valid_data = {
         "title": "My first course",
         "link": "https://google.co.uk/",
-        "learning_type": choices.CourseType.LINK.value,
+        "learning_type": choices.CourseType.VIDEO.value,
         "time_to_complete": "120",
     }
     invalid_course_type = {
