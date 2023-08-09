@@ -48,6 +48,10 @@
             </strong>
           </p>
         {% endif %}
+        <div class="govuk-header__content">
+          <a href="#" class="govuk-header__link govuk-header__service-name">
+            One Big Thing
+          </a>
           <nav aria-label="Menu" class="govuk-header__navigation">
             <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu" hidden>Menu</button>
             <ul id="navigation" class="govuk-header__navigation-list">
@@ -58,14 +62,16 @@
               </li>
               <li class="govuk-header__navigation-item">
                 <a class="govuk-header__link" href="{{url('record-learning')}}">
-                  Record Learning
+                  Record learning
+                </a>
+              </li>
+              <li class="govuk-header__navigation-item">
+                <a class="govuk-header__link" href="/accounts/logout/">
+                  Sign out
                 </a>
               </li>
             </ul>
           </nav>
-          <a href="/accounts/logout/" class="govuk-header__link govuk-header__service-name" align="right">
-            Sign out
-          </a>
       </div>
     </header>
 
