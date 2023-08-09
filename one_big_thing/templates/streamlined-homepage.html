@@ -2,37 +2,6 @@
 {% extends "base_generic_gov.html" %}
 
 {% block content %}
-    <div class="govuk-notification-banner" role="region"
-      aria-labelledby="govuk-hours-done-notification-banner-title"
-      data-module="govuk-notification-banner">
-      <div class="govuk-notification-banner__header">
-        <h2 class="govuk-notification-banner__title" id="govuk-hours-done-notification-banner-title">
-          Hours done
-        </h2>
-      </div>
-      <div class="govuk-notification-banner__content">
-        <p class="govuk-notification-banner__heading">
-          You have completed {{humanize_timedelta(data.time_completed)}} so far.
-        </p>
-      </div>
-    </div>
-    {% if not request.user.has_completed_post_survey and request.user.has_completed_required_time() %}
-    <div class="govuk-notification-banner" role="region"
-      aria-labelledby="govuk-post-survey-notification-banner-title"
-      data-module="govuk-notification-banner">
-      <div class="govuk-notification-banner__header">
-        <h2 class="govuk-notification-banner__title" id="govuk-post-survey-notification-banner-title">
-          Important
-        </h2>
-      </div>
-      <div class="govuk-notification-banner__content">
-        <p class="govuk-notification-banner__heading">
-          You haven't completed your post-completion survey. Please use
-          <a class="govuk-notification-banner__link" href="{{url('questions', 'post')}}">this link</a> to complete it.
-        </p>
-      </div>
-    </div>
-  {% endif %}
   <h1 class="govuk-heading-l">Welcome to your One Big Thing Learning Record</h1>
     <div aria-labelledby="step-by-step-title" role="region">
         <h2 id="step-by-step-title" class="govuk-heading-m">Check what you need to do for One Big Thing</h2>
