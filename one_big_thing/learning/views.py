@@ -127,6 +127,7 @@ def homepage_view(request):
         time_completed = user.get_time_completed()
         data = {
             "time_completed": time_completed,
+            "selected_level": selected_level.capitalize(),
             "recommended_course": recommended_course_information,
             "extra_recommended_courses": extra_recommended_courses_information,
             "team_meeting_course": team_meeting_course,
