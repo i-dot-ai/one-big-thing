@@ -109,13 +109,41 @@ def test_delete_learning():
         time_to_complete=240,
     ).save()
     models.Course(title="Course 1", time_to_complete=60).save()
+    record_page = client.get("/record-learning/")
+    assert record_page.has_text("Learning about data 1")
+    assert record_page.has_text("Learning about data 2")
+    assert record_page.has_text("Learning about data 3")
     learning_to_delete = models.Learning.objects.get(user__email=user_email, title="Learning about data 1")
-    page = client.get("/record-learning/")
-    assert page.has_text("Learning about data 1")
-    assert page.has_text("Learning about data 2")
-    assert page.has_text("Learning about data 3")
-    form = page.get_form(f"""form[action="/remove-learning/{learning_to_delete.id}/"]""")
-    page = form.submit().follow()
-    assert not page.has_text("Learning about data 1")
-    assert page.has_text("Learning about data 2")
-    assert page.has_text("Learning about data 3")
+    delete_page = client.get(f"/delete-learning-check/{learning_to_delete.id}/")
+    record_page = delete_page.get_form().submit(extra={"cancel": ""}).follow()
+    assert record_page.has_text("Learning about data 1")
+    delete_page = client.get(f"/delete-learning-check/{learning_to_delete.id}/")
+    delete_form = delete_page.get_form()
+    record_page = delete_form.submit(extra={"delete-learning": ""}).follow()
+    assert not record_page.has_text("Learning about data 1")
+    assert record_page.has_text("Learning about data 2")
+    assert record_page.has_text("Learning about data 3")
+
+
+def test_create_delete_learning_streamlined():
+    user_email = "test-delete-learning-record-streamlined@example.com"
+    authenticated_user = {"email": user_email, "password": "giraffe47"}
+    client = utils.make_testino_client()
+    utils.register(client, **authenticated_user)
+    user = models.User.objects.get(email=user_email)
+    user.department = "home-office"
+    user.save()
+    record_page = client.get("/record-learning/")
+    record_learning_form = record_page.get_form()
+    record_learning_form["time_to_complete_minutes"] = 4
+    record_learning_form["time_to_complete_hours"] = 2
+    submitted_page = record_learning_form.submit().follow()
+    assert submitted_page.status_code == 200, submitted_page.status_code
+    assert submitted_page.has_text("Completed department content")
+    assert submitted_page.has_text("2 hours and 4 minutes")
+    dept_learning = models.Learning.objects.filter(user__email=user_email).last()
+    delete_page = client.get(f"/delete-learning-check/{dept_learning.id}/")
+    delete_form = delete_page.get_form()
+    record_page = delete_form.submit(extra={"delete-learning": ""}).follow()
+    assert not record_page.has_text("Completed department content")
+    assert not record_page.has_text("2 hours and 4 minutes")

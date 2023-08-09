@@ -58,7 +58,7 @@
           <th scope="row" class="govuk-table__header">{% if course.link and course.link | length > 0 %}<a href="{{course.link}}" target="_blank" rel="noopener noreferrer">{{course.title}}</a>{% else %}{{course.title}}{% endif %}</th>
           <td class="govuk-table__cell">{{course.get_learning_type_display_name()}}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric">{{humanize_timedelta(course.time_to_complete)}}</td>
-          <td class="govuk-table__cell govuk-table__cell--numeric"><form method="post" action="{{url('remove-learning', course.id)}}">{{csrf_input}}<button type="submit" class="govuk-button govuk-button--warning" data-module="govuk-button">Delete</button></form></td>
+          <td class="govuk-table__cell govuk-table__cell--numeric"><a href="{{ url('delete-learning-check', course.id) }}">Delete</a></td>
         </tr>
       {% endfor %}
       </tbody>

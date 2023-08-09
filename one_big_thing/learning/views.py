@@ -463,9 +463,20 @@ def send_learning_record_view(request):
 
 
 @login_required
+@require_http_methods(["GET", "POST"])
+@enforce_user_completes_pre_survey
+def check_delete_learning_view(request, learning_id):
+    if request.method == "POST":
+        if "delete-learning" in request.POST:
+            interface.api.learning.delete(user_id=request.user.id, learning_id=learning_id)
+        return redirect("record-learning")
+    return render(request, "delete-learning-check.html")
+
+
+@login_required
 @require_http_methods(["POST"])
 @enforce_user_completes_pre_survey
-def remove_learning_view(request, learning_id):
+def delete_learning_view(request, learning_id):
     interface.api.learning.delete(user_id=request.user.id, learning_id=learning_id)
     return redirect("record-learning")
 
