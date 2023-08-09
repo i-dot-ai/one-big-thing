@@ -33,7 +33,9 @@
 /*}*/
 
 #i-dot-ai .govuk-header__container {
-  border-bottom: 10px solid var(--main-bg-color);
+  border-bottom: 10px solid transparent;
+  border-image: linear-gradient(to right, #EE306C, #0AA2A6, #FDBA5A);
+  border-image-slice: 1;
 }
 
 .i-ai-range.custom-legend {
