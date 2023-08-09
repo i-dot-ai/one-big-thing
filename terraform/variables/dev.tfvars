@@ -13,7 +13,6 @@ ip_securelist = [
   "165.225.196.0/23", # No10
   "165.225.198.0/23", # No10
   "81.144.180.0/24",  # No10 desktop
-  "52.56.65.189/32",  # Pen testers
 ]
 record_prefix = "obt-dev"
 email_backend_type = "GOVUKNOTIFY"
