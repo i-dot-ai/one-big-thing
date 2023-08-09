@@ -42,7 +42,7 @@
                     </div>
                 </main>
             </div>
-            {{ macros.input('link', 'URL (optional)', data, errors, type="url") }}
+            {{ macros.input('link', 'Website address (optional)', data, errors, type="url") }}
             {{ macros.select_from_list('learning_type', 'Format (optional)', data.learning_types) }}
             <div class="govuk-form-group {{errors.get(name) and 'govuk-form-group--error' or ''}}">
             <label class="govuk-label">Rating (optional)</label>
