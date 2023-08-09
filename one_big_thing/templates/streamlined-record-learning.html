@@ -14,6 +14,11 @@
         <p class="govuk-notification-banner__heading">
           You have completed {{humanize_timedelta(data.time_completed)}} so far.
         </p>
+        {% if data.completed_obt %}
+          <p class="govuk-notification-banner__heading">
+            You should provide <a href="{{url('questions', 'post')}}">feedback</a> about your One Big Thing experience.
+          </p>
+        {% endif %}
       </div>
     </div>
   {% call macros.form_wrapper(prev_url, "Save") -%}
