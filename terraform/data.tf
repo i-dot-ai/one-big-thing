@@ -27,8 +27,52 @@ locals {
   db_name = "obt"
 }
 
+#locals {
+#  obt_db_pw = random_password.obt_db_password.result
+#}
+
 data "aws_caller_identity" "current" {}
 
 output "account_id" {
   value = data.aws_caller_identity.current.account_id
 }
+
+#data "aws_secretsmanager_secret_version" "db_password_secret" {
+#  secret_id = module.db.db_instance_master_user_secret_arn
+#}
+#
+#locals {
+#  db_secret_value = jsondecode(data.aws_secretsmanager_secret_version.db_password_secret.secret_string)
+#  db_password     = local.db_secret_value["password"]
+#}
+
+data "aws_secretsmanager_secret" "db_password_secret" {
+  arn = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-database-2mSGR4"
+}
+
+data "aws_secretsmanager_secret_version" "db_password_secret" {
+  secret_id = data.aws_secretsmanager_secret.db_password_secret.id
+}
+
+locals {
+  db_secret_value = jsondecode(data.aws_secretsmanager_secret_version.db_password_secret.secret_string)
+  db_password     = local.db_secret_value["password"]
+}
+
+output "blah" {
+  value = local.db_password
+  sensitive = true
+}
+
+#output "db_password_secret_value" {
+#  value = data.aws_secretsmanager_secret_version.db_password_secret.secret_string
+#}
+
+data "aws_secretsmanager_random_password" "password" {
+  exclude_characters = "/'\"@"
+  password_length = 50
+}
+
+#data "aws_secretsmanager_secret_version" "password" {
+#  secret_id = data.aws_secretsmanager_secret.password
+#}

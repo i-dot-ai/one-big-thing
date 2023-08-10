@@ -43,11 +43,7 @@ variable "region" {
   type        = string
 }
 
-variable "aws_account_id" {
-  description = "The account id to use to access the AWS resources"
+variable "debug" {
+  description = "Whether the build is debug"
   type        = string
-}
-
-locals {
-  base_url = "https://obt-${var.env}.i.ai.10ds.cabinetoffice.gov.uk"
 }

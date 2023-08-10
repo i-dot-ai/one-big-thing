@@ -20,3 +20,4 @@ required_learning_time = 420
 send_verification_email = true
 port = 8055
 region="eu-west-2"
+debug = false
