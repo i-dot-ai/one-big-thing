@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 from markdown_it import MarkdownIt
 
-markdown_converter = MarkdownIt()
+markdown_converter = MarkdownIt("js-default")  # Need js-default as secure setting
 
 DEFAULT = object()
 
@@ -19,7 +19,6 @@ def url(path, *args, **kwargs):
 
 def markdown(text, cls=None):
     html = markdown_converter.render(text).strip()
-    html = html.replace("<p>", f'<p class="{cls or ""}">', 1).replace("</p>", "", 1)
     return html
 
 
