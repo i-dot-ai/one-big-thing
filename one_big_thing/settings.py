@@ -98,7 +98,7 @@ if DEBUG:
     MIDDLEWARE = MIDDLEWARE + CORS_MIDDLEWARE
 
 if not DEBUG:
-    SECURE_HSTS_SECONDS = 2*365*24*60*60 # Mozilla guidance max-age 2 years
+    SECURE_HSTS_SECONDS = 2 * 365 * 24 * 60 * 60  # Mozilla guidance max-age 2 years
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 
