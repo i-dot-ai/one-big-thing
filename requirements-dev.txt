@@ -6,7 +6,7 @@ pep8-naming
 black
 nose
 httpx
-testino==0.3.9
+testino==0.3.14
 bandit
 sentry-sdk
 coverage
