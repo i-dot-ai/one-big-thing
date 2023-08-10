@@ -28,40 +28,44 @@ module "ecs" {
           secrets = [
             {
               name = "DJANGO_SECRET_KEY",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:DJANGO_SECRET_KEY:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:DJANGO_SECRET_KEY::",
             },
             {
               name = "CONTACT_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:CONTACT_EMAIL:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:CONTACT_EMAIL::",
             },
             {
               name = "FEEDBACK_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:FEEDBACK_EMAIL:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:FEEDBACK_EMAIL::",
             },
             {
               name = "FROM_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:FROM_EMAIL:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:FROM_EMAIL::",
             },
             {
               name = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID::",
             },
             {
               name = "GOVUK_NOTIFY_API_KEY",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_API_KEY:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:GOVUK_NOTIFY_API_KEY::",
             },
             {
               name = "ALLOWED_DOMAINS",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:ALLOWED_DOMAINS:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:ALLOWED_DOMAINS::",
             },
 
             {
               name = "SENTRY_DSN",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:SENTRY_DSN:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:SENTRY_DSN::",
             },
             {
               name = "SENTRY_ENVIRONMENT",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:SENTRY_ENVIRONMENT:AWSCURRENT:AWSCURRENT"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:SENTRY_ENVIRONMENT::",
+            },
+            {
+              name  = "POSTGRES_PASSWORD"
+              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-database-2mSGR4:password::"
             },
           ]
           environment = [
@@ -84,10 +88,6 @@ module "ecs" {
             {
               name  = "POSTGRES_DB"
               value = local.db_name
-            },
-            {
-              name  = "DB_PASSWORD_SECRET_NAME"
-              value = module.db.db_instance_master_user_secret_arn
             },
             {
               name  = "EMAIL_BACKEND_TYPE"
@@ -114,8 +114,12 @@ module "ecs" {
               value = var.port
             },
             {
-              name = "BASE_URL"
-              value = local.base_url
+              name = "SELF_REFLECTION_FILENAME"
+              value = var.self_reflection_filename
+            },
+            {
+              name  = "DEBUG"
+              value = var.debug
             },
           ]
         }

@@ -7,7 +7,6 @@ POSTGRES_PORT=5432
 POSTGRES_DB=one-big-thing
 POSTGRES_USER=one-big-thing
 POSTGRES_PASSWORD=insecure
-PGPASSWORD=insecure
 DATABASE_URL="postgres://one-big-thing:insecure@db:5432/one-big-thing"
 CONTACT_EMAIL="test@example.com"
 FROM_EMAIL="test@example.com"
