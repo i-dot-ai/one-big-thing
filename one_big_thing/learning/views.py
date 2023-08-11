@@ -327,9 +327,13 @@ def complete_hours_view(request):
 @login_required
 @require_http_methods(["GET", "POST"])
 def questions_view(request, survey_type, page_number=1):
+    print(f"survey_type: {survey_type}")
+    print(f"page_number: {page_number}")
     if request.method == "GET":
+        print('GET')
         return questions_view_get(request, survey_type, page_number)
     elif request.method == "POST":
+        print('POST')
         return questions_view_post(request, survey_type, page_number)
 
 
@@ -371,7 +375,9 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
                 return redirect("questions", completed_level)
         setattr(request.user, f"has_completed_{survey_handling.survey_completion_map[survey_type]}_survey", True)
         request.user.save()
+        print(f"survey_type: {survey_type}")
         if survey_type == "post":
+            print("end-post-survey")
             return redirect("end-post-survey")
         elif survey_type == "pre":
             return redirect("end-pre-survey")
@@ -500,9 +506,9 @@ def additional_learning_view(request):
     return render(request, "additional-learning.html", {"data": data})
 
 
+# Don't enforce user completes pre survey as this is the page to redirect to
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
 def intro_to_pre_survey_view(request):
     number_questions = len(survey_handling.questions_data["pre"])
     return render(request, "intro-pre-survey.html", {"number_questions": number_questions})
