@@ -1,12 +1,53 @@
 module "ecs" {
-  source       = "terraform-aws-modules/ecs/aws"
-  version      = "5.2.0"
-  cluster_name = "${local.team}-${local.project}-${var.env}"
+  source                                = "terraform-aws-modules/ecs/aws"
+  version                               = "5.2.0"
+  cluster_name                          = "${local.team}-${local.project}-${var.env}"
+  default_capacity_provider_use_fargate = true
+
+  fargate_capacity_providers = {
+    FARGATE = {
+      default_capacity_provider_strategy = {
+        weight = 100
+      }
+    }
+  }
 
   services = {
     one-big-thing = {
-      cpu    = 1024
-      memory = 4096
+      cpu                       = 1024
+      memory                    = 4096
+      enable_autoscaling        = true
+      desired_count             = 2
+      autoscaling_min_capacity  = 2
+      autoscaling_max_capacity  = 20
+      autoscaling_policies =  {
+        cpu = {
+          policy_type = "TargetTrackingScaling"
+
+          target_tracking_scaling_policy_configuration = {
+            disable_scale_in    = false,
+            scale_in_cooldown   = 300,
+            scale_out_cooldown  = 60,
+            target_value        = 90
+            predefined_metric_specification = {
+              predefined_metric_type = "ECSServiceAverageCPUUtilization"
+            }
+          }
+        }
+        memory = {
+          policy_type = "TargetTrackingScaling"
+
+          target_tracking_scaling_policy_configuration = {
+            disable_scale_in    = false,
+            scale_in_cooldown   = 300,
+            scale_out_cooldown  = 60,
+            target_value        = 90
+            predefined_metric_specification = {
+              predefined_metric_type = "ECSServiceAverageMemoryUtilization"
+            }
+          }
+        }
+      }
 
       # Container definition(s)
       container_definitions = {
@@ -28,44 +69,44 @@ module "ecs" {
           secrets = [
             {
               name = "DJANGO_SECRET_KEY",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:DJANGO_SECRET_KEY::",
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:DJANGO_SECRET_KEY::",
             },
             {
               name = "CONTACT_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:CONTACT_EMAIL::",
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:CONTACT_EMAIL::",
             },
             {
               name = "FEEDBACK_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:FEEDBACK_EMAIL::",
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:FEEDBACK_EMAIL::",
             },
             {
               name = "FROM_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:FROM_EMAIL::",
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:FROM_EMAIL::",
             },
             {
               name = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID::",
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID::",
             },
             {
               name = "GOVUK_NOTIFY_API_KEY",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:GOVUK_NOTIFY_API_KEY::",
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:GOVUK_NOTIFY_API_KEY::",
             },
             {
               name = "ALLOWED_DOMAINS",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:ALLOWED_DOMAINS::",
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:ALLOWED_DOMAINS::",
             },
 
             {
               name = "SENTRY_DSN",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:SENTRY_DSN::",
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:SENTRY_DSN::",
             },
             {
               name = "SENTRY_ENVIRONMENT",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}-p08zry:SENTRY_ENVIRONMENT::",
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:SENTRY_ENVIRONMENT::",
             },
             {
               name  = "POSTGRES_PASSWORD"
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-database-2mSGR4:password::"
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:DATABASE_PASSWORD::"
             },
           ]
           environment = [
