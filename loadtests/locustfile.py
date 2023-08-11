@@ -1,5 +1,12 @@
+import random
+import string
+
 from locust import HttpUser, between, task
 from pyquery import PyQuery
+
+
+def make_code(length=6):
+    return "".join(random.choices(string.ascii_lowercase, k=length))
 
 
 class OneBigThingUser(HttpUser):
@@ -20,9 +27,10 @@ class OneBigThingUser(HttpUser):
         response = self.client.get("/accounts/signup/")
         content = response.content
         csrf_token = PyQuery(content)("form input[name='csrfmiddlewaretoken']").attr("value")
+        email = f"firstname.lastname+{make_code()}@example.com"
 
         data = {
-            "email": "email@example.com",
+            "email": email,
             "password1": "Fl1bbl3",
             "password2": "Fl1bbl3",
             "grade": "GRADE6",
