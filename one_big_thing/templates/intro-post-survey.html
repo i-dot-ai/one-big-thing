@@ -8,10 +8,7 @@
       <p>You will now complete a survey about your experience of One Big Thing.</p>
       <p>The survey should take 10 minutes to complete.</p>
       <p>Your feedback will provide the One Big Thing team with valuable data that will be used to evaluate One Big Thing. Your answers will also be used to help shape future learning and development for civil servants.</p>
-      <form method="post">{{ csrf_input }}
-        <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" name="cancel">
-          Start
-        </button>
+      <a class="govuk-button" href="{{url('questions', 'post')}}">Start</a>
     </form>
   </div>
 {% endblock %}
