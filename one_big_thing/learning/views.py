@@ -327,13 +327,9 @@ def complete_hours_view(request):
 @login_required
 @require_http_methods(["GET", "POST"])
 def questions_view(request, survey_type, page_number=1):
-    print(f"survey_type: {survey_type}")
-    print(f"page_number: {page_number}")
     if request.method == "GET":
-        print('GET')
         return questions_view_get(request, survey_type, page_number)
     elif request.method == "POST":
-        print('POST')
         return questions_view_post(request, survey_type, page_number)
 
 
@@ -375,13 +371,10 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
                 return redirect("questions", completed_level)
         setattr(request.user, f"has_completed_{survey_handling.survey_completion_map[survey_type]}_survey", True)
         request.user.save()
-        print(f"survey_type: {survey_type}")
-        if survey_type == "post":
-            print("end-post-survey")
-            return redirect("end-post-survey")
-        elif survey_type == "pre":
+        if survey_type == "pre":
             return redirect("end-pre-survey")
-        return redirect("homepage")
+        else:
+            return print("end-post-survey")
     else:
         next_page_number = page_number + 1
         return redirect("questions", survey_type=survey_type, page_number=next_page_number)
