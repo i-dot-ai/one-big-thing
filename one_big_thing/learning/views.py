@@ -500,15 +500,14 @@ def additional_learning_view(request):
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def intro_to_pre_survey_view(request):
-    return render(request, "intro-pre-survey.html", {})
+    number_questions = len(survey_handling.questions_data["pre"])
+    return render(request, "intro-pre-survey.html", {"number_questions": number_questions})
 
 
 @login_required
 @require_http_methods(["GET", "POST"])
 @enforce_user_completes_pre_survey
 def end_pre_survey_view(request):
-    if request.POST:
-        return redirect("homepage")
     return render(request, "end-pre-survey.html", {})
 
 
@@ -516,8 +515,6 @@ def end_pre_survey_view(request):
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def intro_to_post_survey_view(request):
-    if request.POST:
-        return redirect("questions", args=("post",))
     return render(request, "intro-post-survey.html", {})
 
 
