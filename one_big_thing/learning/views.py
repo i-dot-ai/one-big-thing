@@ -371,6 +371,8 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
                 return redirect("questions", completed_level)
         setattr(request.user, f"has_completed_{survey_handling.survey_completion_map[survey_type]}_survey", True)
         request.user.save()
+        if survey_type == "pre":
+            return redirect("intro-pre-survey")
         return redirect("homepage")
     else:
         next_page_number = page_number + 1
