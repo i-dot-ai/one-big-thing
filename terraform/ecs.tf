@@ -51,8 +51,7 @@ module "ecs" {
 
       # Container definition(s)
       container_definitions = {
-
-        one-big-thing = {
+        "one-big-thing-${var.env}" = {
           cpu       = 1024
           memory    = 4096
           essential = true
@@ -171,7 +170,7 @@ module "ecs" {
       load_balancer = {
         service = {
           target_group_arn = aws_lb_target_group.this.arn
-          container_name   = "one-big-thing"
+          container_name   = "one-big-thing-${var.env}"
           container_port   = 8055
         }
       }
