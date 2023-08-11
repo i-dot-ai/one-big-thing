@@ -71,18 +71,18 @@
         <tr class="govuk-table__row">
             <th scope="col" class="govuk-table__header">Title</th>
             <th scope="col" class="govuk-table__header">Type</th>
+            <th scope="col" class="govuk-table__header">Link</th>
             <th scope="col" class="govuk-table__header govuk-table__header--numeric">Duration (Hours)</th>
-            <th scope="col" class="govuk-table__header govuk-table__header--numeric">Rating (1-5)</th>
+            <th scope="col" class="govuk-table__header govuk-table__header--numeric" width="150px">Rating (1-5)</th>
             <th scope="col" class="govuk-table__header govuk-table__header--numeric"></th>
         </tr>
         </thead>
         <tbody class="govuk-table__body">
         {% for course in data.courses %}
             <tr class="govuk-table__row">
-                <th scope="row" class="govuk-table__header">{% if course.link and course.link | length > 0 %}
-                    <a href="{{ course.link }}" target="_blank"
-                       rel="noopener noreferrer">{{ course.title }}</a>{% else %}{{ course.title }}{% endif %}</th>
+                <td class="govuk-table__cell">{{ course.title }}</td>
                 <td class="govuk-table__cell">{{ course.get_learning_type_display_name() }}</td>
+                <td class="govuk-table__cell">{{ course.link }}</td>
                 <td class="govuk-table__cell govuk-table__cell--numeric">{{ humanize_timedelta(course.time_to_complete) }}</td>
                 <td class="govuk-table__cell govuk-table__cell--numeric">
                     <div class="rate disabled">
