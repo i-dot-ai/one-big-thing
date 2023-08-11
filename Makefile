@@ -87,7 +87,7 @@ tf/set-or-create-workspace:
 	make tf/set-workspace || make tf/new-workspace
 
 tf/init:
-	terraform -chdir=./terraform init -backend-config=backends/${env}.conf
+	terraform -chdir=./terraform init
 
 tf/plan:
 	make tf/set-workspace && \
