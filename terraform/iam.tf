@@ -7,8 +7,8 @@ data "aws_iam_policy_document" "secretsmanager" {
 }
 
 resource "aws_iam_policy" "password_policy_secretsmanager" {
-  name = "${local.team}-${local.project}-secretsmanager"
-  description = "Secretsmanager IAM policy for ${local.team}-${local.project}"
+  name = "${local.team}-${local.project}-secretsmanager-${var.env}"
+  description = "Secretsmanager IAM policy for ${local.team}-${local.project}-${var.env}"
   policy = data.aws_iam_policy_document.secretsmanager.json
 }
 
