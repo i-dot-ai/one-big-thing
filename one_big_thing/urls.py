@@ -38,9 +38,9 @@ other_urlpatterns = [
     path("external-test/", views.external_test_view, name="external-test"),
     path("additional-learning/", views.additional_learning_view, name="additional-learning"),
     path("intro-pre-survey/", views.intro_to_pre_survey_view, name="intro-pre-survey"),
-    path("end-pre-survey/", views.intro_to_pre_survey_view, name="end-pre-survey"),
-    path("intro-post-survey/", views.intro_to_pre_survey_view, name="intro-post-survey"),
-    path("end-post-survey/", views.intro_to_pre_survey_view, name="end-post-survey"),
+    path("end-pre-survey/", views.end_pre_survey_view, name="end-pre-survey"),
+    path("intro-post-survey/", views.intro_to_post_survey_view, name="intro-post-survey"),
+    path("end-post-survey/", views.end_post_survey_view, name="end-post-survey"),
 ]
 
 urlpatterns = account_urlpatterns + other_urlpatterns

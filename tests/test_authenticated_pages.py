@@ -12,7 +12,7 @@ LOGIN_REQUIRED_PAGES = [
     "/intro-pre-survey/",
     "/end-pre-survey/",
     "/intro-post-survey/",
-    "/end-post-survey/"
+    "/end-post-survey/",
 ]
 
 

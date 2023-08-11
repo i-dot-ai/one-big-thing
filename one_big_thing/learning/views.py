@@ -524,5 +524,5 @@ def intro_to_post_survey_view(request):
 @login_required
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
-def end_pre_survey_view(request):
+def end_post_survey_view(request):
     return render(request, "end-post-survey.html", {})
