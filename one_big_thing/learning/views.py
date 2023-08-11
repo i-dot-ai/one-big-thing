@@ -143,24 +143,6 @@ def homepage_view(request):
 @login_required
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
-def test_view(request):
-    courses = models.Course.objects.all()
-    data = {"courses": courses}
-    errors = {}
-    return render(
-        request,
-        template_name="test.html",
-        context={
-            "request": request,
-            "data": data,
-            "errors": errors,
-        },
-    )
-
-
-@login_required
-@require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
 def external_test_view(request):
     data = {}
     errors = {}

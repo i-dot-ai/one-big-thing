@@ -9,7 +9,6 @@ LOGIN_REQUIRED_PAGES = [
     "/complete-hours/",
     "/send-learning-record/",
     "/download-learning/",
-    "/test/",
 ]
 
 
