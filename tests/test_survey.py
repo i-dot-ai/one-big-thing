@@ -99,8 +99,8 @@ def complete_survey(client, user):
         },
     )
 
-    assert completed_page.has_text("Welcome to your One Big Thing Learning Record")
-    assert completed_page.has_text("Based on your survey results, we recommend you do the following:")
+    assert completed_page.has_text("Survey completed")
+    assert completed_page.has_text("You can now go to your One Big Thing homepage and start your learning.")
 
     completed_surveys = models.SurveyResult.objects.filter(user=user, survey_type="pre")
     assert len(completed_surveys) > 0, completed_surveys

@@ -1,0 +1,11 @@
+{% import "macros.html" as macros %}
+{% extends "base_generic_gov.html" %}
+
+{% block content %}
+  <h1 class="govuk-heading-l">Survey completed</h1>
+  <div class="govuk-body">
+      <p>Thank you for completing the survey.</p>
+      <p>You can now go to your One Big Thing homepage and start your learning.</p>
+      <a class="govuk-button" href="{{url('homepage',)}}">Next</a>
+  </div>
+{% endblock %}

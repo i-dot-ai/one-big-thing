@@ -371,6 +371,10 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
                 return redirect("questions", completed_level)
         setattr(request.user, f"has_completed_{survey_handling.survey_completion_map[survey_type]}_survey", True)
         request.user.save()
+        if survey_type == "pre":
+            return redirect("end-pre-survey")
+        elif survey_type != "post":  # will be one of the training levels
+            return redirect("end-post-survey")
         return redirect("homepage")
     else:
         next_page_number = page_number + 1
@@ -494,3 +498,32 @@ def additional_learning_view(request):
         "additional_learning": additional_learning_records,
     }
     return render(request, "additional-learning.html", {"data": data})
+
+
+# Don't enforce user completes pre survey as this is the page to redirect to
+@login_required
+@require_http_methods(["GET"])
+def intro_to_pre_survey_view(request):
+    number_questions = len(survey_handling.questions_data["pre"])
+    return render(request, "intro-pre-survey.html", {"number_questions": number_questions})
+
+
+@login_required
+@require_http_methods(["GET"])
+@enforce_user_completes_pre_survey
+def end_pre_survey_view(request):
+    return render(request, "end-pre-survey.html", {})
+
+
+@login_required
+@require_http_methods(["GET"])
+@enforce_user_completes_pre_survey
+def intro_to_post_survey_view(request):
+    return render(request, "intro-post-survey.html", {})
+
+
+@login_required
+@require_http_methods(["GET"])
+@enforce_user_completes_pre_survey
+def end_post_survey_view(request):
+    return render(request, "end-post-survey.html", {})
