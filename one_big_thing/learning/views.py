@@ -516,6 +516,8 @@ def end_pre_survey_view(request):
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def intro_to_post_survey_view(request):
+    if request.POST:
+        return redirect("questions", args=("post",))
     return render(request, "intro-post-survey.html", {})
 
 
