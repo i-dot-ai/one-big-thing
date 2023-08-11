@@ -37,6 +37,7 @@ other_urlpatterns = [
     path("delete-learning-check/<uuid:learning_id>/", views.check_delete_learning_view, name="delete-learning-check"),
     path("external-test/", views.external_test_view, name="external-test"),
     path("additional-learning/", views.additional_learning_view, name="additional-learning"),
+    path("intro-pre-survey/", views.intro_to_pre_survey_view, name="intro-pre-survey"),
 ]
 
 urlpatterns = account_urlpatterns + other_urlpatterns

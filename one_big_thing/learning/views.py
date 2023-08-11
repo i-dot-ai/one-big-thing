@@ -494,3 +494,10 @@ def additional_learning_view(request):
         "additional_learning": additional_learning_records,
     }
     return render(request, "additional-learning.html", {"data": data})
+
+
+@login_required
+@require_http_methods(["GET"])
+@enforce_user_completes_pre_survey
+def intro_to_pre_survey_view(request):
+    return render(request, "intro-pre-survey.html", {})
