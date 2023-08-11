@@ -371,8 +371,10 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
                 return redirect("questions", completed_level)
         setattr(request.user, f"has_completed_{survey_handling.survey_completion_map[survey_type]}_survey", True)
         request.user.save()
-        if survey_type == "pre":
-            return redirect("intro-pre-survey")
+        if survey_type == "post":
+            return redirect("end-post-survey")
+        elif survey_type == "pre":
+            return redirect("end-pre-survey")
         return redirect("homepage")
     else:
         next_page_number = page_number + 1
@@ -507,7 +509,7 @@ def intro_to_pre_survey_view(request):
 
 
 @login_required
-@require_http_methods(["GET", "POST"])
+@require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def end_pre_survey_view(request):
     return render(request, "end-pre-survey.html", {})
