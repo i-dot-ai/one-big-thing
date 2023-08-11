@@ -504,9 +504,11 @@ def intro_to_pre_survey_view(request):
 
 
 @login_required
-@require_http_methods(["GET"])
+@require_http_methods(["GET", "POST"])
 @enforce_user_completes_pre_survey
 def end_pre_survey_view(request):
+    if request.POST:
+        return redirect("homepage")
     return render(request, "end-pre-survey.html", {})
 
 

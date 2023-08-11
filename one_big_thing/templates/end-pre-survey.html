@@ -2,4 +2,14 @@
 {% extends "base_generic_gov.html" %}
 
 {% block content %}
+  <h1 class="govuk-heading-l">Survey completed</h1>
+  <div class="govuk-body">
+      <p>Thank you for completing the survey.</p>
+      <p>You can now go to your One Big Thing homepage and start your learning.</p>
+      <form method="post">{{ csrf_input }}
+        <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" name="cancel">
+          Next
+        </button>
+    </form>
+  </div>
 {% endblock %}
