@@ -1,4 +1,3 @@
-
 resource "aws_alb" "this" {
   # checkov:skip=CKV_AWS_150:Don't enable deletion protection
   name                       = "${local.team}-${local.project}-${terraform.workspace}-alb"
@@ -56,7 +55,7 @@ resource "aws_security_group_rule" "allow_egress" {
 }
 
 resource "aws_lb_target_group" "this" {
-  name        = "${local.team}-${local.project}-tg"
+  name        = "${local.team}-${local.project}-${var.env}-tg"
   port        = 8055
   protocol    = "HTTP"
   target_type = "ip"
