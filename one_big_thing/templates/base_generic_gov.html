@@ -34,12 +34,7 @@
     <header class="govuk-header" role="banner" data-module="govuk-header">
       <div class="govuk-header__container govuk-width-container">
         <div class="govuk-header__logo">
-          <a href="/">
-            <span class="govuk-header__logotype">
-              <img src="{{static('/assets/co_logo_white.svg')}}" alt="Cabinet Office logo"
-                class="govuk-header__logotype-crown" />
-            </span>
-          </a>
+          <img src="{{static('/assets/civil_service.svg')}}" alt="Civil Service logo" style="width:80%;height:auto;" />
         </div>
         {% if DEBUG %}
           <p class="space-warning">
@@ -66,9 +61,17 @@
                 </a>
               </li>
               <li class="govuk-header__navigation-item">
+                <a class="govuk-header__link" href="{{url('password-reset')}}">
+                  Password reset
+                </a>
+              </li>
+              <li class="govuk-header__navigation-item">
                 <a class="govuk-header__link" href="/accounts/logout/">
                   Sign out
                 </a>
+              </li>
+              <li class="govuk-header__navigation-item">
+                {{request.user.email}} logged in at {{request.user.last_login.strftime("%d-%b-%Y %H:%M")}}
               </li>
             </ul>
           </nav>
