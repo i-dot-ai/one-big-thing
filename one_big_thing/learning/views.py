@@ -501,3 +501,24 @@ def additional_learning_view(request):
 @enforce_user_completes_pre_survey
 def intro_to_pre_survey_view(request):
     return render(request, "intro-pre-survey.html", {})
+
+
+@login_required
+@require_http_methods(["GET"])
+@enforce_user_completes_pre_survey
+def end_pre_survey_view(request):
+    return render(request, "end-pre-survey.html", {})
+
+
+@login_required
+@require_http_methods(["GET"])
+@enforce_user_completes_pre_survey
+def intro_to_post_survey_view(request):
+    return render(request, "intro-post-survey.html", {})
+
+
+@login_required
+@require_http_methods(["GET"])
+@enforce_user_completes_pre_survey
+def end_pre_survey_view(request):
+    return render(request, "end-post-survey.html", {})
