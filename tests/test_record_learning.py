@@ -56,7 +56,7 @@ def test_enter_valid_learning_record():
     user = models.User.objects.get(email=test_email)
 
     record_learning_page = client.get("/record-learning/")
-    assert record_learning_page.status_code == 200
+    assert record_learning_page.status_code == 200, record_learning_page.status_code
     assert record_learning_page.has_text("Record learning I've done:")
 
     record_learning_form = record_learning_page.get_form()
