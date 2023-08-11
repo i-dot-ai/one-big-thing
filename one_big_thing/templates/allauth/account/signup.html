@@ -90,7 +90,7 @@
           <label class="govuk-label" for="profession">Primary area of work</label>
           <div id="select-field">
             <select name="profession" id="profession" class="govuk-select govuk-!-width-full">
-              <option value="" disabled class="govuk-button--disabled" {% if not data.professions%}selected{% endif %}>Please select your profession</option>
+              <option value="" disabled class="govuk-button--disabled" {% if not data.professions%}selected{% endif %}>Please select your primary area of work</option>
               {% for option in professions %}
                 <option value="{{option.0}}" {% if 'profession' in data.keys and data.professions == option.0 %}selected{% endif %}>{{option.1}}</option>
               {% endfor %}
