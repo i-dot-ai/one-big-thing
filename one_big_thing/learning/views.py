@@ -373,7 +373,7 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
         request.user.save()
         if survey_type == "pre":
             return redirect("end-pre-survey")
-        elif survey_type != "post": # will be one of the training levels
+        elif survey_type != "post":  # will be one of the training levels
             return redirect("end-post-survey")
         return redirect("homepage")
     else:
