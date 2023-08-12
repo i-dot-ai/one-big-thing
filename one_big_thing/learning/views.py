@@ -14,13 +14,13 @@ from django.views.decorators.http import require_http_methods
 
 from . import (
     choices,
+    constants,
     interface,
     models,
     schemas,
     special_course_handler,
     survey_handling,
     utils,
-    constants
 )
 from .additional_learning import additional_learning
 from .decorators import enforce_user_completes_pre_survey
