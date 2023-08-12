@@ -1,18 +1,14 @@
 # Ensure you update the special_courses_handler.py file with the course names
 
-- title: Practitioner level course
-  link: https://learn.civilservice.gov.uk/courses/GyZgKWc0Tz6ZIfvDSiuO1Q
+- title: Data masterclass (Level 3 - Practitioner)
+  link: https://learn.civilservice.gov.uk/courses/r9omWk08TCmu7pRKq_XElA
   time_to_complete: 80
-  learning_type: LINK
-- title: Working level course
-  link: https://learn.civilservice.gov.uk/courses/GyZgKWc0Tz6ZIfvDSiuO1Q
+  learning_type: FORMAL_TRAINING_CENTRAL
+- title: Working with data (Level 2 - Working)
+  link: https://learn.civilservice.gov.uk/courses/h_Ez1CIhTuaz6E0UVud9og
   time_to_complete: 80
-  learning_type: LINK
-- title: Awareness level course
-  link: https://learn.civilservice.gov.uk/courses/GyZgKWc0Tz6ZIfvDSiuO1Q
+  learning_type: FORMAL_TRAINING_CENTRAL
+- title: Understanding data (Level 1 - Awareness)
+  link: https://learn.civilservice.gov.uk/courses/LIkoT229QJW1sEmXD9aXoA
   time_to_complete: 80
-  learning_type: LINK
-- title: Discussion with your team
-  link: null
-  time_to_complete: 90
-  learning_type: IN_PERSON
+  learning_type: FORMAL_TRAINING_CENTRAL
