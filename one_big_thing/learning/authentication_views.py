@@ -62,10 +62,7 @@ class CustomLoginView(MethodDispatcher):
                         )
                 login(request, user)
                 request.session["session_created_at"] = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
-                if not user.has_completed_pre_survey:
-                    return redirect(reverse("questions", kwargs={"survey_type": "pre"}))
-                else:
-                    return redirect(reverse("homepage"))
+                return redirect(reverse("homepage"))
             else:
                 return self.error(request)
 
@@ -188,10 +185,7 @@ class CustomSignupView(SignupView):
             user = authenticate(request, email=email, password=password1)
             login(request, user)
             messages.success(request, f"Successfully signed in as {user.email}.")
-            if not user.has_completed_pre_survey:
-                return redirect(reverse("questions", kwargs={"survey_type": "pre"}))
-            else:
-                return redirect(reverse("homepage"))
+            return redirect(reverse("homepage"))
         response = super().dispatch(request, errors={}, *args, **kwargs)
         return response
 
@@ -210,10 +204,7 @@ class CustomVerifyUserEmail(MethodDispatcher):
             user.save()
             user.backend = "django.contrib.auth.backends.ModelBackend"
             login(request, user)
-            if not user.has_completed_pre_survey:
-                return redirect(reverse("questions", kwargs={"survey_type": "pre"}))
-            else:
-                return redirect(reverse("homepage"))
+            return redirect(reverse("homepage"))
         return render(request, "account/verify_email_from_token.html", {"verify_result": verify_result})
 
 
