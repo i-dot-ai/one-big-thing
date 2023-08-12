@@ -109,7 +109,9 @@ def homepage_view(request):
             for course in all_level_courses
         ]
         time_completed = user.get_time_completed()
-        selected_level_course = [course for course in all_level_courses_information if course["title"] == selected_level_course_title][0]
+        selected_level_course = [
+            course for course in all_level_courses_information if course["title"] == selected_level_course_title
+        ][0]
         data = {
             "time_completed": time_completed,
             "selected_level": selected_level,
