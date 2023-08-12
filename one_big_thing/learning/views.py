@@ -118,7 +118,7 @@ def homepage_view(request):
             "selected_level": selected_level,
             "selected_level_course": selected_level_course,
             "all_level_courses": all_level_courses_information,
-            "completed_feedback_survey": completed_feedback_survey
+            "completed_feedback_survey": completed_feedback_survey,
         }
         return render(
             request,
