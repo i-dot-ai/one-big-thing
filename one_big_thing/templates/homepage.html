@@ -79,7 +79,9 @@
             <a class="govuk-button" href="{{url('record-learning')}}">Record</a>
           </div>
           <p class="govuk-body"><strong>You should record all the learning you have done</strong></p>
-          <p class="govuk-body">[ADD LEARNING SO FAR]</p>
+          <div class="govuk-inset-text">
+            You have recorded {{humanize_timedelta(data.time_completed)}} of learning so far.
+          </div>
           <p class="govuk-body">You should record your learning as you do it to help keep track of the hours you have completed.</p>
         </div>
             <div class="step-by-step--step-label">
