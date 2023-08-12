@@ -117,7 +117,7 @@ def is_civil_service_email(email):
         allowed = True
     else:
         ALLOWED_CIVIL_SERVICE_DOMAINS_DOT = [f".{domain}" for domain in ALLOWED_CIVIL_SERVICE_DOMAINS]
-        allowed = email.endswith(tuple(ALLOWED_CIVIL_SERVICE_DOMAINS_DOT))        
+        allowed = email.endswith(tuple(ALLOWED_CIVIL_SERVICE_DOMAINS_DOT))
     return allowed
 
 
