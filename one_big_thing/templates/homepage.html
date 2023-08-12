@@ -19,8 +19,19 @@
             </div>
             <p class="govuk-body"><strong>You should complete 7 hours of learning on the topic of data.</strong></p>
             <p class="govuk-body">You should start with your e-learning. We recommend:</p>
-            <p class="govuk-body"><a class="govuk-link" href={{data.selected_level_course.link}}>{{data.selected_level_course.title}}</a></p>
-            <p>[SEE OTHER LEARNING YOU CAN DO?]</p>
+            <p class="govuk-body"><a class="govuk-link" href={{data.selected_level_course.link}}>{{data.selected_level_course.title}}</a> (opens in Civil Service Learning)</p>
+            <details class="govuk-details" data-module="govuk-details">
+              <summary class="govuk-details__summary">
+                <span class="govuk-details__summary-text">
+                  See other learning levels you could do
+               </span>
+              </summary>
+              <div class="govuk-details__text">
+                {% for course in data.all_level_courses %}
+                  <p><a class="govuk-link" href={{course.link}}>{{course.title}}</a> (opens in Civil Service Learning)</p>
+                {% endfor %}
+              </div>
+            </details>
           </div>
           <div class="step-by-step--step-label">
             <div class="step-by-step--step-no-circle">
