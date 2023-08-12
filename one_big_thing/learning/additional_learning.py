@@ -77,24 +77,6 @@ additional_learning = {
                 "type": "Webpage",
                 "duration": "Various",
             },
-            # {
-            #     "title": "Awareness in data linkage from the Government Analysis Function",
-            #     "link": "https://analysisfunction.civilservice.gov.uk/training/awareness-in-data-linkage/",
-            #     "type": "Course",
-            #     "duration": 60,
-            # },
-            # {
-            #     "title": "Awareness in administrative data from the Government Analysis Function",
-            #     "link": "https://analysisfunction.civilservice.gov.uk/training/awareness-in-administrative-data/",
-            #     "type": "Course",
-            #     "duration": 60,
-            # },
-            # {
-            #     "title": "Awareness in data ethics from the Government Analysis Function",
-            #     "link": "https://analysisfunction.civilservice.gov.uk/training/awareness-in-data-ethics/",
-            #     "type": "Course",
-            #     "duration": 40,
-            # },
             {
                 "title": "Data Skills",
                 "link": "https://ukdataservice.ac.uk/learning-hub/data-skills-modules/",
