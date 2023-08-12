@@ -124,8 +124,9 @@ additional_learning = {
                 "duration": 50,
             },
             {
-                "title": "Data visualisation 101 from Civil Service Learning",
+                "title": "Data visualisation 101",
                 "link": "https://learn.civilservice.gov.uk/courses/2PAR3NQyT-GOg5-7bVZaog",
+                "provider": "Civil Service Learning",
                 "type": "Course",
                 "duration": 60,
             },

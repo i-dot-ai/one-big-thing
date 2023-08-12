@@ -47,9 +47,10 @@
                         <tr class="govuk-table__row">
                           <td class="govuk-table__cell">{% if course.link %}
                             <a href="{{ course.link }}" class="govuk-link" target="_blank"
-                                rel="noopener noreferrer">{{ course.title }}</a>{% else %}
-                            {{ course.title }}{% endif %}</td>
-                          <td class="govuk-table__cell govuk-table__cell">{{ course.type }}</td>
+                                rel="noopener noreferrer">{{course.title}}</a>{% else %}
+                            {{course.title}}{% endif %}</td>
+                          <td class="govuk-table__cell govuk-table__cell">{{course.provider}}</td>
+                          <td class="govuk-table__cell govuk-table__cell">{{course.type}}</td>
                           <td class="govuk-table__cell govuk-table__cell">
                             {% if course.duration %}
                               {% if course.duration | int != 0 %}
