@@ -91,46 +91,30 @@ def homepage_view(request):
         return render(request, "streamlined-homepage.html", {"data": data, "errors": errors})
     else:
         errors = {}
-        # survey_answer = models.SurveyResult.objects.get(user=user, survey_type="pre", page_number=1)
-        # selected_level = survey_answer.data["competency"]
         # TODO: Add level calculation and remove hard-coded level
         selected_level = "beginner"
-        recommended_course_title = special_course_handler.competency_level_courses[selected_level]
-        recommended_course = special_course_handler.get_special_course_information(recommended_course_title)
-        extra_recommended_course_titles = [
-            value
-            for key, value in special_course_handler.competency_level_courses.items()
-            if value != recommended_course_title
-        ]
-        extra_recommended_courses = [
+        selected_level_course_title = special_course_handler.competency_level_courses[selected_level]
+        all_level_course_titles = list(special_course_handler.competency_level_courses.values())
+        all_level_courses = [
             special_course_handler.get_special_course_information(course_title)
-            for course_title in extra_recommended_course_titles
+            for course_title in all_level_course_titles
         ]
-        extra_recommended_courses_information = [
+        all_level_courses_information = [
             {
-                "title": extra_course.title,
-                "link": extra_course.link,
-                "id": extra_course.id,
-                "is_complete": user.has_completed_course(extra_course.id),
+                "title": course.title,
+                "link": course.link,
+                "id": course.id,
+                "is_complete": user.has_completed_course(course.id),
             }
-            for extra_course in extra_recommended_courses
+            for course in all_level_courses
         ]
-        recommended_course_information = {
-            "title": recommended_course.title,
-            "link": recommended_course.link,
-            "id": recommended_course.id,
-            "is_complete": user.has_completed_course(recommended_course.id),
-        }
-        team_meeting_course = special_course_handler.get_special_course_information(
-            special_course_handler.team_meeting_course_title
-        )
         time_completed = user.get_time_completed()
+        selected_level_course = [course for course in all_level_courses_information if course["title"] == selected_level_course_title][0]
         data = {
             "time_completed": time_completed,
-            "selected_level": selected_level.capitalize(),
-            "recommended_course": recommended_course_information,
-            "extra_recommended_courses": extra_recommended_courses_information,
-            "team_meeting_course": team_meeting_course,
+            "selected_level": selected_level,
+            "selected_level_course": selected_level_course,
+            "all_level_courses": all_level_courses_information,
         }
         return render(
             request,
