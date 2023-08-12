@@ -81,55 +81,69 @@ def index_view(request):
 @enforce_user_completes_pre_survey
 def homepage_view(request):
     user = request.user
-    if user.department in constants.DEPARTMENTS_INTRANET_LINKS.keys():
-        time_completed = user.get_time_completed()
-        department_link = constants.DEPARTMENTS_INTRANET_LINKS[user.department]
-        data = {
-            "time_completed": time_completed,
-            "intranet_link": department_link,
+    use_streamlined_view = (user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys())
+        # time_completed = user.get_time_completed()
+        # department_link = constants.DEPARTMENTS_USING_INTRANET_LINKS[user.department]
+        # data = {
+        #     "time_completed": time_completed,
+        #     "intranet_link": department_link,
+        # }
+        # errors = {}
+        # return render(request, "streamlined-homepage.html", {"data": data, "errors": errors})
+    errors = {}
+    # TODO: Add level calculation and remove hard-coded level
+    selected_level = "beginner"
+    selected_level_course_title = special_course_handler.competency_level_courses[selected_level]
+    all_level_course_titles = list(special_course_handler.competency_level_courses.values())
+    all_level_courses = [
+        special_course_handler.get_special_course_information(course_title)
+        for course_title in all_level_course_titles
+    ]
+    all_level_courses_information = [
+        {
+            "title": course.title,
+            "link": course.link,
+            "id": course.id,
+            "is_complete": user.has_completed_course(course.id),
         }
-        errors = {}
-        return render(request, "streamlined-homepage.html", {"data": data, "errors": errors})
-    else:
-        errors = {}
-        # TODO: Add level calculation and remove hard-coded level
-        selected_level = "beginner"
-        selected_level_course_title = special_course_handler.competency_level_courses[selected_level]
-        all_level_course_titles = list(special_course_handler.competency_level_courses.values())
-        all_level_courses = [
-            special_course_handler.get_special_course_information(course_title)
-            for course_title in all_level_course_titles
-        ]
-        all_level_courses_information = [
-            {
-                "title": course.title,
-                "link": course.link,
-                "id": course.id,
-                "is_complete": user.has_completed_course(course.id),
-            }
-            for course in all_level_courses
-        ]
-        time_completed = user.get_time_completed()
-        completed_feedback_survey = user.has_completed_post_survey
-        selected_level_course = [
-            course for course in all_level_courses_information if course["title"] == selected_level_course_title
-        ][0]
-        data = {
-            "time_completed": time_completed,
-            "selected_level": selected_level,
-            "selected_level_course": selected_level_course,
-            "all_level_courses": all_level_courses_information,
-            "completed_feedback_survey": completed_feedback_survey,
-        }
+        for course in all_level_courses
+    ]
+    time_completed = user.get_time_completed()
+    completed_feedback_survey = user.has_completed_post_survey
+    selected_level_course = [
+        course for course in all_level_courses_information if course["title"] == selected_level_course_title
+    ][0]
+    data = {
+        "time_completed": time_completed,
+        "selected_level": selected_level,
+        "selected_level_course": selected_level_course,
+        "all_level_courses": all_level_courses_information,
+        "completed_feedback_survey": completed_feedback_survey,
+        "streamlined_version": use_streamlined_view,
+    }
+    if use_streamlined_view:
+        intranet_link = constants.DEPARTMENTS_USING_INTRANET_LINKS[user.department]
+        data["intranet_link"] = intranet_link
         return render(
-            request,
-            template_name="homepage.html",
-            context={
-                "request": request,
-                "data": data,
-                "errors": errors,
-            },
-        )
+        request,
+        template_name="streamlined-homepage.html",
+        context={
+            "request": request,
+            "data": data,
+            "errors": errors,
+        },
+    )
+
+
+    return render(
+        request,
+        template_name="homepage.html",
+        context={
+            "request": request,
+            "data": data,
+            "errors": errors,
+        },
+    )
 
 
 @login_required
@@ -249,7 +263,7 @@ class RecordLearningView(utils.MethodDispatcher):
         if errors:
             return self.get(request, data=data, errors=errors)
         user = request.user
-        if user.department in constants.DEPARTMENTS_USING_INTRANET.keys():
+        if user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys():
             template_name = "streamlined-record-learning.html"
         else:
             template_name = "record-learning.html"
