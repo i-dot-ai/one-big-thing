@@ -82,14 +82,6 @@ def index_view(request):
 def homepage_view(request):
     user = request.user
     use_streamlined_view = user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
-    # time_completed = user.get_time_completed()
-    # department_link = constants.DEPARTMENTS_USING_INTRANET_LINKS[user.department]
-    # data = {
-    #     "time_completed": time_completed,
-    #     "intranet_link": department_link,
-    # }
-    # errors = {}
-    # return render(request, "streamlined-homepage.html", {"data": data, "errors": errors})
     errors = {}
     # TODO: Add level calculation and remove hard-coded level
     selected_level = "beginner"
