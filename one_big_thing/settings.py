@@ -21,7 +21,6 @@ DEBUG = env.bool("DEBUG", default=False)
 SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 
 REQUIRED_LEARNING_TIME = env.int("REQUIRED_LEARNING_TIME", default=420)
-SELF_REFLECTION_FILENAME = env.str("SELF_REFLECTION_FILENAME")
 
 VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
