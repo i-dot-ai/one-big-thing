@@ -20,6 +20,7 @@ from . import (
     special_course_handler,
     survey_handling,
     utils,
+    constants
 )
 from .additional_learning import additional_learning
 from .decorators import enforce_user_completes_pre_survey
@@ -80,9 +81,9 @@ def index_view(request):
 @enforce_user_completes_pre_survey
 def homepage_view(request):
     user = request.user
-    if user.department in settings.DEPARTMENTS_USING_INTRANET.keys():
+    if user.department in constants.DEPARTMENTS_INTRANET_LINKS.keys():
         time_completed = user.get_time_completed()
-        department_link = settings.DEPARTMENTS_USING_INTRANET[user.department]
+        department_link = constants.DEPARTMENTS_INTRANET_LINKS[user.department]
         data = {
             "time_completed": time_completed,
             "intranet_link": department_link,
@@ -169,7 +170,7 @@ class RecordLearningView(utils.MethodDispatcher):
         if not data:
             data = {}
         user = request.user
-        if user.department in settings.DEPARTMENTS_USING_INTRANET.keys():
+        if user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys():
             template_name = "streamlined-record-learning.html"
         else:
             template_name = "record-learning.html"
@@ -248,7 +249,7 @@ class RecordLearningView(utils.MethodDispatcher):
         if errors:
             return self.get(request, data=data, errors=errors)
         user = request.user
-        if user.department in settings.DEPARTMENTS_USING_INTRANET.keys():
+        if user.department in constants.DEPARTMENTS_USING_INTRANET.keys():
             template_name = "streamlined-record-learning.html"
         else:
             template_name = "record-learning.html"
