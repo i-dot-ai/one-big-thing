@@ -113,11 +113,14 @@ def is_civil_service_email(email):
     allowed = False
     email = email.lower()
     email_split = email.split("@")
+    print(f"email_split: {email_split}")
     if email_split[-1] in ALLOWED_CIVIL_SERVICE_DOMAINS:
         allowed = True
     else:
         ALLOWED_CIVIL_SERVICE_DOMAINS_DOT = [f".{domain}" for domain in ALLOWED_CIVIL_SERVICE_DOMAINS]
+        print(f"ALLOWED_CIVIL_SERVICE_DOMAINS_DOT: {ALLOWED_CIVIL_SERVICE_DOMAINS_DOT}")
         allowed = email.endswith(tuple(ALLOWED_CIVIL_SERVICE_DOMAINS_DOT))
+        print(f"allowed: {allowed}")
     return allowed
 
 
