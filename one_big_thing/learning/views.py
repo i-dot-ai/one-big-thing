@@ -109,6 +109,7 @@ def homepage_view(request):
             for course in all_level_courses
         ]
         time_completed = user.get_time_completed()
+        completed_feedback_survey = user.has_completed_post_survey
         selected_level_course = [
             course for course in all_level_courses_information if course["title"] == selected_level_course_title
         ][0]
@@ -117,6 +118,7 @@ def homepage_view(request):
             "selected_level": selected_level,
             "selected_level_course": selected_level_course,
             "all_level_courses": all_level_courses_information,
+            "completed_feedback_survey": completed_feedback_survey
         }
         return render(
             request,
