@@ -80,3 +80,12 @@ def test_choices():
     assert MadeUp.labels == expected_labels, MadeUp.labels
     assert MadeUp.options == expected_options, MadeUp.options
     assert MadeUp.mapping == expected_mapping, MadeUp.mapping
+
+
+def test_is_civil_service_email():
+    valid_email_1 = "bob@example.com"
+    valid_email_2 = "bob@sub.example.com"
+    invalid_email_1 = "bob@example.net"
+    assert utils.is_civil_service_email(valid_email_1), valid_email_1
+    assert utils.is_civil_service_email(valid_email_2), valid_email_2
+    assert not utils.is_civil_service_email(invalid_email_1), invalid_email_1
