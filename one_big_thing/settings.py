@@ -9,7 +9,6 @@ from .settings_base import (
     env,
 )
 
-
 STATIC_URL = STATIC_URL
 STATICFILES_DIRS = STATICFILES_DIRS
 STATIC_ROOT = STATIC_ROOT

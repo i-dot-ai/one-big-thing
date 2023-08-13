@@ -43,7 +43,6 @@ def test_login():
     form["login"] = email
     form["password"] = "wrong_password"
     page = form.submit()
-    print(page)
     assert page.has_text("Something has gone wrong.")
     form = page.get_form()
     form["login"] = email
@@ -62,4 +61,19 @@ def test_login():
 #     # Follow URL and check logged in?
 
 
-# Test password requirements
+def test_invalid_password_requirements():
+    email = "Annie4@example.com"
+    invalid_passwords = ["password1!", "elephants$5", "PinkPanda", "h12!L", email]
+    client = utils.make_testino_client()
+    for pwd in invalid_passwords:
+        page = client.get("/accounts/signup/")
+        form = page.get_form()
+        form["email"] = email
+        form["grade"] = "GRADE7"
+        form["department"] = "home-office"
+        form["profession"] = "ANALYSIS"
+        form["password1"] = pwd
+        form["password2"] = pwd
+        page = form.submit()
+        # ie return to registration page unable to progress
+        assert page.has_text("Register"), pwd
