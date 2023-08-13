@@ -85,7 +85,9 @@ def test_choices():
 def test_is_civil_service_email():
     valid_email_1 = "bob@example.com"
     valid_email_2 = "bob@sub.example.com"
+    valid_email_3 = "fred@sub.digital.Example.Com"
     invalid_email_1 = "bob@example.net"
     assert utils.is_civil_service_email(valid_email_1), valid_email_1
     assert utils.is_civil_service_email(valid_email_2), valid_email_2
+    assert utils.is_civil_service_email(valid_email_3), valid_email_3
     assert not utils.is_civil_service_email(invalid_email_1), invalid_email_1
