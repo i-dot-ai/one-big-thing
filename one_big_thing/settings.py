@@ -8,7 +8,6 @@ from .settings_base import (
     STATICFILES_DIRS,
     env,
 )
-from one_big_thing import custom_password_validators
 
 
 STATIC_URL = STATIC_URL
@@ -163,10 +162,10 @@ AUTH_PASSWORD_VALIDATORS = [
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
     {
-        "NAME": "custom_password_validators.SpecialCharacterValidator",
+        "NAME": "one_big_thing.custom_password_validators.SpecialCharacterValidator",
     },
     {
-        "NAME": "custom_password_validators.LowercaseUppercaseValidator",
+        "NAME": "one_big_thing.custom_password_validators.LowercaseUppercaseValidator",
     },
 ]
 
