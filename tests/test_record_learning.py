@@ -4,7 +4,7 @@ from tests import utils
 
 def test_enter_invalid_time_to_complete():
     test_email = "test-learning-record-invalid-time-entry@example.com"
-    authenticated_user = {"email": test_email, "password": "giraffe47"}
+    authenticated_user = {"email": test_email, "password": "!$giraFFe47"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=test_email)
@@ -28,7 +28,7 @@ def test_enter_invalid_time_to_complete():
 
 def test_enter_invalid_values():
     test_email = "test-learning-record-invalid-data-entry@example.com"
-    authenticated_user = {"email": test_email, "password": "giraffe47"}
+    authenticated_user = {"email": test_email, "password": "$%gIraffe47"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=test_email)
@@ -50,7 +50,7 @@ def test_enter_invalid_values():
 
 def test_enter_valid_learning_record():
     test_email = "test-learning-record-valid-data-entry@example.com"
-    authenticated_user = {"email": test_email, "password": "giraffe47"}
+    authenticated_user = {"email": test_email, "password": "&&GIraffe47$"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=test_email)
@@ -76,8 +76,8 @@ def test_enter_valid_learning_record():
 
 
 def test_completed_learning_record_feedback_link():
-    test_email = "test@example.com"
-    authenticated_user = {"email": test_email, "password": "giraffe47"}
+    test_email = "test123@example.com"
+    authenticated_user = {"email": test_email, "password": "P455W0rd!£"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=test_email)
@@ -105,7 +105,7 @@ def test_completed_learning_record_feedback_link():
 
 def test_enter_learning_record_streamlined():
     test_email = "test@example.com"
-    authenticated_user = {"email": test_email, "password": "giraffe47"}
+    authenticated_user = {"email": test_email, "password": "Giraffe@@47"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=test_email)
@@ -145,7 +145,7 @@ def test_download_learning_document(client):
 
 def test_delete_learning():
     user_email = "test-delete-learning-record@example.com"
-    authenticated_user = {"email": user_email, "password": "giraffe47"}
+    authenticated_user = {"email": user_email, "password": "Giraffe%$47"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=user_email)
@@ -186,7 +186,7 @@ def test_delete_learning():
 
 def test_create_delete_learning_streamlined():
     user_email = "test-delete-learning-record-streamlined@example.com"
-    authenticated_user = {"email": user_email, "password": "giraffe47"}
+    authenticated_user = {"email": user_email, "password": "Giraffe47!!"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=user_email)

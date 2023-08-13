@@ -4,7 +4,7 @@ from tests import utils
 
 def test_submit_survey():
     test_email = "test-evaluation-data-entry@example.com"
-    authenticated_user = {"email": test_email, "password": "giraffe47"}
+    authenticated_user = {"email": test_email, "password": "GIRAFFE47!x"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=test_email)
