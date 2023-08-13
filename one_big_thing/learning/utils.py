@@ -112,7 +112,7 @@ class Choices(enum.Enum, metaclass=ChoicesMeta):
 def is_civil_service_email(email):
     email = email.lower()
     email_split = email.split("@")
-    allowed = (email_split[-1] in ALLOWED_CIVIL_SERVICE_DOMAINS)
+    allowed = email_split[-1] in ALLOWED_CIVIL_SERVICE_DOMAINS
     if not allowed:
         ALLOWED_CIVIL_SERVICE_DOMAINS_DOT = [f".{domain}" for domain in ALLOWED_CIVIL_SERVICE_DOMAINS]
         allowed = email.endswith(tuple(ALLOWED_CIVIL_SERVICE_DOMAINS_DOT))
