@@ -43,8 +43,7 @@ def test_login():
     form["password"] = "wrong_password"
     page = form.submit()
     print(page)
-    # TODO: Should you contact an admin with an incorrect password?
-    assert page.has_text("Something has gone wrong. Please contact an admin.")
+    assert page.has_text("Something has gone wrong.")
     form = page.get_form()
     form["login"] = email
     form["password"] = password
