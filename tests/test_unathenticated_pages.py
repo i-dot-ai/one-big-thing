@@ -1,6 +1,8 @@
-from one_big_thing.learning import models
+from django.test import override_settings
 
+from one_big_thing.learning import models
 from . import utils
+
 
 ACCOUNT_URLS_LOGIN_NOT_REQUIRED = [
     "/accounts/verify/",
@@ -53,12 +55,24 @@ def test_login():
     models.User.objects.get(email=email).delete()
 
 
-# def test_verification():
-#     # sign-up
-#     # Check page has "Sign up complete"
-
-#     # Get verification URL
-#     # Follow URL and check logged in?
+@override_settings(SEND_VERIFICATION_EMAIL=True)
+def test_verification():
+    client = utils.make_testino_client()
+    email = "james@example.com"
+    password = "StupidPassword1!"
+    page = client.get("/accounts/signup/")
+    form = page.get_form()
+    form["email"] = email
+    form["password1"] = password
+    form["password2"] = password
+    form["grade"] = "GRADE7"
+    form["department"] = "hm-treasury"
+    form["profession"] = "LEGAL"
+    page = form.submit()
+    assert page.has_text("Sign up complete")
+    assert page.has_text("verification email")
+    # Get verification URL
+    # Follow URL and check logged in?
 
 
 def test_invalid_password_requirements():
