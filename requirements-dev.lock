@@ -4,11 +4,13 @@ bandit==1.7.5
 black==23.7.0
 boto3==1.28.23
 botocore==1.31.23
+boto3==1.28.25
+botocore==1.31.25
 certifi==2023.7.22
 cffi==1.15.1
 charset-normalizer==3.2.0
 click==8.1.6
-coverage==7.2.7
+coverage==7.3.0
 cryptography==41.0.3
 cssselect==1.2.0
 defusedxml==0.7.1
@@ -19,6 +21,7 @@ django-cors-headers==4.2.0
 django-environ==0.10.0
 django-gov-notify==0.3.0
 django-permissions-policy==4.17.0
+django-single-session==0.2.0
 django-use-email-as-username==1.4.0
 docopt==0.6.2
 exceptiongroup==1.1.2
