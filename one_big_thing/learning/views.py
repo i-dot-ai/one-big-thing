@@ -25,7 +25,6 @@ from .additional_learning import additional_learning
 from .decorators import enforce_user_completes_pre_survey
 from .email_handler import send_learning_record_email
 
-
 SELF_REFLECTION_FILENAME = "obt_self_reflection_template.docx"
 
 
