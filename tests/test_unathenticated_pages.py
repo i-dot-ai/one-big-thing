@@ -60,3 +60,7 @@ def test_login():
 
 #     # Get verification URL
 #     # Follow URL and check logged in?
+
+
+
+# Test password requirements
