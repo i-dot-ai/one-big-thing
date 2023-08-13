@@ -114,8 +114,8 @@ def is_civil_service_email(email):
     email_split = email.split("@")
     allowed = email_split[-1] in ALLOWED_CIVIL_SERVICE_DOMAINS
     if not allowed:
-        ALLOWED_CIVIL_SERVICE_DOMAINS_DOT = [f".{domain}" for domain in ALLOWED_CIVIL_SERVICE_DOMAINS]
-        allowed = email.endswith(tuple(ALLOWED_CIVIL_SERVICE_DOMAINS_DOT))
+        allowed_civil_service_domains_dot = [f".{domain}" for domain in ALLOWED_CIVIL_SERVICE_DOMAINS]
+        allowed = email.endswith(tuple(allowed_civil_service_domains_dot))
         # Means we get subdomains eg `@engineering.dwp.gov.uk` in addition to `@dwp.gov.uk`
     return allowed
 
