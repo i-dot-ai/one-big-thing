@@ -62,5 +62,4 @@ def test_login():
 #     # Follow URL and check logged in?
 
 
-
 # Test password requirements
