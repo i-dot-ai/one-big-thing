@@ -8,7 +8,6 @@ class SpecialCharacterValidator:
 
     def validate(self, password, user=None):
         special_characters = string.punctuation
-        msg = "The password must contain at least one special character."
 
         if not any(char in special_characters for char in password):
             raise ValidationError(self.msg)
