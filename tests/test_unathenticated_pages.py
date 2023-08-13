@@ -1,4 +1,5 @@
 from one_big_thing.learning import models
+
 from . import utils
 
 ACCOUNT_URLS_LOGIN_NOT_REQUIRED = [
@@ -33,7 +34,7 @@ def test_login():
     form["department"] = "visitengland"
     form["profession"] = "LEGAL"
     form.submit().follow()
-    page = client.get("/").follow() 
+    page = client.get("/").follow()
     # email verification off for tests
     assert page.has_text("Thank you for registering for One Big Thing.")
     client.get("/accounts/logout/")
