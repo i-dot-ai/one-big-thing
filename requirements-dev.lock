@@ -2,8 +2,6 @@ anyio==3.7.1
 asgiref==3.7.2
 bandit==1.7.5
 black==23.7.0
-boto3==1.28.23
-botocore==1.31.23
 boto3==1.28.25
 botocore==1.31.25
 certifi==2023.7.22
@@ -24,7 +22,7 @@ django-permissions-policy==4.17.0
 django-single-session==0.2.0
 django-use-email-as-username==1.4.0
 docopt==0.6.2
-exceptiongroup==1.1.2
+exceptiongroup==1.1.3
 flake8==6.1.0
 flake8-blind-except==0.2.1
 flake8-isort==6.0.0
