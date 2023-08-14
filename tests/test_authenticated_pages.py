@@ -8,7 +8,6 @@ LOGIN_REQUIRED_PAGES = [
     "/questions/post/",
     "/complete-hours/",
     "/send-learning-record/",
-    "/download-learning/",
     "/intro-pre-survey/",
     "/end-pre-survey/",
     "/intro-post-survey/",

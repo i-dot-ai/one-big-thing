@@ -134,15 +134,6 @@ def test_enter_learning_record_streamlined():
     user.delete()
 
 
-@utils.with_authenticated_client
-def test_download_learning_document(client):
-    response = client.get("/download-learning/")
-    assert response.status_code == 200, response.status_code
-    assert (
-        response.headers["Content-Type"] == "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    ), response["Content-Type"]
-
-
 def test_delete_learning():
     user_email = "test-delete-learning-record@example.com"
     authenticated_user = {"email": user_email, "password": "Giraffe%$47"}
