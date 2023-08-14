@@ -256,3 +256,5 @@ PERMISSIONS_POLICY = {
     "midi": [],
     "payment": [],
 }
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
