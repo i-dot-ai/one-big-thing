@@ -1,0 +1,17 @@
+server {
+    server_name localhost;
+
+    location /static/ {
+        autoindex on;
+        root /usr/share/nginx/html/;
+    }
+
+    location / {
+
+        # add_header X-XSS-Protection "1; mode=block";
+        # add_header Strict-Transport-Security: "max-age=63072000; includeSubdomains";
+
+        proxy_pass http://$WEB_HOST_NAME:$PORT/;
+    }
+
+}
