@@ -38,11 +38,6 @@ variable "port" {
   type        = number
 }
 
-variable "self_reflection_filename" {
-  description = "The filename to download for users for the self-reflection exercise"
-  type        = string
-}
-
 variable "region" {
   description = "The region this instance is deployed to"
   type        = string
