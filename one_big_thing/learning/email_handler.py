@@ -60,6 +60,11 @@ EMAIL_MAPPING = {
         "subject": "One Big Thing: Your learning record",
         "template_name": "email/send-learning-record.txt",
     },
+    "send-streamlined-learning-record": {
+        "from_address": settings.FROM_EMAIL,
+        "subject": "One Big Thing: Your learning record",
+        "template_name": "email/send-learning-record.txt",
+    }
 }
 
 
@@ -126,7 +131,7 @@ def send_account_already_exists_email(user):
     return response
 
 
-def send_learning_record_email(user):
+def send_learning_record_email(user, streamlined_dept):
     data = EMAIL_MAPPING["send-learning-record"]
     context = {"sending_user": user, "learnings": user.learning_set.all()}
     response = _send_normal_email(
