@@ -26,8 +26,6 @@ from .additional_learning import additional_learning
 from .decorators import enforce_user_completes_pre_survey
 from .email_handler import send_learning_record_email
 
-SELF_REFLECTION_FILENAME = "obt_self_reflection_template.docx"
-
 
 def frozendict(*args, **kwargs):
     return types.MappingProxyType(dict(*args, **kwargs))
@@ -463,26 +461,6 @@ def check_delete_learning_view(request, learning_id):
 def delete_learning_view(request, learning_id):
     interface.api.learning.delete(user_id=request.user.id, learning_id=learning_id)
     return redirect("record-learning")
-
-
-@login_required
-@require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
-def download_learning_view(request):
-    file_name = SELF_REFLECTION_FILENAME
-    filepath = os.path.join(settings.STATICFILES_DIRS[0], SELF_REFLECTION_FILENAME)
-
-    if os.path.exists(filepath):
-        with open(filepath, "rb") as worddoc:  # read as binary
-            content = worddoc.read()  # Read the file
-            response = HttpResponse(
-                content, content_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-            )
-            response["Content-Disposition"] = f"attachment; filename={file_name}"
-            response["Content-Length"] = len(content)  # calculate length of content
-            return response
-    else:
-        return HttpResponse("File not found", status=404)
 
 
 @login_required
