@@ -221,3 +221,32 @@ def test_streamlined_email_learning():
     form["email"] = "jane@example.com"
     page = form.submit()
     assert page.has_text("Learning record sent!")
+    assert page.has_text("jane@example.com")
+    user.delete()
+
+
+def test_mail_learning():
+    user_email = "test@example.com"
+    authenticated_user = {"email": user_email, "password": "Giraffe47!!"}
+    client = utils.make_testino_client()
+    utils.register(client, **authenticated_user)
+    user = models.User.objects.get(email=user_email)
+    user.department = "cabinet-office"
+    user.save()
+    models.Learning(
+        user=user,
+        title="Learning about AI",
+        link="example.com",
+        time_to_complete=63,
+    ).save()
+    email_page = client.get("/send-learning-record/")
+    assert email_page.has_text("Title")
+    assert email_page.has_text("1 hour and 3 minutes")
+    assert email_page.has_text("example.com")
+    assert email_page.has_text("Rating")
+    form = email_page.get_form()
+    form["email"] = "jane@example.com"
+    page = form.submit()
+    assert page.has_text("Learning record sent!")
+    assert page.has_text("jane@example.com")
+    user.delete()
