@@ -11,7 +11,7 @@ def test_enter_invalid_time_to_complete():
 
     record_learning_page = client.get("/record-learning/")
     assert record_learning_page.status_code == 200
-    assert record_learning_page.has_text("Record learning I've done:")
+    assert record_learning_page.has_text("Record my learning")
 
     record_learning_form = record_learning_page.get_form()
     record_learning_form["title"] = "Test incorrect time"
@@ -35,7 +35,7 @@ def test_enter_invalid_values():
 
     record_learning_page = client.get("/record-learning/")
     assert record_learning_page.status_code == 200
-    assert record_learning_page.has_text("Record learning I've done:")
+    assert record_learning_page.has_text("Record my learning")
 
     record_learning_form = record_learning_page.get_form()
 
@@ -57,7 +57,7 @@ def test_enter_valid_learning_record():
 
     record_learning_page = client.get("/record-learning/")
     assert record_learning_page.status_code == 200, record_learning_page.status_code
-    assert record_learning_page.has_text("Record learning I've done:")
+    assert record_learning_page.has_text("Record my learning")
 
     record_learning_form = record_learning_page.get_form()
     record_learning_form["title"] = "Test correct course"
@@ -84,7 +84,7 @@ def test_completed_learning_record_feedback_link():
 
     record_learning_page = client.get("/record-learning/")
     assert record_learning_page.status_code == 200
-    assert record_learning_page.has_text("Record learning I've done:")
+    assert record_learning_page.has_text("Record my learning")
 
     record_learning_form = record_learning_page.get_form()
     record_learning_form["title"] = "Test full day course"
@@ -114,7 +114,7 @@ def test_enter_learning_record_streamlined():
 
     record_learning_page = client.get("/record-learning/")
     assert record_learning_page.status_code == 200
-    assert record_learning_page.has_text("Record learning I've done")
+    assert record_learning_page.has_text("Record my learning")
 
     record_learning_form = record_learning_page.get_form()
     record_learning_form["time_to_complete_minutes"] = 15
