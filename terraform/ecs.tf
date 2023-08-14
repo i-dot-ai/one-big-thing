@@ -159,7 +159,28 @@ module "ecs" {
             },
           ]
         }
-
+        "one-big-thing-nginx-${var.env}" = {
+          cpu       = 512
+          memory    = 2048
+          essential = true
+          port_mappings = [
+            {
+              name          = "application"
+              containerPort = 80
+              protocol      = "tcp"
+            }
+          ]
+#          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:"
+          readonly_root_filesystem  = true
+          enable_cloudwatch_logging = true
+          secrets = []
+          environment = [
+          {
+              name  = "PORT"
+              value = var.port
+            },
+          ]
+        }
       }
 
       subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnets
@@ -167,14 +188,14 @@ module "ecs" {
         service = {
           target_group_arn = aws_lb_target_group.this.arn
           container_name   = "one-big-thing-${var.env}"
-          container_port   = 8055
+          container_port   = 80
         }
       }
       security_group_rules = {
         alb_ingress = {
           type                     = "ingress"
-          from_port                = 8055
-          to_port                  = 8055
+          from_port                = 80
+          to_port                  = 80
           protocol                 = "tcp"
           description              = "Service port"
           source_security_group_id = aws_security_group.load_balancer_security_group.id
