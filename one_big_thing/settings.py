@@ -77,6 +77,7 @@ if DEBUG:
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "django_permissions_policy.PermissionsPolicyMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -238,3 +239,19 @@ if not DEBUG:
     SESSION_COOKIE_HTTPONLY = True
     SESSION_COOKIE_AGE = 60 * 60 * 24 * 120  # 120 days
     SESSION_COOKIE_SAMESITE = "Strict"
+
+
+PERMISSIONS_POLICY = {
+    "accelerometer": [],
+    "autoplay": [],
+    "camera": [],
+    "display-capture": [],
+    "encrypted-media": [],
+    "fullscreen": [],
+    "gamepad": [],
+    "geolocation": [],
+    "gyroscope": [],
+    "microphone": [],
+    "midi": [],
+    "payment": [],
+}
