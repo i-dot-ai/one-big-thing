@@ -154,11 +154,7 @@ module "ecs" {
               value = var.port
             },
             {
-              name = "SELF_REFLECTION_FILENAME"
-              value = var.self_reflection_filename
-            },
-            {
-              name  = "DEBUG"
+              name = "DEBUG"
               value = var.debug
             },
           ]
