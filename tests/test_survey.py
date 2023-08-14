@@ -4,7 +4,7 @@ from tests import utils
 
 def test_submit_survey():
     test_email = "test-evaluation-data-entry@example.com"
-    authenticated_user = {"email": test_email, "password": "giraffe47"}
+    authenticated_user = {"email": test_email, "password": "GIRAFFE47!x"}
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=test_email)
@@ -100,7 +100,7 @@ def complete_survey(client, user):
     )
 
     assert completed_page.has_text("Survey completed")
-    assert completed_page.has_text("You can now go to your One Big Thing homepage and start your learning.")
+    assert completed_page.has_text("You can now start your One Big Thing learning.")
 
     completed_surveys = models.SurveyResult.objects.filter(user=user, survey_type="pre")
     assert len(completed_surveys) > 0, completed_surveys

@@ -52,13 +52,7 @@
           </label>
           <input class="govuk-input" id="id_password2" name="password2" type="password" required autocomplete="off">
         </div>
-        <div class="govuk-list govuk-list--bullet">
-          <ul>
-            <li>8 or more characters</li>
-            <li>Cannot be only numbers</li>
-            <li>Cannot be any common user information such as email</li>
-          </ul>
-        </div>
+        {% include "account/password_rules.html" %}
         <div class="govuk-form-group {% if 'department' in errors.keys %}error{% endif %}">
           <label class="govuk-label" for="department">Department</label>
           <div id="select-field">
