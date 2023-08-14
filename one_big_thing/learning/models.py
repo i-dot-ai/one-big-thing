@@ -6,7 +6,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 
-from one_big_thing.learning import choices, utils
+from one_big_thing.learning import choices
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,6 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     invited_at = models.DateTimeField(default=None, blank=True, null=True)
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
-    is_external_user = models.BooleanField(editable=True, default=False)
     department = models.CharField(max_length=254, blank=True, null=True)
     grade = models.CharField(max_length=254, blank=True, null=True)
     profession = models.CharField(max_length=254, blank=True, null=True)
@@ -42,7 +41,6 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
-        self.is_external_user = not utils.is_civil_service_email(self.email)
         super().save(*args, **kwargs)
 
     def has_signed_up(self):

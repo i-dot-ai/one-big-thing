@@ -83,7 +83,7 @@ def test_user_schema():
     user_schema = schemas.UserSchema()
     error_message = ""
     try:
-        user_schema.load({"email": "invalid@example.org"})
+        user_schema.load({"email": "invalid@example.net"})
     except ValidationError as e:
         error_message = e.messages["email"][0]
     assert error_message == "This should be a valid Civil Service email", error_message

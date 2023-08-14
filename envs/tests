@@ -19,3 +19,4 @@ SEND_VERIFICATION_EMAIL=False
 SELF_REFLECTION_FILENAME="Test_self_reflection_for_download_on_OBT_platform_July 2023.docx"
 DEPARTMENTS_USING_INTRANET='{"home-office": "https://example.com/"}'
 ENVIRONMENT=TESTS
+ALLOWED_DOMAINS=cabinetoffice.gov.uk,example.com,example.org

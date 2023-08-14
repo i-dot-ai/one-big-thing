@@ -110,11 +110,13 @@ class Choices(enum.Enum, metaclass=ChoicesMeta):
 
 
 def is_civil_service_email(email):
-    allowed = False
     email = email.lower()
     email_split = email.split("@")
-    if email_split[-1] in ALLOWED_CIVIL_SERVICE_DOMAINS:
-        allowed = True
+    allowed = email_split[-1] in ALLOWED_CIVIL_SERVICE_DOMAINS
+    if not allowed:
+        allowed_civil_service_domains_dot = [f".{domain}" for domain in ALLOWED_CIVIL_SERVICE_DOMAINS]
+        allowed = email.endswith(tuple(allowed_civil_service_domains_dot))
+        # Means we get subdomains eg `@engineering.dwp.gov.uk` in addition to `@dwp.gov.uk`
     return allowed
 
 
