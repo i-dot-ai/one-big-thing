@@ -197,3 +197,27 @@ def test_create_delete_learning_streamlined():
     record_page = delete_form.submit(extra={"delete-learning": ""}).follow()
     assert not record_page.has_text("Completed department content")
     assert not record_page.has_text("2 hours and 4 minutes")
+    models.User.objects.get(email=user_email).delete()
+
+
+def test_streamlined_email_learning():
+    user_email = "test-streamlined@example.com"
+    authenticated_user = {"email": user_email, "password": "Giraffe47!!"}
+    client = utils.make_testino_client()
+    utils.register(client, **authenticated_user)
+    user = models.User.objects.get(email=user_email)
+    user.department = "home-office"
+    user.save()
+    models.Learning(
+        user=user,
+        title="Completed department content",
+        time_to_complete=63,
+    ).save()
+    email_page = client.get("/send-learning-record/")
+    assert email_page.has_text("Title")
+    assert email_page.has_text("1 hour and 3 minutes")
+    assert not email_page.has_text("Link")
+    form = email_page.get_form()
+    form["email"] = "jane@example.com"
+    page = form.submit()
+    assert page.has_text("Learning record sent!")
