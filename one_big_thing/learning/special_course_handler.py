@@ -7,10 +7,10 @@ with (settings.BASE_DIR / "special-courses.yaml").open() as f:
     special_courses_data = yaml.safe_load(f)
 
 
-practitioner_course_title = "Practitioner level course"
-working_course_title = "Working level course"
-awareness_course_title = "Awareness level course"
-team_meeting_course_title = "Discussion with your team"
+practitioner_course_title = "Data masterclass (Level 3 - Practitioner)"
+working_course_title = "Working with data (Level 2 - Working)"
+awareness_course_title = "Understanding data (Level 1 - Awareness)"
+
 
 competency_level_courses = {
     "beginner": awareness_course_title,

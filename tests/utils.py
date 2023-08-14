@@ -63,4 +63,4 @@ def register(client, email, password):
     user = User.objects.get(email=email)
     test_survey.complete_survey(client, user)
     page = client.get("/").follow()
-    assert page.has_text("Welcome to your One Big Thing Learning Record")
+    assert page.has_text("One Big Thing home")
