@@ -16,7 +16,6 @@ BASE_URL=http://localhost:8055/
 VCAP_APPLICATION='{"space_name": "local"}'
 REQUIRED_LEARNING_TIME=420
 SEND_VERIFICATION_EMAIL=True
-SELF_REFLECTION_FILENAME="Test_self_reflection_for_download_on_OBT_platform_July 2023.docx"
 DEPARTMENTS_USING_INTRANET='{"academy-for-justice-commissioning": "https://google.com/", "accelerated-access-review": "https://google.com/"}'
 ENVIRONMENT=LOCAL
 ALLOWED_DOMAINS=cabinetoffice.gov.uk,example.com

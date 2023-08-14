@@ -114,10 +114,6 @@ module "ecs" {
               value = var.port
             },
             {
-              name = "SELF_REFLECTION_FILENAME"
-              value = var.self_reflection_filename
-            },
-            {
               name = "BASE_URL"
               value = local.base_url
             },

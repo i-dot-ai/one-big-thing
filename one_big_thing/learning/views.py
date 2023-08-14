@@ -25,6 +25,8 @@ from .additional_learning import additional_learning
 from .decorators import enforce_user_completes_pre_survey
 from .email_handler import send_learning_record_email
 
+SELF_REFLECTION_FILENAME = "obt_self_reflection_template.docx"
+
 
 def frozendict(*args, **kwargs):
     return types.MappingProxyType(dict(*args, **kwargs))
@@ -473,8 +475,8 @@ def delete_learning_view(request, learning_id):
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def download_learning_view(request):
-    file_name = settings.SELF_REFLECTION_FILENAME
-    filepath = os.path.join(settings.STATICFILES_DIRS[0], file_name)
+    file_name = SELF_REFLECTION_FILENAME
+    filepath = os.path.join(settings.STATICFILES_DIRS[0], SELF_REFLECTION_FILENAME)
 
     if os.path.exists(filepath):
         with open(filepath, "rb") as worddoc:  # read as binary
