@@ -64,7 +64,7 @@ EMAIL_MAPPING = {
         "from_address": settings.FROM_EMAIL,
         "subject": "One Big Thing: Your learning record",
         "template_name": "email/send-learning-record.txt",
-    }
+    },
 }
 
 
