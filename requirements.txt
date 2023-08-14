@@ -23,3 +23,4 @@ marshmallow~=3.19.0
 humanize~=4.7.0
 sentry-sdk
 django-permissions-policy
+django-single-session

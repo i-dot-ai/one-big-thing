@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.sites",
     "django.contrib.staticfiles",
+    "single_session",
 ]
 
 CORS_APPS = [
@@ -255,3 +256,5 @@ PERMISSIONS_POLICY = {
     "midi": [],
     "payment": [],
 }
+
+SESSION_ENGINE = "django.contrib.sessions.backends.db"
