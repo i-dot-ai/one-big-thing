@@ -114,7 +114,7 @@ def test_enter_learning_record_streamlined():
 
     record_learning_page = client.get("/record-learning/")
     assert record_learning_page.status_code == 200
-    assert record_learning_page.has_text("Record my learning")
+    assert record_learning_page.has_text("Record learning I've done")
 
     record_learning_form = record_learning_page.get_form()
     record_learning_form["time_to_complete_minutes"] = 15
