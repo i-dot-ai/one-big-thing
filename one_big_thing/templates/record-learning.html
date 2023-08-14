@@ -25,7 +25,7 @@
         <fieldset class="govuk-fieldset">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
                 <h1 class="govuk-heading-l">
-                    Record learning I've done:
+                    Record my learning
                 </h1>
             </legend>
             {{ macros.input('title', 'Title of learning', data, errors) }}
@@ -62,7 +62,7 @@
         </fieldset>
     {%- endcall %}
     <h1 class="govuk-heading-l">
-        Learning I've recorded:
+        My learning record
     </h1>
     <a class="govuk-button govuk-button--secondary" href="{{ url('send-learning-record') }}">Email my learning
         record</a>
