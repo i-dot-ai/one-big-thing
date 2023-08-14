@@ -33,7 +33,6 @@ other_urlpatterns = [
     path("questions/<str:survey_type>/<int:page_number>/", views.questions_view, name="questions"),
     path("complete-hours/", views.complete_hours_view, name="complete-hours"),
     path("send-learning-record/", views.send_learning_record_view, name="send-learning-record"),
-    path("download-learning/", views.download_learning_view, name="download-learning"),
     path("delete-learning-check/<uuid:learning_id>/", views.check_delete_learning_view, name="delete-learning-check"),
     path("external-test/", views.external_test_view, name="external-test"),
     path("additional-learning/", views.additional_learning_view, name="additional-learning"),
