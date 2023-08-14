@@ -56,7 +56,7 @@ resource "aws_security_group_rule" "allow_egress" {
 
 resource "aws_lb_target_group" "this" {
   name        = "${local.team}-${local.project}-${var.env}-tg"
-  port        = 8055
+  port        = 80
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id
