@@ -417,6 +417,7 @@ def send_learning_record_view(request):
     courses = models.Learning.objects.filter(user=user)
     data = {
         "courses": courses,
+        "streamlined_department": streamlined_department,
     }
     errors = {}
     if request.method == "POST":
@@ -424,11 +425,10 @@ def send_learning_record_view(request):
         email_address = request.POST.get("email")
         try:
             email_validator(email_address)
-            send_learning_record_email(user, streamlined_department)
+            send_learning_record_email(user)
             data = {
                 "successfully_sent": True,
                 "sent_to": email_address,
-                "streamlined_department": streamlined_department,
             } | data
             return render(
                 request, "email-learning-record.html", context={"request": request, "data": data, "errors": errors}
