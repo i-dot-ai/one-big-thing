@@ -3,7 +3,7 @@ Hi,
 Use the following link to confirm your email address:
 {{url|safe}}
 
-You can then start using One Big Thing.
+You can then start using One Big Thing. You will then be asked to complete a survey.
 
 The link is valid for 24 hours. If you use the link more than once, it will expire.
 
