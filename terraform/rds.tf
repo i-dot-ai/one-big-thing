@@ -38,6 +38,7 @@ module "db" {
   password          = local.db_password
   manage_master_user_password = false
   allocated_storage = 20
+  max_allocated_storage = 100
 
   vpc_security_group_ids = [aws_security_group.rds.id]
   publicly_accessible    = true
