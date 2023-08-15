@@ -413,9 +413,11 @@ def save_data(survey_type, user, page_number, data):
 @enforce_user_completes_pre_survey
 def send_learning_record_view(request):
     user = request.user
+    streamlined_department = user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
     courses = models.Learning.objects.filter(user=user)
     data = {
         "courses": courses,
+        "streamlined_department": streamlined_department,
     }
     errors = {}
     if request.method == "POST":

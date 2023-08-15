@@ -27,9 +27,16 @@
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
+        {% if data.streamlined_department %}
+          <th scope="col" class="govuk-table__header">Title</th>
+          <th scope="col" class="govuk-table__header govuk-table__header--numeric">Duration (Hours)</th>
+        {% else %}
           <th scope="col" class="govuk-table__header">Title</th>
           <th scope="col" class="govuk-table__header">Type</th>
+          <th scope="col" class="govuk-table__header">Link</th>
           <th scope="col" class="govuk-table__header govuk-table__header--numeric">Duration (Hours)</th>
+          <th scope="col" class="govuk-table__header">Rating (1-5)</th>
+        {% endif %}
         </tr>
       </thead>
       <tbody class="govuk-table__body">
@@ -40,9 +47,16 @@
       {% endif %}
       {% for course in data.courses %}
         <tr class="govuk-table__row">
-          <th scope="row" class="govuk-table__header">{% if course.link | length > 0 %}<a href="{{course.link}}" target="_blank" rel="noopener noreferrer">{{course.title}}</a>{% else %}{{course.title}}{% endif %}</th>
-          <td class="govuk-table__cell">{{course.get_learning_type_display_name()}}</td>
+        {% if data.streamlined_department %}
+          <td class="govuk-table__cell">{{course.title}}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric">{{humanize_timedelta(course.time_to_complete)}}</td>
+        {% else %}
+          <td class="govuk-table__cell">{{course.title}}</td>
+          <td class="govuk-table__cell">{{course.get_learning_type_display_name()}}</td>
+          <td class="govuk-table__cell">{{course.link}}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">{{humanize_timedelta(course.time_to_complete)}}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">{% if course.rating %}{{course.rating}}{% else %}{{'-'}}{% endif %}</td>
+        {% endif %}
         </tr>
       {% endfor %}
       </tbody>
