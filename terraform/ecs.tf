@@ -14,8 +14,8 @@ module "ecs" {
 
   services = {
     one-big-thing = {
-      cpu                       = 1024
-      memory                    = 4096
+      cpu                       = 2048
+      memory                    = 6144
       enable_autoscaling        = true
       desired_count             = 2
       autoscaling_min_capacity  = 2
@@ -57,12 +57,12 @@ module "ecs" {
           essential = true
           port_mappings = [
             {
-              name          = "application"
+              name          = "django-application"
               containerPort = 8055
               protocol      = "tcp"
             }
           ]
-          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:${var.image_tag}"
+          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:WEB_${var.image_tag}"
           readonly_root_filesystem  = true
           enable_cloudwatch_logging = true
           secrets = [
@@ -160,24 +160,28 @@ module "ecs" {
           ]
         }
         "one-big-thing-nginx-${var.env}" = {
-          cpu       = 512
+          cpu       = 1024
           memory    = 2048
           essential = true
           port_mappings = [
             {
-              name          = "application"
+              name          = "nginx-application"
               containerPort = 80
               protocol      = "tcp"
             }
           ]
-#          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:"
-          readonly_root_filesystem  = true
+          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:NGINX_${var.image_tag}"
+          readonly_root_filesystem  = false  # Needed for NGINX config file changes to succeed
           enable_cloudwatch_logging = true
           secrets = []
           environment = [
-          {
+            {
               name  = "PORT"
               value = var.port
+            },
+            {
+              name  = "WEB_HOST_NAME"
+              value = "127.0.0.1"  # Local loopback device address
             },
           ]
         }
@@ -187,7 +191,7 @@ module "ecs" {
       load_balancer = {
         service = {
           target_group_arn = aws_lb_target_group.this.arn
-          container_name   = "one-big-thing-${var.env}"
+          container_name   = "one-big-thing-nginx-${var.env}"
           container_port   = 80
         }
       }
