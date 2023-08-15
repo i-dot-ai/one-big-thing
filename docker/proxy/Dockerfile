@@ -32,9 +32,6 @@ ENV TZ=UTC
 
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-COPY ./docker/proxy/start.sh /start.sh
-RUN chmod +x /start.sh
-
 COPY --from=web /app/staticfiles /usr/share/nginx/html/static
 
 EXPOSE 80
