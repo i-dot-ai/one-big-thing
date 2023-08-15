@@ -37,5 +37,3 @@ COPY --from=web /app/staticfiles /usr/share/nginx/html/static
 EXPOSE 80
 
 COPY ./proxy/nginx.conf.template /etc/nginx/templates/default.conf.template
-
-
