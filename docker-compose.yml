@@ -4,6 +4,19 @@ volumes:
   local_postgres_data: {}
 
 services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/proxy/Dockerfile
+    image: nginx_main
+    environment:
+      WEB_HOST_NAME: web
+      PORT: 8055
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+
   web:
     build:
       context: .
