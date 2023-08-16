@@ -1,6 +1,6 @@
 DJANGO_SETTINGS_MODULE=one_big_thing.settings
 PORT=8055
-DEBUG=True
+DEBUG=False
 DJANGO_SECRET_KEY='1n53cur3K3y'
 POSTGRES_HOST=one_big_thing-test-db
 POSTGRES_PORT=5432
