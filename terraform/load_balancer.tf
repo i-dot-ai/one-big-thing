@@ -30,17 +30,17 @@ resource "aws_security_group_rule" "alb_allow_http" {
   from_port         = 80
   to_port           = 80
   protocol          = "TCP"
-  cidr_blocks       = var.ip_securelist
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.load_balancer_security_group.id
 }
 
 resource "aws_security_group_rule" "alb_allow_https" {
   type              = "ingress"
-  description       = "Allow Whitelisted HTTPS Traffic access to the load balancer "
+  description       = "Allow Whitelisted HTTPS Traffic access to the load balancer"
   from_port         = 443
   to_port           = 443
   protocol          = "TCP"
-  cidr_blocks       = var.ip_securelist
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.load_balancer_security_group.id
 }
 
