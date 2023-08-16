@@ -96,7 +96,6 @@ module "ecs" {
               name = "ALLOWED_DOMAINS",
               valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:ALLOWED_DOMAINS::",
             },
-
             {
               name = "SENTRY_DSN",
               valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:SENTRY_DSN::",
