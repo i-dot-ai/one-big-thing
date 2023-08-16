@@ -40,6 +40,7 @@ other_urlpatterns = [
     path("end-pre-survey/", views.end_pre_survey_view, name="end-pre-survey"),
     path("intro-post-survey/", views.intro_to_post_survey_view, name="intro-post-survey"),
     path("end-post-survey/", views.end_post_survey_view, name="end-post-survey"),
+    path("department-links/", views.department_links_view, name="department-links"),
 ]
 
 urlpatterns = account_urlpatterns + other_urlpatterns

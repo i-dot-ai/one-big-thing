@@ -30,18 +30,20 @@ DEPARTMENTS_USING_INTRANET_LINKS = {
 
 # These are departmental links for all departments we have them for,
 # regardless of whether they are using the streamlined view
-ALL_INTRANET_LINKS = OrderedDict({
-    "Department for Environment, Food and Rural Affairs (Defra)": DEFRA_LINK,
-    "Department for Levelling Up, Housing and Communities (DLUHC)": DLUCH_LINK,
-    "Department for Transport (DfT)": DFT_LINK,
-    "Department for Work and Pensions": DWP_LINK,
-    "Department of Health and Social Care (DHSC)": DHSC_LINK,
-    "Foreign, Commonwealth & Development Office (FCDO)": FCDO_INTRANET_LINK,
-    "HM Revenue and Customs (HMRC)": HMRC_INTRANET_LINK,
-    "Home Office": HO_INTRANET_LINK,
-    "National Crime Agency (NCA)": NCA_LINK,
-    "Office for National Statistics (ONS)": ONS_LINK,
-    "Office of Rail and Road (ORR)": ORR_LINK,
-    "Ofsted": OFSTED_LINK,
-    "Welsh Government": WELSH_GOVT_LINK,
-})
+ALL_INTRANET_LINKS = OrderedDict(
+    {
+        "Department for Environment, Food and Rural Affairs (Defra)": DEFRA_LINK,
+        "Department for Levelling Up, Housing and Communities (DLUHC)": DLUCH_LINK,
+        "Department for Transport (DfT)": DFT_LINK,
+        "Department for Work and Pensions": DWP_LINK,
+        "Department of Health and Social Care (DHSC)": DHSC_LINK,
+        "Foreign, Commonwealth & Development Office (FCDO)": FCDO_INTRANET_LINK,
+        "HM Revenue and Customs (HMRC)": HMRC_INTRANET_LINK,
+        "Home Office": HO_INTRANET_LINK,
+        "National Crime Agency (NCA)": NCA_LINK,
+        "Office for National Statistics (ONS)": ONS_LINK,
+        "Office of Rail and Road (ORR)": ORR_LINK,
+        "Ofsted": OFSTED_LINK,
+        "Welsh Government": WELSH_GOVT_LINK,
+    }
+)
