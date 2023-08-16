@@ -54,6 +54,10 @@ test:
 	docker-compose build tests-one_big_thing one_big_thing-test-db && docker-compose run --rm tests-one_big_thing
 	docker-compose down
 
+.PHONY: loadtests
+loadtests:
+	docker-compose -f loadtests/docker-compose.yml up --build --remove-orphans --force-recreate loadtests
+
 
 # -------------------------------------- Docker  -------------------------------------
 
