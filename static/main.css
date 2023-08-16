@@ -38,6 +38,11 @@
   border-image-slice: 1;
 }
 
+#i-dot-ai .govuk-header__logo img {
+  width: 80%;
+  height: auto;
+}
+
 .i-ai-range.custom-legend {
   display: none;
 }
