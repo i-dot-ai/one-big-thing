@@ -1,0 +1,13 @@
+version: '3'
+
+volumes:
+  local_postgres_data: {}
+
+services:
+  loadtests:
+    build:
+      context: ../
+      dockerfile: ./docker/loadtests/Dockerfile
+    image: loadtests_one_big_thing
+    ports:
+      - "8089:8089"
