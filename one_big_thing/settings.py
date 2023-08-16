@@ -26,7 +26,7 @@ VCAP_APPLICATION = env.json("VCAP_APPLICATION", default={})
 CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
 FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
 FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
-ALLOWED_DOMAINS = env.list("ALLOWED_DOMAINS", default=list())
+ALLOWED_DOMAINS = env.str("ALLOWED_DOMAINS", default="").split(",")
 
 CIVIL_SERVICE_DOMAINS = frozenset(ALLOWED_DOMAINS)
 
@@ -44,6 +44,7 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     "obt-dev.i.ai.10ds.cabinetoffice.gov.uk",
+    "obt-prod.i.ai.10ds.cabinetoffice.gov.uk",
     "web",
 ]
 

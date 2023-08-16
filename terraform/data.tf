@@ -32,3 +32,12 @@ data "aws_caller_identity" "current" {}
 output "account_id" {
   value = data.aws_caller_identity.current.account_id
 }
+
+data "aws_secretsmanager_secret_version" "env_secret" {
+  secret_id = "one-big-thing-${var.env}"
+}
+
+locals {
+  env_secret_value = jsondecode(data.aws_secretsmanager_secret_version.env_secret.secret_string)
+  db_password     = local.env_secret_value["DATABASE_PASSWORD"]
+}

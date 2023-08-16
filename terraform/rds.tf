@@ -35,7 +35,10 @@ module "db" {
   db_name           = local.db_name
   username          = local.db_user
   port              = local.db_port
+  password          = local.db_password
+  manage_master_user_password = false
   allocated_storage = 20
+  max_allocated_storage = 100
 
   vpc_security_group_ids = [aws_security_group.rds.id]
   publicly_accessible    = true
@@ -49,6 +52,4 @@ module "db" {
 
   # Database Deletion Protection
   deletion_protection = true
-
 }
-

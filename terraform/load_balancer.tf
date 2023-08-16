@@ -1,4 +1,3 @@
-
 resource "aws_alb" "this" {
   # checkov:skip=CKV_AWS_150:Don't enable deletion protection
   name                       = "${local.team}-${local.project}-${terraform.workspace}-alb"
@@ -31,17 +30,17 @@ resource "aws_security_group_rule" "alb_allow_http" {
   from_port         = 80
   to_port           = 80
   protocol          = "TCP"
-  cidr_blocks       = var.ip_securelist
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.load_balancer_security_group.id
 }
 
 resource "aws_security_group_rule" "alb_allow_https" {
   type              = "ingress"
-  description       = "Allow Whitelisted HTTPS Traffic access to the load balancer "
+  description       = "Allow Whitelisted HTTPS Traffic access to the load balancer"
   from_port         = 443
   to_port           = 443
   protocol          = "TCP"
-  cidr_blocks       = var.ip_securelist
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.load_balancer_security_group.id
 }
 
@@ -56,8 +55,8 @@ resource "aws_security_group_rule" "allow_egress" {
 }
 
 resource "aws_lb_target_group" "this" {
-  name        = "${local.team}-${local.project}-tg"
-  port        = 8055
+  name        = "${local.team}-${local.project}-${var.env}-tg"
+  port        = 80
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id

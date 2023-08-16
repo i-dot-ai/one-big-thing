@@ -5,11 +5,16 @@ AWS_REGION=eu-west-2
 
 # Docker
 ECR_URL=$(ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
+IMAGE_TAG=$$(git rev-parse HEAD)
+
 ECR_REPO_NAME=i-dot-ai-one-big-thing
 ECR_REPO_URL=$(ECR_URL)/$(ECR_REPO_NAME)
-IMAGE_TAG=$$(git rev-parse HEAD)
-IMAGE=$(ECR_REPO_URL):WEB_$(IMAGE_TAG)
-NGINX_IMAGE=$(ECR_REPO_URL):NGINX_$(IMAGE_TAG)
+IMAGE=$(ECR_REPO_URL):$(IMAGE_TAG)
+
+
+PROXY_ECR_REPO_NAME=i-dot-ai-one-big-thing-proxy
+PROXY_ECR_REPO_URL=$(ECR_URL)/$(PROXY_ECR_REPO_NAME)
+PROXY_IMAGE=$(PROXY_ECR_REPO_URL):$(IMAGE_TAG)
 
 
 define _update_requirements
@@ -59,7 +64,7 @@ docker/build:
 	docker build -t $(IMAGE) -f ./docker/web/Dockerfile .
 
 docker/build-proxy:
-	docker build -t $(NGINX_IMAGE) -f ./docker/proxy/Dockerfile .
+	docker build -t $(PROXY_IMAGE) -f ./docker/proxy/Dockerfile .
 
 docker/build-m1:
 	docker buildx build --platform linux/amd64 -t $(IMAGE) -f ./docker/web/Dockerfile .
@@ -68,7 +73,7 @@ docker/push:
 	docker push $(IMAGE)
 
 docker/push-proxy:
-	docker push $(NGINX_IMAGE)
+	docker push $(PROXY_IMAGE)
 
 
 # -------------------------------------- Terraform  -------------------------------------
@@ -87,7 +92,7 @@ tf/set-or-create-workspace:
 	make tf/set-workspace || make tf/new-workspace
 
 tf/init:
-	terraform -chdir=./terraform init -backend-config=backends/${env}.conf
+	terraform -chdir=./terraform init
 
 tf/plan:
 	make tf/set-workspace && \

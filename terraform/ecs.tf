@@ -1,23 +1,65 @@
 module "ecs" {
-  source       = "terraform-aws-modules/ecs/aws"
-  version      = "5.2.0"
-  cluster_name = "${local.team}-${local.project}-${var.env}"
+  source                                = "terraform-aws-modules/ecs/aws"
+  version                               = "5.2.0"
+  cluster_name                          = "${local.team}-${local.project}-${var.env}"
+  default_capacity_provider_use_fargate = true
+
+  fargate_capacity_providers = {
+    FARGATE = {
+      default_capacity_provider_strategy = {
+        weight = 100
+      }
+    }
+  }
 
   services = {
     one-big-thing = {
-      cpu    = 1024
-      memory = 4096
+      cpu                       = 2048
+      memory                    = 6144
+      enable_autoscaling        = true
+      desired_count             = 2
+      autoscaling_min_capacity  = 2
+      autoscaling_max_capacity  = 20
+      deployment_minimum_healthy_percent = 66
+      deployment_maximum_percent = 600
+      autoscaling_policies =  {
+        cpu = {
+          policy_type = "TargetTrackingScaling"
+
+          target_tracking_scaling_policy_configuration = {
+            disable_scale_in    = false,
+            scale_in_cooldown   = 300,
+            scale_out_cooldown  = 60,
+            target_value        = 90
+            predefined_metric_specification = {
+              predefined_metric_type = "ECSServiceAverageCPUUtilization"
+            }
+          }
+        }
+        memory = {
+          policy_type = "TargetTrackingScaling"
+
+          target_tracking_scaling_policy_configuration = {
+            disable_scale_in    = false,
+            scale_in_cooldown   = 300,
+            scale_out_cooldown  = 60,
+            target_value        = 90
+            predefined_metric_specification = {
+              predefined_metric_type = "ECSServiceAverageMemoryUtilization"
+            }
+          }
+        }
+      }
 
       # Container definition(s)
       container_definitions = {
-
-        one-big-thing = {
+        "one-big-thing-${var.env}" = {
           cpu       = 1024
           memory    = 4096
           essential = true
           port_mappings = [
             {
-              name          = "application"
+              name          = "django-application"
               containerPort = 8055
               protocol      = "tcp"
             }
@@ -28,40 +70,43 @@ module "ecs" {
           secrets = [
             {
               name = "DJANGO_SECRET_KEY",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:DJANGO_SECRET_KEY:AWSCURRENT:AWSCURRENT"
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:DJANGO_SECRET_KEY::",
             },
             {
               name = "CONTACT_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:CONTACT_EMAIL:AWSCURRENT:AWSCURRENT"
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:CONTACT_EMAIL::",
             },
             {
               name = "FEEDBACK_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:FEEDBACK_EMAIL:AWSCURRENT:AWSCURRENT"
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:FEEDBACK_EMAIL::",
             },
             {
               name = "FROM_EMAIL",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:FROM_EMAIL:AWSCURRENT:AWSCURRENT"
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:FROM_EMAIL::",
             },
             {
               name = "GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID:AWSCURRENT:AWSCURRENT"
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:GOVUK_NOTIFY_PLAIN_EMAIL_TEMPLATE_ID::",
             },
             {
               name = "GOVUK_NOTIFY_API_KEY",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:GOVUK_NOTIFY_API_KEY:AWSCURRENT:AWSCURRENT"
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:GOVUK_NOTIFY_API_KEY::",
             },
             {
               name = "ALLOWED_DOMAINS",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:ALLOWED_DOMAINS:AWSCURRENT:AWSCURRENT"
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:ALLOWED_DOMAINS::",
             },
-
             {
               name = "SENTRY_DSN",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:SENTRY_DSN:AWSCURRENT:AWSCURRENT"
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:SENTRY_DSN::",
             },
             {
               name = "SENTRY_ENVIRONMENT",
-              valueFrom = "arn:aws:secretsmanager:${var.region}:${data.aws_caller_identity.current.account_id}:secret:one-big-thing-${var.env}:SENTRY_ENVIRONMENT:AWSCURRENT:AWSCURRENT"
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:SENTRY_ENVIRONMENT::",
+            },
+            {
+              name  = "POSTGRES_PASSWORD"
+              valueFrom = "${data.aws_secretsmanager_secret_version.env_secret.arn}:DATABASE_PASSWORD::"
             },
           ]
           environment = [
@@ -84,10 +129,6 @@ module "ecs" {
             {
               name  = "POSTGRES_DB"
               value = local.db_name
-            },
-            {
-              name  = "DB_PASSWORD_SECRET_NAME"
-              value = module.db.db_instance_master_user_secret_arn
             },
             {
               name  = "EMAIL_BACKEND_TYPE"
@@ -114,27 +155,52 @@ module "ecs" {
               value = var.port
             },
             {
-              name = "BASE_URL"
-              value = local.base_url
+              name = "DEBUG"
+              value = var.debug
             },
           ]
         }
-
+        "one-big-thing-nginx-${var.env}" = {
+          cpu       = 1024
+          memory    = 2048
+          essential = true
+          port_mappings = [
+            {
+              name          = "nginx-application"
+              containerPort = 80
+              protocol      = "tcp"
+            }
+          ]
+          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_proxy_ecr_repo_url}:${var.image_tag}"
+          readonly_root_filesystem  = false  # Needed for NGINX config file changes to succeed
+          enable_cloudwatch_logging = true
+          secrets = []
+          environment = [
+            {
+              name  = "PORT"
+              value = var.port
+            },
+            {
+              name  = "WEB_HOST_NAME"
+              value = "127.0.0.1"  # Local loopback device address
+            },
+          ]
+        }
       }
 
       subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnets
       load_balancer = {
         service = {
           target_group_arn = aws_lb_target_group.this.arn
-          container_name   = "one-big-thing"
-          container_port   = 8055
+          container_name   = "one-big-thing-nginx-${var.env}"
+          container_port   = 80
         }
       }
       security_group_rules = {
         alb_ingress = {
           type                     = "ingress"
-          from_port                = 8055
-          to_port                  = 8055
+          from_port                = 80
+          to_port                  = 80
           protocol                 = "tcp"
           description              = "Service port"
           source_security_group_id = aws_security_group.load_balancer_security_group.id
