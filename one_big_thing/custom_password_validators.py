@@ -11,10 +11,8 @@ BUSINESS_SPECIFIC_WORDS = [
     "whitehall",
     "civil service",
     "home office",
-    "cabinet office",
-    "number 10",
+    "cabinet office",,
     "10 downing street",
-    "no 10",
 ]
 
 
