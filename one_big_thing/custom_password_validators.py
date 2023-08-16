@@ -1,4 +1,6 @@
+import re
 import string
+from difflib import SequenceMatcher
 
 from django.core.exceptions import ValidationError
 
@@ -28,3 +30,12 @@ class LowercaseUppercaseValidator:
 
     def get_help_text(self):
         return self.msg
+
+
+# Replicated functionality of UserAttributeSimilarityValidator, but don't need a user
+def similarity_password_validator(password, comparator_string, max_similarity=0.7):
+    substrings = re.split(r"\W+", comparator_string) + [comparator_string]
+    for part in substrings:
+        similarity = SequenceMatcher(a=password.lower(), b=part.lower()).quick_ratio()
+        if similarity >= max_similarity:
+            raise ValidationError("The password is too similar to the email.")
