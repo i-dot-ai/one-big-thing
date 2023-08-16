@@ -12,6 +12,9 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
+from one_big_thing.custom_password_validators import (
+    similarity_password_validator,
+)
 from one_big_thing.learning import (
     choices,
     departments,
@@ -23,8 +26,6 @@ from one_big_thing.learning.email_handler import (
     send_account_already_exists_email,
 )
 from one_big_thing.learning.utils import MethodDispatcher
-
-from one_big_thing.custom_password_validators import similarity_password_validator
 
 logger = logging.getLogger(__name__)
 
