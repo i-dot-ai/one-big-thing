@@ -2,9 +2,26 @@
 {% extends "base_generic_gov.html" %}
 
 {% block content %}
-  <h1 class="govuk-heading-l">External testing links</h1>
-    <div class="govuk-body">
-        <p><a target="_blank" rel="noopener noreferrer" class="govuk-link" href="https://fcogovuk.sharepoint.com/sites/intranet-learning/SitePages/one-big-thing.aspx?OR=Teams-HL&CT=1690986561151&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiIyNy8yMzA3MDMwNzMzMCIsIkhhc0ZlZGVyYXRlZFVzZXIiOmZhbHNlfQ%3D%3D">FCDO</a></p>
-        <p><a target="_blank" rel="noopener noreferrer" class="govuk-link" href="https://ukhomeoffice.sharepoint.com/sites/PROC1373/SitePages/Home-Office-Data-Literacy-Hub.aspx?ga=1&OR=Teams-HL&CT=1664443195357&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiIyNy8yMjA3MzEwMTAwNSIsIkhhc0ZlZGVyYXRlZFVzZXIiOmZhbHNlfQ%3D%3D">Home Office</a></p>
-    </div>
+  <h1 class="govuk-heading-l">Departmental learning officers</h1>
+    <p class="govuk-body">You can use this page to find a link to your department's One Big Thing learning offer.</p>
+    <p class="govuk-body">If your department is not listed, you should check your intranet or ask your line manager for information about your department's learning offer.</p>
+    <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th scope="col" class="govuk-table__header">Department</th>
+          <th scope="col" class="govuk-table__header">Intranet page</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+      {% for key, value in data.dept_links %}
+        <tr class="govuk-table__row">
+          <th scope="row" class="govuk-table__header">{{key}}</th>
+          <td class="govuk-table__cell">{{value}}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+
+
+
 {% endblock %}

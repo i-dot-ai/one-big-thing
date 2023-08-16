@@ -507,11 +507,11 @@ def end_post_survey_view(request):
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def department_links_view(request):
-    data = {}
+    data = {"dept_links": constants.ALL_INTRANET_LINKS}
     errors = {}
     return render(
         request,
-        template_name="external-test.html",
+        template_name="department-links.html",
         context={
             "request": request,
             "data": data,
