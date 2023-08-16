@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
 HO_INTRANET_LINK = "https://ukhomeoffice.sharepoint.com/sites/prog3312/SitePages/One-Big-Thing.aspx"
-HMRC_INTRANET_LINK = "http://www.example.com"
+HMRC_INTRANET_LINK = ""
 FCDO_INTRANET_LINK = "https://fcogovuk.sharepoint.com/sites/intranet-learning/SitePages/one-big-thing.aspx"
 DEFRA_LINK = ""
 ONS_LINK = "https://learninghub.ons.gov.uk/login/index.php"
@@ -21,11 +21,17 @@ ORR_LINK = "https://intranet.orr.gov.uk/one-big-thing-2023"
 # TODO - what are the arms' length bodies that will also use these?
 # TODO - get all links
 # These are departments having the "streamlined view"
+# Includes arms' length bodies that use main dept's intranet
 # These keys are in a particular format to link to other lists
 DEPARTMENTS_USING_INTRANET_LINKS = {
     "foreign-commonweath-development-office": FCDO_INTRANET_LINK,
     "hm-revenue-customs": HMRC_INTRANET_LINK,
     "home-office": HO_INTRANET_LINK,
+    "hm-passport-office": HO_INTRANET_LINK,
+    "immigration-enforcement": HO_INTRANET_LINK,
+    "border-force": HO_INTRANET_LINK,
+    "identity-and-passport-service": HO_INTRANET_LINK,
+    "fcdo-services": FCDO_INTRANET_LINK
 }
 
 # These are departmental links for all departments we have them for,
