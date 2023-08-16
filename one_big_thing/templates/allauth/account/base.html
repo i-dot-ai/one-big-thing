@@ -10,22 +10,22 @@
     <meta name="theme-color" content="blue">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="preload" href="/static/fonts/roboto/roboto-v30-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="preload" href="/static/fonts/roboto/roboto-v30-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/static/govuk-frontend/assets/images/favicon.ico"
+    <link rel="preload" href={% static '/fonts/roboto/roboto-v30-latin-700.woff2' %} as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href={% static '/fonts/roboto/roboto-v30-latin-regular.woff2' %} as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="shortcut icon" sizes="16x16 32x32 48x48" href={% static '/govuk-frontend/assets/images/favicon.ico' %}
       type="image/x-icon">
-    <link rel="mask-icon" href="/static/govuk-frontend/assets/images/govuk-mask-icon.svg" color="blue">
+    <link rel="mask-icon" href={% static '/govuk-frontend/assets/images/govuk-mask-icon.svg' %} color="blue">
     <link rel="apple-touch-icon" sizes="180x180"
-      href="/static/govuk-frontend/assets/images/govuk-apple-touch-icon-180x180.png">
+      href={% static '/govuk-frontend/assets/images/govuk-apple-touch-icon-180x180.png' %}>
     <link rel="apple-touch-icon" sizes="167x167"
-      href="/static/govuk-frontend/assets/images/govuk-apple-touch-icon-167x167.png">
+      href={% static '/govuk-frontend/assets/images/govuk-apple-touch-icon-167x167.png' %}>
     <link rel="apple-touch-icon" sizes="152x152"
-      href="/static/govuk-frontend/assets/images/govuk-apple-touch-icon-152x152.png">
-    <link rel="apple-touch-icon" href="/static/govuk-frontend/assets/images/govuk-apple-touch-icon.png">
+      href={% static '/govuk-frontend/assets/images/govuk-apple-touch-icon-152x152.png' %}>
+    <link rel="apple-touch-icon" href={% static '/govuk-frontend/assets/images/govuk-apple-touch-icon.png' %}>
 
-    <link rel="stylesheet" href="/static/govuk-frontend/govuk-frontend-4.3.1.min.css">
-    <link rel="stylesheet" href="/static/main.css">
-    <link rel="mask-icon" href="/static/govuk-frontend/assets/images/govuk-mask-icon.svg" color="blue">
+    <link rel="stylesheet" href={% static '/govuk-frontend/govuk-frontend-4.3.1.min.css' %}>
+    <link rel="stylesheet" href={% static '/main.css' %}>
+    <link rel="mask-icon" href={% static '/govuk-frontend/assets/images/govuk-mask-icon.svg' %} color="blue">
 
     <style>
       /* roboto-regular - latin */
@@ -138,7 +138,7 @@
       </div>
     </footer>
 
-    <script src="/static/govuk-frontend/govuk-frontend-4.3.1.min.js"></script>
+    <script src={% static '/govuk-frontend/govuk-frontend-4.3.1.min.js' %}></script>
   </body>
 
 </html>
