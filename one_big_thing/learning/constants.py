@@ -31,7 +31,7 @@ DEPARTMENTS_USING_INTRANET_LINKS = {
     "immigration-enforcement": HO_INTRANET_LINK,
     "border-force": HO_INTRANET_LINK,
     "identity-and-passport-service": HO_INTRANET_LINK,
-    "fcdo-services": FCDO_INTRANET_LINK
+    "fcdo-services": FCDO_INTRANET_LINK,
 }
 
 # These are departmental links for all departments we have them for,
