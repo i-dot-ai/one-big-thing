@@ -4,14 +4,13 @@ from difflib import SequenceMatcher
 
 from django.core.exceptions import ValidationError
 
-
 # TODO - could add more to list
 BUSINESS_SPECIFIC_WORDS = [
     "one big thing",
     "whitehall",
     "civil service",
     "home office",
-    "cabinet office",,
+    "cabinet office",
     "10 downing street",
 ]
 
