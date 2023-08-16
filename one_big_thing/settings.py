@@ -265,4 +265,4 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'", "'sha256-5RUeOJH6yW5R4ObdIH5cuLeC8nMJbTUcfzN+upYImRQ='")
-CSP_SCRIPT_SRC = ("'self'", "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='")
+CSP_SCRIPT_SRC = ("'none'")
