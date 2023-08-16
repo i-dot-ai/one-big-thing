@@ -80,7 +80,16 @@ def test_email_verification():
 
 def test_invalid_password_requirements():
     email = "Annie4@example.com"
-    invalid_passwords = ["password1!", "elephants$5", "PinkPanda", "h12!L", email, "AnniE4@", "70Whitehall!", "CabinetOffice4eva!"]
+    invalid_passwords = [
+        "password1!",
+        "elephants$5",
+        "PinkPanda",
+        "h12!L",
+        email,
+        "AnniE4@",
+        "70Whitehall!",
+        "CabinetOffice4eva!",
+    ]
     client = utils.make_testino_client()
     for pwd in invalid_passwords:
         page = client.get("/accounts/signup/")

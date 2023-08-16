@@ -14,7 +14,7 @@ BUSINESS_SPECIFIC_WORDS = [
     "cabinet office",
     "number 10",
     "10 downing street",
-    "no 10"
+    "no 10",
 ]
 
 
@@ -66,4 +66,3 @@ class BusinessPhraseSimilarityValidator:
                 raise ValidationError(self.msg)
             elif phrase.replace(" ", "-") in password_lower:
                 raise ValidationError(self.msg)
-        
