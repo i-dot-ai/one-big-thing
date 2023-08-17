@@ -16,3 +16,4 @@ INSTALLED_APPS = [
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "one_big_thing.utils.CompressedManifestStaticFilesStorage"
