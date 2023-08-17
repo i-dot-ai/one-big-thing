@@ -40,6 +40,9 @@ class OneBigThingUser(FastHttpUser):
             "csrfmiddlewaretoken": csrf_token,
         }
         self.client.post("/accounts/signup/", data=data)
+        response = self.client.get("/home/")
+        content = response.content.decode("utf-8")
+        assert email in content
 
     def on_start(self):
         self.login()
