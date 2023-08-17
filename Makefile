@@ -56,7 +56,7 @@ test:
 
 .PHONY: loadtests
 loadtests:
-	docker-compose -f loadtests/docker-compose.yml up --build --remove-orphans --force-recreate loadtests
+	docker-compose -f loadtests/docker-compose.yml up --build --remove-orphans --force-recreate  --scale loadtests-worker=8
 
 
 # -------------------------------------- Docker  -------------------------------------
