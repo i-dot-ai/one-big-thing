@@ -8,7 +8,7 @@ on:
 
 env:
   AWS_REGION: eu-west-2
-  ECR_REPOSITORY: i-dot-ai-obt
+  ECR_REPOSITORY: i-dot-ai-one-big-thing
 
 
 jobs:
