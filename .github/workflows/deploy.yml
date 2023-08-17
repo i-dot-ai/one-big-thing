@@ -45,7 +45,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build, tag, and push web image to Amazon ECR
         id: build-and-push
         uses: docker/build-push-action@v4
         env:
