@@ -8,7 +8,6 @@ on:
 
 env:
   AWS_REGION: eu-west-2
-  ECR_REPOSITORY: i-dot-ai-one-big-thing
 
 
 jobs:
@@ -52,6 +51,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.ref_name }}
+          ECR_REPOSITORY: i-dot-ai-one-big-thing
         with:
           context: .
           push: true
