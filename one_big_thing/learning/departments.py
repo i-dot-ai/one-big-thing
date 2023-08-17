@@ -318,7 +318,10 @@ department_tuples = (
     ("dwp-ops-spd", "DWP Operations - Service Excellence, Service Planning and Delivery"),
     ("dwp-ops-rs", "DWP Operations - Service Excellence, Retirement Services"),
     ("dwp-ops-sm", "DWP Operations - Service Excellence, Service Modernisation"),
-    ("dwp-ops-dsdmwa", "DWP Operations - Work and Health, Disability Services Decision Making and Working Age Directorate"),
+    (
+        "dwp-ops-dsdmwa",
+        "DWP Operations - Work and Health, Disability Services Decision Making and Working Age Directorate",
+    ),
     ("dwp-ops-uco", "DWP Operations - Work and Health, Universal Credit Operations"),
     ("dwp-people-and-capability", "DWP People and Capability"),
     ("dwp-private-office", "DWP Private Office"),
