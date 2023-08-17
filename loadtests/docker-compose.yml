@@ -1,0 +1,21 @@
+version: '3'
+
+volumes:
+  local_postgres_data: {}
+
+services:
+  loadtests-master:
+    build:
+      context: ../
+      dockerfile: ./docker/loadtests/Dockerfile
+    image: loadtests_one_big_thing
+    ports:
+      - "8089:8089"
+    command: "--master -H http://loadtests-master:8089"
+
+  loadtests-worker:
+    build:
+      context: ../
+      dockerfile: ./docker/loadtests/Dockerfile
+    image: loadtests_one_big_thing
+    command: "--worker --master-host loadtests-master"
