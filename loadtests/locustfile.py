@@ -32,8 +32,8 @@ class OneBigThingUser(FastHttpUser):
 
         data = {
             "email": email,
-            "password1": "Fl1bbl3",
-            "password2": "Fl1bbl3",
+            "password1": "Fl1bbl3-Fl1bbl3",
+            "password2": "Fl1bbl3-Fl1bbl3",
             "grade": "GRADE6",
             "department": "visitengland",
             "profession": "LEGAL",
