@@ -50,7 +50,7 @@ jobs:
         uses: docker/build-push-action@v4
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.ref_name }}
+          IMAGE_TAG: web-test
           ECR_REPOSITORY: i-dot-ai-one-big-thing
         with:
           file: docker/web/Dockerfile
@@ -65,7 +65,7 @@ jobs:
         uses: docker/build-push-action@v4
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.ref_name }}
+          IMAGE_TAG: proxy-test
           ECR_REPOSITORY: i-dot-ai-one-big-thing-proxy
         with:
           file: docker/proxy/Dockerfile
