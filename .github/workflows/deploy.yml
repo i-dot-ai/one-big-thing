@@ -46,7 +46,7 @@ jobs:
             ${{ runner.os }}-buildx-
 
       - name: Build, tag, and push web image to Amazon ECR
-        id: build-and-push
+        id: build-and-push-web
         uses: docker/build-push-action@v4
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -61,7 +61,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
       - name: Build, tag, and push proxy image to Amazon ECR
-        id: build-and-push
+        id: build-and-push-proxy
         uses: docker/build-push-action@v4
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
