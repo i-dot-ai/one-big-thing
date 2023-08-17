@@ -89,6 +89,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allow_cidr.middleware.AllowCIDRMiddleware",
+    "csp.middleware.CSPMiddleware",
 ]
 
 CORS_MIDDLEWARE = [
@@ -260,3 +261,8 @@ PERMISSIONS_POLICY = {
 }
 
 SESSION_ENGINE = "django.contrib.sessions.backends.db"
+
+
+CSP_DEFAULT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'", "'sha256-5RUeOJH6yW5R4ObdIH5cuLeC8nMJbTUcfzN+upYImRQ='")
+CSP_SCRIPT_SRC = ("'none'",)

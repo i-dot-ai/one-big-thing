@@ -24,3 +24,4 @@ humanize~=4.7.0
 sentry-sdk
 django-permissions-policy
 django-single-session
+django-csp
