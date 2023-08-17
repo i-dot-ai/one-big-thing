@@ -326,7 +326,6 @@ department_tuples = (
     ("dwp-strategy-directorate", "DWP Strategy Directorate"),
     ("dwp-policy-team", "DWP Policy Team"),
     ("dwp-corporate-transformantion", "DWP Corporate Transformation"),
-
     ("department-of-agriculture-and-rural-development", "Department of Agriculture and Rural Development"),
     (
         "department-of-agriculture-environment-and-rural-affairs-northern-ireland",
