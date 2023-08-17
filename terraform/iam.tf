@@ -13,6 +13,6 @@ resource "aws_iam_policy" "password_policy_secretsmanager" {
 }
 
 resource "aws_iam_role_policy_attachment" "secretsmanager" {
-  role       = module.ecs.services["one-big-thing"].tasks_iam_role_name
+  role       = module.ecs.services["one-big-thing-${var.env}"].tasks_iam_role_name
   policy_arn = aws_iam_policy.password_policy_secretsmanager.arn
 }
