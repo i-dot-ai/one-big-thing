@@ -17,9 +17,9 @@ module "ecs" {
       cpu                       = 2048
       memory                    = 6144
       enable_autoscaling        = true
-      desired_count             = 2
-      autoscaling_min_capacity  = 2
-      autoscaling_max_capacity  = 20
+      desired_count             = var.min_autoscaling_capacity
+      autoscaling_min_capacity  = var.min_autoscaling_capacity
+      autoscaling_max_capacity  = var.max_autoscaling_capacity
       deployment_minimum_healthy_percent = 66
       deployment_maximum_percent = 600
       autoscaling_policies =  {
@@ -64,7 +64,7 @@ module "ecs" {
               protocol      = "tcp"
             }
           ]
-          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:${var.image_tag}"
+#          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:${var.image_tag}"
           readonly_root_filesystem  = true
           enable_cloudwatch_logging = true
           secrets = [
@@ -171,7 +171,7 @@ module "ecs" {
               protocol      = "tcp"
             }
           ]
-          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_proxy_ecr_repo_url}:${var.image_tag}"
+#          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_proxy_ecr_repo_url}:${var.image_tag}"
           readonly_root_filesystem  = false  # Needed for NGINX config file changes to succeed
           enable_cloudwatch_logging = true
           secrets = []

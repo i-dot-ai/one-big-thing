@@ -47,3 +47,13 @@ variable "debug" {
   description = "Whether the build is debug"
   type        = string
 }
+
+variable "min_autoscaling_capacity" {
+  description = "The minimum number of tasks to run"
+  type        = number
+}
+
+variable "max_autoscaling_capacity" {
+  description = "The maximum number of tasks to run"
+  type        = number
+}

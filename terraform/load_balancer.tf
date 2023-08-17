@@ -6,6 +6,7 @@ resource "aws_alb" "this" {
   load_balancer_type         = "application"
   subnets                    = data.terraform_remote_state.vpc.outputs.public_subnets
   security_groups            = [aws_security_group.load_balancer_security_group.id]
+  enable_deletion_protection = true
 
   # TODO: Create log bucket
   #   access_logs {
