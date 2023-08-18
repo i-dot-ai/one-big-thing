@@ -1,6 +1,18 @@
+import re
 import string
+from difflib import SequenceMatcher
 
 from django.core.exceptions import ValidationError
+
+# TODO - could add more to list
+BUSINESS_SPECIFIC_WORDS = [
+    "one big thing",
+    "whitehall",
+    "civil service",
+    "home office",
+    "cabinet office",
+    "downing street",
+]
 
 
 class SpecialCharacterValidator:
@@ -28,3 +40,26 @@ class LowercaseUppercaseValidator:
 
     def get_help_text(self):
         return self.msg
+
+
+# Replicates functionality of UserAttributeSimilarityValidator, but don't need a user
+def similarity_password_validator(password, comparator_string, max_similarity=0.7):
+    substrings = re.split(r"\W+", comparator_string) + [comparator_string]
+    for part in substrings:
+        similarity = SequenceMatcher(a=password.lower(), b=part.lower()).quick_ratio()
+        if similarity >= max_similarity:
+            raise ValidationError("The password is too similar to the email.")
+
+
+class BusinessPhraseSimilarityValidator:
+    msg = "The password should not contain business specific words."
+
+    def validate(self, password, user=None):
+        password_lower = password.lower()
+        for phrase in BUSINESS_SPECIFIC_WORDS:
+            phrase_no_space = phrase.replace(" ", "")
+            phrase_underscore = phrase.replace(" ", "_")
+            phrase_dash = phrase.replace(" ", "-")
+            search_phrase = "|".join([phrase_no_space, phrase_underscore, phrase_dash])
+            if re.search(search_phrase, password_lower):
+                raise ValidationError(self.msg)

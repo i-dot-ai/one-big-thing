@@ -177,6 +177,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "one_big_thing.custom_password_validators.LowercaseUppercaseValidator",
     },
+    {
+        "NAME": "one_big_thing.custom_password_validators.BusinessPhraseSimilarityValidator",
+    },
 ]
 
 if not DEBUG:

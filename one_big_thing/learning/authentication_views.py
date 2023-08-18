@@ -12,6 +12,9 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
+from one_big_thing.custom_password_validators import (
+    similarity_password_validator,
+)
 from one_big_thing.learning import (
     choices,
     departments,
@@ -147,6 +150,9 @@ class CustomSignupView(SignupView):
                 return render(request, self.template_name, context)
             try:
                 validate_password(password1)
+                # Replicate UserAttributeSimilarityValidator which
+                # isn't used as user not yet created
+                similarity_password_validator(password1, email)
             except ValidationError as exc:
                 for errors in exc.error_list:
                     for error in errors:
