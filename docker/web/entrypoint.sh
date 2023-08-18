@@ -1,7 +1,6 @@
 #!/bin/sh
 
 set -o errexit
-set -o nounset
 
 if [ "$DEBUG" = true ] && [ -z "$DATABASE_URL" ]
 then
