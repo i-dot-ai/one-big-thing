@@ -21,3 +21,5 @@ send_verification_email = false
 port = 8055
 region="eu-west-2"
 debug = false
+min_autoscaling_capacity = 20
+max_autoscaling_capacity = 200
