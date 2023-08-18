@@ -89,6 +89,8 @@ def test_invalid_password_requirements():
         "AnniE4@",
         "70Whitehall!",
         "CabinetOffice4eva!",
+        "10-Downing-Street",
+        "One_Big_Thing_23",
     ]
     client = utils.make_testino_client()
     for pwd in invalid_passwords:

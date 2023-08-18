@@ -57,9 +57,11 @@ class BusinessPhraseSimilarityValidator:
     def validate(self, password, user=None):
         password_lower = password.lower()
         for phrase in BUSINESS_SPECIFIC_WORDS:
-            if phrase.replace(" ", "") in password_lower:
+            phrase_underscore = phrase.replace(" ", "_")
+            phrase_dash = phrase.replace(" ", "-")
+            search_phrase = f"{phrase}|{phrase_underscore}|{phrase_dash}"
+            print(f"search_phrase: {search_phrase}")
+            if re.search(search_phrase, password_lower):
                 raise ValidationError(self.msg)
-            elif phrase.replace(" ", "_") in password_lower:
-                raise ValidationError(self.msg)
-            elif phrase.replace(" ", "-") in password_lower:
-                raise ValidationError(self.msg)
+
+
