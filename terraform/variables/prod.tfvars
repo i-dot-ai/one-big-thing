@@ -23,3 +23,13 @@ region="eu-west-2"
 debug = false
 min_autoscaling_capacity = 20
 max_autoscaling_capacity = 200
+rds_instance_class = "db.r6g.2xlarge"
+rds_instances = {
+  one = {}
+  two = {}
+  three = {}
+  four = {}
+  five = {}
+}
+rds_autoscaling_min_capacity = 5
+rds_autoscaling_max_capacity = 10

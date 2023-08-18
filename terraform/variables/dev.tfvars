@@ -23,3 +23,10 @@ region="eu-west-2"
 debug = false
 min_autoscaling_capacity = 2
 max_autoscaling_capacity = 10
+rds_instance_class = "db.t3.medium"
+rds_instances = {
+  one = {}
+  two = {}
+}
+rds_autoscaling_min_capacity = 1
+rds_autoscaling_max_capacity = 5

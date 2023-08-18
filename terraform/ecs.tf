@@ -30,7 +30,7 @@ module "ecs" {
             disable_scale_in    = false,
             scale_in_cooldown   = 30,
             scale_out_cooldown  = 15,
-            target_value        = 90
+            target_value        = 70
             predefined_metric_specification = {
               predefined_metric_type = "ECSServiceAverageCPUUtilization"
             }
@@ -43,7 +43,7 @@ module "ecs" {
             disable_scale_in    = false,
             scale_in_cooldown   = 30,
             scale_out_cooldown  = 15,
-            target_value        = 90
+            target_value        = 70
             predefined_metric_specification = {
               predefined_metric_type = "ECSServiceAverageMemoryUtilization"
             }
@@ -64,7 +64,7 @@ module "ecs" {
               protocol      = "tcp"
             }
           ]
-#          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:${var.image_tag}"
+          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:${var.image_tag}"
           readonly_root_filesystem  = true
           enable_cloudwatch_logging = true
           secrets = [
@@ -116,7 +116,7 @@ module "ecs" {
             },
             {
               name  = "POSTGRES_HOST"
-              value = module.db.db_instance_address
+              value = module.db.cluster_endpoint
             },
             {
               name  = "POSTGRES_PORT"
@@ -171,7 +171,7 @@ module "ecs" {
               protocol      = "tcp"
             }
           ]
-#          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_proxy_ecr_repo_url}:${var.image_tag}"
+          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_proxy_ecr_repo_url}:${var.image_tag}"
           readonly_root_filesystem  = false  # Needed for NGINX config file changes to succeed
           enable_cloudwatch_logging = true
           secrets = []
