@@ -57,3 +57,23 @@ variable "max_autoscaling_capacity" {
   description = "The maximum number of tasks to run"
   type        = number
 }
+
+variable "rds_instance_class" {
+  description = "The instance type the RDS instance will build"
+  type        = string
+}
+
+variable "rds_instances" {
+  description = "The definition for each instance in the RDS cluster"
+  type        = map(object({}))
+}
+
+variable "rds_autoscaling_min_capacity" {
+  description = "The minimum number of instances for auto-scaling to build"
+  type        = number
+}
+
+variable "rds_autoscaling_max_capacity" {
+  description = "The maximum number of instances for auto-scaling to build"
+  type        = number
+}

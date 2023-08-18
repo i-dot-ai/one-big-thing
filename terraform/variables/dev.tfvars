@@ -21,5 +21,15 @@ send_verification_email = true
 port = 8055
 region="eu-west-2"
 debug = false
-min_autoscaling_capacity = 2
-max_autoscaling_capacity = 10
+min_autoscaling_capacity = 20
+max_autoscaling_capacity = 200
+rds_instance_class = "db.r6g.2xlarge"
+rds_instances = {
+  one = {}
+  two = {}
+  three = {}
+  four = {}
+  five = {}
+}
+rds_autoscaling_min_capacity = 5
+rds_autoscaling_max_capacity = 10
