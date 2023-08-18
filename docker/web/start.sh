@@ -15,4 +15,4 @@ echo "Starting app"
 
 echo "Using '$ENVIRONMENT' environment settings"
 
-watchmedo auto-restart --directory=./  --pattern=""*.py"" --recursive -- waitress-serve --port="$PORT" --threads=8 one_big_thing.wsgi:application
+gunicorn --workers 3 one_big_thing.wsgi:application

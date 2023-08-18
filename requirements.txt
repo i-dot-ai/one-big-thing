@@ -9,7 +9,7 @@ django-environ
 django-allauth~=0.54.0
 django-gov-notify==0.3.0
 django_use_email_as_username
-waitress
+gunicorn
 psycopg2-binary
 pyyaml
 markdown-it-py
