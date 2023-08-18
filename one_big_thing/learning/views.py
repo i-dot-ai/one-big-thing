@@ -133,23 +133,6 @@ def homepage_view(request):
 
 
 @login_required
-@require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
-def external_test_view(request):
-    data = {}
-    errors = {}
-    return render(
-        request,
-        template_name="external-test.html",
-        context={
-            "request": request,
-            "data": data,
-            "errors": errors,
-        },
-    )
-
-
-@login_required
 @require_http_methods(["GET", "POST"])
 @enforce_user_completes_pre_survey
 class RecordLearningView(utils.MethodDispatcher):
@@ -501,3 +484,20 @@ def intro_to_post_survey_view(request):
 @enforce_user_completes_pre_survey
 def end_post_survey_view(request):
     return render(request, "end-post-survey.html", {})
+
+
+@login_required
+@require_http_methods(["GET"])
+@enforce_user_completes_pre_survey
+def department_links_view(request):
+    data = {"dept_links": constants.ALL_INTRANET_LINKS}
+    errors = {}
+    return render(
+        request,
+        template_name="department-links.html",
+        context={
+            "request": request,
+            "data": data,
+            "errors": errors,
+        },
+    )
