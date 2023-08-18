@@ -13,7 +13,7 @@ module "ecs" {
   }
 
   services = {
-    one-big-thing = {
+    "one-big-thing-${var.env}" = {
       cpu                       = 2048
       memory                    = 6144
       enable_autoscaling        = true
@@ -28,8 +28,8 @@ module "ecs" {
 
           target_tracking_scaling_policy_configuration = {
             disable_scale_in    = false,
-            scale_in_cooldown   = 300,
-            scale_out_cooldown  = 60,
+            scale_in_cooldown   = 30,
+            scale_out_cooldown  = 15,
             target_value        = 90
             predefined_metric_specification = {
               predefined_metric_type = "ECSServiceAverageCPUUtilization"
@@ -41,8 +41,8 @@ module "ecs" {
 
           target_tracking_scaling_policy_configuration = {
             disable_scale_in    = false,
-            scale_in_cooldown   = 300,
-            scale_out_cooldown  = 60,
+            scale_in_cooldown   = 30,
+            scale_out_cooldown  = 15,
             target_value        = 90
             predefined_metric_specification = {
               predefined_metric_type = "ECSServiceAverageMemoryUtilization"
@@ -136,7 +136,7 @@ module "ecs" {
             },
             {
               name  = "BASE_URL"
-              value = aws_route53_record.this.fqdn
+              value = "https://${aws_route53_record.this.fqdn}/"
             },
             {
               name  = "VCAP_APPLICATION"
