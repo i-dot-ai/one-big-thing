@@ -65,7 +65,7 @@ module "ecs" {
             }
           ]
           image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_ecr_repo_url}:${var.image_tag}"
-          readonly_root_filesystem  = true
+          readonly_root_filesystem  = false
           enable_cloudwatch_logging = true
           secrets = [
             {
