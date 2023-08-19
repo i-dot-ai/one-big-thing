@@ -58,7 +58,7 @@
         {% include "account/password_rules.html" %}
         <div class="govuk-form-group {% if 'department' in errors.keys %}error{% endif %}">
           <label class="govuk-label" for="department">Department</label>
-          <div id="select-field">
+          <div id="department-select-field">
             <select name="department" id="department" class="govuk-select govuk-!-width-full">
               <option value="" disabled class="govuk-button--disabled" {% if not data.departments%}selected{% endif %}>Please select a department you belong to</option>
               {% for option in departments %}
@@ -74,7 +74,7 @@
         </div>
         <div class="govuk-form-group {% if 'grades' in errors.keys %}error{% endif %}">
           <label class="govuk-label" for="grade">Grade</label>
-          <div id="select-field">
+          <div id="grade-select-field">
             <select name="grade" id="grade" class="govuk-select govuk-!-width-full">
               <option value="" disabled class="govuk-button--disabled" {% if not data.grades%}selected{% endif %}>Please select your grade (or equivalent)</option>
               {% for option in grades %}
@@ -85,7 +85,7 @@
         </div>
         <div class="govuk-form-group {% if 'professions' in errors.keys %}error{% endif %}">
           <label class="govuk-label" for="profession">Primary area of work</label>
-          <div id="select-field">
+          <div id="profession-select-field">
             <select name="profession" id="profession" class="govuk-select govuk-!-width-full">
               <option value="" disabled class="govuk-button--disabled" {% if not data.professions%}selected{% endif %}>Please select your primary area of work</option>
               {% for option in professions %}
