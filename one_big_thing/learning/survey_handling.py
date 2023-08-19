@@ -262,24 +262,8 @@ post_questions_data = [
     # },
 ]
 
+
 shared_level_questions_data = [
-    {
-        "title": "How likely are you to do the following?",
-        "questions": [
-            {"id": "create-development-plan", "text": "I will create a development plan", "answer_type": "likely-1-5"},
-            {
-                "id": "add-new-learning-to-development-plan",
-                "text": "I will add a new area of learning to my development plan",
-                "answer_type": "likely-1-5",
-            },
-            {
-                "id": "book-related-training",
-                "text": "I will book a related training course",
-                "answer_type": "likely-1-5",
-            },
-            {"id": "find-mentor", "text": "I will find a mentor", "answer_type": "likely-1-5"},
-        ],
-    },
     {
         "title": "Please rate how much you agree or disagree with the following statements",
         "questions": [
@@ -350,7 +334,7 @@ shared_level_questions_data = [
             },
             {
                 "id": "time-to-participate",
-                "text": "I had sufficient time to participate in One Big Thing during Autumn",
+                "text": "I had sufficient time to participate in One Big Thing during the Autumn (September - December)",
                 "answer_type": "agree-1-5",
             },
         ],
@@ -362,12 +346,13 @@ shared_level_questions_data = [
                 "id": "what-went-well",
                 "text": "What if anything, went well about the training? Please use the space below to provide more details",  # noqa: E501
                 "answer_type": "textarea",
-                "max_length": 150,
+                "max_length": 600,
             },
             {
                 "id": "what-can-be-improved",
                 "text": "Was there anything that could have been improved? Please use the space below to provide more details",  # noqa: E501
                 "answer_type": "textarea",
+                "max_length": 600,
             },
         ],
     },
