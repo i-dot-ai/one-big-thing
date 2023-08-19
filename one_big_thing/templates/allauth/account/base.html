@@ -123,10 +123,27 @@
       </main>
     </div>
 
-    <footer class="govuk-footer " role="contentinfo">
+    <footer class="govuk-footer" role="contentinfo">
       <div class="govuk-width-container">
         <div class="govuk-footer__meta">
           <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+            <ul class="govuk-footer__inline-list">
+              <li class="govuk-footer__inline-list-item">
+                <a class="govuk-footer__link" href="{% url 'privacy-notice' %}">
+                  Privacy notice
+                </a>
+              </li>
+              <li class="govuk-footer__inline-list-item">
+                <a class="govuk-footer__link" href="{% url 'support' %}">
+                  Support
+                </a>
+              </li>
+              <li class="govuk-footer__inline-list-item">
+                <a class="govuk-footer__link" href="{% url 'accessibility-statement' %}">
+                  Accessibility statement
+                </a>
+              </li>
+            </ul>
             <div class="govuk-footer__meta-custom">
               Built by i.AI
             </div>
