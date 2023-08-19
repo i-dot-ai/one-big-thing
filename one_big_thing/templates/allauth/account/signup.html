@@ -76,7 +76,7 @@
           <label class="govuk-label" for="grade">Grade</label>
           <div id="select-field">
             <select name="grade" id="grade" class="govuk-select govuk-!-width-full">
-              <option value="" disabled class="govuk-button--disabled" {% if not data.grades%}selected{% endif %}>Please select your grade</option>
+              <option value="" disabled class="govuk-button--disabled" {% if not data.grades%}selected{% endif %}>Please select your grade (or equivalent)</option>
               {% for option in grades %}
                 <option value="{{option.0}}" {% if 'grade' in data.keys and data.grades == option.0 %}selected{% endif %}>{{option.1}}</option>
               {% endfor %}
