@@ -185,27 +185,7 @@ post_questions_data = [
         ],
     },
     {
-        "title": "Please rate how much you agree or disagree with the following statements:",
-        "questions": [
-            {
-                "id": "shared-identity",
-                "text": 'I feel a sense of "shared identity" with other civil servants',
-                "answer_type": "agree-1-5",
-            },
-            {
-                "id": "own-identity",
-                "text": "My identity as a civil servant is important to me",
-                "answer_type": "agree-1-5",
-            },
-            {
-                "id": "taking-part-made-me-feel-connected",
-                "text": "Taking part in One Big Thing made me feel connected with other civil servants",
-                "answer_type": "agree-1-5",
-            },
-        ],
-    },
-    {
-        "title": 'Following "One Big Thing", '
+        "title": 'Following "One Big Thing",'
         "please rate how much you agree or disagree with each of the following statements:",
         "questions": [
             {
@@ -230,6 +210,56 @@ post_questions_data = [
             },
         ],
     },
+    {
+        "title": "Are you currently a line manager?",
+        "questions": [
+            {
+                "id": "line-manager-post",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
+    {
+        "title": 'If you answered "Yes" to the previous question please answer the following. To what extent do you agree or disagree with the following statements',
+        "questions": [
+            {
+                "id": "help-team-post",
+                "text": "I can help my team understand how data is relevant to their day-to-day roles",
+                "answer_type": "radio",
+            },
+            {
+                "id": "support-team-post",
+                "text": "I know how to support my team to use data effectively in their day-to-day roles",
+                "answer_type": "radio",
+            },
+            {
+                "id": "coach-team-post",
+                "text": "I know how to coach team members to make better use of data in their day to day roles",
+                "answer_type": "radio",
+            },
+        ],
+    },
+    # {
+    #     "title": "Please rate how much you agree or disagree with the following statements:",
+    #     "questions": [
+    #         {
+    #             "id": "shared-identity",
+    #             "text": 'I feel a sense of "shared identity" with other civil servants',
+    #             "answer_type": "agree-1-5",
+    #         },
+    #         {
+    #             "id": "own-identity",
+    #             "text": "My identity as a civil servant is important to me",
+    #             "answer_type": "agree-1-5",
+    #         },
+    #         {
+    #             "id": "taking-part-made-me-feel-connected",
+    #             "text": "Taking part in One Big Thing made me feel connected with other civil servants",
+    #             "answer_type": "agree-1-5",
+    #         },
+    #     ],
+    # },
 ]
 
 shared_level_questions_data = [
@@ -383,9 +413,29 @@ awareness_level_questions_data = [
                 "text": "I can communicate data information more confidently to influence decisions",
                 "answer_type": "agree-1-5",
             },
+        ],
+    },
+    {
+        "title": 'Following "One Big Thing", ' "please rate how much you agree or disagree with the below statements:",
+        "questions": [
             {
-                "id": "do-something-differently-after-obt",
-                "text": "I will do something differently as a result of One Big Thing",
+                "id": "create-development-plan",
+                "text": "I will create a development plan",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "add-learning-to-development-plan",
+                "text": "I will add a new area of learning to my development plan",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "book-training",
+                "text": "I will book a training course related to data",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "find-mentor",
+                "text": "I will find a mentor",
                 "answer_type": "agree-1-5",
             },
         ],
@@ -419,9 +469,29 @@ working_level_questions_data = [
                 "text": "I have learned about the importance of evaluating the outcomes of data-informed decisions",
                 "answer_type": "agree-1-5",
             },
+        ],
+    },
+    {
+        "title": 'Following "One Big Thing", ' "please rate how much you agree or disagree with the below statements:",
+        "questions": [
             {
-                "id": "obt-knowledge-drives-change",
-                "text": "I will do something differently as a result of what I've learned at One Big Thing",
+                "id": "create-development-plan",
+                "text": "I will create a development plan",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "add-learning-to-development-plan",
+                "text": "I will add a new area of learning to my development plan",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "book-training",
+                "text": "I will book a training course related to data",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "find-mentor",
+                "text": "I will find a mentor",
                 "answer_type": "agree-1-5",
             },
         ],
@@ -436,7 +506,8 @@ practitioner_level_questions_data = [
         "questions": [
             {
                 "id": "more-effectively-communicate-data-insights-to-improve-decisions",
-                "text": "I understand better how to communicate data " "insights more effectively to improve decisions",
+                "text": "I understand better how to communicate data "
+                "insights more effectively to influence decisions",
                 "answer_type": "agree-1-5",
             },
             {
@@ -454,9 +525,29 @@ practitioner_level_questions_data = [
                 "text": "I have a better understanding of data ethics",
                 "answer_type": "agree-1-5",
             },
+        ],
+    },
+    {
+        "title": 'Following "One Big Thing", ' "please rate how much you agree or disagree with the below statements:",
+        "questions": [
             {
-                "id": "obt-knowledge-drives-change",
-                "text": "I will do something differently as a result of One Big Thing",
+                "id": "create-development-plan",
+                "text": "I will create a development plan",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "add-learning-to-development-plan",
+                "text": "I will add a new area of learning to my development plan",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "book-training",
+                "text": "I will book a related training course",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "find-mentor",
+                "text": "I will find a mentor/become a mentor",
                 "answer_type": "agree-1-5",
             },
         ],
@@ -545,6 +636,13 @@ _have_you_used_any_of_these = (
     ),
 )
 
+_yes_no = (
+    ("yes", "Yes"),
+    ("no", "No"),
+)
+
+_yes_no_dont_know = (("yes", "Yes"), ("no", "No"), ("dont_know", "I don't know"))
+
 questions_data = {
     "pre": pre_questions_data,
     "post": post_questions_data,
@@ -588,14 +686,18 @@ answer_labels = {
     "yes-no-dont-know": {"yes": "Yes", "no": "No", "dont-know": "Don't know"},
     "competency": dict(_competencies),
     "training-level": dict(_training_levels),
-    "line-manager": choices.YesNo.mapping,
-    "help-team": choices.YesNoDontKnow.mapping,
-    "support-team": choices.YesNoDontKnow.mapping,
-    "coach-team": choices.YesNoDontKnow.mapping,
-    "training-last-six-months": choices.YesNoDontKnow.mapping,
-    "training-analytical-component": choices.YesNoDontKnow.mapping,
+    "line-manager": dict(_yes_no),
+    "help-team": dict(_yes_no_dont_know),
+    "support-team": dict(_yes_no_dont_know),
+    "coach-team": dict(_yes_no_dont_know),
+    "line-manager-post": dict(_yes_no),
+    "help-team-post": dict(_yes_no_dont_know),
+    "support-team-post": dict(_yes_no_dont_know),
+    "coach-team-post": dict(_yes_no_dont_know),
+    "training-last-six-months": dict(_yes_no_dont_know),
+    "training-analytical-component": dict(_yes_no_dont_know),
     "useful-learning-formats": choices.CourseType.mapping,
-    "willing-to-follow-up": choices.YesNo.mapping,
+    "willing-to-follow-up": dict(_yes_no),
     "confident-in-decisions": dict(_confident_in_decisions),
     "confidence-explaining-graph": dict(_confident_explaining_graph),
     "have-you-designed-a-survey": dict(_have_you_created_survey),
