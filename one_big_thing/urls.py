@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
-from one_big_thing.learning import authentication_views, views, info_views
+from one_big_thing.learning import authentication_views, info_views, views
 
 account_urlpatterns = [
     path("accounts/verify/", authentication_views.CustomVerifyUserEmail, name="verify-email"),
