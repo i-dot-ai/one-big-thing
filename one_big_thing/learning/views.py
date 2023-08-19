@@ -59,7 +59,7 @@ survey_questions_compulsory_field_map = {
     #     ],
     # },
 }
-    
+
 
 missing_item_errors = {
     "title": "Please provide a title for this course",

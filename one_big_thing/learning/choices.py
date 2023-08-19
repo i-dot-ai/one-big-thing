@@ -69,3 +69,9 @@ class Profession(utils.Choices):
 class YesNo(utils.Choices):
     YES = "Yes"
     NO = "No"
+
+
+class YesNoDontKnow(utils.Choices):
+    YES = "Yes"
+    NO = "No"
+    DONT_KNOW = "I don't know"

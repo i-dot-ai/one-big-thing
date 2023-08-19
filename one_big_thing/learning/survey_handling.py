@@ -81,96 +81,96 @@ pre_questions_data = [
             },
         ],
     },
-    # {
-    #     "title": "To what extent do you agree or disagree with the following statements?",
-    #     "questions": [
-    #         {
-    #             "id": "shared-identity",
-    #             "text": "I feel connected with the wider Civil Service",
-    #             "answer_type": "agree-1-5",
-    #         },
-    #         {
-    #             "id": "identity-is-important",
-    #             "text": "My identity as a civil servant is important to me",
-    #             "answer_type": "agree-1-5",
-    #         },
-    #     ],
-    # },
-    # {
-    #     "title": "To what extent do you agree or disagree with the following statements?",
-    #     "questions": [
-    #         {
-    #             "id": "confident-day-to-day",
-    #             "text": "I feel confident about using data in my day-to-day role",
-    #             "answer_type": "agree-1-5",
-    #         },
-    #         {
-    #             "id": "data-is-relevant-to-role",
-    #             "text": "I think data is relevant to my role",
-    #             "answer_type": "agree-1-5",
-    #         },
-    #         {
-    #             "id": "use-data-effectively-day-to-day",
-    #             "text": "I know how to use data effectively in my day-to-day role",
-    #             "answer_type": "agree-1-5",
-    #         },
-    #         {
-    #             "id": "data-support-day-to-day",
-    #             "text": "I am aware of how data can support my day-to-day role",
-    #             "answer_type": "agree-1-5",
-    #         },
-    #     ],
-    # },
-    # {
-    #     "title": 'Are you currently a line manager? If you answer "Yes" please answer the following question',
-    #     "questions": [
-    #         {
-    #             "id": "line-manager",
-    #             "text": "Are you a line manager?",
-    #             "answer_type": "yes-no",
-    #         },
-    #     ],
-    # },
-    # {
-    #     "title": 'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',
-    #     "questions": [
-    #         {
-    #             "id": "help-team",
-    #             "text": "I can help my team understand how data is relevant to their day-to-day roles",
-    #             "answer_type": "agree-1-5",
-    #         },
-    #         {
-    #             "id": "support-team",
-    #             "text": "I know how to support my team to use data effectively in their day-to-day roles",
-    #             "answer_type": "agree-1-5",
-    #         },
-    #         {
-    #             "id": "coach-team",
-    #             "text": "I know how to coach team members to make better use of data in their day to day roles",
-    #             "answer_type": "agree-1-5",
-    #         },
-    #     ],
-    # },
-    # {
-    #     "title": "In the last 6 months, have you done any type of training?",
-    #     "questions": [
-    #         {
-    #             "id": "line-manager",
-    #             "text": "Are you a line manager?",
-    #             "answer_type": "yes-no",
-    #         },
-    #     ],
-    # },
-    # {
-    #     "title": 'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)',
-    #     "questions": [
-    #         {
-    #             "id": "line-manager",
-    #             "text": "Are you a line manager?",
-    #             "answer_type": "yes-no",
-    #         },
-    #     ],
-    # },
+    {
+        "title": "To what extent do you agree or disagree with the following statements?",
+        "questions": [
+            {
+                "id": "shared-identity",
+                "text": "I feel connected with the wider Civil Service",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "identity-is-important",
+                "text": "My identity as a civil servant is important to me",
+                "answer_type": "agree-1-5",
+            },
+        ],
+    },
+    {
+        "title": "To what extent do you agree or disagree with the following statements?",
+        "questions": [
+            {
+                "id": "confident-day-to-day",
+                "text": "I feel confident about using data in my day-to-day role",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "data-is-relevant-to-role",
+                "text": "I think data is relevant to my role",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "use-data-effectively-day-to-day",
+                "text": "I know how to use data effectively in my day-to-day role",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "data-support-day-to-day",
+                "text": "I am aware of how data can support my day-to-day role",
+                "answer_type": "agree-1-5",
+            },
+        ],
+    },
+    {
+        "title": "Are you currently a line manager?",
+        "questions": [
+            {
+                "id": "line-manager",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
+    {
+        "title": 'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',
+        "questions": [
+            {
+                "id": "help-team",
+                "text": "I can help my team understand how data is relevant to their day-to-day roles",
+                "answer_type": "radio",
+            },
+            {
+                "id": "support-team",
+                "text": "I know how to support my team to use data effectively in their day-to-day roles",
+                "answer_type": "radio",
+            },
+            {
+                "id": "coach-team",
+                "text": "I know how to coach team members to make better use of data in their day to day roles",
+                "answer_type": "radio",
+            },
+        ],
+    },
+    {
+        "title": "In the last 6 months, have you done any type of training?",
+        "questions": [
+            {
+                "id": "training-last-six-months",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
+    {
+        "title": 'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)',
+        "questions": [
+            {
+                "id": "training-analytical-component",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
 ]
 
 post_questions_data = [
@@ -588,6 +588,12 @@ answer_labels = {
     "yes-no-dont-know": {"yes": "Yes", "no": "No", "dont-know": "Don't know"},
     "competency": dict(_competencies),
     "training-level": dict(_training_levels),
+    "line-manager": choices.YesNo.mapping,
+    "help-team": choices.YesNoDontKnow.mapping,
+    "support-team": choices.YesNoDontKnow.mapping,
+    "coach-team": choices.YesNoDontKnow.mapping,
+    "training-last-six-months": choices.YesNoDontKnow.mapping,
+    "training-analytical-component": choices.YesNoDontKnow.mapping,
     "useful-learning-formats": choices.CourseType.mapping,
     "willing-to-follow-up": choices.YesNo.mapping,
     "confident-in-decisions": dict(_confident_in_decisions),
@@ -599,12 +605,14 @@ answer_labels = {
     "do-you-use-coding-language": dict(_have_you_used_any_of_these),
 }
 
+
 agree_pre_questions = tuple(item["id"] for item in pre_questions if item["answer_type"] == "agree-1-5")
 agree_post_questions = tuple(item["id"] for item in post_questions if item["answer_type"] == "agree-1-5")
 competency_labels = tuple(item["label"] for item in competencies)
 pre_question_sections = tuple(item["title"] for item in pre_questions_data if item["title"] != "Competency")
 post_question_sections = tuple(item["title"] for item in post_questions_data if item["title"] != "Competency")
 all_question_sections = pre_question_sections + post_question_sections
+
 
 survey_completion_map = {
     "pre": "pre",
