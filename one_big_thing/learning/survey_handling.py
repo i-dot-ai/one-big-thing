@@ -1,76 +1,76 @@
 from one_big_thing.learning import choices
 
 pre_questions_data = [
-    {
-        "title": "Do you feel confident to make a decision based on information you are presented with? For example, statistics or customer feedback",  # noqa: E501
-        "questions": [
-            {
-                "id": "confident-in-decisions",
-                "text": "",
-                "answer_type": "radio",
-            },
-        ],
-    },
-    {
-        "title": "How would you feel about explaining to someone in your team what a graph is showing?",
-        "questions": [
-            {
-                "id": "confidence-explaining-graph",
-                "text": "",
-                "answer_type": "radio",
-            },
-        ],
-    },
-    {
-        "title": "Have you designed a survey to gather responses and make a decision?",
-        "questions": [
-            {
-                "id": "have-you-designed-a-survey",
-                "text": "",
-                "answer_type": "radio",
-            },
-        ],
-    },
-    {
-        "title": "Have you ever believed something you read online that turned out not to be true?",
-        "questions": [
-            {
-                "id": "believed-something-incorrect-online",
-                "text": "",
-                "answer_type": "radio",
-            },
-        ],
-    },
-    {
-        "title": "Do you use any of the following? Spreadsheets (for example, Excel or Google Sheets)",
-        "questions": [
-            {
-                "id": "do-you-use-spreadsheets",
-                "text": "",
-                "answer_type": "radio",
-            },
-        ],
-    },
-    {
-        "title": "Do you use any of the following? Dashboard tools (for example, Tableau, PowerBI, Looker or Qlik Sense)",  # noqa: E501
-        "questions": [
-            {
-                "id": "do-you-use-dashboard-tools",
-                "text": "",
-                "answer_type": "radio",
-            },
-        ],
-    },
-    {
-        "title": "Do you use any of the following? A coding language to explore data (for example, Python, R, SQL , SPSS or STATA)",  # noqa: E501
-        "questions": [
-            {
-                "id": "do-you-use-coding-language",
-                "text": "",
-                "answer_type": "radio",
-            },
-        ],
-    },
+    # {
+    #     "title": "Do you feel confident to make a decision based on information you are presented with? For example, statistics or customer feedback",  # noqa: E501
+    #     "questions": [
+    #         {
+    #             "id": "confident-in-decisions",
+    #             "text": "",
+    #             "answer_type": "radio",
+    #         },
+    #     ],
+    # },
+    # {
+    #     "title": "How would you feel about explaining to someone in your team what a graph is showing?",
+    #     "questions": [
+    #         {
+    #             "id": "confidence-explaining-graph",
+    #             "text": "",
+    #             "answer_type": "radio",
+    #         },
+    #     ],
+    # },
+    # {
+    #     "title": "Have you designed a survey to gather responses and make a decision?",
+    #     "questions": [
+    #         {
+    #             "id": "have-you-designed-a-survey",
+    #             "text": "",
+    #             "answer_type": "radio",
+    #         },
+    #     ],
+    # },
+    # {
+    #     "title": "Have you ever believed something you read online that turned out not to be true?",
+    #     "questions": [
+    #         {
+    #             "id": "believed-something-incorrect-online",
+    #             "text": "",
+    #             "answer_type": "radio",
+    #         },
+    #     ],
+    # },
+    # {
+    #     "title": "Do you use any of the following? Spreadsheets (for example, Excel or Google Sheets)",
+    #     "questions": [
+    #         {
+    #             "id": "do-you-use-spreadsheets",
+    #             "text": "",
+    #             "answer_type": "radio",
+    #         },
+    #     ],
+    # },
+    # {
+    #     "title": "Do you use any of the following? Dashboard tools (for example, Tableau, PowerBI, Looker or Qlik Sense)",  # noqa: E501
+    #     "questions": [
+    #         {
+    #             "id": "do-you-use-dashboard-tools",
+    #             "text": "",
+    #             "answer_type": "radio",
+    #         },
+    #     ],
+    # },
+    # {
+    #     "title": "Do you use any of the following? A coding language to explore data (for example, Python, R, SQL , SPSS or STATA)",  # noqa: E501
+    #     "questions": [
+    #         {
+    #             "id": "do-you-use-coding-language",
+    #             "text": "",
+    #             "answer_type": "radio",
+    #         },
+    #     ],
+    # },
     {
         "title": "To what extent do you agree or disagree with the following statement?",  # noqa: E501
         "questions": [
@@ -86,7 +86,7 @@ pre_questions_data = [
         "questions": [
             {
                 "id": "shared-identity",
-                "text": 'I feel a sense of "shared identity" with other civil servants',
+                "text": "I feel connected with the wider Civil Service",
                 "answer_type": "agree-1-5",
             },
             {
@@ -118,6 +118,56 @@ pre_questions_data = [
                 "id": "data-support-day-to-day",
                 "text": "I am aware of how data can support my day-to-day role",
                 "answer_type": "agree-1-5",
+            },
+        ],
+    },
+    {
+        "title": 'Are you currently a line manager? If you answer "Yes" please answer the following question',
+        "questions": [
+            {
+                "id": "line-manager",
+                "text": "Are you a line manager?",
+                "answer_type": "yes-no",
+            },
+        ],
+    },
+    {
+        "title": 'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',
+        "questions": [
+            {
+                "id": "help-team",
+                "text": "I can help my team understand how data is relevant to their day-to-day roles",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "support-team",
+                "text": "I know how to support my team to use data effectively in their day-to-day roles",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "coach-team",
+                "text": "I know how to coach team members to make better use of data in their day to day roles",
+                "answer_type": "agree-1-5",
+            },
+        ],
+    },
+    {
+        "title": "In the last 6 months, have you done any type of training?",
+        "questions": [
+            {
+                "id": "line-manager",
+                "text": "Are you a line manager?",
+                "answer_type": "yes-no",
+            },
+        ],
+    },
+    {
+        "title": 'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)',
+        "questions": [
+            {
+                "id": "line-manager",
+                "text": "Are you a line manager?",
+                "answer_type": "yes-no",
             },
         ],
     },
@@ -534,6 +584,8 @@ answer_labels = {
         "4": "Somewhat likely",
         "5": "Likely",
     },
+    "yes-no": {"yes": "Yes", "no": "No"},
+    "yes-no-dont-know": {"yes": "Yes", "no": "No", "dont-know": "Don't know"},
     "competency": dict(_competencies),
     "training-level": dict(_training_levels),
     "useful-learning-formats": choices.CourseType.mapping,
