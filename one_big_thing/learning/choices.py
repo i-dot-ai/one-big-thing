@@ -18,17 +18,17 @@ class CourseType(utils.Choices):
 
 
 class Grade(utils.Choices):
-    ADMINISTRATIVE_ASSISTANT = "Administrative assistant"
-    ADMINISTRATIVE_OFFICER = "Administrative officer"
-    EXECUTIVE_OFFICER = "Executive officer"
-    GRADE6 = "Grade 6"
+    ADMINISTRATIVE_ASSISTANT = "Administrative Assistant"
+    ADMINISTRATIVE_OFFICER = "Administrative Officer"
+    EXECUTIVE_OFFICER = "Executive Officer"
+    HIGHER_EXECUTIVE_OFFICER = "Higher Executive Officer"
+    SENIOR_EXECUTIVE_OFFICER = "Senior Executive Officer"
     GRADE7 = "Grade 7"
-    HIGHER_EXECUTIVE_OFFICER = "Higher executive officer"
-    SCS_DEPUTY_DIRECTOR = "SCS: deputy director"
-    SCS_DIRECTOR = "SCS: director"
-    SCS_DIRECTOR_GENERAL = "SCS: director general"
-    SCS_PERMANENT_SECRETARY = "SCS: permanent secretary"
-    SENIOR_EXECUTIVE_OFFICER = "Senior executive officer"
+    GRADE6 = "Grade 6"
+    SCS_DEPUTY_DIRECTOR = "SCS: Deputy Director"
+    SCS_DIRECTOR = "SCS: Director"
+    SCS_DIRECTOR_GENERAL = "SCS: Director General"
+    SCS_PERMANENT_SECRETARY = "SCS: Permanent Secretary"
     OTHER = "Other"
 
 
