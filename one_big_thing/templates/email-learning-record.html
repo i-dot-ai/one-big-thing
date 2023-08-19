@@ -1,6 +1,10 @@
 {% import "macros.html" as macros with context %}
 {% extends "base_generic_gov.html" %}
 
+{% block title %}
+<title>Email Learning Record - One Big Thing - GOV.UK</title>
+{% endblock %}
+
 {% block content %}
     {% if data.successfully_sent %}
         <div class="govuk-panel govuk-panel--confirmation">
