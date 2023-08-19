@@ -81,96 +81,96 @@ pre_questions_data = [
             },
         ],
     },
-    {
-        "title": "To what extent do you agree or disagree with the following statements?",
-        "questions": [
-            {
-                "id": "shared-identity",
-                "text": "I feel connected with the wider Civil Service",
-                "answer_type": "agree-1-5",
-            },
-            {
-                "id": "identity-is-important",
-                "text": "My identity as a civil servant is important to me",
-                "answer_type": "agree-1-5",
-            },
-        ],
-    },
-    {
-        "title": "To what extent do you agree or disagree with the following statements?",
-        "questions": [
-            {
-                "id": "confident-day-to-day",
-                "text": "I feel confident about using data in my day-to-day role",
-                "answer_type": "agree-1-5",
-            },
-            {
-                "id": "data-is-relevant-to-role",
-                "text": "I think data is relevant to my role",
-                "answer_type": "agree-1-5",
-            },
-            {
-                "id": "use-data-effectively-day-to-day",
-                "text": "I know how to use data effectively in my day-to-day role",
-                "answer_type": "agree-1-5",
-            },
-            {
-                "id": "data-support-day-to-day",
-                "text": "I am aware of how data can support my day-to-day role",
-                "answer_type": "agree-1-5",
-            },
-        ],
-    },
-    {
-        "title": 'Are you currently a line manager? If you answer "Yes" please answer the following question',
-        "questions": [
-            {
-                "id": "line-manager",
-                "text": "Are you a line manager?",
-                "answer_type": "yes-no",
-            },
-        ],
-    },
-    {
-        "title": 'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',
-        "questions": [
-            {
-                "id": "help-team",
-                "text": "I can help my team understand how data is relevant to their day-to-day roles",
-                "answer_type": "agree-1-5",
-            },
-            {
-                "id": "support-team",
-                "text": "I know how to support my team to use data effectively in their day-to-day roles",
-                "answer_type": "agree-1-5",
-            },
-            {
-                "id": "coach-team",
-                "text": "I know how to coach team members to make better use of data in their day to day roles",
-                "answer_type": "agree-1-5",
-            },
-        ],
-    },
-    {
-        "title": "In the last 6 months, have you done any type of training?",
-        "questions": [
-            {
-                "id": "line-manager",
-                "text": "Are you a line manager?",
-                "answer_type": "yes-no",
-            },
-        ],
-    },
-    {
-        "title": 'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)',
-        "questions": [
-            {
-                "id": "line-manager",
-                "text": "Are you a line manager?",
-                "answer_type": "yes-no",
-            },
-        ],
-    },
+    # {
+    #     "title": "To what extent do you agree or disagree with the following statements?",
+    #     "questions": [
+    #         {
+    #             "id": "shared-identity",
+    #             "text": "I feel connected with the wider Civil Service",
+    #             "answer_type": "agree-1-5",
+    #         },
+    #         {
+    #             "id": "identity-is-important",
+    #             "text": "My identity as a civil servant is important to me",
+    #             "answer_type": "agree-1-5",
+    #         },
+    #     ],
+    # },
+    # {
+    #     "title": "To what extent do you agree or disagree with the following statements?",
+    #     "questions": [
+    #         {
+    #             "id": "confident-day-to-day",
+    #             "text": "I feel confident about using data in my day-to-day role",
+    #             "answer_type": "agree-1-5",
+    #         },
+    #         {
+    #             "id": "data-is-relevant-to-role",
+    #             "text": "I think data is relevant to my role",
+    #             "answer_type": "agree-1-5",
+    #         },
+    #         {
+    #             "id": "use-data-effectively-day-to-day",
+    #             "text": "I know how to use data effectively in my day-to-day role",
+    #             "answer_type": "agree-1-5",
+    #         },
+    #         {
+    #             "id": "data-support-day-to-day",
+    #             "text": "I am aware of how data can support my day-to-day role",
+    #             "answer_type": "agree-1-5",
+    #         },
+    #     ],
+    # },
+    # {
+    #     "title": 'Are you currently a line manager? If you answer "Yes" please answer the following question',
+    #     "questions": [
+    #         {
+    #             "id": "line-manager",
+    #             "text": "Are you a line manager?",
+    #             "answer_type": "yes-no",
+    #         },
+    #     ],
+    # },
+    # {
+    #     "title": 'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',
+    #     "questions": [
+    #         {
+    #             "id": "help-team",
+    #             "text": "I can help my team understand how data is relevant to their day-to-day roles",
+    #             "answer_type": "agree-1-5",
+    #         },
+    #         {
+    #             "id": "support-team",
+    #             "text": "I know how to support my team to use data effectively in their day-to-day roles",
+    #             "answer_type": "agree-1-5",
+    #         },
+    #         {
+    #             "id": "coach-team",
+    #             "text": "I know how to coach team members to make better use of data in their day to day roles",
+    #             "answer_type": "agree-1-5",
+    #         },
+    #     ],
+    # },
+    # {
+    #     "title": "In the last 6 months, have you done any type of training?",
+    #     "questions": [
+    #         {
+    #             "id": "line-manager",
+    #             "text": "Are you a line manager?",
+    #             "answer_type": "yes-no",
+    #         },
+    #     ],
+    # },
+    # {
+    #     "title": 'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)',
+    #     "questions": [
+    #         {
+    #             "id": "line-manager",
+    #             "text": "Are you a line manager?",
+    #             "answer_type": "yes-no",
+    #         },
+    #     ],
+    # },
 ]
 
 post_questions_data = [

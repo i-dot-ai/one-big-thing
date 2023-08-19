@@ -35,30 +35,31 @@ page_compulsory_field_map = {
 
 # TODO: Finalise mandatory question list
 survey_questions_compulsory_field_map = {
-    "pre": {
-        1: [
-            "confident-in-decisions",
-        ],
-        2: [
-            "confidence-explaining-graph",
-        ],
-        3: [
-            "have-you-designed-a-survey",
-        ],
-        4: [
-            "believed-something-incorrect-online",
-        ],
-        5: [
-            "do-you-use-spreadsheets",
-        ],
-        6: [
-            "do-you-use-dashboard-tools",
-        ],
-        7: [
-            "do-you-use-coding-language",
-        ],
-    },
+    # "pre": {
+    #     1: [
+    #         "confident-in-decisions",
+    #     ],
+    #     2: [
+    #         "confidence-explaining-graph",
+    #     ],
+    #     3: [
+    #         "have-you-designed-a-survey",
+    #     ],
+    #     4: [
+    #         "believed-something-incorrect-online",
+    #     ],
+    #     5: [
+    #         "do-you-use-spreadsheets",
+    #     ],
+    #     6: [
+    #         "do-you-use-dashboard-tools",
+    #     ],
+    #     7: [
+    #         "do-you-use-coding-language",
+    #     ],
+    # },
 }
+    
 
 missing_item_errors = {
     "title": "Please provide a title for this course",
