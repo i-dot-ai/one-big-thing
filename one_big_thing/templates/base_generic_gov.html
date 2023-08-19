@@ -101,24 +101,26 @@
                   Home
                 </a>
               </li>
-              <li class="govuk-header__navigation-item">
-                <a class="govuk-header__link" href="{{url('record-learning')}}">
-                  Record learning
-                </a>
-              </li>
-              <li class="govuk-header__navigation-item">
-                <a class="govuk-header__link" href="{{url('password-reset')}}">
-                  Password reset
-                </a>
-              </li>
-              <li class="govuk-header__navigation-item">
-                <a class="govuk-header__link" href="/accounts/logout/">
-                  Sign out
-                </a>
-              </li>
-              <li class="govuk-header__navigation-item">
-                {{request.user.email}} logged in at {{request.user.last_login.strftime("%d-%b-%Y %H:%M")}}
-              </li>
+              {% if request.user.is_authenticated %}
+                <li class="govuk-header__navigation-item">
+                  <a class="govuk-header__link" href="{{url('record-learning')}}">
+                    Record learning
+                  </a>
+                </li>
+                <li class="govuk-header__navigation-item">
+                  <a class="govuk-header__link" href="{{url('password-reset')}}">
+                    Password reset
+                  </a>
+                </li>
+                <li class="govuk-header__navigation-item">
+                  <a class="govuk-header__link" href="/accounts/logout/">
+                    Sign out
+                  </a>
+                </li>
+                <li class="govuk-header__navigation-item">
+                  {{request.user.email}} logged in at {{request.user.last_login.strftime("%d-%b-%Y %H:%M")}}
+                </li>
+              {% endif %}
             </ul>
           </nav>
       </div>
