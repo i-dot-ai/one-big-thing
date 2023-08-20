@@ -1,14 +1,44 @@
 import logging
 import uuid
+from collections import Counter
 
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 
-from one_big_thing.learning import choices
+from one_big_thing.learning import choices, constants
 
 logger = logging.getLogger(__name__)
+
+
+def get_competency_answers_for_user(user):
+    pre_survey_results = (
+        models.SurveyResults.objects.filter(user=user).filter(survey_type="pre").values_list("data", flat=True)
+    )
+    pre_survey_results = {k: v for result in pre_survey_results for k, v in result.items()}
+    competency_answers = [
+        v for k, v in pre_survey_results.items() if k in constants.INITIAL_COMPETENCY_DETERMINATION_QUESTIONS
+    ]
+    return competency_answers
+
+
+def determine_competency_levels(competency_answers_list):
+    """
+    3 competency levels, "awareness", "working", "practitioner".
+    Take the most common to be the assigned competency level.
+    In case of tie - take "working".
+    """
+    competency_level_counts = Counter(competency_answers_list)
+    competency_level_counts = {k: v for k, v in competency_level_counts.items() if v}  # remove empties
+    if not competency_level_counts:
+        return None
+    max_value = max(competency_level_counts.values())
+    competency_levels_most_common = [key for key, value in competency_level_counts.items() if value == max_value]
+    if len(competency_levels_most_common) == 1:
+        return competency_levels_most_common[0]
+    else:
+        return "working"
 
 
 class UUIDPrimaryKeyBase(models.Model):
@@ -61,6 +91,13 @@ class User(BaseUser, UUIDPrimaryKeyBase):
         learnings = self.learning_set.all()
         course_ids = [learning.course_id for learning in learnings if learning.course_id]
         return course_id in course_ids
+
+    def determine_competency_level(self):
+        level = None
+        if self.has_completed_pre_survey:
+            competency_answers = get_competency_answers_for_user(self)
+            level = determine_competency_levels(competency_answers)
+        return level
 
 
 class Course(TimeStampedModel, UUIDPrimaryKeyBase):

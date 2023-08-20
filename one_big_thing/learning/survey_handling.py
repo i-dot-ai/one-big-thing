@@ -12,7 +12,7 @@ pre_questions_data = [
         ],
     },
     {
-        "title": "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.", # noqa: E501
+        "title": "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.",  # noqa: E501
         "questions": [
             {
                 "id": "confidence-graphic-survey",
@@ -92,7 +92,7 @@ pre_questions_data = [
         ],
     },
     {
-        "title": 'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?', # noqa: E501
+        "title": 'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',  # noqa: E501
         "questions": [
             {
                 "id": "help-team",
