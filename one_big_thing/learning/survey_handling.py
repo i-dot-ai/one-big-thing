@@ -2,7 +2,7 @@ from one_big_thing.learning import choices
 
 pre_questions_data = [
     {
-        "title": "How would you feel about making a decision based on information you're presented with?This might be numerical data like statistics or non-numerical data like user feedback.",  # noqa: E501
+        "title": "How would you feel about making a decision based on information you're presented with? This might be numerical data like statistics or non-numerical data like user feedback.",  # noqa: E501
         "questions": [
             {
                 "id": "confident-in-decisions",
@@ -12,7 +12,7 @@ pre_questions_data = [
         ],
     },
     {
-        "title": "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.",
+        "title": "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.", # noqa: E501
         "questions": [
             {
                 "id": "confidence-graphic-survey",
@@ -92,7 +92,7 @@ pre_questions_data = [
         ],
     },
     {
-        "title": 'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',
+        "title": 'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?', # noqa: E501
         "questions": [
             {
                 "id": "help-team",
@@ -524,69 +524,69 @@ _confidence_levels = (
     ),
 )
 
-_confident_in_decisions = (
-    ("not-confident", "Not confident"),
-    (
-        "confident",
-        "Confident",
-    ),
-    (
-        "very-confident",
-        "Very confident",
-    ),
-)
+# _confident_in_decisions = (
+#     ("not-confident", "Not confident"),
+#     (
+#         "confident",
+#         "Confident",
+#     ),
+#     (
+#         "very-confident",
+#         "Very confident",
+#     ),
+# )
 
-_confident_explaining_graph = (
-    ("reluctant", "Reluctant"),
-    (
-        "willing-to-give-it-a-go",
-        "Willing to give it a go",
-    ),
-    (
-        "confident",
-        "Confident",
-    ),
-)
+# _confident_explaining_graph = (
+#     ("reluctant", "Reluctant"),
+#     (
+#         "willing-to-give-it-a-go",
+#         "Willing to give it a go",
+#     ),
+#     (
+#         "confident",
+#         "Confident",
+#     ),
+# )
 
-_have_you_created_survey = (
-    ("no-i-couldnt-do-that", "No, I couldn't do that"),
-    (
-        "yes-i-could-do-that",
-        "Yes I could do that",
-    ),
-    (
-        "yes-i-could-teach-others",
-        "Yes, I could teach others how to do that",
-    ),
-)
+# _have_you_created_survey = (
+#     ("no-i-couldnt-do-that", "No, I couldn't do that"),
+#     (
+#         "yes-i-could-do-that",
+#         "Yes I could do that",
+#     ),
+#     (
+#         "yes-i-could-teach-others",
+#         "Yes, I could teach others how to do that",
+#     ),
+# )
 
-_have_you_believed_something_online = (
-    ("yes", "Yes"),
-    (
-        "no",
-        "No",
-    ),
-    (
-        "i-dont-think-so",
-        "I don't think so",
-    ),
-)
+# _have_you_believed_something_online = (
+#     ("yes", "Yes"),
+#     (
+#         "no",
+#         "No",
+#     ),
+#     (
+#         "i-dont-think-so",
+#         "I don't think so",
+#     ),
+# )
 
-_have_you_used_any_of_these = (
-    ("never-used", "Never used"),
-    (
-        "view",
-        "View",
-    ),
-    (
-        "create",
-        "Create",
-    ),
-    (
-        "automate",
-        "Automate",
-    ),
-)
+# _have_you_used_any_of_these = (
+#     ("never-used", "Never used"),
+#     (
+#         "view",
+#         "View",
+#     ),
+#     (
+#         "create",
+#         "Create",
+#     ),
+#     (
+#         "automate",
+#         "Automate",
+#     ),
+# )
 
 _yes_no = (
     ("yes", "Yes"),
@@ -638,7 +638,7 @@ answer_labels = {
     "confident-in-decisions": dict(_confidence_levels),
     "confidence-graphic-survey": dict(_confidence_levels),
     "confidence-explaining-chart": dict(_confidence_levels),
-    "competency": dict(_competencies),
+    # "competency": dict(_competencies),
     "training-level": dict(_training_levels),
     "line-manager": dict(_yes_no),
     "help-team": dict(_yes_no_dont_know),
@@ -652,21 +652,24 @@ answer_labels = {
     "training-analytical-component": dict(_yes_no_dont_know),
     "useful-learning-formats": choices.CourseType.mapping,
     "willing-to-follow-up": dict(_yes_no),
-    "confident-in-decisions": dict(_confident_in_decisions),
-    "confidence-explaining-graph": dict(_confident_explaining_graph),
-    "have-you-designed-a-survey": dict(_have_you_created_survey),
-    "believed-something-incorrect-online": dict(_have_you_believed_something_online),
-    "do-you-use-spreadsheets": dict(_have_you_used_any_of_these),
-    "do-you-use-dashboard-tools": dict(_have_you_used_any_of_these),
-    "do-you-use-coding-language": dict(_have_you_used_any_of_these),
+    # "confident-in-decisions": dict(_confident_in_decisions),
+    # "confidence-explaining-graph": dict(_confident_explaining_graph),
+    # "have-you-designed-a-survey": dict(_have_you_created_survey),
+    # "believed-something-incorrect-online": dict(_have_you_believed_something_online),
+    # "do-you-use-spreadsheets": dict(_have_you_used_any_of_these),
+    # "do-you-use-dashboard-tools": dict(_have_you_used_any_of_these),
+    # "do-you-use-coding-language": dict(_have_you_used_any_of_these),
 }
 
 
 agree_pre_questions = tuple(item["id"] for item in pre_questions if item["answer_type"] == "agree-1-5")
 agree_post_questions = tuple(item["id"] for item in post_questions if item["answer_type"] == "agree-1-5")
 competency_labels = tuple(item["label"] for item in competencies)
-pre_question_sections = tuple(item["title"] for item in pre_questions_data if item["title"] != "Competency")
-post_question_sections = tuple(item["title"] for item in post_questions_data if item["title"] != "Competency")
+# TODO: Is the "Competency" a thing? Has it gone, can it be removed?
+# pre_question_sections = tuple(item["title"] for item in pre_questions_data if item["title"] != "Competency")
+# post_question_sections = tuple(item["title"] for item in post_questions_data if item["title"] != "Competency")
+pre_question_sections = tuple(item["title"] for item in pre_questions_data)
+post_question_sections = tuple(item["title"] for item in post_questions_data)
 all_question_sections = pre_question_sections + post_question_sections
 
 
