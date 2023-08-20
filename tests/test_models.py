@@ -26,3 +26,18 @@ def test_user_save():
     new_user2, _ = models.User.objects.update_or_create(email=new_email2)
     assert new_user1.email == "new_user1@example.org", new_user1.email
     assert new_user2.email == "new_user2@example.com", new_user2.email
+
+
+def test_determine_competency_levels():
+    input1 = ["", "awareness", "working"]
+    input2 = ["awareness", "awareness", "practitioner"]
+    input3 = ["", "practitioner", ""]
+    expected1 = "working"
+    expected2 = "awareness"
+    expected3 = "practitioner"
+    actual1 = models.get_competency_answers_for_user(input1)
+    actual2 = models.get_competency_answers_for_user(input2)
+    actual3 = models.get_competency_answers_for_user(input3)
+    assert expected1 == actual1, actual1
+    assert expected2 == actual2, actual2
+    assert expected3 == actual3, actual3
