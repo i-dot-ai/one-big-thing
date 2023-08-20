@@ -97,14 +97,14 @@ def complete_survey(client, user, competency_level_answers=["confident", "not-co
     )
     third_page = step_survey_page(
         second_page,
-        "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.", # noqa: E501
+        "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.",  # noqa: E501
         {
             "confidence-graphic-survey": competency_level_answers[1],
         },
     )
     fourth_page = step_survey_page(
         third_page,
-        "How would you feel about explaining to someone in your team what a chart of performance data is showing?", # noqa: E501
+        "How would you feel about explaining to someone in your team what a chart of performance data is showing?",  # noqa: E501
         {
             "confidence-explaining-chart": competency_level_answers[2],
         },
@@ -143,7 +143,7 @@ def complete_survey(client, user, competency_level_answers=["confident", "not-co
     )
     ninth_page = step_survey_page(
         eighth_page,
-        'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?', # noqa: E501
+        'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',  # noqa: E501
         {"help-team": "yes", "support-team": "dont-know", "coach-team": "no"},
     )
     tenth_page = step_survey_page(
@@ -155,7 +155,7 @@ def complete_survey(client, user, competency_level_answers=["confident", "not-co
     )
     completed_page = step_survey_page(
         tenth_page,
-        'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)', # noqa: E501
+        'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)',  # noqa: E501
         {
             "training-analytical-component": "yes",
         },
@@ -177,6 +177,31 @@ def complete_survey(client, user, competency_level_answers=["confident", "not-co
 
     question_data = completed_surveys.get(page_number=3)
     assert question_data.data == {"confidence-explaining-chart": competency_level_answers[2]}, question_data.data
+    question_data = completed_surveys.get(page_number=4)
+    assert question_data.data == {"aware-of-the-aims": "1"}, question_data.data
+    question_data = completed_surveys.get(page_number=5)
+    assert question_data.data == {"shared-identity": "2", "identity-is-important": "1"}, question_data.data
+    question_data = completed_surveys.get(page_number=6)
+    assert question_data.data == {
+        "confident-day-to-day": "1",
+        "data-is-relevant-to-role": "1",
+        "use-data-effectively-day-to-day": "5",
+        "data-support-day-to-day": "1",
+    }, question_data.data
+    question_data = completed_surveys.get(page_number=7)
+    assert question_data.data == {"line-manager": "yes"}, question_data.data
+    question_data = completed_surveys.get(page_number=8)
+    assert question_data.data == {
+        "help-team": "yes",
+        "support-team": "dont-know",
+        "coach-team": "no",
+    }, question_data.data
+    question_data = completed_surveys.get(page_number=9)
+    assert question_data.data == {
+        "training-last-six-months": "yes",
+    }, question_data.data
+    question_data = completed_surveys.get(page_number=10)
+    assert question_data.data == {"training-analytical-component": "yes"}, question_data.data
 
 
 def step_survey_page(page, title, fields):

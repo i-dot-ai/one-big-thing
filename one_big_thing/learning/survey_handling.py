@@ -24,7 +24,7 @@ pre_questions_data = [
         ],
     },
     {
-        "title": "How would you feel about explaining to someone in your team what a chart of performance data is showing?", # noqa: E501
+        "title": "How would you feel about explaining to someone in your team what a chart of performance data is showing?",  # noqa: E501
         "questions": [
             {
                 "id": "confidence-explaining-chart",
@@ -124,7 +124,7 @@ pre_questions_data = [
         ],
     },
     {
-        "title": 'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)', # noqa: E501
+        "title": 'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)',  # noqa: E501
         "questions": [
             {
                 "id": "training-analytical-component",
@@ -198,7 +198,7 @@ post_questions_data = [
         ],
     },
     {
-        "title": 'If you answered "Yes" to the previous question please answer the following. To what extent do you agree or disagree with the following statements', # noqa: E501
+        "title": 'If you answered "Yes" to the previous question please answer the following. To what extent do you agree or disagree with the following statements',  # noqa: E501
         "questions": [
             {
                 "id": "help-team-post",
