@@ -501,12 +501,6 @@ unknown_level_questions_data = [
     *shared_level_questions_data,
 ]
 
-# _competencies = (
-#     ("beginner", "Beginner"),
-#     ("intermediate", "Intermediate"),
-#     ("expert", "Expert"),
-# )
-
 _training_levels = (
     (constants.AWARENESS, "Awareness"),
     (constants.WORKING, "Working"),
