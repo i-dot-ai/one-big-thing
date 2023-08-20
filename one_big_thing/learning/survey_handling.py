@@ -1,36 +1,36 @@
 from one_big_thing.learning import choices
 
 pre_questions_data = [
-    # {
-    #     "title": "Do you feel confident to make a decision based on information you are presented with? For example, statistics or customer feedback",  # noqa: E501
-    #     "questions": [
-    #         {
-    #             "id": "confident-in-decisions",
-    #             "text": "",
-    #             "answer_type": "radio",
-    #         },
-    #     ],
-    # },
-    # {
-    #     "title": "How would you feel about explaining to someone in your team what a graph is showing?",
-    #     "questions": [
-    #         {
-    #             "id": "confidence-explaining-graph",
-    #             "text": "",
-    #             "answer_type": "radio",
-    #         },
-    #     ],
-    # },
-    # {
-    #     "title": "Have you designed a survey to gather responses and make a decision?",
-    #     "questions": [
-    #         {
-    #             "id": "have-you-designed-a-survey",
-    #             "text": "",
-    #             "answer_type": "radio",
-    #         },
-    #     ],
-    # },
+    {
+        "title": "How would you feel about making a decision based on information you're presented with?This might be numerical data like statistics or non-numerical data like user feedback.",  # noqa: E501
+        "questions": [
+            {
+                "id": "confident-in-decisions",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
+    {
+        "title": "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.",
+        "questions": [
+            {
+                "id": "confidence-graphic-survey",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
+    {
+        "title": "How would you feel about explaining to someone in your team what a chart of performance data is showing?",
+        "questions": [
+            {
+                "id": "confidence-explaining-chart",
+                "text": "",
+                "answer_type": "radio",
+            },
+        ],
+    },
     # {
     #     "title": "Have you ever believed something you read online that turned out not to be true?",
     #     "questions": [
@@ -572,9 +572,17 @@ _training_levels = (
     ("unknown", "Don't know"),
 )
 
-# _confidence_levels = (
-
-# )
+_confidence_levels = (
+    ("not-confident", "Not confident. I rarely do this"),
+    (
+        "confident",
+        "Confident. I sometimes do this",
+    ),
+    (
+        "very-confident",
+        "Very confident. I often do this",
+    ),
+)
 
 _confident_in_decisions = (
     ("not-confident", "Not confident"),
@@ -671,6 +679,7 @@ section_all_questions_map = {
     **section_post_questions_map,
 }
 
+
 answer_labels = {
     "agree-1-5": {
         "1": "Strongly disagree",
@@ -686,8 +695,9 @@ answer_labels = {
         "4": "Somewhat likely",
         "5": "Likely",
     },
-    "yes-no": {"yes": "Yes", "no": "No"},
-    "yes-no-dont-know": {"yes": "Yes", "no": "No", "dont-know": "Don't know"},
+    "confident-in-decisions": dict(_confidence_levels),
+    "confidence-graphic-survey": dict(_confidence_levels),
+    "confidence-explaining-chart": dict(_confidence_levels),
     "competency": dict(_competencies),
     "training-level": dict(_training_levels),
     "line-manager": dict(_yes_no),
