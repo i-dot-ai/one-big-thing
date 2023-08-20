@@ -94,38 +94,33 @@ pre_questions_data = [
         ],
     },
     {
-        "title": 'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',  # noqa: E501
+        "title": 'If you answered "yes" to the previous question then please answer to what extent do you agree or disagree with the following statements? If you are not a line manager, then please move on to the following page.',  # noqa: E501
         "questions": [
             {
                 "id": "help-team",
                 "text": "I can help my team understand how data is relevant to their day-to-day roles",
-                "answer_type": "radio",
+                "answer_type": "agree-1-5",
             },
             {
                 "id": "support-team",
                 "text": "I know how to support my team to use data effectively in their day-to-day roles",
-                "answer_type": "radio",
+                "answer_type": "agree-1-5",
             },
             {
                 "id": "coach-team",
                 "text": "I know how to coach team members to make better use of data in their day to day roles",
-                "answer_type": "radio",
+                "answer_type": "agree-1-5",
             },
         ],
     },
     {
-        "title": "In the last 6 months, have you done any type of training?",
+        "title": "Training in the last six months",
         "questions": [
             {
                 "id": "training-last-six-months",
-                "text": "",
+                "text": "In the last 6 months, have you done any type of training?",
                 "answer_type": "radio",
             },
-        ],
-    },
-    {
-        "title": 'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)',  # noqa: E501
-        "questions": [
             {
                 "id": "training-analytical-component",
                 "text": "",
@@ -141,7 +136,7 @@ post_questions_data = [
         "questions": [
             {
                 "id": "training-level",
-                "text": "Which level of training did you take part in?",
+                "text": "Which level of training did you participate in?",
                 "answer_type": "radio",
             }
         ],
@@ -156,7 +151,7 @@ post_questions_data = [
             },
             {
                 "id": "identity-important",
-                "text": "My identity as a Civil Servant is important to me",
+                "text": "My identity as a civil servant is important to me",
                 "answer_type": "agree-1-5",
             },
         ],
@@ -198,22 +193,22 @@ post_questions_data = [
         ],
     },
     {
-        "title": 'If you answered "Yes" to the previous question please answer the following. To what extent do you agree or disagree with the following statements',  # noqa: E501
+        "title": 'If you answered "Yes" to the previous question please answer the following. Otherwise move on to the next page. To what extent do you agree or disagree with the following statements',  # noqa: E501
         "questions": [
             {
                 "id": "help-team",
                 "text": "I can help my team understand how data is relevant to their day-to-day roles",
-                "answer_type": "radio",
+                "answer_type": "agree-1-5",
             },
             {
                 "id": "support-team",
                 "text": "I know how to support my team to use data effectively in their day-to-day roles",
-                "answer_type": "radio",
+                "answer_type": "agree-1-5",
             },
             {
                 "id": "coach-team",
                 "text": "I know how to coach team members to make better use of data in their day to day roles",
-                "answer_type": "radio",
+                "answer_type": "agree-1-5",
             },
         ],
     },
@@ -252,7 +247,7 @@ shared_level_questions_data = [
         ],
     },
     {
-        "title": "Please rate how much you agree or disagree with the below statements",
+        "title": "Please rate how much you agree or disagree with the following statements",
         "questions": [
             {
                 "id": "obt-good-use-of-time",
@@ -276,13 +271,13 @@ shared_level_questions_data = [
             },
             {
                 "id": "intend-to-apply-learning-in-my-role",
-                "text": "I intend to apply learning from this training in my work",
+                "text": "I intend to apply learning from this training in my role",
                 "answer_type": "agree-1-5",
             },
         ],
     },
     {
-        "title": "Please rate how much you agree or disagree with the below statements",
+        "title": "Please rate how much you agree or disagree with the following statements",
         "questions": [
             {
                 "id": "aware-of-aims",
@@ -301,7 +296,7 @@ shared_level_questions_data = [
         "questions": [
             {
                 "id": "what-went-well",
-                "text": "What if anything, went well about the training? Please use the space below to provide more details",  # noqa: E501
+                "text": "What, if anything, went well about the training? Please use the space below to provide more details",  # noqa: E501
                 "answer_type": "textarea",
                 "max_length": 600,
             },
@@ -357,7 +352,7 @@ awareness_level_questions_data = [
         ],
     },
     {
-        "title": "Following One Big Thing, please rate how much you agree or disagree with the below statements:",
+        "title": "Following One Big Thing, to what extent do you agree or disagree with the below statements",
         "questions": [
             {
                 "id": "create-development-plan",
@@ -386,7 +381,7 @@ awareness_level_questions_data = [
 
 working_level_questions_data = [
     {
-        "title": "Following One Big Thing, please rate how much you agree or disagree with each of the following statements:",  # noqa: E501
+        "title": "Following One Big Thing, please rate how much you agree or disagree with each of the following statements",  # noqa: E501
         "questions": [
             {
                 "id": "i-understand-different-data-techniques",
@@ -412,7 +407,7 @@ working_level_questions_data = [
         ],
     },
     {
-        "title": "Following One Big Thing, please rate how much you agree or disagree with the below statements:",
+        "title": "Following One Big Thing, to what extent do you agree or disagree with the below statements",
         "questions": [
             {
                 "id": "create-development-plan",
@@ -467,27 +462,27 @@ practitioner_level_questions_data = [
         ],
     },
     {
-        "title": 'Following "One Big Thing", ' "please rate how much you agree or disagree with the below statements:",
+        "title": "Following One Big Thing, how likely are you to do the following",
         "questions": [
             {
                 "id": "create-development-plan",
                 "text": "I will create a development plan",
-                "answer_type": "agree-1-5",
+                "answer_type": "likely-1-5",
             },
             {
                 "id": "add-learning-to-development-plan",
                 "text": "I will add a new area of learning to my development plan",
-                "answer_type": "agree-1-5",
+                "answer_type": "likely-1-5",
             },
             {
                 "id": "book-training",
                 "text": "I will book a related training course",
-                "answer_type": "agree-1-5",
+                "answer_type": "likely-1-5",
             },
             {
                 "id": "find-mentor",
                 "text": "I will find a mentor/become a mentor",
-                "answer_type": "agree-1-5",
+                "answer_type": "likely-1-5",
             },
         ],
     },
@@ -568,9 +563,6 @@ answer_labels = {
     "confidence-explaining-chart": dict(_confidence_levels),
     "training-level": dict(_training_levels),
     "line-manager": dict(_yes_no),
-    "help-team": dict(_yes_no_dont_know),
-    "support-team": dict(_yes_no_dont_know),
-    "coach-team": dict(_yes_no_dont_know),
     "training-last-six-months": dict(_yes_no_dont_know),
     "training-analytical-component": dict(_yes_no_dont_know),
     "useful-learning-formats": choices.CourseType.mapping,

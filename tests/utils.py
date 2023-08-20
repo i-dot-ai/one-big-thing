@@ -143,20 +143,14 @@ def complete_pre_survey(client, user, competency_level_answers=["confident", "no
     )
     ninth_page = step_survey_page(
         eighth_page,
-        'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',  # noqa: E501
-        {"help-team": "yes", "support-team": "dont-know", "coach-team": "no"},
+        "to what extent do you agree or disagree",
+        {"help-team": "1", "support-team": "2"},
     )
-    tenth_page = step_survey_page(
+    completed_page = step_survey_page(
         ninth_page,
         "In the last 6 months, have you done any type of training?",
         {
             "training-last-six-months": "yes",
-        },
-    )
-    completed_page = step_survey_page(
-        tenth_page,
-        'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)',  # noqa: E501
-        {
             "training-analytical-component": "yes",
         },
     )
@@ -196,18 +190,16 @@ def complete_pre_survey(client, user, competency_level_answers=["confident", "no
     question_data = completed_surveys.get(page_number=8)
     assert question_data.survey_type == "pre", question_data.survey_type
     assert question_data.data == {
-        "help-team": "yes",
-        "support-team": "dont-know",
-        "coach-team": "no",
+        "help-team": "1",
+        "support-team": "2",
+        "coach-team": "",
     }, question_data.data
 
     question_data = completed_surveys.get(page_number=9)
     assert question_data.data == {
         "training-last-six-months": "yes",
+        "training-analytical-component": "yes",
     }, question_data.data
-
-    question_data = completed_surveys.get(page_number=10)
-    assert question_data.data == {"training-analytical-component": "yes"}, question_data.data
 
 
 def step_survey_page(page, title, fields):
@@ -224,7 +216,7 @@ def complete_post_survey_awareness(client, user):
     first_page = client.get("/questions/post/")
     second_page = step_survey_page(
         first_page,
-        "Which level of training did you take part in?",
+        "Which level of training did you participate in?",
         {
             "training-level": "awareness",
         },
@@ -251,11 +243,10 @@ def complete_post_survey_awareness(client, user):
     )
     sixth_page = step_survey_page(
         fifth_page,
-        'If you answered "Yes" to the previous question please answer the following. To what extent do you agree or disagree with the following statements',  # noqa: E501
+        'If you answered "Yes" to the previous question please answer the following. Otherwise move on to the next page. To what extent do you agree or disagree with the following statements',  # noqa: E501
         {
-            "help-team": "yes",
-            "support-team": "no",
-            "coach-team": "dont-know",
+            "help-team": "3",
+            "support-team": "1",
         },
     )
     seventh_page = step_survey_page(
@@ -271,7 +262,7 @@ def complete_post_survey_awareness(client, user):
     )
     eighth_page = step_survey_page(
         seventh_page,
-        "Following One Big Thing, please rate how much you agree or disagree with the below statements:",  # noqa: E501
+        "Following One Big Thing",
         {
             "create-development-plan": "1",
             "add-learning-to-development-plan": "3",
@@ -281,7 +272,7 @@ def complete_post_survey_awareness(client, user):
     )
     ninth_page = step_survey_page(
         eighth_page,
-        "Please rate how much you agree or disagree with the following statements",
+        "Please rate how much you agree or disagree",
         {
             "training-helped-learning": "1",
             "additional-resources-helped-learning": "5",
@@ -294,7 +285,7 @@ def complete_post_survey_awareness(client, user):
     )
     eleventh_page = step_survey_page(
         tenth_page,
-        "Please rate how much you agree or disagree with the below statements",
+        "Please rate how much you agree or disagree",
         {
             "obt-good-use-of-time": "1",
             "improved-understanding-of-using-data": "3",
@@ -304,7 +295,7 @@ def complete_post_survey_awareness(client, user):
     )
     twelfth_page = step_survey_page(
         eleventh_page,
-        "Please rate how much you agree or disagree with the below statements",
+        "Please rate how much you agree or disagree",
         {
             "aware-of-aims": "1",
             "sufficient-time": "2",
