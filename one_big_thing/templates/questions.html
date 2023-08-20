@@ -6,10 +6,15 @@
 {% endblock %}
 
 
-{% block content %}
+{% block beforeMain %}
 {% if page_number > 1 %}
   <a class="govuk-back-link" href="{{url('questions', survey_type, page_number-1)}}">Back</a>
 {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
   {% call macros.form_wrapper(prev_url, "Next") -%}
     <fieldset class="govuk-fieldset">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
