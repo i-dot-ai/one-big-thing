@@ -268,6 +268,7 @@ def complete_post_survey_awareness(client, user):
             "add-learning-to-development-plan": "3",
             "book-training": "4",
             "find-mentor": "3",
+            "other-development": "Doing loads more learning",
         },
     )
     ninth_page = step_survey_page(
@@ -321,6 +322,14 @@ def complete_post_survey_awareness(client, user):
     question_data = SurveyResult.objects.get(user=user, page_number=2, survey_type="post")
     assert question_data.data == {"shared-identity": "2", "identity-important": "4"}, question_data.data
 
+    question_data = SurveyResult.objects.get(user=user, page_number=2, survey_type="awareness")
+    assert question_data.data == {
+        "create-development-plan": "1",
+        "add-learning-to-development-plan": "3",
+        "book-training": "4",
+        "find-mentor": "3",
+        "other-development": "Doing loads more learning",
+    }, question_data.data
     question_data = SurveyResult.objects.get(user=user, page_number=3, survey_type="awareness")
     assert question_data.data == {
         "training-helped-learning": "1",
