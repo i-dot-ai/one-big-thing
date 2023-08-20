@@ -9,7 +9,6 @@ from django.conf import settings
 from one_big_thing import wsgi
 from one_big_thing.learning.models import SurveyResult, User
 
-
 TEST_SERVER_URL = "http://one-big-thing-testserver:8055/"
 
 
@@ -87,27 +86,25 @@ def _get_latest_email_url():
     return url
 
 
-
 def complete_survey(client, user, competency_level_answers=["confident", "not-confident", "not-confident"]):
     first_page = client.get("/questions/pre/")
     second_page = step_survey_page(
         first_page,
         "How would you feel about making a decision based on information you're presented with? This might be numerical data like statistics or non-numerical data like user feedback.",  # noqa: E501
-        # noqa: E501
         {
             "confident-in-decisions": competency_level_answers[0],
         },
     )
     third_page = step_survey_page(
         second_page,
-        "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.",
+        "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.", # noqa: E501
         {
             "confidence-graphic-survey": competency_level_answers[1],
         },
     )
     fourth_page = step_survey_page(
         third_page,
-        "How would you feel about explaining to someone in your team what a chart of performance data is showing?",
+        "How would you feel about explaining to someone in your team what a chart of performance data is showing?", # noqa: E501
         {
             "confidence-explaining-chart": competency_level_answers[2],
         },
@@ -146,7 +143,7 @@ def complete_survey(client, user, competency_level_answers=["confident", "not-co
     )
     ninth_page = step_survey_page(
         eighth_page,
-        'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',
+        'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?', # noqa: E501
         {"help-team": "yes", "support-team": "dont-know", "coach-team": "no"},
     )
     tenth_page = step_survey_page(
@@ -158,7 +155,7 @@ def complete_survey(client, user, competency_level_answers=["confident", "not-co
     )
     completed_page = step_survey_page(
         tenth_page,
-        'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)',
+        'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)', # noqa: E501
         {
             "training-analytical-component": "yes",
         },
@@ -175,12 +172,11 @@ def complete_survey(client, user, competency_level_answers=["confident", "not-co
 
     question_data = completed_surveys.get(page_number=2)
     assert question_data.data == {
-        "confidence-graphic-survey": "not-confident",
+        "confidence-graphic-survey": competency_level_answers[1],
     }, question_data
 
     question_data = completed_surveys.get(page_number=3)
     assert question_data.data == {"confidence-explaining-chart": competency_level_answers[2]}, question_data.data
-
 
 
 def step_survey_page(page, title, fields):

@@ -126,6 +126,7 @@ def test_submit_survey():
 
 # TODO - check assignment of levels
 
+
 def test_homepage_assigns_awareness():
     test_email = "test-awareness@example.com"
     authenticated_user = {"email": test_email, "password": "GIRAFFE47!x"}
@@ -136,6 +137,7 @@ def test_homepage_assigns_awareness():
     utils.complete_survey(client, user, competency_level_answers=comptency_answers)
     homepage = client.get("/home/")
     assert homepage.has_text("your level is: Awareness")
+    user.delete()
 
 
 def test_homepage_assigns_working():
@@ -148,6 +150,7 @@ def test_homepage_assigns_working():
     utils.complete_survey(client, user, competency_level_answers=comptency_answers)
     homepage = client.get("/home/")
     assert homepage.has_text("your level is: Working")
+    user.delete()
 
 
 def test_homepage_assigns_practitioner():
@@ -160,3 +163,4 @@ def test_homepage_assigns_practitioner():
     utils.complete_survey(client, user, competency_level_answers=comptency_answers)
     homepage = client.get("/home/")
     assert homepage.has_text("your level is: Practitioner")
+    user.delete()

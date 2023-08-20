@@ -1,4 +1,4 @@
-from one_big_thing.learning.constants import AWARENESS, WORKING, PRACTITIONER
+from one_big_thing.learning.constants import AWARENESS, PRACTITIONER, WORKING
 
 additional_learning = {
     "any": {
