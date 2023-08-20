@@ -315,7 +315,6 @@ def questions_view_get(request, survey_type, page_number, errors=frozendict()):
             "data": data,
             "section": section,
             "survey_type": survey_type,
-            # "competencies": survey_handling.competencies,
             "page_number": page_number,
             "errors": errors,
             "answer_labels": survey_handling.answer_labels,
