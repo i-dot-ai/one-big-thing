@@ -123,7 +123,7 @@ pre_questions_data = [
             },
             {
                 "id": "training-analytical-component",
-                "text": "",
+                "text": "If yes, did it have an analytical component (eg data, evaluation)",
                 "answer_type": "radio",
             },
         ],
