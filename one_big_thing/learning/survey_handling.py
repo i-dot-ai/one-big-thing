@@ -1,4 +1,4 @@
-from one_big_thing.learning import choices
+from one_big_thing.learning import choices, constants
 
 pre_questions_data = [
     {
