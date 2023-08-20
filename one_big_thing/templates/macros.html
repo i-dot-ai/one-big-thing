@@ -165,14 +165,14 @@
         {% for key, value in errors.items() %}
           {% if value is iterable and value is not string and value is not number %}
               {% for inner_error in value %}
-                <p id="question-{{value}}-error-{{loop.index}}" class="govuk-error-message">
+                <li id="question-{{value}}-error-{{loop.index}}" class="govuk-error-message">
                   <span class="govuk-visually-hidden">Error:</span> {{inner_error}}
-                </p>
+                </li>
               {% endfor %}
             {% else %}
-            <p id="question-{{key}}-error" class="govuk-error-message">
+            <li id="question-{{key}}-error" class="govuk-error-message">
               <span class="govuk-visually-hidden">Error:</span> {{value}}
-            </p>
+            </li>
           {% endif %}
         {% endfor %}
         </ul>
