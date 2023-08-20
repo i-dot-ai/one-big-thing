@@ -1,5 +1,7 @@
 from one_big_thing.learning import choices, constants
 
+# Question IDs unique up to section (pre/post etc.)
+
 pre_questions_data = [
     {
         "title": "How would you feel about making a decision based on information you're presented with? This might be numerical data like statistics or non-numerical data like user feedback.",  # noqa: E501
@@ -148,12 +150,12 @@ post_questions_data = [
         "title": "Please rate how much you agree or disagree with the following statements:",
         "questions": [
             {
-                "id": "shared-identity-post",
+                "id": "shared-identity",
                 "text": "Taking part in One Big Thing made me feel connected with other civil servants",
                 "answer_type": "agree-1-5",
             },
             {
-                "id": "identity-important-post",
+                "id": "identity-important",
                 "text": "My identity as a Civil Servant is important to me",
                 "answer_type": "agree-1-5",
             },
@@ -189,7 +191,7 @@ post_questions_data = [
         "title": "Are you currently a line manager?",
         "questions": [
             {
-                "id": "line-manager-post",
+                "id": "line-manager",
                 "text": "",
                 "answer_type": "radio",
             },
@@ -506,9 +508,9 @@ unknown_level_questions_data = [
 # )
 
 _training_levels = (
-    ("awareness", "Awareness"),
-    ("working", "Working"),
-    ("practitioner", "Practitioner"),
+    (constants.AWARENESS, "Awareness"),
+    (constants.WORKING, "Working"),
+    (constants.PRACTITIONER, "Practitioner"),
     ("unknown", "Don't know"),
 )
 

@@ -89,9 +89,12 @@ def homepage_view(request):
     ]
     time_completed = user.get_time_completed()
     completed_feedback_survey = user.has_completed_post_survey
-    selected_level_course = [
-        course for course in all_level_courses_information if course["title"] == selected_level_course_title
-    ][0]
+    if selected_level:
+        selected_level_course = [
+            course for course in all_level_courses_information if course["title"] == selected_level_course_title
+        ][0]
+    else:
+        selected_level_course = ""
     data = {
         "time_completed": time_completed,
         "selected_level": selected_level,

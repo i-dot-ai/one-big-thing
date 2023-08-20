@@ -11,7 +11,7 @@ def test_submit_survey():
     complete_survey(client, user)
 
 
-def complete_survey(client, user):
+def complete_survey(client, user, competency_level_answers=["confident", "not-confident", "not-confident"]):
     first_page = client.get("/questions/pre/")
 
     second_page = step_survey_page(
@@ -19,7 +19,7 @@ def complete_survey(client, user):
         "How would you feel about making a decision based on information you're presented with? This might be numerical data like statistics or non-numerical data like user feedback.",  # noqa: E501
         # noqa: E501
         {
-            "confident-in-decisions": "confident",
+            "confident-in-decisions": competency_level_answers[0],
         },
     )
 
@@ -27,7 +27,7 @@ def complete_survey(client, user):
         second_page,
         "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.",
         {
-            "confidence-graphic-survey": "not-confident",
+            "confidence-graphic-survey": competency_level_answers[1],
         },
     )
 
@@ -35,7 +35,7 @@ def complete_survey(client, user):
         third_page,
         "How would you feel about explaining to someone in your team what a chart of performance data is showing?",
         {
-            "confidence-explaining-chart": "not-confident",
+            "confidence-explaining-chart": competency_level_answers[2],
         },
     )
 
