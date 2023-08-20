@@ -185,6 +185,21 @@ post_questions_data = [
         ],
     },
     {
+        "title": "Please rate how much you agree or disagree with the following statements:",
+        "questions": [
+            {
+                "id": "shared-identity-post",
+                "text": "Taking part in One Big Thing made me feel connected with other civil servants",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "identity-important-post",
+                "text": "My identity as a Civil Servant is important to me",
+                "answer_type": "agree-1-5",
+            },
+        ],
+    },
+    {
         "title": 'Following "One Big Thing",'
         "please rate how much you agree or disagree with each of the following statements:",
         "questions": [
@@ -556,6 +571,10 @@ _training_levels = (
     ("practitioner", "Practitioner"),
     ("unknown", "Don't know"),
 )
+
+# _confidence_levels = (
+
+# )
 
 _confident_in_decisions = (
     ("not-confident", "Not confident"),
