@@ -63,7 +63,7 @@ def register(client, email, password):
     form["profession"] = "LEGAL"
     form.submit().follow()
     user = User.objects.get(email=email)
-    complete_survey(client, user)
+    complete_pre_survey(client, user)
     page = client.get("/").follow()
     assert page.has_text("One Big Thing home")
 
@@ -86,7 +86,7 @@ def _get_latest_email_url():
     return url
 
 
-def complete_survey(client, user, competency_level_answers=["confident", "not-confident", "not-confident"]):
+def complete_pre_survey(client, user, competency_level_answers=["confident", "not-confident", "not-confident"]):
     first_page = client.get("/questions/pre/")
     second_page = step_survey_page(
         first_page,
@@ -160,13 +160,10 @@ def complete_survey(client, user, competency_level_answers=["confident", "not-co
             "training-analytical-component": "yes",
         },
     )
-
     assert completed_page.has_text("Survey completed")
     assert completed_page.has_text("You can now start your One Big Thing learning.")
-
     completed_surveys = SurveyResult.objects.filter(user=user, survey_type="pre")
     assert len(completed_surveys) > 0, completed_surveys
-
     competency_data = completed_surveys.get(page_number=1)
     assert competency_data.data == {"confident-in-decisions": competency_level_answers[0]}, competency_data.data
 
@@ -177,10 +174,14 @@ def complete_survey(client, user, competency_level_answers=["confident", "not-co
 
     question_data = completed_surveys.get(page_number=3)
     assert question_data.data == {"confidence-explaining-chart": competency_level_answers[2]}, question_data.data
+    assert question_data.survey_type == "pre", question_data.survey_type
+
     question_data = completed_surveys.get(page_number=4)
     assert question_data.data == {"aware-of-the-aims": "1"}, question_data.data
+
     question_data = completed_surveys.get(page_number=5)
     assert question_data.data == {"shared-identity": "2", "identity-is-important": "1"}, question_data.data
+
     question_data = completed_surveys.get(page_number=6)
     assert question_data.data == {
         "confident-day-to-day": "1",
@@ -188,18 +189,23 @@ def complete_survey(client, user, competency_level_answers=["confident", "not-co
         "use-data-effectively-day-to-day": "5",
         "data-support-day-to-day": "1",
     }, question_data.data
+
     question_data = completed_surveys.get(page_number=7)
     assert question_data.data == {"line-manager": "yes"}, question_data.data
+
     question_data = completed_surveys.get(page_number=8)
+    assert question_data.survey_type == "pre", question_data.survey_type
     assert question_data.data == {
         "help-team": "yes",
         "support-team": "dont-know",
         "coach-team": "no",
     }, question_data.data
+
     question_data = completed_surveys.get(page_number=9)
     assert question_data.data == {
         "training-last-six-months": "yes",
     }, question_data.data
+
     question_data = completed_surveys.get(page_number=10)
     assert question_data.data == {"training-analytical-component": "yes"}, question_data.data
 
@@ -212,3 +218,133 @@ def step_survey_page(page, title, fields):
         form[field] = fields[field]
     next_page = form.submit().follow()
     return next_page
+
+
+def complete_post_survey_awareness(client, user):
+    first_page = client.get("/questions/post/")
+    second_page = step_survey_page(
+        first_page,
+        "Which level of training did you take part in?",
+        {
+            "training-level": "awareness",
+        },
+    )
+    third_page = step_survey_page(
+        second_page,
+        "Please rate how much you agree or disagree with the following statements:",
+        {"shared-identity": "2", "identity-important": "4"},
+    )
+    fourth_page = step_survey_page(
+        third_page,
+        "I feel confident about using data in my day-to-day role",
+        {
+            "confident-day-to-day": "2",
+            "data-is-relevant-to-role": "4",
+            "use-data-effectively-day-to-day": "1",
+            "data-support-day-to-day": "2",
+        },
+    )
+    fifth_page = step_survey_page(
+        fourth_page,
+        "Are you currently a line manager?",
+        {"line-manager": "yes"},
+    )
+    sixth_page = step_survey_page(
+        fifth_page,
+        'If you answered "Yes" to the previous question please answer the following. To what extent do you agree or disagree with the following statements',
+        {
+            "help-team": "yes",
+            "support-team": "no",
+            "coach-team": "dont-know",
+        },
+    )
+    seventh_page = step_survey_page(
+        sixth_page,
+        "I have a better understanding of what data means",
+        {
+            "i-understand-what-data-means": "1",
+            "better-at-interpreting-data": "3",
+            "interested-in-working-with-data-in-day-to-day": "4",
+            "more-confident-using-data-for-decisions": "3",
+            "more-confident-communicating-data-to-influence-decisions": "3",
+        },
+    )
+    eighth_page = step_survey_page(
+        seventh_page,
+        "Following One Big Thing, please rate how much you agree or disagree with the below statements:",  # noqa: E501
+        {
+            "create-development-plan": "1",
+            "add-learning-to-development-plan": "3",
+            "book-training": "4",
+            "find-mentor": "3",
+        },
+    )
+    ninth_page = step_survey_page(
+        eighth_page,
+        "Please rate how much you agree or disagree with the following statements",
+        {
+            "training-helped-learning": "1",
+            # "conversations-helped-learning": "3",
+            "additional-resources-helped-learning": "5",
+        },
+    )
+    tenth_page = step_survey_page(
+        ninth_page,
+        "Were there any formats of additional training you found useful?",
+        {
+            "useful-learning-formats": ["CIVIL_SERVICE_LIVE", "CONVERSATION"],
+        },
+    )
+    eleventh_page = step_survey_page(
+        tenth_page,
+        "Please rate how much you agree or disagree with the below statements",
+        {
+            "obt-good-use-of-time": "1",
+            "improved-understanding-of-using-data": "3",
+            "intend-to-participate-in-further-training": "3",
+            # "content-was-relevant-to-my-role": "2",
+            "intend-to-apply-learning-in-my-role": "5",
+        },
+    )
+    twelfth_page = step_survey_page(
+        eleventh_page,
+        "Please rate how much you agree or disagree with the below statements",
+        {
+            "aware-of-aims": "1",
+            "sufficient-time": "2",
+        },
+    )
+    thirteenth_page = step_survey_page(
+        twelfth_page,
+        "Further questions",
+        {
+            "what-went-well": "I found out loads of cool stuff about data.",
+            "what-can-be-improved": "Even more things to learn.",
+        },
+    )
+    completed_page = step_survey_page(
+        thirteenth_page,
+        "Would you be willing to take part in a follow-up discussion?",
+        {"willing-to-follow-up": "yes"},
+    )
+    assert completed_page.has_text("Thank you")
+    #  completed_surveys = SurveyResult.objects.filter(user=user, survey_type__in=["pre", "awareness"])
+
+    question_data = SurveyResult.objects.get(user=user, page_number=1, survey_type="post")
+    assert question_data.data == {"training-level": "awareness"}, question_data.data
+    question_data = SurveyResult.objects.get(user=user, page_number=2, survey_type="post")
+    assert question_data.data == {"shared-identity": "2", "identity-important": "4"}, question_data.data
+
+    question_data = SurveyResult.objects.get(user=user, page_number=3, survey_type="awareness")
+    assert question_data.data == {
+        "training-helped-learning": "1",
+        "conversations-helped-learning": "",
+        "additional-resources-helped-learning": "5",
+    }, question_data.data
+    question_data = SurveyResult.objects.get(user=user, page_number=4, survey_type="awareness")
+    assert question_data.data == {"useful-learning-formats": ["CIVIL_SERVICE_LIVE", "CONVERSATION"]}, question_data.data
+    question_data = SurveyResult.objects.get(user=user, page_number=8, survey_type="awareness")
+    assert question_data.data == {
+        "what-went-well": "I found out loads of cool stuff about data.",
+        "what-can-be-improved": "Even more things to learn.",
+    }, question_data.data

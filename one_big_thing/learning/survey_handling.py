@@ -162,7 +162,7 @@ post_questions_data = [
         ],
     },
     {
-        "title": 'Following "One Big Thing",'
+        "title": "Following One Big Thing,"
         "please rate how much you agree or disagree with each of the following statements:",
         "questions": [
             {
@@ -201,17 +201,17 @@ post_questions_data = [
         "title": 'If you answered "Yes" to the previous question please answer the following. To what extent do you agree or disagree with the following statements',  # noqa: E501
         "questions": [
             {
-                "id": "help-team-post",
+                "id": "help-team",
                 "text": "I can help my team understand how data is relevant to their day-to-day roles",
                 "answer_type": "radio",
             },
             {
-                "id": "support-team-post",
+                "id": "support-team",
                 "text": "I know how to support my team to use data effectively in their day-to-day roles",
                 "answer_type": "radio",
             },
             {
-                "id": "coach-team-post",
+                "id": "coach-team",
                 "text": "I know how to coach team members to make better use of data in their day to day roles",
                 "answer_type": "radio",
             },
@@ -290,7 +290,7 @@ shared_level_questions_data = [
                 "answer_type": "agree-1-5",
             },
             {
-                "id": "time-to-participate",
+                "id": "sufficient-time",
                 "text": "I had sufficient time to participate in One Big Thing during the Autumn (September - December)",
                 "answer_type": "agree-1-5",
             },
@@ -327,8 +327,7 @@ shared_level_questions_data = [
 
 awareness_level_questions_data = [
     {
-        "title": 'Following "One Big Thing", '
-        "please rate how much you agree or disagree with each of the following statements:",
+        "title": "Following One Big Thing, please rate how much you agree or disagree with each of the following statements:",  # noqa: E501
         "questions": [
             {
                 "id": "i-understand-what-data-means",
@@ -358,7 +357,7 @@ awareness_level_questions_data = [
         ],
     },
     {
-        "title": 'Following "One Big Thing", ' "please rate how much you agree or disagree with the below statements:",
+        "title": "Following One Big Thing, please rate how much you agree or disagree with the below statements:",
         "questions": [
             {
                 "id": "create-development-plan",
@@ -387,8 +386,7 @@ awareness_level_questions_data = [
 
 working_level_questions_data = [
     {
-        "title": 'Following "One Big Thing", '
-        "please rate how much you agree or disagree with each of the following statements:",
+        "title": "Following One Big Thingplease rate how much you agree or disagree with each of the following statements:",
         "questions": [
             {
                 "id": "i-understand-different-data-techniques",
@@ -414,7 +412,7 @@ working_level_questions_data = [
         ],
     },
     {
-        "title": 'Following "One Big Thing", ' "please rate how much you agree or disagree with the below statements:",
+        "title": "Following One Big Thing, please rate how much you agree or disagree with the below statements:",
         "questions": [
             {
                 "id": "create-development-plan",
@@ -443,8 +441,7 @@ working_level_questions_data = [
 
 practitioner_level_questions_data = [
     {
-        "title": 'Following "One Big Thing", '
-        "please rate how much you agree or disagree with each of the following statements:",
+        "title": "Following One Big Thing, please rate how much you agree or disagree with each of the following statements:",  # noqa: E501
         "questions": [
             {
                 "id": "more-effectively-communicate-data-insights-to-improve-decisions",
@@ -582,7 +579,6 @@ answer_labels = {
     "training-analytical-component": dict(_yes_no_dont_know),
     "useful-learning-formats": choices.CourseType.mapping,
     "willing-to-follow-up": dict(_yes_no),
-
 }
 
 

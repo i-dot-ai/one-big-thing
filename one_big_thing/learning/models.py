@@ -140,4 +140,4 @@ def determine_competency_levels(competency_answers_list):
     if len(competency_levels_most_common) == 1:
         return competency_levels_most_common[0]
     else:
-        return "working"
+        return constants.WORKING
