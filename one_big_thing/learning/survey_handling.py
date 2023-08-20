@@ -499,11 +499,11 @@ unknown_level_questions_data = [
     *shared_level_questions_data,
 ]
 
-_competencies = (
-    ("beginner", "Beginner"),
-    ("intermediate", "Intermediate"),
-    ("expert", "Expert"),
-)
+# _competencies = (
+#     ("beginner", "Beginner"),
+#     ("intermediate", "Intermediate"),
+#     ("expert", "Expert"),
+# )
 
 _training_levels = (
     ("awareness", "Awareness"),
@@ -593,7 +593,7 @@ _yes_no = (
     ("no", "No"),
 )
 
-_yes_no_dont_know = (("yes", "Yes"), ("no", "No"), ("dont_know", "I don't know"))
+_yes_no_dont_know = (("yes", "Yes"), ("no", "No"), ("dont-know", "I don't know"))
 
 questions_data = {
     "pre": pre_questions_data,
@@ -604,7 +604,7 @@ questions_data = {
     "unknown": unknown_level_questions_data,
 }
 
-competencies = tuple({"label": label, "name": name} for (label, name) in _competencies)
+# competencies = tuple({"label": label, "name": name} for (label, name) in _competencies)
 pre_questions = tuple(q for section in pre_questions_data for q in section["questions"])
 post_questions = tuple(q for section in post_questions_data for q in section["questions"])
 all_questions = pre_questions + post_questions
@@ -664,7 +664,7 @@ answer_labels = {
 
 agree_pre_questions = tuple(item["id"] for item in pre_questions if item["answer_type"] == "agree-1-5")
 agree_post_questions = tuple(item["id"] for item in post_questions if item["answer_type"] == "agree-1-5")
-competency_labels = tuple(item["label"] for item in competencies)
+# competency_labels = tuple(item["label"] for item in competencies)
 # TODO: Is the "Competency" a thing? Has it gone, can it be removed?
 # pre_question_sections = tuple(item["title"] for item in pre_questions_data if item["title"] != "Competency")
 # post_question_sections = tuple(item["title"] for item in post_questions_data if item["title"] != "Competency")

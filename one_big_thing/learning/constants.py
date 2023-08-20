@@ -60,3 +60,9 @@ INITIAL_COMPETENCY_DETERMINATION_QUESTIONS = [
     "confidence-graphic-survey",
     "confidence-explaining-chart",
 ]
+
+COMPETENCY_DETERMINATION_MAPPING = {
+    "not-confident": "awareness",
+    "confident": "working",
+    "very-confident": "practitioner",
+}

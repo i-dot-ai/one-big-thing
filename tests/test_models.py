@@ -29,9 +29,9 @@ def test_user_save():
 
 
 def test_determine_competency_levels():
-    input1 = ["", "awareness", "working"]
-    input2 = ["awareness", "awareness", "practitioner"]
-    input3 = ["", "practitioner", ""]
+    input1 = ["", "not-confident", "confident"]
+    input2 = ["not-confident", "confident", "very-confident"]
+    input3 = ["", "very-confident", ""]
     expected1 = "working"
     expected2 = "awareness"
     expected3 = "practitioner"

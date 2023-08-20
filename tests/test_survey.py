@@ -16,7 +16,7 @@ def complete_survey(client, user):
 
     second_page = step_survey_page(
         first_page,
-        "Do you feel confident to make a decision based on information you are presented with? For example, statistics or customer feedback",  # noqa: E501
+        "How would you feel about making a decision based on information you're presented with? This might be numerical data like statistics or non-numerical data like user feedback.",  # noqa: E501
         # noqa: E501
         {
             "confident-in-decisions": "confident",
@@ -25,77 +25,71 @@ def complete_survey(client, user):
 
     third_page = step_survey_page(
         second_page,
-        "How would you feel about explaining to someone in your team what a graph is showing?",
+        "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.",
         {
-            "confidence-explaining-graph": "reluctant",
+            "confidence-graphic-survey": "not-confident",
         },
     )
 
     fourth_page = step_survey_page(
         third_page,
-        "Have you designed a survey to gather responses and make a decision?",
+        "How would you feel about explaining to someone in your team what a chart of performance data is showing?",
         {
-            "have-you-designed-a-survey": "yes-i-could-teach-others",
+            "confidence-explaining-chart": "not-confident",
         },
     )
 
     fifth_page = step_survey_page(
         fourth_page,
-        "Have you ever believed something you read online that turned out not to be true?",
-        {
-            "believed-something-incorrect-online": "yes",
-        },
-    )
-
-    sixth_page = step_survey_page(
-        fifth_page,
-        "Do you use any of the following? Spreadsheets (for example, Excel or Google Sheets)",
-        {
-            "do-you-use-spreadsheets": "create",
-        },
-    )
-
-    seventh_page = step_survey_page(
-        sixth_page,
-        "Do you use any of the following? Dashboard tools (for example, Tableau, PowerBI, Looker or Qlik Sense)",
-        {
-            "do-you-use-dashboard-tools": "create",
-        },
-    )
-
-    eighth_page = step_survey_page(
-        seventh_page,
-        "Do you use any of the following? A coding language to explore data (for example, Python, R, SQL , SPSS or STATA)",  # noqa: E501
-        {
-            "do-you-use-coding-language": "create",
-        },
-    )
-
-    ninth_page = step_survey_page(
-        eighth_page,
-        "I am aware of the aims of One Big Thing",
+        "To what extent do you agree or disagree with the following statement?",
         {
             "aware-of-the-aims": 1,
         },
     )
 
-    tenth_page = step_survey_page(
-        ninth_page,
+    sixth_page = step_survey_page(
+        fifth_page,
         "To what extent do you agree or disagree with the following statements?",
         {
-            "shared-identity": 1,
+            "shared-identity": 2,
             "identity-is-important": 1,
         },
     )
 
-    completed_page = step_survey_page(
-        tenth_page,
+    seventh_page = step_survey_page(
+        sixth_page,
         "To what extent do you agree or disagree with the following statements?",
         {
             "confident-day-to-day": 1,
             "data-is-relevant-to-role": 1,
-            "use-data-effectively-day-to-day": 1,
+            "use-data-effectively-day-to-day": 5,
             "data-support-day-to-day": 1,
+        },
+    )
+    eighth_page = step_survey_page(
+        seventh_page,
+        "Are you currently a line manager?",
+        {
+            "line-manager": "yes",
+        },
+    )
+    ninth_page = step_survey_page(
+        eighth_page,
+        'If you answered "yes" to the previous question, to what extent do you agree or disagree with the following statements?',
+        {"help-team": "yes", "support-team": "dont-know", "coach-team": "no"},
+    )
+    tenth_page = step_survey_page(
+        ninth_page,
+        "In the last 6 months, have you done any type of training?",
+        {
+            "training-last-six-months": "yes",
+        },
+    )
+    completed_page = step_survey_page(
+        tenth_page,
+        'If you answered "yes" to the previous question, did it have an analytical component (eg data, evaluation)',
+        {
+            "training-analytical-component": "yes",
         },
     )
 
@@ -108,18 +102,18 @@ def complete_survey(client, user):
     competency_data = completed_surveys.get(page_number=1)
     assert competency_data.data == {"confident-in-decisions": "confident"}, competency_data.data
 
-    question_1_data = completed_surveys.get(page_number=2)
-    assert question_1_data.data == {
-        "confidence-explaining-graph": "reluctant",
-    }, question_1_data.data
+    question_data = completed_surveys.get(page_number=2)
+    assert question_data.data == {
+        "confidence-graphic-survey": "not-confident",
+    }, question_data
 
-    question_2_data = completed_surveys.get(page_number=3)
-    assert question_2_data.data == {"have-you-designed-a-survey": "yes-i-could-teach-others"}, question_2_data.data
+    question_data = completed_surveys.get(page_number=3)
+    assert question_data.data == {"confidence-explaining-chart": "not-confident"}, question_data.data
 
 
 def step_survey_page(page, title, fields):
     assert page.status_code == 200, page.status_code
-    assert page.has_text(title)
+    assert page.has_text(title), title
     form = page.get_form("""form:not([action])""")
 
     for field in fields:
@@ -127,3 +121,6 @@ def step_survey_page(page, title, fields):
 
     next_page = form.submit().follow()
     return next_page
+
+
+# TODO - check assignment of levels

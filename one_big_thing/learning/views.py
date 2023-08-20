@@ -68,8 +68,7 @@ def homepage_view(request):
     user = request.user
     use_streamlined_view = user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
     errors = {}
-    # TODO: Add level calculation and remove hard-coded level
-    selected_level = "beginner"
+    selected_level = user.determine_competency_level()
     selected_level_course_title = special_course_handler.competency_level_courses[selected_level]
     all_level_course_titles = list(special_course_handler.competency_level_courses.values())
     all_level_courses = [
@@ -309,7 +308,7 @@ def questions_view_get(request, survey_type, page_number, errors=frozendict()):
             "data": data,
             "section": section,
             "survey_type": survey_type,
-            "competencies": survey_handling.competencies,
+            # "competencies": survey_handling.competencies,
             "page_number": page_number,
             "errors": errors,
             "answer_labels": survey_handling.answer_labels,

@@ -13,9 +13,9 @@ awareness_course_title = "Understanding data (Level 1 - Awareness)"
 
 
 competency_level_courses = {
-    "beginner": awareness_course_title,
-    "intermediate": working_course_title,
-    "expert": practitioner_course_title,
+    "awareness": awareness_course_title,
+    "working": working_course_title,
+    "practitioner": practitioner_course_title,
 }
 
 
