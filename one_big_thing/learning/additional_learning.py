@@ -1,3 +1,5 @@
+from one_big_thing.learning.constants import AWARENESS, WORKING, PRACTITIONER
+
 additional_learning = {
     "any": {
         "section_title": "All levels",
@@ -67,7 +69,7 @@ additional_learning = {
             },
         ],
     },
-    "awareness": {
+    AWARENESS: {
         "section_title": "Level 1 - Awareness",
         "courses": [
             {
@@ -128,7 +130,7 @@ additional_learning = {
             },
         ],
     },
-    "working": {
+    WORKING: {
         "section_title": "Level 2 - Working",
         "courses": [
             {
@@ -168,7 +170,7 @@ additional_learning = {
             },
         ],
     },
-    "practitioner": {
+    PRACTITIONER: {
         "section_title": "Level 3 - Practitioner",
         "courses": [
             {

@@ -61,8 +61,12 @@ INITIAL_COMPETENCY_DETERMINATION_QUESTIONS = [
     "confidence-explaining-chart",
 ]
 
+AWARENESS = "awareness"
+WORKING = "working"
+PRACTITIONER = "practitioner"
+
 COMPETENCY_DETERMINATION_MAPPING = {
-    "not-confident": "awareness",
-    "confident": "working",
-    "very-confident": "practitioner",
+    "not-confident": AWARENESS,
+    "confident": WORKING,
+    "very-confident": PRACTITIONER,
 }
