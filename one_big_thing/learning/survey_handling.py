@@ -291,7 +291,7 @@ shared_level_questions_data = [
             },
             {
                 "id": "sufficient-time",
-                "text": "I had sufficient time to participate in One Big Thing during the Autumn (September - December)",
+                "text": "I had sufficient time to participate in One Big Thing during the Autumn (September - December)",  # noqa: E501
                 "answer_type": "agree-1-5",
             },
         ],
@@ -386,7 +386,7 @@ awareness_level_questions_data = [
 
 working_level_questions_data = [
     {
-        "title": "Following One Big Thingplease rate how much you agree or disagree with each of the following statements:",
+        "title": "Following One Big Thing, please rate how much you agree or disagree with each of the following statements:",  # noqa: E501
         "questions": [
             {
                 "id": "i-understand-different-data-techniques",
@@ -567,10 +567,6 @@ answer_labels = {
     "confidence-graphic-survey": dict(_confidence_levels),
     "confidence-explaining-chart": dict(_confidence_levels),
     "training-level": dict(_training_levels),
-    "line-manager": dict(_yes_no),
-    "help-team": dict(_yes_no_dont_know),
-    "support-team": dict(_yes_no_dont_know),
-    "coach-team": dict(_yes_no_dont_know),
     "line-manager": dict(_yes_no),
     "help-team": dict(_yes_no_dont_know),
     "support-team": dict(_yes_no_dont_know),

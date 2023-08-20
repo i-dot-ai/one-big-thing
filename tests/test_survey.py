@@ -59,3 +59,4 @@ def test_submit_post_survey_awareness_level():
     user = models.User.objects.get(email=test_email)
     utils.complete_pre_survey(client, user)
     utils.complete_post_survey_awareness(client, user)
+    user.delete()

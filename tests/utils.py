@@ -251,7 +251,7 @@ def complete_post_survey_awareness(client, user):
     )
     sixth_page = step_survey_page(
         fifth_page,
-        'If you answered "Yes" to the previous question please answer the following. To what extent do you agree or disagree with the following statements',
+        'If you answered "Yes" to the previous question please answer the following. To what extent do you agree or disagree with the following statements',  # noqa: E501
         {
             "help-team": "yes",
             "support-team": "no",
@@ -284,16 +284,13 @@ def complete_post_survey_awareness(client, user):
         "Please rate how much you agree or disagree with the following statements",
         {
             "training-helped-learning": "1",
-            # "conversations-helped-learning": "3",
             "additional-resources-helped-learning": "5",
         },
     )
     tenth_page = step_survey_page(
         ninth_page,
         "Were there any formats of additional training you found useful?",
-        {
-            "useful-learning-formats": ["CIVIL_SERVICE_LIVE", "CONVERSATION"],
-        },
+        {"useful-learning-formats": ["VIDEO"]},
     )
     eleventh_page = step_survey_page(
         tenth_page,
@@ -302,7 +299,6 @@ def complete_post_survey_awareness(client, user):
             "obt-good-use-of-time": "1",
             "improved-understanding-of-using-data": "3",
             "intend-to-participate-in-further-training": "3",
-            # "content-was-relevant-to-my-role": "2",
             "intend-to-apply-learning-in-my-role": "5",
         },
     )
@@ -328,7 +324,6 @@ def complete_post_survey_awareness(client, user):
         {"willing-to-follow-up": "yes"},
     )
     assert completed_page.has_text("Thank you")
-    #  completed_surveys = SurveyResult.objects.filter(user=user, survey_type__in=["pre", "awareness"])
 
     question_data = SurveyResult.objects.get(user=user, page_number=1, survey_type="post")
     assert question_data.data == {"training-level": "awareness"}, question_data.data
@@ -342,8 +337,8 @@ def complete_post_survey_awareness(client, user):
         "additional-resources-helped-learning": "5",
     }, question_data.data
     question_data = SurveyResult.objects.get(user=user, page_number=4, survey_type="awareness")
-    assert question_data.data == {"useful-learning-formats": ["CIVIL_SERVICE_LIVE", "CONVERSATION"]}, question_data.data
-    question_data = SurveyResult.objects.get(user=user, page_number=8, survey_type="awareness")
+    assert question_data.data == {"useful-learning-formats": ["VIDEO"]}, question_data.data
+    question_data = SurveyResult.objects.get(user=user, page_number=7, survey_type="awareness")
     assert question_data.data == {
         "what-went-well": "I found out loads of cool stuff about data.",
         "what-can-be-improved": "Even more things to learn.",
