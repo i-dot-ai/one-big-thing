@@ -250,6 +250,3 @@ def test_mail_learning():
     assert page.has_text("Learning record sent!")
     assert page.has_text("jane@example.com")
     user.delete()
-
-
-

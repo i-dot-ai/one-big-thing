@@ -1,7 +1,7 @@
 from django.test import override_settings
 
 from one_big_thing.learning import models
-from one_big_thing.learning import email_handler
+
 from . import utils
 
 
@@ -36,8 +36,3 @@ def test_send_email_learning_record():
     assert page.has_text(f"Your learning record has successfully been sent to {new_person_email}")
     email_body = utils._get_latest_email_text()
     assert f"To: {new_person_email}" in email_body, email_body
-    
-
-
-    
-    
