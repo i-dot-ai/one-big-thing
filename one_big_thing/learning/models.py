@@ -132,11 +132,7 @@ def determine_competency_levels(competency_answers_list):
     competency_levels_list = [
         constants.COMPETENCY_DETERMINATION_MAPPING[k] for k in competency_answers_list if k
     ]  # Also gets rid of empties
-    print("-----")
-    print(f"competency_answers_list: {competency_answers_list}")
-    print(f"competency_levels_list: {competency_levels_list}")
     competency_level_counts = Counter(competency_levels_list)
-    # competency_level_counts = {k: v for k, v in competency_level_counts.items() if v}  # remove empties
     if not competency_level_counts:
         return None
     max_value = max(competency_level_counts.values())
