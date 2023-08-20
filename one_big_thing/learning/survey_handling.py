@@ -31,46 +31,6 @@ pre_questions_data = [
             },
         ],
     },
-    # {
-    #     "title": "Have you ever believed something you read online that turned out not to be true?",
-    #     "questions": [
-    #         {
-    #             "id": "believed-something-incorrect-online",
-    #             "text": "",
-    #             "answer_type": "radio",
-    #         },
-    #     ],
-    # },
-    # {
-    #     "title": "Do you use any of the following? Spreadsheets (for example, Excel or Google Sheets)",
-    #     "questions": [
-    #         {
-    #             "id": "do-you-use-spreadsheets",
-    #             "text": "",
-    #             "answer_type": "radio",
-    #         },
-    #     ],
-    # },
-    # {
-    #     "title": "Do you use any of the following? Dashboard tools (for example, Tableau, PowerBI, Looker or Qlik Sense)",  # noqa: E501
-    #     "questions": [
-    #         {
-    #             "id": "do-you-use-dashboard-tools",
-    #             "text": "",
-    #             "answer_type": "radio",
-    #         },
-    #     ],
-    # },
-    # {
-    #     "title": "Do you use any of the following? A coding language to explore data (for example, Python, R, SQL , SPSS or STATA)",  # noqa: E501
-    #     "questions": [
-    #         {
-    #             "id": "do-you-use-coding-language",
-    #             "text": "",
-    #             "answer_type": "radio",
-    #         },
-    #     ],
-    # },
     {
         "title": "To what extent do you agree or disagree with the following statement?",  # noqa: E501
         "questions": [
@@ -255,26 +215,6 @@ post_questions_data = [
             },
         ],
     },
-    # {
-    #     "title": "Please rate how much you agree or disagree with the following statements:",
-    #     "questions": [
-    #         {
-    #             "id": "shared-identity",
-    #             "text": 'I feel a sense of "shared identity" with other civil servants',
-    #             "answer_type": "agree-1-5",
-    #         },
-    #         {
-    #             "id": "own-identity",
-    #             "text": "My identity as a civil servant is important to me",
-    #             "answer_type": "agree-1-5",
-    #         },
-    #         {
-    #             "id": "taking-part-made-me-feel-connected",
-    #             "text": "Taking part in One Big Thing made me feel connected with other civil servants",
-    #             "answer_type": "agree-1-5",
-    #         },
-    #     ],
-    # },
 ]
 
 
