@@ -408,7 +408,7 @@ def send_learning_record_view(request):
         email_address = request.POST.get("email")
         try:
             email_validator(email_address)
-            send_learning_record_email(user)
+            send_learning_record_email(user, email_address)
             data = {
                 "successfully_sent": True,
                 "sent_to": email_address,

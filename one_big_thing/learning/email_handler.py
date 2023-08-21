@@ -126,14 +126,14 @@ def send_account_already_exists_email(user):
     return response
 
 
-def send_learning_record_email(user):
+def send_learning_record_email(user, email):
     data = EMAIL_MAPPING["send-learning-record"]
     context = {"sending_user": user, "learnings": user.learning_set.all()}
     response = _send_normal_email(
         subject=data["subject"],
         template_name=data["template_name"],
         from_address=data["from_address"],
-        to_address=user.email,
+        to_address=email,
         context=context,
     )
     return response

@@ -28,13 +28,14 @@ def with_authenticated_client(func):
         user, _ = User.objects.get_or_create(email="peter.rabbit@example.com")
         user.set_password("P455W0rd!£")
         user.has_completed_pre_survey = True
+        user.verified = True
         user.save()
         SurveyResult.objects.get_or_create(
             user=user,
             survey_type="pre",
             page_number=1,
             data={
-                "competency": "beginner",
+                "competency": "awareness",
             },
         )
         with httpx.Client(app=wsgi.application, base_url=TEST_SERVER_URL, follow_redirects=True) as client:
