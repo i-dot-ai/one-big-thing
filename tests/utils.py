@@ -66,7 +66,7 @@ def register(client, email, password):
     user = User.objects.get(email=email)
     complete_pre_survey(client, user)
     page = client.get("/").follow()
-    assert page.has_text("One Big Thing home")
+    assert page.has_text("Overview - One Big Thing - GOV.UK")
 
 
 def _get_latest_email_text():

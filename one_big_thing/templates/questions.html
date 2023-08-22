@@ -1,6 +1,10 @@
 {% extends "base_generic_gov.html" %}
 {% import "macros.html" as macros with context%}
 
+{% block title %}
+  <title>{{ section.title }} - One Big Thing - GOV.UK</title>
+{% endblock %}
+
 
 {% block content %}
 {% if page_number > 1 %}
