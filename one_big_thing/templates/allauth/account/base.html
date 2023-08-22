@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" class="govuk-template app-html-class">
+  <!--Updates here may also need update in base_generic_gov-->
 
   <head>
     <meta charset="utf-8">
@@ -123,10 +124,28 @@
       </main>
     </div>
 
-    <footer class="govuk-footer " role="contentinfo">
+    <footer class="govuk-footer" role="contentinfo">
       <div class="govuk-width-container">
         <div class="govuk-footer__meta">
           <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+            <!--Updates here may also need update in base_generic_gov-->
+            <ul class="govuk-footer__inline-list">
+              <li class="govuk-footer__inline-list-item">
+                <a class="govuk-footer__link" href="{% url 'privacy-notice' %}">
+                  Privacy notice
+                </a>
+              </li>
+              <li class="govuk-footer__inline-list-item">
+                <a class="govuk-footer__link" href="{% url 'support' %}">
+                  Support
+                </a>
+              </li>
+              <li class="govuk-footer__inline-list-item">
+                <a class="govuk-footer__link" href="{% url 'accessibility-statement' %}">
+                  Accessibility statement
+                </a>
+              </li>
+            </ul>
             <div class="govuk-footer__meta-custom">
               Built by i.AI
             </div>
@@ -136,11 +155,12 @@
                 href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license">Open
                 Government Licence v3.0</a>, except where otherwise stated
             </span>
-          </div>
-          <div class="govuk-footer__meta-item">
+            </div>
+            <div class="govuk-footer__meta-item">
             <a class="govuk-footer__link govuk-footer__copyright-logo"
               href="https://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/">©
               Crown copyright</a>
+            </div>
           </div>
         </div>
       </div>

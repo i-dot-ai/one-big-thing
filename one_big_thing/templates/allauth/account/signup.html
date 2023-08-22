@@ -95,7 +95,7 @@
           <input type="hidden" name="{{redirect_field_name}}" value="{{redirect_field_value}}"/>
         {% endif %}
 
-        <p class="govuk-body">By registering you accept our <a target="_blank" rel="noopener noreferrer" href="#">terms and conditions</a>.</p>
+        <p class="govuk-body">By registering you accept our <a href="{% url 'privacy-notice' %}" class="govuk-link">terms and conditions</a>.</p>
 
         <div class="govuk-button-group">
           <button class="govuk-button" data-module="govuk-button">

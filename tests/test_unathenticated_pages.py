@@ -15,6 +15,8 @@ ACCOUNT_URLS_LOGIN_NOT_REQUIRED = [
     "/accounts/verify/resend/",
 ]
 
+INFO_PAGES_LOGIN_NOT_REQUIRED = ["/privacy-notice/", "/support/", "/accessibility-statement/"]
+
 
 @utils.with_client
 def test_get_account_urls_login_not_required(client):

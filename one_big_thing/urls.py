@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
 
-from one_big_thing.learning import authentication_views, views
+from one_big_thing.learning import authentication_views, info_views, views
 
 account_urlpatterns = [
     path("accounts/verify/", authentication_views.CustomVerifyUserEmail, name="verify-email"),
@@ -20,9 +20,13 @@ account_urlpatterns = [
     path("accounts/", include("allauth.urls")),
 ]
 
-admin_urlpatterns = [
-    path("admin/", admin.site.urls),
+info_urlpatterns = [
+    path("privacy-notice/", info_views.privacy_notice_view, name="privacy-notice"),
+    path("accessibility-statement/", info_views.accessibility_statement_view, name="accessibility-statement"),
+    path("support/", info_views.support_view, name="support"),
 ]
+
+admin_urlpatterns = [path("admin/", admin.site.urls)]
 
 other_urlpatterns = [
     path("", views.index_view, name="index"),
@@ -42,7 +46,7 @@ other_urlpatterns = [
     path("department-links/", views.department_links_view, name="department-links"),
 ]
 
-urlpatterns = account_urlpatterns + other_urlpatterns
+urlpatterns = account_urlpatterns + info_urlpatterns + other_urlpatterns
 
 if settings.DEBUG:
     urlpatterns = urlpatterns + admin_urlpatterns
