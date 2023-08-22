@@ -53,3 +53,20 @@ ALL_INTRANET_LINKS = OrderedDict(
         "Welsh Government": WELSH_GOVT_LINK,
     }
 )
+
+
+INITIAL_COMPETENCY_DETERMINATION_QUESTIONS = [
+    "confident-in-decisions",
+    "confidence-graphic-survey",
+    "confidence-explaining-chart",
+]
+
+AWARENESS = "awareness"
+WORKING = "working"
+PRACTITIONER = "practitioner"
+
+COMPETENCY_DETERMINATION_MAPPING = {
+    "not-confident": AWARENESS,
+    "confident": WORKING,
+    "very-confident": PRACTITIONER,
+}

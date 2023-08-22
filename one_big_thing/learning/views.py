@@ -40,25 +40,14 @@ survey_questions_compulsory_field_map = {
             "confident-in-decisions",
         ],
         2: [
-            "confidence-explaining-graph",
+            "confidence-graphic-survey",
         ],
         3: [
-            "have-you-designed-a-survey",
-        ],
-        4: [
-            "believed-something-incorrect-online",
-        ],
-        5: [
-            "do-you-use-spreadsheets",
-        ],
-        6: [
-            "do-you-use-dashboard-tools",
-        ],
-        7: [
-            "do-you-use-coding-language",
+            "confidence-explaining-chart",
         ],
     },
 }
+
 
 missing_item_errors = {
     "title": "Please provide a title for this course",
@@ -79,9 +68,12 @@ def homepage_view(request):
     user = request.user
     use_streamlined_view = user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
     errors = {}
-    # TODO: Add level calculation and remove hard-coded level
-    selected_level = "beginner"
-    selected_level_course_title = special_course_handler.competency_level_courses[selected_level]
+    selected_level = user.determine_competency_level()
+    if selected_level:
+        selected_level_course_title = special_course_handler.competency_level_courses[selected_level]
+    else:
+        selected_level = ""
+        selected_level_course_title = ""
     all_level_course_titles = list(special_course_handler.competency_level_courses.values())
     all_level_courses = [
         special_course_handler.get_special_course_information(course_title) for course_title in all_level_course_titles
@@ -97,9 +89,12 @@ def homepage_view(request):
     ]
     time_completed = user.get_time_completed()
     completed_feedback_survey = user.has_completed_post_survey
-    selected_level_course = [
-        course for course in all_level_courses_information if course["title"] == selected_level_course_title
-    ][0]
+    if selected_level:
+        selected_level_course = [
+            course for course in all_level_courses_information if course["title"] == selected_level_course_title
+        ][0]
+    else:
+        selected_level_course = ""
     data = {
         "time_completed": time_completed,
         "selected_level": selected_level,
@@ -320,7 +315,6 @@ def questions_view_get(request, survey_type, page_number, errors=frozendict()):
             "data": data,
             "section": section,
             "survey_type": survey_type,
-            "competencies": survey_handling.competencies,
             "page_number": page_number,
             "errors": errors,
             "answer_labels": survey_handling.answer_labels,

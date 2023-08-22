@@ -185,8 +185,7 @@
   {{question_1_5(question, answer_labels['likely-1-5'], help_text, loop)}}
 {%- endmacro %}
 
-{% macro agree_1_5(question, loop) -%}
-  {% set help_text = 'How far do you agree or disagree with the following?' %}
+{% macro agree_1_5(question, loop, help_text="") -%}
   {{question_1_5(question, answer_labels['agree-1-5'], help_text, loop)}}
 {%- endmacro %}
 
@@ -198,14 +197,6 @@
         <p>{{help_text}}</p>
       </div>
     {% endif %}
-
-    <div class="i-ai-range custom-legend">
-      {% for i, label in labels.items() %}
-        <div>
-          <label class="govuk-body">{{label}}</label>
-        </div>
-      {% endfor %}
-    </div>
   {% endif %}
 
   <div class="i-ai-range govuk-form-group">
@@ -295,7 +286,7 @@
 {% macro question_textarea(question) -%}
 <div class="govuk-form-group">
   <h1 class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--l" for="{{question.id}}">
+    <label class="govuk-label govuk-label--m" for="{{question.id}}">
       {{question.text}}
     </label>
   </h1>

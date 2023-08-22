@@ -26,3 +26,26 @@ def test_user_save():
     new_user2, _ = models.User.objects.update_or_create(email=new_email2)
     assert new_user1.email == "new_user1@example.org", new_user1.email
     assert new_user2.email == "new_user2@example.com", new_user2.email
+
+
+def test_determine_competency_levels():
+    input1 = ["", "not-confident", "confident"]
+    input2 = ["not-confident", "confident", "very-confident"]
+    input3 = ["", "very-confident", "very-confident"]
+    input4 = ["not-confident", "", ""]
+    input5 = ["", "", ""]
+    expected1 = "working"
+    expected2 = "working"
+    expected3 = "practitioner"
+    expected4 = "awareness"
+    expected5 = None
+    actual1 = models.determine_competency_levels(input1)
+    actual2 = models.determine_competency_levels(input2)
+    actual3 = models.determine_competency_levels(input3)
+    actual4 = models.determine_competency_levels(input4)
+    actual5 = models.determine_competency_levels(input5)
+    assert expected1 == actual1, actual1
+    assert expected2 == actual2, actual2
+    assert expected3 == actual3, actual3
+    assert expected4 == actual4, actual4
+    assert expected5 == actual5, actual5
