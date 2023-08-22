@@ -384,7 +384,6 @@ department_tuples = (
     ("the-equality-hub", "Equality Hub"),
     ("equitable-life-inquiry", "Equitable Life Inquiry"),
     ("estyn", "Estyn"),
-    ("evaluation-task-force", "Evaluation Task Force (ETF)"),
     (
         "examination-team-on-child-care-procedures-and-practice-in-north-wales",
         "Examination team on child care procedures and practice in North Wales",
