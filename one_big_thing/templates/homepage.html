@@ -10,7 +10,7 @@
     <div aria-labelledby="step-by-step-title" role="region">
       <p class="govuk-body">Based on your survey answers, your level is: <strong>{{data.selected_level.capitalize()}}</strong></p>
       <p class="govuk-body">We recommend you start with learning resources marked as suitable for your level.</p>
-      <p class="govuk-body">Check what you need to do for One Big Thing</p>
+      <p class="govuk-body">These are the recommended steps for One Big Thing</p>
       <div id="step-by-step" class="step-by-step">
         <div class="step-by-step--step-label">
           <div class="step-by-step--step-circle">
@@ -21,13 +21,13 @@
           <div class="step-by-step--content-title">
             <h3 id="step-by-step-step-1-title" class="govuk-heading-m">Learn</h3>
           </div>
-          <p class="govuk-body"><strong>You should complete 7 hours of learning on the topic of data.</strong></p>
-          <p class="govuk-body">You should start with your e-learning. We recommend:</p>
+          <p class="govuk-body"><strong>Complete 7 hours of learning on the topic of data.</strong></p>
+          <p class="govuk-body">Start with your e-learning. Your learning level suggests you should do:</p>
           <p class="govuk-body"><a class="govuk-link" href={{data.selected_level_course.link}}>{{data.selected_level_course.title}}</a> (opens in Civil Service Learning)</p>
           <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
               <span class="govuk-details__summary-text">
-                See other learning levels you could do
+                See e-learning for other learning levels
               </span>
             </summary>
             <div class="govuk-details__text">
@@ -43,7 +43,7 @@
           </div>
         </div>
         <div class="step-by-step--content">
-          <p class="govuk-body">You should attend a team conversation about data.</p>
+          <p class="govuk-body">Attend a team conversation about data.</p>
           <p class="govuk-body">Your department will decide if this should be a 1:1 conversation, a team meeting or an all staff call. Please ask your line manager for details.</p>
         </div>
         <div class="step-by-step--step-label">
@@ -52,7 +52,7 @@
           </div>
         </div>
         <div class="step-by-step--content">
-          <p class="govuk-body">You should do some further learning on the topic of data.</p>
+          <p class="govuk-body">Do some further learning on the topic of data.</p>
           <p class="govuk-body">You can find more learning:</p>
           <ul class="govuk-list govuk-list--bullet">
             <li>on your <a href="{{url('department-links')}}">department's intranet</a></li>
@@ -82,7 +82,7 @@
           <h3 id="step-by-step-step-2-title" class="govuk-heading-m">Record</h3>
           <a class="govuk-button" href="{{url('record-learning')}}">Record</a>
         </div>
-        <p class="govuk-body"><strong>You should record all the learning you have done</strong></p>
+        <p class="govuk-body"><strong>Record all the learning you've done</strong></p>
         <div class="govuk-inset-text">
           You have recorded {{humanize_timedelta(data.time_completed)}} of learning so far.
         </div>
@@ -106,7 +106,7 @@
               <a class="govuk-button" href="{{url('intro-post-survey')}}">Feedback</a>
             {% endif %}
           </div>
-          <p class="govuk-body">You should provide feedback about your One Big Thing experience.</p>
+          <p class="govuk-body">Tell us about your One Big Thing experience.</p>
           <p class="govuk-body">Once you have recorded all of your learning you should complete an exit survey.</p>
           <p class="govuk-body">Your answers will be used to measure the effect of One Big Thing.</p>
         </div>
