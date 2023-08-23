@@ -6,6 +6,7 @@ from django.templatetags.static import static
 from django.urls import reverse
 from django.utils.text import slugify
 from markdown_it import MarkdownIt
+from django.contrib import messages
 
 markdown_converter = MarkdownIt("js-default")  # Need js-default as secure setting
 
@@ -81,6 +82,7 @@ def environment(**options):
             "is_empty_selected": is_empty_selected,
             "DEFAULT": DEFAULT,
             "humanize_timedelta": humanize_timedelta,
+            "get_messages": messages.get_messages,
         }
     )
     return env
