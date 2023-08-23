@@ -4,21 +4,6 @@ from django.urls import include, path
 
 from one_big_thing.learning import authentication_views, info_views, views
 
-account_urlpatterns = [
-    path("accounts/verify/", authentication_views.CustomVerifyUserEmail, name="verify-email"),
-    path("accounts/password-reset/", authentication_views.PasswordReset, name="password-reset"),
-    path("accounts/change-password/reset/", authentication_views.PasswordChange, name="password-set"),
-    path("accounts/password-reset-done/", authentication_views.password_reset_done, name="password-reset-done"),
-    path(
-        "accounts/password-reset-from-key-done/",
-        authentication_views.password_reset_from_key_done,
-        name="password-reset-from-key-done",
-    ),
-    path("accounts/login/", authentication_views.CustomLoginView, name="account_login"),
-    path("accounts/signup/", authentication_views.CustomSignupView.as_view(), name="account_signup"),
-    path("accounts/verify/resend/", authentication_views.CustomResendVerificationView, name="resend-verify-email"),
-    path("accounts/", include("allauth.urls")),
-]
 
 info_urlpatterns = [
     path("privacy-notice/", info_views.privacy_notice_view, name="privacy-notice"),
@@ -29,7 +14,7 @@ info_urlpatterns = [
 admin_urlpatterns = [path("admin/", admin.site.urls)]
 
 other_urlpatterns = [
-    path("", views.index_view, name="index"),
+    path("", authentication_views.CustomLoginView, name="index"),
     path("home/", views.homepage_view, name="homepage"),
     path("record-learning/", views.RecordLearningView, name="record-learning"),
     path("record-learning/<uuid:course_id>/", views.RecordLearningView, name="record-learning"),
@@ -46,7 +31,7 @@ other_urlpatterns = [
     path("department-links/", views.department_links_view, name="department-links"),
 ]
 
-urlpatterns = account_urlpatterns + info_urlpatterns + other_urlpatterns
+urlpatterns = info_urlpatterns + other_urlpatterns
 
 if settings.DEBUG:
     urlpatterns = urlpatterns + admin_urlpatterns
