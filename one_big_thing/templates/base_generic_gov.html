@@ -147,8 +147,20 @@
 
       <main class="govuk-main-wrapper " id="main-content" role="main">
 
+        {% set messages = get_messages(request) %}
+        {% if messages %}
+          <div>
+            <ul class="govuk-list">
+              {% for message in messages %}
+                <li>{{message}}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
         {% block content %}
         {% endblock %}
+
       </main>
     </div>
 
