@@ -40,16 +40,16 @@ class CustomLoginView(MethodDispatcher):
         return render(request, self.template_name, context)
 
     def post(self, request):
-        email = request.POST.get("login", None)
+        email = request.POST.get("email")
         if not email:
             messages.error(request, "Please enter an email.")
             return render(request, self.template_name, {})
         else:
             email = email.lower()
-            user = models.User.objects.get(email=email)
-            if user is not None:
+            try:
+                user = models.User.objects.get(email=email)
                 email_handler.send_verification_email(user)
-            else:
+            except models.User.DoesNotExist:
                 try:
                     validate_email(email)
                 except ValidationError as exc:
@@ -67,28 +67,37 @@ class CustomLoginView(MethodDispatcher):
 
                 user = models.User.objects.create_user(email=email)
                 email_handler.send_register_email(user)
-                return redirect(reverse("email_sent"))
+            return redirect(reverse("email-sent"))
+
+
+def email_sent_view(request):
+    return render(request, "email-sent.html")
+
+
+def register_email_view(request):
+    return verify_email_view(request, register=True)
 
 
 @require_http_methods(["GET"])
-class CustomVerifyUserEmail(MethodDispatcher):
-    def get(self, request):
-        user_id = request.GET.get("user_id")
-        token = request.GET.get("code")
-        if not models.User.objects.filter(pk=user_id).exists():
-            return render(request, "account/verify_email_from_token.html", {"verify_result": False})
-        verify_result = email_handler.verify_token(user_id, token, "email-verification")
-        if verify_result:
-            user = models.User.objects.get(pk=user_id)
-            user.verified = True
-            user.save()
-            user.backend = "django.contrib.auth.backends.ModelBackend"
-            login(request, user)
-            return redirect(reverse("register"))
-        return render(request, "account/verify_email_from_token.html", {"verify_result": verify_result})
+def verify_email_view(request, register=False):
+    user_id = request.GET.get("user_id")
+    token = request.GET.get("code")
+    if not models.User.objects.filter(pk=user_id).exists():
+        return render(request, "account/verify_email_from_token.html", {"verify_result": False})
+    verify_result = email_handler.verify_token(user_id, token, "email-verification")
+    if verify_result:
+        user = models.User.objects.get(pk=user_id)
+        user.verified = True
+        user.save()
+        user.backend = "django.contrib.auth.backends.ModelBackend"
+        login(request, user)
+    if register:
+        return redirect(reverse("register"))
+    else:
+        return redirect(reverse("homepage"))
 
 
-class CustomRegisterView(MethodDispatcher):
+class RegisterView(MethodDispatcher):
     template_name = "register.html"
     error_message = "Something has gone wrong.  Please try again."
 

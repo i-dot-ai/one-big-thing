@@ -41,16 +41,12 @@ EMAIL_MAPPING = {
         "url_name": "verify-email",
         "token_generator": EMAIL_VERIFY_TOKEN_GENERATOR,
     },
-    "password-reset": {
-        "subject": "One Big Thing: password reset",
-        "template_name": "email/password-reset.txt",
-        "url_name": "password-set",
-        "token_generator": PASSWORD_RESET_TOKEN_GENERATOR,
-    },
-    "account-already-exists": {
-        "subject": "One Big Thing: registration attempt",
-        "template_name": "email/account-already-exists.txt",
-        "url_name": "password-reset",
+    "email-register": {
+        "from_address": settings.FROM_EMAIL,
+        "subject": "One Big Thing: confirm your email address",
+        "template_name": "email/verification.txt",
+        "url_name": "register-email",
+        "token_generator": EMAIL_VERIFY_TOKEN_GENERATOR,
     },
     "send-learning-record": {
         "subject": "One Big Thing: Your learning record",
@@ -110,6 +106,11 @@ def send_verification_email(user):
 
 def send_register_email(user):
     return _send_token_email(user, "email-register")
+
+
+def send_register_email(user):
+    data = EMAIL_MAPPING["email-register"]
+    return _send_token_email(user, **data)
 
 
 def send_account_already_exists_email(user):

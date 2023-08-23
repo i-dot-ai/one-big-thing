@@ -14,6 +14,9 @@ admin_urlpatterns = [path("admin/", admin.site.urls)]
 
 other_urlpatterns = [
     path("", authentication_views.CustomLoginView, name="index"),
+    path("verify-register/", authentication_views.register_email_view, name="verify-email-register"),
+    path("verify/", authentication_views.verify_email_view, name="verify-email"),
+    path("email-sent/", authentication_views.email_sent_view, name="email-sent"),
     path("home/", views.homepage_view, name="homepage"),
     path("record-learning/", views.RecordLearningView, name="record-learning"),
     path("record-learning/<uuid:course_id>/", views.RecordLearningView, name="record-learning"),
