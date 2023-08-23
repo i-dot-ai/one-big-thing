@@ -54,8 +54,6 @@ missing_item_errors = {
 }
 
 
-
-
 @login_required
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey

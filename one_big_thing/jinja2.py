@@ -2,11 +2,11 @@ import datetime
 
 import humanize
 import jinja2
+from django.contrib import messages
 from django.templatetags.static import static
 from django.urls import reverse
 from django.utils.text import slugify
 from markdown_it import MarkdownIt
-from django.contrib import messages
 
 markdown_converter = MarkdownIt("js-default")  # Need js-default as secure setting
 

@@ -4,7 +4,6 @@ from django.urls import include, path
 
 from one_big_thing.learning import authentication_views, info_views, views
 
-
 info_urlpatterns = [
     path("privacy-notice/", info_views.privacy_notice_view, name="privacy-notice"),
     path("accessibility-statement/", info_views.accessibility_statement_view, name="accessibility-statement"),

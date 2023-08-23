@@ -136,9 +136,9 @@ class CustomRegisterView(MethodDispatcher):
                 messages.error(request, "You must select a profession.")
             return render(request, self.template_name, context)
         else:
-            user.department=department
-            user.grade=grade
-            user.profession=profession
+            user.department = department
+            user.grade = grade
+            user.profession = profession
             user.save()
 
             return render(
@@ -146,4 +146,3 @@ class CustomRegisterView(MethodDispatcher):
                 "account/signup_complete.html",
                 {},
             )
-
