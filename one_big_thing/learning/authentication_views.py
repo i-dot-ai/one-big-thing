@@ -105,12 +105,15 @@ class RegisterView(MethodDispatcher):
         messages.error(request, self.error_message)
         return render(request, self.template_name)
 
-    def get(self, request):
+    def get(self, request, errors=None, data=None):
         department_choices = departments.Department.choices
         context = {
             "departments": department_choices,
             "grades": choices.Grade.choices,
             "professions": choices.Profession.choices,
+            "errors": errors or {},
+            "data" : data or {},
+
         }
         return render(request, self.template_name, context)
 
@@ -119,12 +122,6 @@ class RegisterView(MethodDispatcher):
         department = request.POST.get("department")
         grade = request.POST.get("grade")
         profession = request.POST.get("profession")
-        department_choices = departments.Department.choices
-        context = {
-            "departments": department_choices,
-            "grades": choices.Grade.choices,
-            "professions": choices.Profession.choices,
-        }
 
         if not department or not grade or not profession:
             if not department:
@@ -133,15 +130,11 @@ class RegisterView(MethodDispatcher):
                 messages.error(request, "You must select a grade.")
             if not profession:
                 messages.error(request, "You must select a profession.")
-            return render(request, self.template_name, context)
+            return self.get(request)
         else:
             user.department = department
             user.grade = grade
             user.profession = profession
             user.save()
 
-            return render(
-                request,
-                "account/signup_complete.html",
-                {},
-            )
+            return redirect(reverse("homepage"))

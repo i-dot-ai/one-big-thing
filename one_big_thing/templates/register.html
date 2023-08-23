@@ -1,0 +1,71 @@
+{% extends "base_generic_gov.html" %}
+
+{% block title %}
+  <title>Register - One Big Thing - GOV.UK</title>
+{% endblock %}
+
+{% block content %}
+
+  <section class="wrapper">
+
+    <form method="POST">
+
+      {{csrf_input}}
+
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h2 class="govuk-fieldset__heading">
+            Register
+          </h2>
+        </legend>
+
+        <div class="govuk-form-group {% if 'department' in errors.keys() %}error{% endif %}">
+          <label class="govuk-label" for="department">Department</label>
+          <div id="select-field">
+            <select name="department" id="department" class="govuk-select govuk-!-width-full">
+              <option value="" disabled class="govuk-button--disabled" {% if not data.departments%}selected{% endif %}>Please select a department you belong to</option>
+              {% for option in departments %}
+                <option value="{{option.0}}" {% if 'department' in data.keys() and data.departments == option.0 %}selected{% endif %}>{{option.1}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="govuk-list govuk-list--bullet">
+          <ul>
+            <li>If you work for more than one department, please choose the one where you spend the most time. If your role is split equally, you can select either department.</li>
+          </ul>
+        </div>
+        <div class="govuk-form-group {% if 'grades' in errors.keys() %}error{% endif %}">
+          <label class="govuk-label" for="grade">Grade</label>
+          <div id="select-field">
+            <select name="grade" id="grade" class="govuk-select govuk-!-width-full">
+              <option value="" disabled class="govuk-button--disabled" {% if not data.grades%}selected{% endif %}>Please select your grade</option>
+              {% for option in grades %}
+                <option value="{{option.0}}" {% if 'grade' in data.keys() and data.grades == option.0 %}selected{% endif %}>{{option.1}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="govuk-form-group {% if 'professions' in errors.keys() %}error{% endif %}">
+          <label class="govuk-label" for="profession">Primary area of work</label>
+          <div id="select-field">
+            <select name="profession" id="profession" class="govuk-select govuk-!-width-full">
+              <option value="" disabled class="govuk-button--disabled" {% if not data.professions%}selected{% endif %}>Please select your primary area of work</option>
+              {% for option in professions %}
+                <option value="{{option.0}}" {% if 'profession' in data.keys() and data.professions == option.0 %}selected{% endif %}>{{option.1}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="govuk-button-group">
+          <button class="govuk-button" data-module="govuk-button">
+            Register
+          </button>
+        </div>
+      </fieldset>
+    </form>
+  </section>
+{% endblock %}
