@@ -1,29 +1,19 @@
 import logging
-from datetime import datetime
 
-from allauth.account.views import SignupView
-from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import login
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from one_big_thing.custom_password_validators import (
-    similarity_password_validator,
-)
 from one_big_thing.learning import (
     choices,
     departments,
     email_handler,
     models,
     restrict_email,
-)
-from one_big_thing.learning.email_handler import (
-    send_account_already_exists_email,
 )
 from one_big_thing.learning.utils import MethodDispatcher
 
