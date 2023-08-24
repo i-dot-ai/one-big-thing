@@ -1,7 +1,7 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.shortcuts import redirect, render
@@ -138,3 +138,14 @@ class RegisterView(MethodDispatcher):
             user.save()
 
             return redirect(reverse("homepage"))
+
+
+class LogoutView(MethodDispatcher):
+    template_name = "logout.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        logout(request)
+        return redirect("index")

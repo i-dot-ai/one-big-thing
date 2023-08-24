@@ -17,6 +17,7 @@ other_urlpatterns = [
     path("verify-register/", authentication_views.register_email_view, name="verify-email-register"),
     path("verify/", authentication_views.verify_email_view, name="verify-email"),
     path("register/", authentication_views.RegisterView, name="register"),
+    path("logout/", authentication_views.LogoutView, name="logout"),
     path("email-sent/", authentication_views.email_sent_view, name="email-sent"),
     path("home/", views.homepage_view, name="homepage"),
     path("record-learning/", views.RecordLearningView, name="record-learning"),
