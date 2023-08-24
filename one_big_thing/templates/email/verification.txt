@@ -1,11 +1,11 @@
 Hi,
 
-Use the following link to confirm your email address:
+Use the following link to access One Big Thing:
 {{url|safe}}
 
 You can then start using One Big Thing. You will then be asked to complete a survey.
 
-The link is valid for 24 hours. If you use the link more than once, it will expire.
+The link is valid for 1 hour. If you use the link, it will expire.
 
 If you have a query about this notification, please email the support team: {{contact_address}}
 
