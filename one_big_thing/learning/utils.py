@@ -111,6 +111,8 @@ class Choices(enum.Enum, metaclass=ChoicesMeta):
 
 def is_civil_service_email(email):
     email = email.lower()
+    if email.endswith(".gov.uk"):
+        return True
     email_split = email.split("@")
     allowed = email_split[-1] in ALLOWED_CIVIL_SERVICE_DOMAINS
     if not allowed:
