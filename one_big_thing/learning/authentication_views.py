@@ -36,6 +36,8 @@ class CustomLoginView(MethodDispatcher):
         return render(request, self.template_name)
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect(reverse("homepage"))
         context = {"errors": {}}
         return render(request, self.template_name, context)
 
