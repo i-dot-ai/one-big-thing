@@ -1,9 +1,7 @@
 Hi,
 
-Use the following link to access One Big Thing:
+Use the following link to access your One Big Thing account:
 {{url|safe}}
-
-You can then start using One Big Thing. You will then be asked to complete a survey.
 
 The link is valid for 1 hour. If you use the link, it will expire.
 
