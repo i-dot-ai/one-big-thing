@@ -112,8 +112,7 @@ class RegisterView(MethodDispatcher):
             "grades": choices.Grade.choices,
             "professions": choices.Profession.choices,
             "errors": errors or {},
-            "data" : data or {},
-
+            "data": data or {},
         }
         return render(request, self.template_name, context)
 
