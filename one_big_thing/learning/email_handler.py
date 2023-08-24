@@ -45,7 +45,7 @@ EMAIL_MAPPING = {
         "from_address": settings.FROM_EMAIL,
         "subject": "One Big Thing: confirm your email address",
         "template_name": "email/verification.txt",
-        "url_name": "register-email",
+        "url_name": "verify-email-register",
         "token_generator": EMAIL_VERIFY_TOKEN_GENERATOR,
     },
     "send-learning-record": {
