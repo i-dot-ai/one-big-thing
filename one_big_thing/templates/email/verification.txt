@@ -1,9 +1,9 @@
 Hi,
 
-Use the following link to access your One Big Thing account:
+You can use the following link to sign in to your One Big Thing account:
 {{url|safe}}
 
-The link is valid for 1 hour. If you use the link, it will expire.
+The link is valid for 24 hours. If you use the link more than once, it will expire.
 
 If you have a query about this notification, please email the support team: {{contact_address}}
 
