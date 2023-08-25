@@ -82,6 +82,8 @@ def register_email_view(request):
 
 @require_http_methods(["GET"])
 def verify_email_view(request, register=False):
+    if request.user.is_authenticated:
+        logout(request)
     user_id = request.GET.get("user_id")
     token = request.GET.get("code")
     if not models.User.objects.filter(pk=user_id).exists():
@@ -89,56 +91,12 @@ def verify_email_view(request, register=False):
     verify_result = email_handler.verify_token(user_id, token, "email-verification")
     if verify_result:
         user = models.User.objects.get(pk=user_id)
-        user.verified = True
-        user.save()
+        if not user.verified:
+            user.verified = True
+            user.save()
         user.backend = "django.contrib.auth.backends.ModelBackend"
         login(request, user)
-    if register:
-        return redirect(reverse("register"))
-    else:
-        return redirect(reverse("homepage"))
-
-
-class RegisterView(MethodDispatcher):
-    template_name = "register.html"
-    error_message = "Something has gone wrong.  Please try again."
-
-    def error(self, request):
-        messages.error(request, self.error_message)
-        return render(request, self.template_name)
-
-    def get(self, request, errors=None, data=None):
-        department_choices = departments.Department.choices
-        context = {
-            "departments": department_choices,
-            "grades": choices.Grade.choices,
-            "professions": choices.Profession.choices,
-            "errors": errors or {},
-            "data": data or {},
-        }
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        user = request.user
-        department = request.POST.get("department")
-        grade = request.POST.get("grade")
-        profession = request.POST.get("profession")
-
-        if not department or not grade or not profession:
-            if not department:
-                messages.error(request, "You must select a department.")
-            if not grade:
-                messages.error(request, "You must select a grade.")
-            if not profession:
-                messages.error(request, "You must select a profession.")
-            return self.get(request)
-        else:
-            user.department = department
-            user.grade = grade
-            user.profession = profession
-            user.save()
-
-            return redirect(reverse("homepage"))
+    return redirect(reverse("homepage"))
 
 
 class LogoutView(MethodDispatcher):
