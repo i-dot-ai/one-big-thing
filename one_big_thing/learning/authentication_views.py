@@ -8,13 +8,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
-from one_big_thing.learning import (
-    choices,
-    departments,
-    email_handler,
-    models,
-    restrict_email,
-)
+from one_big_thing.learning import email_handler, models, restrict_email
 from one_big_thing.learning.utils import MethodDispatcher
 
 logger = logging.getLogger(__name__)
