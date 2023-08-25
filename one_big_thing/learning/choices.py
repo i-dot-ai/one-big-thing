@@ -22,7 +22,7 @@ class Grade(utils.Choices):
     ADMINISTRATIVE_OFFICER = "Administrative officer"
     EXECUTIVE_OFFICER = "Executive officer"
     HIGHER_EXECUTIVE_OFFICER = "Higher executive officer"
-    SENIOR_EXECUTIVE_OFFICER = "Senior executive 0fficer"
+    SENIOR_EXECUTIVE_OFFICER = "Senior executive officer"
     GRADE7 = "Grade 7"
     GRADE6 = "Grade 6"
     SCS_DEPUTY_DIRECTOR = "SCS: Deputy director"
