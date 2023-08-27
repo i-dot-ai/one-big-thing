@@ -88,75 +88,73 @@ def _get_latest_email_url():
 
 
 def complete_pre_survey(client, user, competency_level_answers=["confident", "not-confident", "not-confident"]):
-    first_page = client.get("/questions/pre/")
-    second_page = step_survey_page(
-        first_page,
-        "How would you feel about making a decision based on information you're presented with? This might be numerical data like statistics or non-numerical data like user feedback.",  # noqa: E501
-        {
-            "confident-in-decisions": competency_level_answers[0],
-        },
+    data = (
+        (
+            "How would you feel about making a decision based on information you're presented with? This might be numerical data like statistics or non-numerical data like user feedback.",  # noqa: E501
+            {
+                "confident-in-decisions": competency_level_answers[0],
+            },
+        ),
+        (
+            "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.",  # noqa: E501
+            {
+                "confidence-graphic-survey": competency_level_answers[1],
+            },
+        ),
+        (
+            "How would you feel about explaining to someone in your team what a chart of performance data is showing?",  # noqa: E501
+            {
+                "confidence-explaining-chart": competency_level_answers[2],
+            },
+        ),
+        (
+            "To what extent do you agree or disagree with the following statement?",
+            {
+                "aware-of-the-aims": 1,
+            },
+        ),
+        (
+            "To what extent do you agree or disagree with the following statements?",
+            {
+                "shared-identity": 2,
+                "identity-is-important": 1,
+            },
+        ),
+        (
+            "To what extent do you agree or disagree with the following statements?",
+            {
+                "confident-day-to-day": 1,
+                "data-is-relevant-to-role": 1,
+                "use-data-effectively-day-to-day": 5,
+                "data-support-day-to-day": 1,
+            },
+        ),
+        (
+            "Are you currently a line manager?",
+            {
+                "line-manager": "yes",
+            },
+        ),
+        (
+            "to what extent do you agree or disagree",
+            {"help-team": "1", "support-team": "2"},
+        ),
+        (
+            "In the last 6 months, have you done any type of training?",
+            {
+                "training-last-six-months": "yes",
+                "training-analytical-component": "yes",
+            },
+        ),
     )
-    third_page = step_survey_page(
-        second_page,
-        "How would you feel about designing a graphic to communicate the results of a survey? This could be an infographic, chart or other visualisation.",  # noqa: E501
-        {
-            "confidence-graphic-survey": competency_level_answers[1],
-        },
-    )
-    fourth_page = step_survey_page(
-        third_page,
-        "How would you feel about explaining to someone in your team what a chart of performance data is showing?",  # noqa: E501
-        {
-            "confidence-explaining-chart": competency_level_answers[2],
-        },
-    )
-    fifth_page = step_survey_page(
-        fourth_page,
-        "To what extent do you agree or disagree with the following statement?",
-        {
-            "aware-of-the-aims": 1,
-        },
-    )
-    sixth_page = step_survey_page(
-        fifth_page,
-        "To what extent do you agree or disagree with the following statements?",
-        {
-            "shared-identity": 2,
-            "identity-is-important": 1,
-        },
-    )
-    seventh_page = step_survey_page(
-        sixth_page,
-        "To what extent do you agree or disagree with the following statements?",
-        {
-            "confident-day-to-day": 1,
-            "data-is-relevant-to-role": 1,
-            "use-data-effectively-day-to-day": 5,
-            "data-support-day-to-day": 1,
-        },
-    )
-    eighth_page = step_survey_page(
-        seventh_page,
-        "Are you currently a line manager?",
-        {
-            "line-manager": "yes",
-        },
-    )
-    ninth_page = step_survey_page(
-        eighth_page,
-        "to what extent do you agree or disagree",
-        {"help-team": "1", "support-team": "2"},
-    )
-    completed_page = step_survey_page(
-        ninth_page,
-        "In the last 6 months, have you done any type of training?",
-        {
-            "training-last-six-months": "yes",
-            "training-analytical-component": "yes",
-        },
-    )
-    assert completed_page.has_text("Survey completed")
-    assert completed_page.has_text("You can now start your One Big Thing learning.")
+
+    page = client.get("/questions/pre/")
+
+    for item in data:
+        page = step_survey_page(page, *item)
+
+    assert page.has_text("Survey completed")
+    assert page.has_text("You can now start your One Big Thing learning.")
     completed_surveys = SurveyResult.objects.filter(user=user, survey_type="pre")
     assert len(completed_surveys) > 0, completed_surveys
     competency_data = completed_surveys.get(page_number=1)
