@@ -37,4 +37,4 @@ def test_login():
     page = client.get(verification_url).follow()
     assert page.status_code == 302, page.status_code  # Homepage redirects
     page = page.follow()
-    assert page.has_text("Thank you for registering for One Big Thing")
+    assert page.has_text("Thank you for signing in to your One Big Thing account")
