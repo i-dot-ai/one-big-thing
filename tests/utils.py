@@ -212,109 +212,103 @@ def step_survey_page(page, title, fields):
 
 
 def complete_post_survey_awareness(client, user):
-    first_page = client.get("/questions/post/")
-    second_page = step_survey_page(
-        first_page,
-        "Which level of training did you participate in?",
-        {
-            "training-level": "awareness",
-        },
+    data = (
+        (
+            "Which level of training did you participate in?",
+            {
+                "training-level": "awareness",
+            },
+        ),
+        (
+            "Please rate how much you agree or disagree with the following statements:",
+            {"shared-identity": "2", "identity-important": "4"},
+        ),
+        (
+            "I feel confident about using data in my day-to-day role",
+            {
+                "confident-day-to-day": "2",
+                "data-is-relevant-to-role": "4",
+                "use-data-effectively-day-to-day": "1",
+                "data-support-day-to-day": "2",
+            },
+        ),
+        (
+            "Are you currently a line manager?",
+            {"line-manager": "yes"},
+        ),
+        (
+            'If you answered "Yes" to the previous question please answer the following. Otherwise move on to the next page. To what extent do you agree or disagree with the following statements',  # noqa: E501
+            {
+                "help-team": "3",
+                "support-team": "1",
+            },
+        ),
+        (
+            "I have a better understanding of what data means",
+            {
+                "i-understand-what-data-means": "1",
+                "better-at-interpreting-data": "3",
+                "interested-in-working-with-data-in-day-to-day": "4",
+                "more-confident-using-data-for-decisions": "3",
+                "more-confident-communicating-data-to-influence-decisions": "3",
+            },
+        ),
+        (
+            "Following One Big Thing",
+            {
+                "create-development-plan": "1",
+                "add-learning-to-development-plan": "3",
+                "book-training": "4",
+                "find-mentor": "3",
+                "other-development": "Doing loads more learning",
+            },
+        ),
+        (
+            "Please rate how much you agree or disagree",
+            {
+                "training-helped-learning": "1",
+                "additional-resources-helped-learning": "5",
+            },
+        ),
+        (
+            "Were there any formats of additional training you found useful?",
+            {"useful-learning-formats": ["VIDEO"]},
+        ),
+        (
+            "Please rate how much you agree or disagree",
+            {
+                "obt-good-use-of-time": "1",
+                "improved-understanding-of-using-data": "3",
+                "intend-to-participate-in-further-training": "3",
+                "intend-to-apply-learning-in-my-role": "5",
+            },
+        ),
+        (
+            "Please rate how much you agree or disagree",
+            {
+                "aware-of-aims": "1",
+                "sufficient-time": "2",
+            },
+        ),
+        (
+            "Further questions",
+            {
+                "what-went-well": "I found out loads of cool stuff about data.",
+                "what-can-be-improved": "Even more things to learn.",
+            },
+        ),
+        (
+            "Would you be willing to take part in a follow-up discussion?",
+            {"willing-to-follow-up": "yes"},
+        ),
     )
-    third_page = step_survey_page(
-        second_page,
-        "Please rate how much you agree or disagree with the following statements:",
-        {"shared-identity": "2", "identity-important": "4"},
-    )
-    fourth_page = step_survey_page(
-        third_page,
-        "I feel confident about using data in my day-to-day role",
-        {
-            "confident-day-to-day": "2",
-            "data-is-relevant-to-role": "4",
-            "use-data-effectively-day-to-day": "1",
-            "data-support-day-to-day": "2",
-        },
-    )
-    fifth_page = step_survey_page(
-        fourth_page,
-        "Are you currently a line manager?",
-        {"line-manager": "yes"},
-    )
-    sixth_page = step_survey_page(
-        fifth_page,
-        'If you answered "Yes" to the previous question please answer the following. Otherwise move on to the next page. To what extent do you agree or disagree with the following statements',  # noqa: E501
-        {
-            "help-team": "3",
-            "support-team": "1",
-        },
-    )
-    seventh_page = step_survey_page(
-        sixth_page,
-        "I have a better understanding of what data means",
-        {
-            "i-understand-what-data-means": "1",
-            "better-at-interpreting-data": "3",
-            "interested-in-working-with-data-in-day-to-day": "4",
-            "more-confident-using-data-for-decisions": "3",
-            "more-confident-communicating-data-to-influence-decisions": "3",
-        },
-    )
-    eighth_page = step_survey_page(
-        seventh_page,
-        "Following One Big Thing",
-        {
-            "create-development-plan": "1",
-            "add-learning-to-development-plan": "3",
-            "book-training": "4",
-            "find-mentor": "3",
-            "other-development": "Doing loads more learning",
-        },
-    )
-    ninth_page = step_survey_page(
-        eighth_page,
-        "Please rate how much you agree or disagree",
-        {
-            "training-helped-learning": "1",
-            "additional-resources-helped-learning": "5",
-        },
-    )
-    tenth_page = step_survey_page(
-        ninth_page,
-        "Were there any formats of additional training you found useful?",
-        {"useful-learning-formats": ["VIDEO"]},
-    )
-    eleventh_page = step_survey_page(
-        tenth_page,
-        "Please rate how much you agree or disagree",
-        {
-            "obt-good-use-of-time": "1",
-            "improved-understanding-of-using-data": "3",
-            "intend-to-participate-in-further-training": "3",
-            "intend-to-apply-learning-in-my-role": "5",
-        },
-    )
-    twelfth_page = step_survey_page(
-        eleventh_page,
-        "Please rate how much you agree or disagree",
-        {
-            "aware-of-aims": "1",
-            "sufficient-time": "2",
-        },
-    )
-    thirteenth_page = step_survey_page(
-        twelfth_page,
-        "Further questions",
-        {
-            "what-went-well": "I found out loads of cool stuff about data.",
-            "what-can-be-improved": "Even more things to learn.",
-        },
-    )
-    completed_page = step_survey_page(
-        thirteenth_page,
-        "Would you be willing to take part in a follow-up discussion?",
-        {"willing-to-follow-up": "yes"},
-    )
-    assert completed_page.has_text("Thank you")
+
+    page = client.get("/questions/post/")
+
+    for item in data:
+        page = step_survey_page(page, *item)
+
+    assert page.has_text("Thank you")
 
     question_data = SurveyResult.objects.get(user=user, page_number=1, survey_type="post")
     assert question_data.data == {"training-level": "awareness"}, question_data.data
