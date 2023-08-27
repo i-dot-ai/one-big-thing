@@ -42,7 +42,6 @@ EMAIL_MAPPING = {
         "token_generator": EMAIL_VERIFY_TOKEN_GENERATOR,
     },
     "email-register": {
-        "from_address": settings.FROM_EMAIL,
         "subject": "One Big Thing: confirm your email address",
         "template_name": "email/verification.txt",
         "url_name": "verify-email-register",
@@ -106,11 +105,6 @@ def send_verification_email(user):
 
 def send_register_email(user):
     return _send_token_email(user, "email-register")
-
-
-def send_register_email(user):
-    data = EMAIL_MAPPING["email-register"]
-    return _send_token_email(user, **data)
 
 
 def send_account_already_exists_email(user):
