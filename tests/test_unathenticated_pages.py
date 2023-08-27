@@ -1,7 +1,5 @@
 from django.test import override_settings
 
-from one_big_thing.learning import models
-
 from . import utils
 
 ACCOUNT_URLS_MISSING = [
