@@ -165,14 +165,14 @@
         {% for key, value in errors.items() %}
           {% if value is iterable and value is not string and value is not number %}
               {% for inner_error in value %}
-                <p id="question-{{value}}-error-{{loop.index}}" class="govuk-error-message">
+                <li id="question-{{value}}-error-{{loop.index}}" class="govuk-error-message">
                   <span class="govuk-visually-hidden">Error:</span> {{inner_error}}
-                </p>
+                </li>
               {% endfor %}
             {% else %}
-            <p id="question-{{key}}-error" class="govuk-error-message">
+            <li id="question-{{key}}-error" class="govuk-error-message">
               <span class="govuk-visually-hidden">Error:</span> {{value}}
-            </p>
+            </li>
           {% endif %}
         {% endfor %}
         </ul>
@@ -202,9 +202,9 @@
   <div class="i-ai-range govuk-form-group">
     <span>
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <h1 class="govuk-fieldset__heading">
+        <h2 class="govuk-fieldset__heading">
           {{question.text}}
-        </h1>
+        </h2>
       </legend>
 
       {% if errors[question.id] %}
@@ -234,7 +234,7 @@
 
 {% macro question_radios(question) -%}
   <div class="govuk-form-group">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">{{question.text}}</legend>
+    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h2 class="govuk-fieldset__legend govuk-fieldset__legend--l">{{question.text}}</h2></legend>
 
     {% if errors[question.id] %}
       <p id="{{question.id}}-error" class="govuk-error-message">
@@ -257,9 +257,9 @@
 <div class="govuk-form-group">
   <fieldset class="govuk-fieldset" aria-describedby="{{question.id}}-hint">
     <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-      <h1 class="govuk-fieldset__heading">
+      <h2 class="govuk-fieldset__heading">
         {{question.text}}
-      </h1>
+      </h2>
     </legend>
     <div id="{{question.id}}-hint" class="govuk-hint">
       Select all that apply.
