@@ -54,14 +54,9 @@ def make_testino_client():
 
 
 def register(client, email, password):
-    page = client.get("/accounts/signup/")
+    page = client.get("/")
     form = page.get_form()
     form["email"] = email
-    form["password1"] = password
-    form["password2"] = password
-    form["grade"] = "GRADE6"
-    form["department"] = "visitengland"
-    form["profession"] = "LEGAL"
     form.submit().follow()
     user = User.objects.get(email=email)
     complete_pre_survey(client, user)
