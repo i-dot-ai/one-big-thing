@@ -1,0 +1,30 @@
+{% extends "base_generic_gov.html" %}
+
+{% block title %}
+  <title>Sign out - One Big Thing - GOV.UK</title>
+{% endblock %}
+
+{% block content %}
+
+  <section class="wrapper">
+
+    <form method="POST">
+      {{csrf_input}}
+
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-fieldset__heading">
+            Are you sure you want to sign out?
+          </h1>
+        </legend>
+
+        <div class="govuk-button-group">
+          <button class="govuk-button" data-module="govuk-button">
+            Sign out
+          </button>
+        </div>
+
+    </form>
+  </section>
+
+{% endblock %}

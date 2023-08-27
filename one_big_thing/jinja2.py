@@ -2,6 +2,7 @@ import datetime
 
 import humanize
 import jinja2
+from django.contrib import messages
 from django.templatetags.static import static
 from django.urls import reverse
 from django.utils.text import slugify
@@ -81,6 +82,7 @@ def environment(**options):
             "is_empty_selected": is_empty_selected,
             "DEFAULT": DEFAULT,
             "humanize_timedelta": humanize_timedelta,
+            "get_messages": messages.get_messages,
         }
     )
     return env

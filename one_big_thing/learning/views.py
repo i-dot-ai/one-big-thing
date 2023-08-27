@@ -13,6 +13,7 @@ from django.views.decorators.http import require_http_methods
 from . import (
     choices,
     constants,
+    departments,
     interface,
     models,
     schemas,
@@ -52,13 +53,6 @@ survey_questions_compulsory_field_map = {
 missing_item_errors = {
     "title": "Please provide a title for this course",
 }
-
-
-@login_required
-@require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
-def index_view(request):
-    return redirect(reverse("homepage"))
 
 
 @login_required
@@ -449,6 +443,48 @@ def additional_learning_view(request):
         "additional_learning": additional_learning_records,
     }
     return render(request, "additional-learning.html", {"data": data})
+
+
+class RegisterView(utils.MethodDispatcher):
+    template_name = "register.html"
+    error_message = "Something has gone wrong.  Please try again."
+
+    def error(self, request):
+        messages.error(request, self.error_message)
+        return render(request, self.template_name)
+
+    def get(self, request, errors=None, data=None):
+        department_choices = departments.Department.choices
+        context = {
+            "departments": department_choices,
+            "grades": choices.Grade.choices,
+            "professions": choices.Profession.choices,
+            "errors": errors or {},
+            "data": data or {},
+        }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        user = request.user
+        department = request.POST.get("department")
+        grade = request.POST.get("grade")
+        profession = request.POST.get("profession")
+
+        if not department or not grade or not profession:
+            if not department:
+                messages.error(request, "You must select a department.")
+            if not grade:
+                messages.error(request, "You must select a grade.")
+            if not profession:
+                messages.error(request, "You must select a profession.")
+            return self.get(request)
+        else:
+            user.department = department
+            user.grade = grade
+            user.profession = profession
+            user.save()
+
+            return redirect(reverse("questions", args=("pre",)))
 
 
 # Don't enforce user completes pre survey as this is the page to redirect to
