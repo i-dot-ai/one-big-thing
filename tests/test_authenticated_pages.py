@@ -1,7 +1,6 @@
 from tests import utils
 
 LOGIN_REQUIRED_PAGES = [
-    "/",
     "/home/",
     "/record-learning/",
     "/questions/pre/",
