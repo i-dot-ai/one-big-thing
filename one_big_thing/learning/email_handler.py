@@ -22,13 +22,6 @@ class EmailVerifyTokenGenerator(PasswordResetTokenGenerator):
         return f"{user.pk}{user.password}{timestamp}{email}{token_timestamp}"
 
 
-class PasswordResetTokenGenerator(PasswordResetTokenGenerator):
-    def _make_hash_value(self, user, timestamp):
-        login_timestamp = _strip_microseconds(user.last_login)
-        email = user.email or ""
-        token_timestamp = _strip_microseconds(user.last_token_sent_at)
-        return f"{user.pk}{user.password}{login_timestamp}{timestamp}{email}{token_timestamp}"
-
 
 EMAIL_VERIFY_TOKEN_GENERATOR = EmailVerifyTokenGenerator()
 PASSWORD_RESET_TOKEN_GENERATOR = PasswordResetTokenGenerator()
