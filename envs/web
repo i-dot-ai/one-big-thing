@@ -14,7 +14,6 @@ EMAIL_BACKEND_TYPE=CONSOLE
 BASE_URL=http://localhost:8055/
 VCAP_APPLICATION='{"space_name": "local"}'
 REQUIRED_LEARNING_TIME=420
-SEND_VERIFICATION_EMAIL=True
 DEPARTMENTS_USING_INTRANET='{"academy-for-justice-commissioning": "https://google.com/", "accelerated-access-review": "https://google.com/"}'
 ENVIRONMENT=LOCAL
 ALLOWED_DOMAINS=cabinetoffice.gov.uk,example.com
