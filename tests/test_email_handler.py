@@ -1,11 +1,8 @@
-from django.test import override_settings
-
 from one_big_thing.learning import models
 
 from . import utils
 
 
-@override_settings(SEND_VERIFICATION_EMAIL=True)
 def test_send_email_learning_record():
     client = utils.make_testino_client()
     email = "jim@example.com"
