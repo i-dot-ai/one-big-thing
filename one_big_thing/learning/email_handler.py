@@ -21,7 +21,6 @@ class EmailVerifyTokenGenerator(PasswordResetTokenGenerator):
         return f"{user.id}{timestamp}{user.email}{token_timestamp}"
 
 
-
 EMAIL_VERIFY_TOKEN_GENERATOR = EmailVerifyTokenGenerator()
 PASSWORD_RESET_TOKEN_GENERATOR = PasswordResetTokenGenerator()
 
