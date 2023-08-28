@@ -81,7 +81,7 @@ def verify_email_view(request, register=False):
     user_id = request.GET.get("user_id")
     token = request.GET.get("code")
     if not models.User.objects.filter(pk=user_id).exists():
-        return render(request, "account/verify_email_from_token.html", {"verify_result": False})
+        return render(request, "login-failure.html")
     verify_result = email_handler.verify_token(user_id, token, "email-verification")
     if verify_result:
         user = models.User.objects.get(pk=user_id)
