@@ -41,7 +41,7 @@ APPEND_SLASH = True
 ALLOWED_CIDR_NETS = ["10.0.0.0/16"]
 
 ALLOWED_HOSTS = [
-    "one-big-thing-testserver",
+    "obt-server",
     "one-big-thing-develop.london.cloudapps.digital",
     "localhost",
     "127.0.0.1",
