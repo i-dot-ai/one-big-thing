@@ -55,10 +55,6 @@ missing_item_errors = {
 }
 
 
-def unauthorised_view(request):
-    return render(request, "unauthorised.html", {}, status=401)
-
-
 @login_required(login_url="unauthorised", redirect_field_name=None)
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
