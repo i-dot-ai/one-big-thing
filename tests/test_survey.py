@@ -21,7 +21,7 @@ def test_homepage_assigns_awareness():
     comptency_answers = ["not-confident", "not-confident", "confident"]
     utils.complete_pre_survey(client, user, competency_level_answers=comptency_answers)
     homepage = client.get("/home/")
-    assert homepage.has_text("your level is: Awareness")
+    assert homepage.has_text("your learning level is: Awareness")
     user.delete()
 
 
@@ -34,7 +34,7 @@ def test_homepage_assigns_working():
     comptency_answers = ["confident", "not-confident", "confident"]
     utils.complete_pre_survey(client, user, competency_level_answers=comptency_answers)
     homepage = client.get("/home/")
-    assert homepage.has_text("your level is: Working")
+    assert homepage.has_text("your learning level is: Working")
     user.delete()
 
 
@@ -47,7 +47,7 @@ def test_homepage_assigns_practitioner():
     comptency_answers = ["confident", "very-confident", "very-confident"]
     utils.complete_pre_survey(client, user, competency_level_answers=comptency_answers)
     homepage = client.get("/home/")
-    assert homepage.has_text("your level is: Practitioner")
+    assert homepage.has_text("your learning level is: Practitioner")
     user.delete()
 
 
