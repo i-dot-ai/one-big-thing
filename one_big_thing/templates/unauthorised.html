@@ -7,7 +7,8 @@
 {% block content %}
 
   <script>
-        window.location.href = window.location.href+"#";
+      fetch("/home/")
+        .then(x => x.text()).then(y => console.log(y));
   </script>
 
   <section class="wrapper">
