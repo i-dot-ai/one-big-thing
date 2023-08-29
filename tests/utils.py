@@ -10,7 +10,7 @@ from one_big_thing import wsgi
 from one_big_thing.learning import email_handler
 from one_big_thing.learning.models import SurveyResult, User
 
-TEST_SERVER_URL = "http://one-big-thing-testserver:8055/"
+TEST_SERVER_URL = "http://obt-server:8055/"
 
 
 def with_client(func):
@@ -73,11 +73,11 @@ def _get_latest_email_text():
 def _get_latest_email_url():
     text = _get_latest_email_text()
     lines = text.splitlines()
-    url_lines = tuple(word for line in lines for word in line.split() if word.startswith("http://localhost:8055/"))
+    url_lines = tuple(word for line in lines for word in line.split() if word.startswith(TEST_SERVER_URL))
     assert len(url_lines) == 1
     email_url = url_lines[0].strip()
     whole_url = email_url.strip(",")
-    url = f"/{whole_url.split('http://localhost:8055/')[-1]}".replace("?", "?")
+    url = f"/{whole_url.split(TEST_SERVER_URL)[-1]}".replace("?", "?")
     return url
 
 
