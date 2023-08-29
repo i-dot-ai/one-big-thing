@@ -33,7 +33,9 @@ def test_reused_token():
     url = email_handler._make_token_url(user, "email-register")
     client = utils.make_testino_client()
 
-    page = client.get(url).follow().follow()
+    page = client.get(url)
+
+    page = page.follow().follow().follow()
 
     assert page.has_text("Thank you for signing in to your One Big Thing account")
     user = models.User.objects.get(email=email)
