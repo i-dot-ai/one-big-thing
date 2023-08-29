@@ -1,5 +1,3 @@
-from django.test import override_settings
-
 from . import utils
 
 ACCOUNT_URLS_MISSING = [
@@ -23,7 +21,6 @@ def test_get_account_urls_not_there(client):
         assert response.status_code == 404, response.status_code
 
 
-@override_settings(SEND_VERIFICATION_EMAIL=True)
 def test_login():
     client = utils.make_testino_client()
     email = "james@example.com"

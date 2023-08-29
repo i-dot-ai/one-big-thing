@@ -28,11 +28,6 @@ variable "required_learning_time" {
   type        = number
 }
 
-variable "send_verification_email" {
-  description = "Whether to send a verification email the user on signup"
-  type        = bool
-}
-
 variable "port" {
   description = "The port for the app to serve over"
   type        = number

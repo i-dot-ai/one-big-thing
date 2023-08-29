@@ -147,10 +147,6 @@ module "ecs" {
               value = var.required_learning_time
             },
             {
-              name  = "SEND_VERIFICATION_EMAIL"
-              value = var.send_verification_email
-            },
-            {
               name  = "PORT"
               value = var.port
             },
