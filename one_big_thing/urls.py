@@ -14,6 +14,7 @@ admin_urlpatterns = [path("admin/", admin.site.urls)]
 
 other_urlpatterns = [
     path("", authentication_views.CustomLoginView, name="index"),
+    path("unauthorised/", views.unauthorised_view, name="unauthorised"),
     path("verify-register/", authentication_views.register_email_view, name="verify-email-register"),
     path("verify/", authentication_views.verify_email_view, name="verify-email"),
     path("register/", views.RegisterView, name="register"),
