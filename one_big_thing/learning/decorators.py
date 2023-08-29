@@ -12,6 +12,7 @@ def login_required(func):
             return func(request, *args, **kwargs)
         else:
             return unauthorised_view(request)
+
     return _inner
 
 
