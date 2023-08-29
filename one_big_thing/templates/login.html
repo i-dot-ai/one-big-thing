@@ -7,7 +7,7 @@
 {% block content %}
 
   <section class="wrapper">
-    <img src="{{static('assets/OBT_LOGO.svg')}}" alt="One Big Thing logo">
+    <img class="obt-logo" src="{{static('assets/OBT_LOGO.svg')}}" alt="One Big Thing logo">
     <svg width="1em" height="1em" viewBox="0 0 40 40" fill="currentColor"><use href="/static/assets/OBT_LOGO.svg"></use></svg>
 
     <div>
@@ -33,10 +33,15 @@
         </legend>
         <p class="govuk-body">To complete One Big Thing, you'll need to enter your work email address below and we'll send you a link to sign in to your One Big Thing account. Each time you need to sign in (to record learning, or feedback on your One Big Thing experience), come back to this page and we'll send you a new link. You do not need a password.</p>
 
-        <div class="govuk-form-group">
+        <div class="govuk-form-group {% if 'id_email' in errors.keys() %}govuk-form-group--error{% endif %}">
           <label class="govuk-label" for="id_email">
             Your work email address
           </label>
+            {% if 'id_email' in errors.keys() %}
+              <p id="id_email-error" class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> {{errors.id_email}}
+              </p>
+            {% endif %}
           <input class="govuk-input" id="id_email" name="email" type="email" autocomplete="off" required>
         </div>
 

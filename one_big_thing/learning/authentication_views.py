@@ -39,7 +39,7 @@ class CustomLoginView(MethodDispatcher):
         email = request.POST.get("email")
         if not email:
             messages.error(request, "Please enter an email.")
-            return render(request, self.template_name, {})
+            return render(request, self.template_name, {"errors": {"id_email": "Please enter an email"}})
         else:
             email = email.lower()
             try:
@@ -52,14 +52,22 @@ class CustomLoginView(MethodDispatcher):
                     for errors in exc.error_list:
                         for error in errors:
                             messages.error(request, error)
-                    return render(request, self.template_name)
+                    return render(
+                        request,
+                        self.template_name,
+                        {"errors": {"id_email": "Please enter a valid Civil Service email"}},
+                    )
                 try:
                     restrict_email.clean_email(email=email)
                 except ValidationError as exc:
                     for errors in exc.error_list:
                         for error in errors:
                             messages.error(request, error)
-                    return render(request, self.template_name)
+                    return render(
+                        request,
+                        self.template_name,
+                        {"errors": {"id_email": "Please enter a valid Civil Service email"}},
+                    )
 
                 user = models.User.objects.create_user(email=email)
                 email_handler.send_register_email(user)
