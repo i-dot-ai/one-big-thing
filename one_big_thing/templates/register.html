@@ -18,14 +18,18 @@
             About you
           </h2>
         </legend>
-
-        <div class="govuk-form-group {% if 'department' in errors.keys() %}error{% endif %}">
+        <div class="govuk-form-group {% if 'department' in errors.keys() %}govuk-form-group--error{% endif %}">
           <label class="govuk-label" for="department">Which government department do you work for?</label>
+          {% if 'department' in errors.keys() %}
+            <p id="department-error" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> {{ errors["department"] }}
+            </p>
+          {% endif %}
           <div id="select-field">
             <select name="department" id="department" class="govuk-select govuk-!-width-full">
-              <option value="" disabled class="govuk-button--disabled" {% if not data.departments%}selected{% endif %}>Please select a department you belong to</option>
+              <option value="" disabled class="govuk-button--disabled" {% if not data.department%}selected{% endif %}>Please select a department you belong to</option>
               {% for option in departments %}
-                <option value="{{option.0}}" {% if 'department' in data.keys() and data.departments == option.0 %}selected{% endif %}>{{option.1}}</option>
+                <option value="{{option.0}}" {% if 'department' in data.keys() and data.department == option.0 %}selected{% endif %}>{{option.1}}</option>
               {% endfor %}
             </select>
           </div>
@@ -36,25 +40,35 @@
             <li>If you work for more than one department, please choose the one where you spend the most time. If your role is split equally, you can select either department.</li>
           </ul>
         </div>
-        <div class="govuk-form-group {% if 'grades' in errors.keys() %}error{% endif %}">
+        <div class="govuk-form-group {% if 'grades' in errors.keys() %}govuk-form-group--error{% endif %}">
           <label class="govuk-label" for="grade">What is your grade?</label>
+          {% if 'grades' in errors.keys() %}
+            <p id="grade-error" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> {{ errors["grades"] }}
+            </p>
+          {% endif %}
           <div id="select-field">
             <select name="grade" id="grade" class="govuk-select govuk-!-width-full">
-              <option value="" disabled class="govuk-button--disabled" {% if not data.grades%}selected{% endif %}>Please select your grade</option>
+              <option value="" disabled class="govuk-button--disabled" {% if not data.grade%}selected{% endif %}>Please select your grade</option>
               {% for option in grades %}
-                <option value="{{option.0}}" {% if 'grade' in data.keys() and data.grades == option.0 %}selected{% endif %}>{{option.1}}</option>
+                <option value="{{option.0}}" {% if 'grade' in data.keys() and data.grade == option.0 %}selected{% endif %}>{{option.1}}</option>
               {% endfor %}
             </select>
           </div>
         </div>
 
-        <div class="govuk-form-group {% if 'professions' in errors.keys() %}error{% endif %}">
+        <div class="govuk-form-group {% if 'professions' in errors.keys() %}govuk-form-group--error{% endif %}">
           <label class="govuk-label" for="profession">What is your primary area of work?</label>
+          {% if 'professions' in errors.keys() %}
+            <p id="profession-error" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> {{ errors["professions"] }}
+            </p>
+          {% endif %}
           <div id="select-field">
             <select name="profession" id="profession" class="govuk-select govuk-!-width-full">
-              <option value="" disabled class="govuk-button--disabled" {% if not data.professions%}selected{% endif %}>Please select your primary area of work</option>
+              <option value="" disabled class="govuk-button--disabled" {% if not data.profession%}selected{% endif %}>Please select your primary area of work</option>
               {% for option in professions %}
-                <option value="{{option.0}}" {% if 'profession' in data.keys() and data.professions == option.0 %}selected{% endif %}>{{option.1}}</option>
+                <option value="{{option.0}}" {% if 'profession' in data.keys() and data.profession == option.0 %}selected{% endif %}>{{option.1}}</option>
               {% endfor %}
             </select>
           </div>

@@ -233,8 +233,10 @@
 {%- endmacro%}
 
 {% macro question_radios(question) -%}
-  <div class="govuk-form-group">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h2 class="govuk-fieldset__legend govuk-fieldset__legend--l">{{question.text}}</h2></legend>
+  <div class="govuk-form-group {% if errors[question.id] %}govuk-form-group--error{% endif %}">
+    {% if question.text %}
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h2 class="govuk-fieldset__legend govuk-fieldset__legend--l">{{question.text}}</h2></legend>
+    {% endif %}
 
     {% if errors[question.id] %}
       <p id="{{question.id}}-error" class="govuk-error-message">
