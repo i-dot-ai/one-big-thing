@@ -20,6 +20,7 @@ other_urlpatterns = [
     path("register/", views.RegisterView, name="register"),
     path("logout/", authentication_views.LogoutView, name="logout"),
     path("email-sent/", authentication_views.email_sent_view, name="email-sent"),
+    path("post-login/", authentication_views.post_login_view, name="post-login"),
     path("home/", views.homepage_view, name="homepage"),
     path("record-learning/", views.RecordLearningView, name="record-learning"),
     path("record-learning/<uuid:course_id>/", views.RecordLearningView, name="record-learning"),

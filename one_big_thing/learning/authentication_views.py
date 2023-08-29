@@ -99,9 +99,12 @@ def verify_email_view(request, register=False):
         if not user.verified:
             user.verified = True
             user.save()
-        user.backend = "django.contrib.auth.backends.ModelBackend"
         login(request, user)
-        return redirect(reverse("homepage"))
+        return redirect(reverse("post-login"))
+
+
+def post_login_view(request):
+    return redirect(reverse("homepage"))
 
 
 class LogoutView(MethodDispatcher):
