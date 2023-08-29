@@ -83,14 +83,17 @@ def verify_email_view(request, register=False):
     if not models.User.objects.filter(pk=user_id).exists():
         return render(request, "login-failure.html")
     verify_result = email_handler.verify_token(user_id, token, "email-verification")
-    if verify_result:
+
+    if not verify_result:
+        return render(request, "login-failure.html")
+    else:
         user = models.User.objects.get(pk=user_id)
         if not user.verified:
             user.verified = True
             user.save()
         user.backend = "django.contrib.auth.backends.ModelBackend"
         login(request, user)
-    return redirect(reverse("homepage"))
+        return redirect(reverse("homepage"))
 
 
 class LogoutView(MethodDispatcher):
