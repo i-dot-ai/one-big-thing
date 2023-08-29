@@ -8,9 +8,9 @@
 {% block content %}
   <h1 class="govuk-heading-l">One Big Thing overview</h1>
     <div aria-labelledby="step-by-step-title" role="region">
-      <p class="govuk-body">Based on your survey answers, your level is: <strong>{{data.selected_level.capitalize()}}</strong></p>
+      <p class="govuk-body">Based on your survey answers, your learning level is: <strong>{{data.selected_level.capitalize()}}</strong></p>
       <p class="govuk-body">We recommend you start with learning resources marked as suitable for your level.</p>
-      <p class="govuk-body">Check what you need to do for One Big Thing</p>
+      <p class="govuk-body">These are the recommended steps for One Big Thing</p>
       <div id="step-by-step" class="step-by-step govuk-body">
         <div class="step-by-step--step-label">
           <div class="step-by-step--step-circle">
@@ -22,7 +22,7 @@
             <h3 id="step-by-step-step-1-title" class="govuk-heading-m">Learn</h3>
             <a target="_blank" rel="noopener noreferrer" class="govuk-button" href="{{data.intranet_link}}">Learn</a>
           </div>
-          <p>You should start by visiting your department's specific One Big Thing learning offer.</p>
+          <p>Start by visiting your department's specific One Big Thing learning offer.</p>
         </div>
         <div class="step-by-step--step-label">
           <div class="step-by-step--step-circle">
@@ -34,7 +34,7 @@
             <h2 id="step-by-step-step-2-title" class="govuk-heading-m">Record</h2>
             <a class="govuk-button" href="{{url('record-learning')}}">Record</a>
           </div>
-          <p class="govuk-body">You should record the total time you have spent learning about data.</p>
+          <p class="govuk-body">Record the total time you have spent learning about data.</p>
           <details class="govuk-details" data-module="govuk-details">
             <summary class="govuk-details__summary">
               <span class="govuk-details__summary-text">
@@ -64,7 +64,7 @@
               <a class="govuk-button" href="{{url('intro-post-survey')}}">Feedback</a>
             {% endif %}
           </div>
-          <p class="govuk-body">Once you have recorded all of your learning you should complete an exit survey.</p>
+          <p class="govuk-body">Once you've recorded all of your learning you should complete an exit survey.</p>
           <p class="govuk-body">Your answers will be used to measure the effect of One Big Thing.</p>
         </div>
       </div>
