@@ -40,7 +40,7 @@ EMAIL_MAPPING = {
         "token_generator": EMAIL_VERIFY_TOKEN_GENERATOR,
     },
     "send-learning-record": {
-        "subject": "One Big Thing: Your learning record",
+        "subject": "One Big Thing: Someone has shared their learning record with you",
         "template_name": "email/send-learning-record.txt",
     },
 }
