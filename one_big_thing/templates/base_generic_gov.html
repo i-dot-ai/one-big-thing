@@ -93,18 +93,18 @@
           </p>
         {% endif %}
         <div class="govuk-header__content">
-          <a href="#" class="govuk-header__link govuk-header__service-name">
+          <a href="/" class="govuk-header__link govuk-header__service-name">
             One Big Thing
           </a>
           <nav aria-label="Menu" class="govuk-header__navigation">
             <button type="button" class="govuk-header__menu-button govuk-js-header-toggle" aria-controls="navigation" aria-label="Show or hide menu" hidden>Menu</button>
             <ul id="navigation" class="govuk-header__navigation-list">
+              {% if request.user.is_authenticated %}
               <li class="govuk-header__navigation-item">
                 <a class="govuk-header__link" href="{{url('homepage')}}">
                   Home
                 </a>
               </li>
-              {% if request.user.is_authenticated %}
                 <li class="govuk-header__navigation-item">
                   <a class="govuk-header__link" href="{{url('record-learning')}}">
                     Record learning
