@@ -6,107 +6,80 @@
 {% endblock %}
 
 {% block content %}
-    <div class="govuk-notification-banner" role="region"
-         aria-labelledby="govuk-notification-banner-title"
-         data-module="govuk-notification-banner">
-        <div class="govuk-notification-banner__header">
-            <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                Hours done
-            </h2>
-        </div>
-        <div class="govuk-notification-banner__content">
-            <p class="govuk-notification-banner__heading">
-                You have completed {{ humanize_timedelta(data.time_completed) }} so far.
-            </p>
-            {% if data.completed_obt %}
-              <p class="govuk-notification-banner__heading">
-                You should provide <a href="{{url('intro-post-survey')}}">feedback</a> about your One Big Thing experience.
-              </p>
-            {% endif %}
-        </div>
+  <div class="govuk-notification-banner" role="region"
+    aria-labelledby="govuk-notification-banner-title"
+    data-module="govuk-notification-banner">
+    <div class="govuk-notification-banner__header">
+      <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+        Hours done
+      </h2>
     </div>
-    {% call macros.form_wrapper(prev_url, "Save") -%}
-        <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-                <h1 class="govuk-heading-l">
-                    Record my learning
-                </h1>
-            </legend>
-            {{ macros.input('title', 'Title of learning', data, errors) }}
-            <div class="govuk-width-container">
-                <main class="govuk-main-wrapper govuk-main-wrapper--l" style="padding: 0px !important;">
-                    <label class="govuk-label" for="time_to_complete">How long it took:</label>
-                    <div class="govuk-grid-row" id="time_to_complete">
-                        <div class="govuk-grid-column-one-half">
-                            {{ macros.input('time_to_complete_hours', 'Hours', data, errors, type="number") }}
-                        </div>
-                        <div class="govuk-grid-column-one-half">
-                            {{ macros.input('time_to_complete_minutes', 'Minutes', data, errors, type="number") }}
-                        </div>
-                    </div>
-                </main>
+    <div class="govuk-notification-banner__content">
+      <p class="govuk-notification-banner__heading">
+        You have completed {{ humanize_timedelta(data.time_completed) }} so far.
+      </p>
+      {% if data.completed_obt %}
+        <p class="govuk-notification-banner__heading">
+          You should provide <a href="{{url('intro-post-survey')}}">feedback</a> about your One Big Thing experience.
+        </p>
+      {% endif %}
+    </div>
+  </div>
+  {% call macros.form_wrapper(prev_url, "Save") -%}
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h1 class="govuk-heading-l">
+          Record my learning
+        </h1>
+      </legend>
+      {{ macros.input('title', 'Title of learning', data, errors) }}
+      <div class="govuk-width-container">
+        <main class="govuk-main-wrapper govuk-main-wrapper--l" style="padding: 0px !important;">
+          <label class="govuk-label" for="time_to_complete">How long it took:</label>
+          <div class="govuk-grid-row" id="time_to_complete">
+            <div class="govuk-grid-column-one-half">
+              {{ macros.input('time_to_complete_hours', 'Hours', data, errors, type="number") }}
             </div>
-            {{ macros.input('link', 'Website address (optional)', data, errors, type="url") }}
-            {{ macros.select_from_list('learning_type', 'Format (optional)', data.learning_types) }}
-            <div class="govuk-form-group {{errors.get(name) and 'govuk-form-group--error' or ''}}">
-            <label class="govuk-label">Rating (optional)</label>
-            <div class="rate">
-                <input type="radio" id="star1" name="rating" value="1"/>
-                <label for="star1">1 star</label>
-                <input type="radio" id="star2" name="rating" value="2"/>
-                <label for="star2">2 stars</label>
-                <input type="radio" id="star3" name="rating" value="3"/>
-                <label for="star3">3 stars</label>
-                <input type="radio" id="star4" name="rating" value="4"/>
-                <label for="star4">4 stars</label>
-                <input type="radio" id="star5" name="rating" value="5"/>
-                <label for="star5">5 stars</label>
+            <div class="govuk-grid-column-one-half">
+              {{ macros.input('time_to_complete_minutes', 'Minutes', data, errors, type="number") }}
             </div>
-            </div>
-        </fieldset>
-    {%- endcall %}
-    <h1 class="govuk-heading-l">
-        My learning record
-    </h1>
-    <a class="govuk-button govuk-button--secondary" href="{{ url('send-learning-record') }}" name="send-learning-record">Email my learning
-        record</a>
-    <table class="govuk-table">
-        <thead class="govuk-table__head">
+          </div>
+        </main>
+      </div>
+      {{ macros.input('link', 'Website address (optional)', data, errors, type="url") }}
+      {{ macros.select_from_list('learning_type', 'Format (optional)', data.learning_types) }}
+      {{ macros.select('rating', 'Rating (optional)', ratings, empty_option="Please choose one...") }}
+    </fieldset>
+  {%- endcall %}
+  <h1 class="govuk-heading-l">
+    My learning record
+  </h1>
+  <a class="govuk-button govuk-button--secondary" href="{{ url('send-learning-record') }}" name="send-learning-record">Email my learning
+    record</a>
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">Title</th>
+        <th scope="col" class="govuk-table__header">Type</th>
+        <th scope="col" class="govuk-table__header">Link</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric">Duration (Hours)</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric" width="150px">Rating (1-5)</th>
+        <th scope="col" class="govuk-table__header govuk-table__header--numeric">Action:</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+      {% for course in data.courses %}
         <tr class="govuk-table__row">
-            <th scope="col" class="govuk-table__header">Title</th>
-            <th scope="col" class="govuk-table__header">Type</th>
-            <th scope="col" class="govuk-table__header">Link</th>
-            <th scope="col" class="govuk-table__header govuk-table__header--numeric">Duration (Hours)</th>
-            <th scope="col" class="govuk-table__header govuk-table__header--numeric" width="150px">Rating (1-5)</th>
-            <th scope="col" class="govuk-table__header govuk-table__header--numeric">Action:</th>
+          <td class="govuk-table__cell">{{ course.title }}</td>
+          <td class="govuk-table__cell">{{ course.get_learning_type_display_name() }}</td>
+          <td class="govuk-table__cell">{{ course.link }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">{{ humanize_timedelta(course.time_to_complete) }}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">{{course.rating}}{{"★"*course.rating}}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">
+            <a href="{{ url('delete-learning-check', course.id) }}" aria-label="Delete line from learning record">Delete</a>
+          </td>
         </tr>
-        </thead>
-        <tbody class="govuk-table__body">
-        {% for course in data.courses %}
-            <tr class="govuk-table__row">
-                <td class="govuk-table__cell">{{ course.title }}</td>
-                <td class="govuk-table__cell">{{ course.get_learning_type_display_name() }}</td>
-                <td class="govuk-table__cell">{{ course.link }}</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">{{ humanize_timedelta(course.time_to_complete) }}</td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">
-                    <div class="rate disabled">
-                        <input class="disabled" disabled {% if course.rating == 1 %} checked {% endif %} type="radio" id="{{loop.index}}-{{course.title}}-display-star1"/>
-                        <label class="disabled" for="{{loop.index}}-{{course.title}}-display-star1">1 star</label>
-                        <input class="disabled" disabled {% if course.rating == 2 %} checked {% endif %} type="radio" id="{{loop.index}}-{{course.title}}-display-star2"/>
-                        <label class="disabled" for="{{loop.index}}-{{course.title}}-display-star2">2 stars</label>
-                        <input class="disabled" disabled {% if course.rating == 3 %} checked {% endif %} type="radio" id="{{loop.index}}-{{course.title}}-display-star3"/>
-                        <label class="disabled" for="{{loop.index}}-{{course.title}}-display-star3">3 stars</label>
-                        <input class="disabled" disabled {% if course.rating == 4 %} checked {% endif %} type="radio" id="{{loop.index}}-{{course.title}}-display-star4"/>
-                        <label class="disabled" for="{{loop.index}}-{{course.title}}-display-star4">4 stars</label>
-                        <input class="disabled" disabled {% if course.rating == 5 %} checked {% endif %} type="radio" id="{{loop.index}}-{{course.title}}-display-star5"/>
-                        <label class="disabled" for="{{loop.index}}-{{course.title}}-display-star5">5 stars</label>
-                    </div>
-                </td>
-                <td class="govuk-table__cell govuk-table__cell--numeric">
-                    <a href="{{ url('delete-learning-check', course.id) }}" aria-label="Delete line from learning record">Delete</a>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+      {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

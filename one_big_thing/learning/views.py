@@ -53,6 +53,14 @@ missing_item_errors = {
     "title": "Please provide a title for this course",
 }
 
+ratings = (
+    {"value": "1", "text": "1 ★"},
+    {"value": "2", "text": "2 ★★"},
+    {"value": "3", "text": "3 ★★★"},
+    {"value": "4", "text": "4 ★★★★"},
+    {"value": "5", "text": "5 ★★★★★"},
+)
+
 
 @login_required
 @require_http_methods(["GET"])
@@ -150,6 +158,7 @@ class RecordLearningView(utils.MethodDispatcher):
         learning_types = choices.CourseType.choices
         courses = models.Learning.objects.filter(user=user)
         data = {
+            **data,
             "time_completed": time_completed,
             "learning_types": learning_types,
             "courses": courses,
@@ -173,6 +182,7 @@ class RecordLearningView(utils.MethodDispatcher):
                 "request": request,
                 "data": data,
                 "errors": errors,
+                "ratings": ratings,
             },
         )
 
@@ -232,7 +242,7 @@ class RecordLearningView(utils.MethodDispatcher):
             ),
             "link": data.get("link"),
             "learning_type": data.get("learning_type", None),
-            "rating": data.get("rating", None),
+            "rating": data.get("rating", None) or None,
         }
         try:
             course_schema.load(manipulated_data, partial=True)
