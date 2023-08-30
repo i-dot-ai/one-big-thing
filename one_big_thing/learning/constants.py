@@ -24,14 +24,30 @@ ORR_LINK = "https://intranet.orr.gov.uk/one-big-thing-2023"
 # Includes arms' length bodies that use main dept's intranet
 # These keys are in a particular format to link to other lists
 DEPARTMENTS_USING_INTRANET_LINKS = {
-    "foreign-commonweath-development-office": FCDO_INTRANET_LINK,
+    "foreign-commonwealth-development-office": FCDO_INTRANET_LINK,
+    "fcdo-services": FCDO_INTRANET_LINK,
     "hm-revenue-customs": HMRC_INTRANET_LINK,
     "home-office": HO_INTRANET_LINK,
     "hm-passport-office": HO_INTRANET_LINK,
     "immigration-enforcement": HO_INTRANET_LINK,
     "border-force": HO_INTRANET_LINK,
     "identity-and-passport-service": HO_INTRANET_LINK,
-    "fcdo-services": FCDO_INTRANET_LINK,
+    "department-for-environment-food-rural-affairs": DEFRA_LINK,
+    "forestry-commission": DEFRA_LINK,
+    "the-water-services-regulation-authority": DEFRA_LINK,
+    "animal-and-plant-health-agency": DEFRA_LINK,
+    "centre-for-environment-fisheries-and-aquaculture-science": DEFRA_LINK,
+    "rural-payments-agency": DEFRA_LINK,
+    "veterinary-medicines-directorate": DEFRA_LINK,
+    "agriculture-and-horticulture-development-board": DEFRA_LINK,
+    "board-of-trustees-of-the-royal-botanic-gardens-kew": DEFRA_LINK,
+    "consumer-council-for-water": DEFRA_LINK,
+    "environment-agency": DEFRA_LINK,
+    "joint-nature-conservation-committee": DEFRA_LINK,
+    "marine-management-organisation": DEFRA_LINK,
+    "natural-england": DEFRA_LINK,
+    "office-for-environmental-protection": DEFRA_LINK,
+    "seafish": DEFRA_LINK,
 }
 
 # These are departmental links for all departments we have them for,
