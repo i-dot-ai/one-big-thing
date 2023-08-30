@@ -15,4 +15,9 @@ echo "Starting app"
 
 echo "Using '$ENVIRONMENT' environment settings"
 
-gunicorn --workers 3 one_big_thing.wsgi:application
+if [ "$ENVIRONMENT" = "LOCAL" ]
+then
+    gunicorn --reload --workers 3 one_big_thing.wsgi:application
+else
+    gunicorn --workers 3 one_big_thing.wsgi:application
+fi
