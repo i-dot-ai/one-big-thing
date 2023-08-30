@@ -31,7 +31,6 @@ def test_login():
     assert page.has_text("Sign in email sent")
     verification_url = utils._get_latest_email_url()
     # Verification should take to homepage, which redirects to start of survey
-    page = client.get(verification_url).follow()
-    assert page.status_code == 302, page.status_code  # Homepage redirects
-    page = page.follow()
+    page = client.get(verification_url)
+    page = page.follow().follow().follow()
     assert page.has_text("Thank you for signing in to your One Big Thing account")

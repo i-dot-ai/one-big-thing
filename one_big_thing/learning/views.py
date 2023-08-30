@@ -3,7 +3,6 @@ import types
 import marshmallow
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator
 from django.shortcuts import redirect, render
@@ -22,7 +21,7 @@ from . import (
     utils,
 )
 from .additional_learning import additional_learning
-from .decorators import enforce_user_completes_pre_survey
+from .decorators import enforce_user_completes_pre_survey, login_required
 from .email_handler import send_learning_record_email
 
 
@@ -55,11 +54,7 @@ missing_item_errors = {
 }
 
 
-def unauthorised_view(request):
-    return render(request, "unauthorised.html", {}, status=401)
-
-
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def homepage_view(request):
@@ -125,7 +120,7 @@ def homepage_view(request):
     )
 
 
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["GET", "POST"])
 @enforce_user_completes_pre_survey
 class RecordLearningView(utils.MethodDispatcher):
@@ -276,7 +271,7 @@ def validate(request, page_name, data):
     return errors
 
 
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @enforce_user_completes_pre_survey
 @require_http_methods(["GET"])
 def complete_hours_view(request):
@@ -292,7 +287,7 @@ def complete_hours_view(request):
         return redirect("record-learning")
 
 
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["GET", "POST"])
 def questions_view(request, survey_type, page_number=1):
     if request.method == "GET":
@@ -383,7 +378,7 @@ def save_data(survey_type, user, page_number, data):
     return item
 
 
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["GET", "POST"])
 @enforce_user_completes_pre_survey
 def send_learning_record_view(request):
@@ -419,7 +414,7 @@ def send_learning_record_view(request):
         )
 
 
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["GET", "POST"])
 @enforce_user_completes_pre_survey
 def check_delete_learning_view(request, learning_id):
@@ -430,7 +425,7 @@ def check_delete_learning_view(request, learning_id):
     return render(request, "delete-learning-check.html")
 
 
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["POST"])
 @enforce_user_completes_pre_survey
 def delete_learning_view(request, learning_id):
@@ -438,7 +433,7 @@ def delete_learning_view(request, learning_id):
     return redirect("record-learning")
 
 
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def additional_learning_view(request):
@@ -496,35 +491,35 @@ class RegisterView(utils.MethodDispatcher):
 
 
 # Don't enforce user completes pre survey as this is the page to redirect to
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["GET"])
 def intro_to_pre_survey_view(request):
     number_questions = len(survey_handling.questions_data["pre"])
     return render(request, "intro-pre-survey.html", {"number_questions": number_questions})
 
 
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def end_pre_survey_view(request):
     return render(request, "end-pre-survey.html", {})
 
 
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def intro_to_post_survey_view(request):
     return render(request, "intro-post-survey.html", {})
 
 
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def end_post_survey_view(request):
     return render(request, "end-post-survey.html", {})
 
 
-@login_required(login_url="unauthorised", redirect_field_name=None)
+@login_required
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
 def department_links_view(request):

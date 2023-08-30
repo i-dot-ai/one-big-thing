@@ -26,4 +26,4 @@ def test_get_pages_logged_in(client):
 def test_get_pages_require_login(client):
     for url in LOGIN_REQUIRED_PAGES:
         response = client.get(url)
-        assert response.status_code == 302, (response, response.url)
+        assert response.status_code == 401, (response, response.url)

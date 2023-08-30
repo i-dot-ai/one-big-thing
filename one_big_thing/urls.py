@@ -2,7 +2,12 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 
-from one_big_thing.learning import authentication_views, info_views, views
+from one_big_thing.learning import (
+    authentication_views,
+    decorators,
+    info_views,
+    views,
+)
 
 info_urlpatterns = [
     path("privacy-notice/", info_views.privacy_notice_view, name="privacy-notice"),
@@ -14,12 +19,13 @@ admin_urlpatterns = [path("admin/", admin.site.urls)]
 
 other_urlpatterns = [
     path("", authentication_views.CustomLoginView, name="index"),
-    path("unauthorised/", views.unauthorised_view, name="unauthorised"),
+    path("unauthorised/", decorators.unauthorised_view, name="unauthorised"),
     path("verify-register/", authentication_views.register_email_view, name="verify-email-register"),
     path("verify/", authentication_views.verify_email_view, name="verify-email"),
     path("register/", views.RegisterView, name="register"),
     path("logout/", authentication_views.LogoutView, name="logout"),
     path("email-sent/", authentication_views.email_sent_view, name="email-sent"),
+    path("post-login/", authentication_views.post_login_view, name="post-login"),
     path("home/", views.homepage_view, name="homepage"),
     path("record-learning/", views.RecordLearningView, name="record-learning"),
     path("record-learning/<uuid:course_id>/", views.RecordLearningView, name="record-learning"),
