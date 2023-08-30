@@ -6,10 +6,7 @@
 
 {% block content %}
 
-  <script>
-      fetch("/home/")
-        .then(x => x.text()).then(y => console.log(y));
-  </script>
+  <script src="{{static('reload.js')}}"></script>
 
   <section class="wrapper">
     <img src="{{static('assets/OBT_LOGO.svg')}}" alt="One Big Thing logo">
