@@ -53,6 +53,14 @@ missing_item_errors = {
     "title": "Please provide a title for this course",
 }
 
+ratings = (
+    {"value": "1", "text": "1 ★"},
+    {"value": "2", "text": "2 ★★"},
+    {"value": "3", "text": "3 ★★★"},
+    {"value": "4", "text": "4 ★★★★"},
+    {"value": "5", "text": "5 ★★★★★"},
+)
+
 
 @login_required
 @require_http_methods(["GET"])
@@ -173,6 +181,7 @@ class RecordLearningView(utils.MethodDispatcher):
                 "request": request,
                 "data": data,
                 "errors": errors,
+                "ratings": ratings,
             },
         )
 
