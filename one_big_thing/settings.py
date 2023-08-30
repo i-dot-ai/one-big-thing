@@ -271,4 +271,4 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'", "'sha256-wQJppp72tbAs/gAyLSJEgQfdtams9qseMear9achv1o='")
-CSP_SCRIPT_SRC = ("'unsafe-inline'",)
+
