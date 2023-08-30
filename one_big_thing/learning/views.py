@@ -62,6 +62,13 @@ ratings = (
 )
 
 
+selected_level_label_map = {
+    constants.AWARENESS: "Level 1 - Awareness",
+    constants.WORKING: "Level 2 - Working",
+    constants.PRACTITIONER: "Level 3 - Practitioner",
+}
+
+
 @login_required
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
