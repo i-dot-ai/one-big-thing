@@ -241,7 +241,7 @@ class RecordLearningView(utils.MethodDispatcher):
             ),
             "link": data.get("link"),
             "learning_type": data.get("learning_type", None),
-            "rating": data.get("rating", None),
+            "rating": data.get("rating", None) or None,
         }
         try:
             course_schema.load(manipulated_data, partial=True)
