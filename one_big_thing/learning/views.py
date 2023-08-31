@@ -62,6 +62,13 @@ ratings = (
 )
 
 
+selected_level_label_map = {
+    constants.AWARENESS: "Level 1 - Awareness",
+    constants.WORKING: "Level 2 - Working",
+    constants.PRACTITIONER: "Level 3 - Practitioner",
+}
+
+
 @login_required
 @require_http_methods(["GET"])
 @enforce_user_completes_pre_survey
@@ -72,9 +79,11 @@ def homepage_view(request):
     selected_level = user.determine_competency_level()
     if selected_level:
         selected_level_course_title = special_course_handler.competency_level_courses[selected_level]
+        selected_level_label = selected_level_label_map[selected_level]
     else:
         selected_level = ""
         selected_level_course_title = ""
+        selected_level_label = ""
     all_level_course_titles = list(special_course_handler.competency_level_courses.values())
     all_level_courses = [
         special_course_handler.get_special_course_information(course_title) for course_title in all_level_course_titles
@@ -99,6 +108,7 @@ def homepage_view(request):
     data = {
         "time_completed": time_completed,
         "selected_level": selected_level,
+        "selected_level_label": selected_level_label,
         "selected_level_course": selected_level_course,
         "all_level_courses": all_level_courses_information,
         "completed_feedback_survey": completed_feedback_survey,
