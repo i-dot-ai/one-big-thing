@@ -4,6 +4,7 @@ import inspect
 import types
 
 import marshmallow
+from django.conf import settings
 from django.http import HttpResponseNotAllowed
 
 from one_big_thing.learning import models
@@ -119,6 +120,9 @@ def is_civil_service_email(email):
         allowed_civil_service_domains_dot = [f".{domain}" for domain in EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS]
         allowed = email.endswith(tuple(allowed_civil_service_domains_dot))
         # Means we get subdomains eg `@engineering.dwp.gov.uk` in addition to `@dwp.gov.uk`
+    if settings.ALLOW_EXAMPLE_EMAILS:
+        if email.endswith("example.com"):
+            allowed = True
     return allowed
 
 
