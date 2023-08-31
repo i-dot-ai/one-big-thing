@@ -14,8 +14,8 @@ module "ecs" {
 
   services = {
     "one-big-thing-${var.env}" = {
-      cpu                       = 2048
-      memory                    = 6144
+      cpu                       = 1024
+      memory                    = 4096
       enable_autoscaling        = true
       desired_count             = var.min_autoscaling_capacity
       autoscaling_min_capacity  = var.min_autoscaling_capacity
@@ -156,47 +156,21 @@ module "ecs" {
             },
           ]
         }
-        "one-big-thing-nginx-${var.env}" = {
-          cpu       = 1024
-          memory    = 2048
-          essential = true
-          port_mappings = [
-            {
-              name          = "nginx-application"
-              containerPort = 80
-              protocol      = "tcp"
-            }
-          ]
-          image                     = "${data.terraform_remote_state.universal.outputs.one_big_thing_proxy_ecr_repo_url}:${var.image_tag}"
-          readonly_root_filesystem  = false  # Needed for NGINX config file changes to succeed
-          enable_cloudwatch_logging = true
-          secrets = []
-          environment = [
-            {
-              name  = "PORT"
-              value = var.port
-            },
-            {
-              name  = "WEB_HOST_NAME"
-              value = "127.0.0.1"  # Local loopback device address
-            },
-          ]
-        }
       }
 
       subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnets
       load_balancer = {
         service = {
           target_group_arn = aws_lb_target_group.this.arn
-          container_name   = "one-big-thing-nginx-${var.env}"
-          container_port   = 80
+          container_name   = "one-big-thing-${var.env}"
+          container_port   = 8055
         }
       }
       security_group_rules = {
         alb_ingress = {
           type                     = "ingress"
-          from_port                = 80
-          to_port                  = 80
+          from_port                = 8055
+          to_port                  = 8055
           protocol                 = "tcp"
           description              = "Service port"
           source_security_group_id = aws_security_group.load_balancer_security_group.id
