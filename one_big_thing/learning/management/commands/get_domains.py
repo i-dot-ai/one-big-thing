@@ -68,6 +68,16 @@ def get_data_rows(filename):
     return data
 
 
+tlds_to_filter = (".gov.uk", ".ac.uk", ".sch.uk", ".police.uk")
+
+
+def filter_domain(domain):
+    for tld in tlds_to_filter:
+        if domain.endswith(tld):
+            return False
+    return True
+
+
 def download_and_parse_domains(url):
     """
     Parses the data rows of the file to get the domain
@@ -76,8 +86,6 @@ def download_and_parse_domains(url):
     """
     filename = save_url_to_data_dir(url)
     rows = get_data_rows(filename)
-    # Prints the value out to the console in a format that can be copy-pasted into any file you want
-    print("CIVIL_SERVICE_DOMAINS = frozenset([")  # noqa: T201
-    for row in rows:
-        print(f'    "{row[2]}",')  # noqa: T201
-    print("])")  # noqa: T201
+    # Prints the actual value we want out to the console
+    output = ",\n".join(sorted(item[2] for item in rows if filter_domain(item[2])))
+    print(output)  # noqa: T201
