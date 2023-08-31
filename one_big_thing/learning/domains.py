@@ -1,4 +1,4 @@
-domains = set(
+EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
     (
         "15billionebp.org",
         "theskiptonacademy.co.uk",
