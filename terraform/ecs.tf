@@ -14,8 +14,8 @@ module "ecs" {
 
   services = {
     "one-big-thing-${var.env}" = {
-      cpu                       = 2048
-      memory                    = 6144
+      cpu                       = 1024
+      memory                    = 4096
       enable_autoscaling        = true
       desired_count             = var.min_autoscaling_capacity
       autoscaling_min_capacity  = var.min_autoscaling_capacity
