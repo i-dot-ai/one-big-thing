@@ -104,7 +104,7 @@ def homepage_view(request):
             course for course in all_level_courses_information if course["title"] == selected_level_course_title
         ][0]
     else:
-        selected_level_course = ""
+        selected_level_course = {"title": "", "link": ""}
     data = {
         "time_completed": time_completed,
         "selected_level": selected_level,
