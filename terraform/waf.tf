@@ -2,7 +2,6 @@ resource "aws_wafv2_web_acl" "obt-waf" {
   name        = "WAF-for-OBT-Cloudfront-${var.env}"
   description = "Cloudfront rate based statement for ${var.env}"
   scope       = "CLOUDFRONT"
-#  scope       = "REGIONAL"
   provider    = aws.useast1
 
 
