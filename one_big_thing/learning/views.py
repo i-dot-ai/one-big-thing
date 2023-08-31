@@ -46,6 +46,11 @@ survey_questions_compulsory_field_map = {
             "confidence-explaining-chart",
         ],
     },
+    "post": {
+        1: [
+            "training-level",
+        ]
+    },
 }
 
 
