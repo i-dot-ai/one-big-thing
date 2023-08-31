@@ -12,11 +12,6 @@ ECR_REPO_URL=$(ECR_URL)/$(ECR_REPO_NAME)
 IMAGE=$(ECR_REPO_URL):$(IMAGE_TAG)
 
 
-PROXY_ECR_REPO_NAME=i-dot-ai-one-big-thing-proxy
-PROXY_ECR_REPO_URL=$(ECR_URL)/$(PROXY_ECR_REPO_NAME)
-PROXY_IMAGE=$(PROXY_ECR_REPO_URL):$(IMAGE_TAG)
-
-
 define _update_requirements
 	docker-compose run requirements bash -c "pip install -U pip setuptools && pip install -U -r /app/$(1).txt && pip freeze > /app/$(1).lock"
 endef
@@ -67,17 +62,11 @@ docker/login:
 docker/build:
 	docker build -t $(IMAGE) -f ./docker/web/Dockerfile .
 
-docker/build-proxy:
-	docker build -t $(PROXY_IMAGE) -f ./docker/proxy/Dockerfile .
-
 docker/build-m1:
 	docker buildx build --platform linux/amd64 -t $(IMAGE) -f ./docker/web/Dockerfile .
 
 docker/push:
 	docker push $(IMAGE)
-
-docker/push-proxy:
-	docker push $(PROXY_IMAGE)
 
 
 # -------------------------------------- Terraform  -------------------------------------
