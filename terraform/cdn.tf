@@ -3,6 +3,10 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   origin {
     domain_name = aws_alb.this.dns_name
     origin_id   = "obt_alb_origin_id"
+    origin_shield {
+      enabled              = true
+      origin_shield_region = "eu-west-2"
+    }
 
     custom_origin_config {
       http_port              = 80
