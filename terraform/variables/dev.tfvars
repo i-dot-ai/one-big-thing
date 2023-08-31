@@ -14,7 +14,7 @@ ip_securelist = [
   "165.225.198.0/23", # No10
   "81.144.180.0/24",  # No10 desktop
 ]
-record_prefix = "obt-dev"
+record_prefix = "dev."
 email_backend_type = "GOVUKNOTIFY"
 required_learning_time = 420
 port = 8055
