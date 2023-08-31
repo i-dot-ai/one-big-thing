@@ -45,15 +45,16 @@ ALLOWED_HOSTS = [
     "one-big-thing-develop.london.cloudapps.digital",
     "localhost",
     "127.0.0.1",
-    "obt-dev.i.ai.10ds.cabinetoffice.gov.uk",
-    "obt-prod.i.ai.10ds.cabinetoffice.gov.uk",
+    "dev.onebigthing.civilservice.gov.uk",
+    "onebigthing.civilservice.gov.uk",
+    "web",
 ]
 
 # CSRF settings
 CSRF_COOKIE_HTTPONLY = True
 CSRF_TRUSTED_ORIGINS = [
-    "obt-dev.i.ai.10ds.cabinetoffice.gov.uk",
-    "obt-prod.i.ai.10ds.cabinetoffice.gov.uk",
+    "dev.onebigthing.civilservice.gov.uk",
+    "onebigthing.civilservice.gov.uk",
 ]
 
 if VCAP_APPLICATION.get("space_name", "unknown") not in ["tests", "local"]:

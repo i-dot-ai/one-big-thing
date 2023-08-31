@@ -14,12 +14,12 @@ ip_securelist = [
   "165.225.198.0/23", # No10
   "81.144.180.0/24",  # No10 desktop
 ]
-record_prefix = "obt-prod"
+record_prefix = ""
 email_backend_type = "GOVUKNOTIFY"
 required_learning_time = 420
 port = 8055
 region="eu-west-2"
-debug = true
+debug = false
 min_autoscaling_capacity = 20
 max_autoscaling_capacity = 200
 rds_instance_class = "db.r6g.2xlarge"
