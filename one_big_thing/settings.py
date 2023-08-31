@@ -47,7 +47,6 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "obt-dev.i.ai.10ds.cabinetoffice.gov.uk",
     "obt-prod.i.ai.10ds.cabinetoffice.gov.uk",
-    "web",
 ]
 
 # CSRF settings
