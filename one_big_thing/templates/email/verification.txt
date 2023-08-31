@@ -5,8 +5,6 @@ You can use the following link to sign in to your One Big Thing account:
 
 You can only use this link once. If you do not use it within 1 hour, it will expire.
 
-If you have a query about this notification, please email the support team: {{contact_address}}
-
 Regards
 
-One Big Thing
+One Big Thing team
