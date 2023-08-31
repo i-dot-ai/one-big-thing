@@ -74,7 +74,7 @@
           <td class="govuk-table__cell">{{ course.get_learning_type_display_name() }}</td>
           <td class="govuk-table__cell">{{ course.link }}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric">{{ humanize_timedelta(course.time_to_complete) }}</td>
-          <td class="govuk-table__cell govuk-table__cell--numeric">{{course.rating}}{{course.rating and ("★"*course.rating)}}</td>
+          <td class="govuk-table__cell govuk-table__cell--numeric">{% if course.rating %}{{course.rating}}{{"★"*course.rating}}{% endif %}</td>
           <td class="govuk-table__cell govuk-table__cell--numeric">
             <a href="{{ url('delete-learning-check', course.id) }}" aria-label="Delete line from learning record">Delete</a>
           </td>
