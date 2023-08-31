@@ -27,15 +27,15 @@ terraform {
   }
 }
 
-#provider "aws" {
-#  region = "us-east-1"
-#  alias  = "useast1"
-#
-#  default_tags {
-#    tags = {
-#      Environment = var.env
-#      Project     = "i-dot-ai"
-#      Name        = "one-big-thing"
-#    }
-#  }
-#}
+provider "aws" {
+  region = "us-east-1"
+  alias  = "useast1"
+
+  default_tags {
+    tags = {
+      Environment = var.env
+      Project     = "i-dot-ai"
+      Name        = "one-big-thing"
+    }
+  }
+}
