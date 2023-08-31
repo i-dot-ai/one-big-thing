@@ -1,9 +1,9 @@
 from collections import OrderedDict
 
 HO_INTRANET_LINK = "https://ukhomeoffice.sharepoint.com/sites/prog3312/SitePages/One-Big-Thing.aspx"
-HMRC_INTRANET_LINK = ""
+HMRC_INTRANET_LINK = "https://hmrc.sharepoint.com/sites/COM123602488"
 FCDO_INTRANET_LINK = "https://fcogovuk.sharepoint.com/sites/intranet-learning/SitePages/one-big-thing.aspx"
-DEFRA_LINK = ""
+DEFRA_LINK = "https://defra.sharepoint.com/sites/Community739/SitePages/One-Big-Thing.aspx?OR=Teams-HL&CT=1693306749553"
 ONS_LINK = "https://learninghub.ons.gov.uk/login/index.php"
 HMRC_LINK = ""
 DFT_LINK = ""
