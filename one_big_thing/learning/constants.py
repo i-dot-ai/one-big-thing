@@ -75,7 +75,7 @@ ALL_INTRANET_LINKS = OrderedDict(
     {
         "Crown Prosecution Service (CPS)": CROWN_PROSECUTION_SERVICE_LINK,
         "Department for Energy Security and Net Zero (DESNZ)": DEPARTMENT_FOR_ENERGY_SECURITY_AND_NET_ZERO_LINK,
-        "Department for Science, Innovation and Technology (DSIT)": DEPARTMENT_FOR_SCIENCE_INFORMATION_AND_TECHNOLOGY_LINK,
+        "Department for Science, Innovation and Technology (DSIT)": DEPARTMENT_FOR_SCIENCE_INFORMATION_AND_TECHNOLOGY_LINK,  # noqa: E501
         "Driver and Vehicle Licensing Agency (DVLA)": DVLA_LINK,
         "HM Courts and Tribunal Service (HMCTS)": HM_COURTS_AND_TRIBUNAL_SERVICE,
         "Ministry of Defence (MoD)": MOD_LINK,
