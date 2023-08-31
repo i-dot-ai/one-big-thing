@@ -12,15 +12,15 @@
     <table class="govuk-table">
       <thead class="govuk-table__head">
         <tr class="govuk-table__row">
-          <th scope="col" class="govuk-table__header">Department</th>
-          <th scope="col" class="govuk-table__header">Intranet page</th>
+          <th scope="col" class="govuk-table__header govuk-!-width-one-quarter">Department</th>
+          <th scope="col" class="govuk-table__header govuk-!-width-three-quarters">Intranet page</th>
         </tr>
       </thead>
       <tbody class="govuk-table__body">
       {% for key, value in data.dept_links.items() %}
         <tr class="govuk-table__row">
           <th scope="row" class="govuk-table__header">{{key}}</th>
-          <td class="govuk-table__cell">{% if value %}<a href="{{value}}">{{value}}</a> {% else %}Intranet link coming soon{% endif %}</td>
+          <td class="govuk-table__cell">{% if value %}<a class="govuk-link govuk-link--long" href="{{value}}">{{value}}</a> {% else %}Intranet link coming soon{% endif %}</td>
         </tr>
       {% endfor %}
       </tbody>
