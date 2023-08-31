@@ -7,7 +7,7 @@ import marshmallow
 from django.http import HttpResponseNotAllowed
 
 from one_big_thing.learning import models
-from one_big_thing.domains import EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS
+from one_big_thing.learning.domains import EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS
 
 event_names = set()
 
