@@ -100,13 +100,7 @@ additional_learning = {
                 "type": "Course",
                 "duration": 36,
             },
-            {
-                "title": "Gathering and analysing customer information",
-                "link": "https://learn.civilservice.gov.uk/courses/UFzCUurWQKy_C2_iTql7vA",
-                "provider": "Civil Service Learning",
-                "type": "Course",
-                "duration": 50,
-            },
+
             {
                 "title": "Data visualisation 101",
                 "link": "https://learn.civilservice.gov.uk/courses/2PAR3NQyT-GOg5-7bVZaog",
