@@ -35,6 +35,7 @@ MOD_LINK = (
     "=d041d3a0%2D0021%2D7000%2D2f83%2D6d6770d0fcfc"
 )
 MOJ_LINK = "https://intranet.justice.gov.uk/guidance/hr/learning-and-development/capability-programmes/one-big-thing/"
+DFE_LINK = "https://educationgovuk.sharepoint.com/sites/lvewp00394/SitePages/One-Big-Thing.aspx"
 
 
 # TODO - what are the arms' length bodies that will also use these?
@@ -91,6 +92,7 @@ ALL_INTRANET_LINKS = OrderedDict(
         "Office for National Statistics (ONS)": ONS_LINK,
         "Office of Rail and Road (ORR)": ORR_LINK,
         "Ofsted": OFSTED_LINK,
+        "Department for Education (DfE)": DFE_LINK,
     }
 )
 
