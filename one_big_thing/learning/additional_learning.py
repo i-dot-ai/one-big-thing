@@ -100,7 +100,6 @@ additional_learning = {
                 "type": "Course",
                 "duration": 36,
             },
-
             {
                 "title": "Data visualisation 101",
                 "link": "https://learn.civilservice.gov.uk/courses/2PAR3NQyT-GOg5-7bVZaog",
@@ -136,10 +135,10 @@ additional_learning = {
             },
             {
                 "title": "Let's talk about data quality!",
-                "link": "https://www.youtube.com/watch?v=uoa6Q2JWGY4",
+                "link": "https://www.youtube.com/playlist?list=PLxXq2x8c-H0J0xmd9Mcx5o3UiCwaTmelc",
                 "provider": "Government Analysis Function",
                 "type": "Video",
-                "duration": 3,
+                "duration": 80,
             },
             {
                 "title": "YouTube playlist",
@@ -151,7 +150,7 @@ additional_learning = {
             {
                 "title": "Data Quality",
                 "link": "https://learn.civilservice.gov.uk/courses/GyZgKWc0Tz6ZIfvDSiuO1Q",
-                "provider": "Government Analysis Function",
+                "provider": "Civil Service Learning",
                 "type": "Course",
                 "duration": 80,
             },
