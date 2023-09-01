@@ -46,3 +46,7 @@
 #i-dot-ai .obt-logo {
   max-width: 100%;
 }
+
+#i-dot-ai .govuk-link--long {
+  word-break: break-all;
+}
