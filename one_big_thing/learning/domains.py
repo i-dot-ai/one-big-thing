@@ -1,7 +1,6 @@
 EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
     (
         "15billionebp.org",
-        "theskiptonacademy.co.uk",
         "aatrust.co.uk",
         "acas.org.uk",
         "accordgroup.org.uk",
