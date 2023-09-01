@@ -155,13 +155,6 @@ additional_learning = {
                 "duration": "Various",
             },
             {
-                "title": "Awareness of new coding tools",
-                "link": "https://analysisfunction.civilservice.gov.uk/training/awareness-of-new-coding-tools/",
-                "provider": "Government Analysis Function",
-                "type": "Course",
-                "duration": 90,
-            },
-            {
                 "title": "Data Quality",
                 "link": "https://learn.civilservice.gov.uk/courses/GyZgKWc0Tz6ZIfvDSiuO1Q",
                 "provider": "Government Analysis Function",
