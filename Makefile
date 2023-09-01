@@ -67,34 +67,3 @@ docker/build-m1:
 
 docker/push:
 	docker push $(IMAGE)
-
-
-# -------------------------------------- Terraform  -------------------------------------
-
-tf_build_args=-var "image_tag=$(IMAGE_TAG)" -var-file=variables/${env}.tfvars
-
-tf/new-workspace:
-	terraform -chdir=terraform workspace new $(env)
-
-tf/set-workspace:
-	terraform -chdir=terraform workspace select $(env)
-
-# Will create a new workspace if one does not already exist
-# Note: only works in github actions
-tf/set-or-create-workspace:
-	make tf/set-workspace || make tf/new-workspace
-
-tf/init:
-	terraform -chdir=./terraform init
-
-tf/plan:
-	make tf/set-workspace && \
-	terraform -chdir=./terraform plan $(tf_build_args)
-
-tf/apply:
-	make tf/set-workspace && \
-	terraform -chdir=./terraform apply ${tf_build_args}
-
-tf/destroy:
-	make tf/set-workspace && \
-	terraform -chdir=./terraform destroy ${tf_build_args}
