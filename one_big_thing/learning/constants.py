@@ -75,24 +75,24 @@ DEPARTMENTS_USING_INTRANET_LINKS = {
 ALL_INTRANET_LINKS = OrderedDict(
     {
         "Crown Prosecution Service (CPS)": CROWN_PROSECUTION_SERVICE_LINK,
+        "Department for Education (DfE)": DFE_LINK,
         "Department for Energy Security and Net Zero (DESNZ)": DEPARTMENT_FOR_ENERGY_SECURITY_AND_NET_ZERO_LINK,
-        "Department for Science, Innovation and Technology (DSIT)": DEPARTMENT_FOR_SCIENCE_INFORMATION_AND_TECHNOLOGY_LINK,  # noqa: E501
-        "Driver and Vehicle Licensing Agency (DVLA)": DVLA_LINK,
-        "HM Courts and Tribunal Service (HMCTS)": HM_COURTS_AND_TRIBUNAL_SERVICE,
-        "Ministry of Defence (MoD)": MOD_LINK,
-        "Ministry of Justice (MoJ)": MOJ_LINK,
         "Department for Environment, Food and Rural Affairs (Defra)": DEFRA_LINK,
+        "Department of Health and Social Care (DHSC)": DHSC_LINK,
         "Department for Levelling Up, Housing and Communities (DLUHC)": DLUCH_LINK,
+        "Department for Science, Innovation and Technology (DSIT)": DEPARTMENT_FOR_SCIENCE_INFORMATION_AND_TECHNOLOGY_LINK,
         "Department for Transport (DfT)": DFT_LINK,
         "Department for Work and Pensions (DWP)": DWP_LINK,
-        "Department of Health and Social Care (DHSC)": DHSC_LINK,
+        "Driver and Vehicle Licensing Agency (DVLA)": DVLA_LINK,
         "Foreign, Commonwealth & Development Office (FCDO)": FCDO_INTRANET_LINK,
-        "HM Revenue and Customs (HMRC)": HMRC_INTRANET_LINK,
         "Home Office (HO)": HO_INTRANET_LINK,
+        "HM Courts and Tribunal Service (HMCTS)": HM_COURTS_AND_TRIBUNAL_SERVICE,
+        "HM Revenue and Customs (HMRC)": HMRC_INTRANET_LINK,
+        "Ministry of Defence (MoD)": MOD_LINK,
+        "Ministry of Justice (MoJ)": MOJ_LINK,
         "Office for National Statistics (ONS)": ONS_LINK,
         "Office of Rail and Road (ORR)": ORR_LINK,
         "Ofsted": OFSTED_LINK,
-        "Department for Education (DfE)": DFE_LINK,
     }
 )
 
