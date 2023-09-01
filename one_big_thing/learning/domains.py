@@ -484,5 +484,8 @@ EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
         "wykhampark-aspirations.org",
         "xptrust.org",
         "yare-edu.org.uk",
+        "naturalengland.org.uk",
+        "nsandi.com",
+        "gov.scot",
     )
 )
