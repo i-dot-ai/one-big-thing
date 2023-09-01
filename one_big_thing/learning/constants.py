@@ -80,7 +80,7 @@ ALL_INTRANET_LINKS = OrderedDict(
         "Department for Environment, Food and Rural Affairs (Defra)": DEFRA_LINK,
         "Department of Health and Social Care (DHSC)": DHSC_LINK,
         "Department for Levelling Up, Housing and Communities (DLUHC)": DLUCH_LINK,
-        "Department for Science, Innovation and Technology (DSIT)": DEPARTMENT_FOR_SCIENCE_INFORMATION_AND_TECHNOLOGY_LINK,
+        "Department for Science, Innovation and Technology (DSIT)": DEPARTMENT_FOR_SCIENCE_INFORMATION_AND_TECHNOLOGY_LINK, # noqa: E501
         "Department for Transport (DfT)": DFT_LINK,
         "Department for Work and Pensions (DWP)": DWP_LINK,
         "Driver and Vehicle Licensing Agency (DVLA)": DVLA_LINK,
