@@ -8,6 +8,8 @@ from django.urls import reverse
 from django.utils.text import slugify
 from markdown_it import MarkdownIt
 
+from one_big_thing.settings import VCAP_APPLICATION
+
 markdown_converter = MarkdownIt("js-default")  # Need js-default as secure setting
 
 DEFAULT = object()
@@ -83,6 +85,7 @@ def environment(**options):
             "DEFAULT": DEFAULT,
             "humanize_timedelta": humanize_timedelta,
             "get_messages": messages.get_messages,
+            "space_name": VCAP_APPLICATION.get("space_name"),
         }
     )
     return env
