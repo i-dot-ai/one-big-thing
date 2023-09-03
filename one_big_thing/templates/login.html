@@ -41,8 +41,6 @@
       </ul>
     </div>
 
-
-    {% if space_name != "prod" %}
     <form class="login" method="POST">
       {{csrf_input}}
 
@@ -75,11 +73,5 @@
         </div>
       </fieldset>
     </form>
-    {% else %}
-        <div>
-      <h2 class="govuk-heading-m">Sign up opens on Monday</h2>
-      <p class="govuk-body">Come back here from Monday 4th September 2023 to start your data learning. All you'll need is your work email address.</p>
-    </div>
-  {% endif %}
   </section>
 {% endblock %}
