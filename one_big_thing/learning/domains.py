@@ -20,6 +20,8 @@ EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
         "cgma.co.uk",
         "citb.co.uk",
         "citizensadvice.org.uk",
+        "college.police.uk",
+        "consumer.scot",
         "covid19.public-inquiry.uk",
         "cqc.org.uk",
         "cynulliad.cymru",
