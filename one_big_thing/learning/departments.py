@@ -124,6 +124,7 @@ department_tuples = (
     ("ministry-of-defence-civilian", "Ministry of Defence (MOD) - Civilian Staff"),
     ("ministry-of-defence-military", "Ministry of Defence (MOD) - Military Staff"),
     ("ministry-of-justice", "Ministry of Justice (MOJ)"),
+    ("single-financial-guidance-body", "Money and Pensions Service (MaPS)"),
     ("national-crime-agency", "National Crime Agency (NCA)"),
     ("national-forest-company", "National Forest Company (NFC)"),
     ("national-infrastructure-commission", "National Infrastructure Commission"),
