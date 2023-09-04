@@ -22,7 +22,7 @@ EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
         "citizensadvice.org.uk",
         "college.police.uk",
         "consumer.scot",
-		"covid19.public-inquiry.uk",
+        "covid19.public-inquiry.uk",
         "cqc.org.uk",
         "cynulliad.cymru",
         "developmentbank.wales",
