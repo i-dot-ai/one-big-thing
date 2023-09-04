@@ -112,6 +112,7 @@ EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
         "thenational.academy",
         "theoep.org.uk",
         "tnlcommunityfund.org.uk",
+        "ukgi.org.uk",
         "ukri.org",
         "victimscommissioner.org.uk",
         "wales.nhs.uk",

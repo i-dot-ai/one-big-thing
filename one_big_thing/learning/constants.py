@@ -1,5 +1,6 @@
 from collections import OrderedDict
 
+CABINET_OFFICE_LINK = "https://intranet.cabinetoffice.gov.uk/one-big-thing/"
 HO_INTRANET_LINK = "https://ukhomeoffice.sharepoint.com/sites/prog3312/SitePages/One-Big-Thing.aspx"
 HMRC_INTRANET_LINK = "https://hmrc.sharepoint.com/sites/COM142448518/SitePages/One-Big-Thing.aspx"
 FCDO_INTRANET_LINK = "https://fcogovuk.sharepoint.com/sites/intranet-learning/SitePages/one-big-thing.aspx"
@@ -74,6 +75,7 @@ DEPARTMENTS_USING_INTRANET_LINKS = {
 # regardless of whether they are using the streamlined view
 ALL_INTRANET_LINKS = OrderedDict(
     {
+        "Cabinet Office": CABINET_OFFICE_LINK,
         "Crown Prosecution Service (CPS)": CROWN_PROSECUTION_SERVICE_LINK,
         "Department for Education (DfE)": DFE_LINK,
         "Department for Energy Security and Net Zero (DESNZ)": DEPARTMENT_FOR_ENERGY_SECURITY_AND_NET_ZERO_LINK,
