@@ -469,9 +469,13 @@ def additional_learning_view(request):
     return render(request, "additional-learning.html", {"data": data})
 
 
+# Need login otherwise can't save against unknown user
+# This happens before pre_survey
+@login_required
+@require_http_methods(["POST", "GET"])
 class RegisterView(utils.MethodDispatcher):
     template_name = "register.html"
-    error_message = "Something has gone wrong.  Please try again."
+    error_message = "Something has gone wrong. Please try again."
 
     def error(self, request):
         messages.error(request, self.error_message)
