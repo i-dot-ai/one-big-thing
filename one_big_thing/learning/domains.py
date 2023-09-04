@@ -38,6 +38,7 @@ EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
         "gov.scot",
         "gov.scot",
         "gov.wales",
+        "grenfelltowerinquiry.org.uk",
         "hee.nhs.uk",
         "heritagefund.org.uk",
         "highwaysengland.co.uk",
