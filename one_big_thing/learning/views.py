@@ -399,7 +399,7 @@ def additional_learning_view(request):
 # This happens before pre_survey
 @login_required
 @require_http_methods(["POST", "GET"])
-class RegisterView(utils.MethodDispatcher):
+class MyDetailsView(utils.MethodDispatcher):
     template_name = "register.html"
     error_message = "Something has gone wrong. Please try again."
 
