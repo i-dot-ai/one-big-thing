@@ -84,6 +84,9 @@ class Course(TimeStampedModel, UUIDPrimaryKeyBase):
         else:
             return ""
 
+    def __str__(self):
+        return f"{self.title} ({self.id})"
+
 
 class Learning(TimeStampedModel, UUIDPrimaryKeyBase):
     title = models.CharField(max_length=100)
@@ -100,6 +103,9 @@ class Learning(TimeStampedModel, UUIDPrimaryKeyBase):
         else:
             return ""
 
+    def __str__(self):
+        return f"{self.title} ({self.id})"
+
 
 class Event(TimeStampedModel):
     name = models.CharField(max_length=256)
@@ -111,6 +117,9 @@ class SurveyResult(UUIDPrimaryKeyBase, TimeStampedModel):
     page_number = models.IntegerField()
     survey_type = models.CharField(max_length=128)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.survey_type} - {self.id} - {self.modified_at}"
 
 
 def get_competency_answers_for_user(user):
