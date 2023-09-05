@@ -6,7 +6,7 @@ HMRC_INTRANET_LINK = "https://hmrc.sharepoint.com/sites/COM142448518/SitePages/O
 FCDO_INTRANET_LINK = "https://fcogovuk.sharepoint.com/sites/intranet-learning/SitePages/one-big-thing.aspx"
 DEFRA_LINK = "https://defra.sharepoint.com/sites/Community739/SitePages/One-Big-Thing.aspx?OR=Teams-HL&CT=1693306749553"
 ONS_LINK = "https://learninghub.ons.gov.uk/login/index.php"
-HMRC_LINK = "https://hmrc.sharepoint.com/sites/COM123602488"
+HMRC_LINK = "https://hmrc.sharepoint.com/sites/COM142448518/SitePages/One-Big-Thing.aspx"
 DFT_LINK = "https://intranet.dft.gov.uk/section/about-dft/one-big-thing-data-training-civil-servants"
 OFSTED_LINK = "https://learnspace.ofsted.gov.uk/course/view.php?id=1205"
 WELSH_GOVT_LINK = ""
