@@ -76,7 +76,6 @@ class Course(TimeStampedModel, UUIDPrimaryKeyBase):
     link = models.URLField(blank=True, null=True)
     learning_type = models.CharField(max_length=128, blank=True, null=True)
     time_to_complete = models.IntegerField(blank=True, null=True)  # minutes
-    # strengths = models.CharField(max_length=255)
 
     def get_learning_type_display_name(self):
         if self.learning_type in choices.CourseType.names:
