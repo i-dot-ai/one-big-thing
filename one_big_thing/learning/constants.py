@@ -26,15 +26,7 @@ DEPARTMENT_FOR_SCIENCE_INFORMATION_AND_TECHNOLOGY_LINK = (
 )
 DVLA_LINK = "https://dvla.sharepoint.com/sites/OrganisationTalentLearningOTL/SitePages/One-Big-Thing-2023.aspx"
 HM_COURTS_AND_TRIBUNAL_SERVICE = "https://justiceuk.sharepoint.com/sites/HMCTSLandDHub/SitePages/Data.aspx"
-MOD_LINK = (
-    "https://login.microsoftonline.com/be7760ed-5953-484b-ae95-d0a16dfa09e5/oauth2/authorize?client%5Fid=00000003%2D0"
-    "000%2D0ff1%2Dce00%2D000000000000&response%5Fmode=form%5Fpost&response%5Ftype=code%20id%5Ftoken&resource=00000003%"
-    "2D0000%2D0ff1%2Dce00%2D000000000000&scope=openid&nonce=D2CE7C3A48EA9C5319E734A01021CBD84F5E8C2B8656DB03%2D92321B"
-    "FC9BE3A57DFA3FDFAD49EBDAD65F7C0D44D497DB7B7CEF7A6BA3AF71ED&redirect%5Furi=https%3A%2F%2Fmodgovuk%2Esharepoint%2"
-    "Ecom%2F%5Fforms%2Fdefault%2Easpx&state=OD0w&claims=%7B%22id%5Ftoken%22%3A%7B%22xms%5Fcc%22%3A%7B%22values%22%3A"
-    "%5B%22CP1%22%5D%7D%7D%7D&wsucxt=1&cobrandid=11bd8083%2D87e0%2D41b5%2Dbb78%2D0bc43c8a8e8a&client%2Drequest%2Did"
-    "=d041d3a0%2D0021%2D7000%2D2f83%2D6d6770d0fcfc"
-)
+MOD_LINK = "https://modgovuk.sharepoint.com/sites/IntranetCivilianHRPeoplePortal/SitePages/MoD-Offer-(One-Big-Thing).aspx"
 MOJ_LINK = "https://intranet.justice.gov.uk/guidance/hr/learning-and-development/capability-programmes/one-big-thing/"
 DFE_LINK = "https://educationgovuk.sharepoint.com/sites/lvewp00394/SitePages/One-Big-Thing.aspx"
 
