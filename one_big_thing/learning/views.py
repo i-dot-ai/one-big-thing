@@ -204,49 +204,8 @@ class RecordLearningView(utils.MethodDispatcher):
     def post(self, request, course_id=None):
         data = request.POST.dict()
         errors = {}
-        # errors = validate(request, "record-learning", data)
-        # if not data["time_to_complete_hours"] and not data["time_to_complete_minutes"]:
-        #     errors = {
-        #         **errors,
-        #         "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
-        #         "time_to_complete_hours": self.time_errors_map["time_to_complete_hours"],
-        #     }
-        # if errors:
-        #     return self.get(request, data=data, errors=errors)
-        # if data["time_to_complete_hours"] or data["time_to_complete_minutes"]:
-        #     if data["time_to_complete_hours"]:
-        #         try:
-        #             value = int(data["time_to_complete_hours"])
-        #             if value < 0:
-        #                 raise ValueError
-        #         except ValueError:
-        #             errors = {
-        #                 **errors,
-        #                 "time_to_complete_hours": self.time_errors_map["time_to_complete_hours"],
-        #             }
-        #     else:
-        #         data["time_to_complete_hours"] = 0
-        #     if data["time_to_complete_minutes"]:
-        #         try:
-        #             value = int(data["time_to_complete_minutes"])
-        #             if value < 0:
-        #                 raise ValueError
-        #             if int(data["time_to_complete_minutes"]) > 59:
-        #                 errors = {
-        #                     **errors,
-        #                     "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
-        #                 }
-        #         except ValueError:
-        #             errors = {
-        #                 **errors,
-        #                 "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
-        #             }
-        #     else:
-        #         data["time_to_complete_minutes"] = 0
         record_learning_schema = schemas.RecordLearningSchema(unknown=marshmallow.EXCLUDE)
         try:
-            print("data")
-            print(data)
             record_learning_schema.load(data, partial=False)
         except marshmallow.exceptions.ValidationError as err:
             validation_errors = dict(err.messages)
