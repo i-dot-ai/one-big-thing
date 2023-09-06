@@ -59,7 +59,9 @@ def test_enter_learning_record_too_long_title():
     assert record_learning_page.status_code == 200, record_learning_page.status_code
 
     record_learning_form = record_learning_page.get_form()
-    record_learning_form["title"] = "Really, really long title...... Really, really long Really, really long title......Really, really long title...... title..... Really, really long title...... Really, really long Really, really long title......Really, really long title...... title......Really, really long title...... Really, really long Really, really long title......Really, really long title...... title......." # noqa
+    record_learning_form[
+        "title"
+    ] = "Really, really long title...... Really, really long Really, really long title......Really, really long title...... title..... Really, really long title...... Really, really long Really, really long title......Really, really long title...... title......Really, really long title...... Really, really long Really, really long title......Really, really long title...... title......."  # noqa
 
     submitted_page = record_learning_form.submit()
     assert submitted_page.status_code == 200, submitted_page.status_code
