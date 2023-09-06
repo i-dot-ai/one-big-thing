@@ -259,6 +259,8 @@ class RecordLearningView(utils.MethodDispatcher):
         else:
             template_name = "record-learning.html"
         course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
+        if not data["time_to_complete_hours"]:
+            data["time_to_complete_hours"] = 0
         manipulated_data = {
             "title": data["title"],
             "time_to_complete": str(
