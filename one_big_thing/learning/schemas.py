@@ -18,6 +18,15 @@ class SingleLineStr(fields.Str):
             if not value == single_line_value:
                 raise ValidationError("Cannot contain linebreaks")
         return super()._deserialize(value, attr, data, **kwargs)
+    
+
+class LearningTitleSingleLineStr(SingleLineStr):
+    def _deserialize(self, value, attr, data, **kwargs):
+        if not value:
+            raise ValidationError("Please enter a title")
+        elif len(value) > 200:
+            raise ValidationError("The title must be less than 200 characters")
+        return super()._deserialize(value, attr, data, **kwargs)
 
 
 def validate_choice_and_length_or_none(values):
@@ -97,7 +106,7 @@ class LearningSchema(TimeStampedModelSchema, UUIDPrimaryKeyBaseModelSchema):
 
 
 class RecordLearningSchema(Schema):
-    title = SingleLineStr(required=True, validate=validate.Length(max=200))
+    title = LearningTitleSingleLineStr(required=True)
     link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
     learning_type = make_choice_field(max_len=256, values=choices.CourseType.values, allow_none=True)
     time_to_complete_hours = fields.Str(required=False, validate=validate_time_to_complete_hours)
