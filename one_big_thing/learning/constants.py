@@ -31,10 +31,9 @@ MOD_LINK = (
 )
 MOJ_LINK = "https://intranet.justice.gov.uk/guidance/hr/learning-and-development/capability-programmes/one-big-thing/"
 DFE_LINK = "https://educationgovuk.sharepoint.com/sites/lvewp00394/SitePages/One-Big-Thing.aspx"
+DCMS_LINK = "https://intranet.dcms.gov.uk/home/ls/community/my-ld-community"
 
 
-# TODO - what are the arms' length bodies that will also use these?
-# TODO - get all links
 # These are departments having the "streamlined view"
 # Includes arms' length bodies that use main dept's intranet
 # These keys are in a particular format to link to other lists
@@ -71,6 +70,7 @@ ALL_INTRANET_LINKS = OrderedDict(
     {
         "Cabinet Office": CABINET_OFFICE_LINK,
         "Crown Prosecution Service (CPS)": CROWN_PROSECUTION_SERVICE_LINK,
+        "Department for Culture, Media and Sport (DCMS)": DCMS_LINK,
         "Department for Education (DfE)": DFE_LINK,
         "Department for Energy Security and Net Zero (DESNZ)": DEPARTMENT_FOR_ENERGY_SECURITY_AND_NET_ZERO_LINK,
         "Department for Environment, Food & Rural Affairs (Defra)": DEFRA_LINK,

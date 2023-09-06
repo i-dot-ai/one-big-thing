@@ -80,7 +80,7 @@ EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
         "northumberlandnationalpark.org.uk",
         "northyorkmoors.org.uk",
         "nsandi.com",
-        "nsandi.com",
+        "ocda.org.uk",
         "officeforstudents.org.uk",
         "ogauthority.co.uk",
         "ombudsman.org.uk",

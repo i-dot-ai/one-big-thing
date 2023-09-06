@@ -1,6 +1,7 @@
 from . import utils
 
 department_tuples = (
+    ("acas", "The Advisory, Conciliation and Arbitration Service (Acas)"),
     ("active-travel-england", "Active Travel England (ATE)"),
     ("advisory-committee-on-releases-to-the-environment", "Advisory Committee on Releases to the Environment (ACRE)"),
     ("agriculture-and-horticulture-development-board", "Agriculture and Horticulture Development Board (AHDB)"),
