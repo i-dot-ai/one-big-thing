@@ -17,6 +17,7 @@ EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
         "carmarthenshire.gov.wales",
         "ccwater.org.uk",
         "cefas.co.uk",
+        "cfcs.org.uk",
         "cgma.co.uk",
         "citb.co.uk",
         "citizensadvice.org.uk",
