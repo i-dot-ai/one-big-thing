@@ -48,6 +48,25 @@ def test_enter_invalid_values():
     user.delete()
 
 
+def test_enter_learning_record_too_long_title():
+    test_email = "test-learning-record-valid-data-entry@example.com"
+    authenticated_user = {"email": test_email, "password": "&&GIraffe47$"}
+    client = utils.make_testino_client()
+    utils.register(client, **authenticated_user)
+    user = models.User.objects.get(email=test_email)
+
+    record_learning_page = client.get("/record-learning/")
+    assert record_learning_page.status_code == 200, record_learning_page.status_code
+
+    record_learning_form = record_learning_page.get_form()
+    record_learning_form["title"] = "Really, really long title...... Really, really long Really, really long title......Really, really long title...... title..... Really, really long title...... Really, really long Really, really long title......Really, really long title...... title......Really, really long title...... Really, really long Really, really long title......Really, really long title...... title......." # noqa
+
+    submitted_page = record_learning_form.submit()
+    assert submitted_page.status_code == 200, submitted_page.status_code
+    assert submitted_page.has_text("The title must be less than 200 characters")
+    user.delete()
+
+
 def test_enter_valid_learning_record():
     test_email = "test-learning-record-valid-data-entry@example.com"
     authenticated_user = {"email": test_email, "password": "&&GIraffe47$"}
