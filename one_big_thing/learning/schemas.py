@@ -23,7 +23,7 @@ class SingleLineStr(fields.Str):
 class LearningTitleSingleLineStr(SingleLineStr):
     def _deserialize(self, value, attr, data, **kwargs):
         if not value:
-            raise ValidationError("Please enter a title")
+            raise ValidationError("Please provide a title for this course")
         elif len(value) > 200:
             raise ValidationError("The title must be less than 200 characters")
         return super()._deserialize(value, attr, data, **kwargs)

@@ -29,11 +29,6 @@ def frozendict(*args, **kwargs):
     return types.MappingProxyType(dict(*args, **kwargs))
 
 
-page_compulsory_field_map = {
-    "record-learning": ("title",),
-}
-
-# TODO: Finalise mandatory question list
 survey_questions_compulsory_field_map = {
     "pre": {
         1: [
@@ -53,10 +48,6 @@ survey_questions_compulsory_field_map = {
     },
 }
 
-
-missing_item_errors = {
-    "title": "Please provide a title for this course",
-}
 
 ratings = (
     {"value": "1", "text": "1 ★"},
@@ -154,7 +145,7 @@ def transform_learning_record(data):
         "time_to_complete": time_to_complete_total,
         "link": data.get("link"),
         "learning_type": data.get("learning_type"),
-        "rating": data.get("rating"),
+        "rating": data.get("rating", None) or None,
     }
     return transformed_data
 
@@ -258,13 +249,6 @@ class RecordLearningView(utils.MethodDispatcher):
                 "errors": errors,
             },
         )
-
-
-def validate(request, page_name, data):
-    fields = page_compulsory_field_map.get(page_name, ())
-    missing_fields = tuple(field for field in fields if not data.get(field))
-    errors = {field: missing_item_errors[field] for field in missing_fields}
-    return errors
 
 
 @login_required
