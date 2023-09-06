@@ -18,7 +18,7 @@ class SingleLineStr(fields.Str):
             if not value == single_line_value:
                 raise ValidationError("Cannot contain linebreaks")
         return super()._deserialize(value, attr, data, **kwargs)
-    
+
 
 class LearningTitleSingleLineStr(SingleLineStr):
     def _deserialize(self, value, attr, data, **kwargs):

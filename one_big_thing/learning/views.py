@@ -159,7 +159,6 @@ def transform_learning_record(data):
     return transformed_data
 
 
-
 @login_required
 @require_http_methods(["GET", "POST"])
 @enforce_user_completes_pre_survey
