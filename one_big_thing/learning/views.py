@@ -143,6 +143,23 @@ def homepage_view(request):
     )
 
 
+def transform_learning_record(data):
+    time_to_complete_hours = data.get("time_to_complete_hours")
+    if not time_to_complete_hours:
+        time_to_complete_hours = 0
+    time_to_complete_total = int(time_to_complete_hours) * 60 + int(data.get("time_to_complete_minutes", 0))
+    time_to_complete_total = str(time_to_complete_total)
+    transformed_data = {
+        "title": data.get("title"),
+        "time_to_complete": time_to_complete_total,
+        "link": data.get("link"),
+        "learning_type": data.get("learning_type"),
+        "rating": data.get("rating"),
+    }
+    return transformed_data
+
+
+
 @login_required
 @require_http_methods(["GET", "POST"])
 @enforce_user_completes_pre_survey
@@ -213,30 +230,20 @@ class RecordLearningView(utils.MethodDispatcher):
         else:
             template_name = "record-learning.html"
         course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
-        if not data["time_to_complete_hours"]:
-            data["time_to_complete_hours"] = 0
-        manipulated_data = {
-            "title": data["title"],
-            "time_to_complete": str(
-                (int(data["time_to_complete_hours"]) * 60) + int((data["time_to_complete_minutes"]))
-            ),
-            "link": data.get("link"),
-            "learning_type": data.get("learning_type", None),
-            "rating": data.get("rating", None) or None,
-        }
+        transformed_data = transform_learning_record(data)
         try:
-            course_schema.load(manipulated_data, partial=True)
+            course_schema.load(transformed_data, partial=True)
         except marshmallow.exceptions.ValidationError as err:
             errors = dict(err.messages)
         else:
             learning_data = {
-                "title": manipulated_data.get("title", None),
-                "link": manipulated_data.get("link", None),
-                "learning_type": manipulated_data.get("learning_type", None),
-                "time_to_complete": manipulated_data.get("time_to_complete", None),
-                "rating": manipulated_data.get("rating", None),
+                "title": transformed_data.get("title", None),
+                "link": transformed_data.get("link", None),
+                "learning_type": transformed_data.get("learning_type", None),
+                "time_to_complete": transformed_data.get("time_to_complete", None),
+                "rating": transformed_data.get("rating", None),
             }
-            _ = interface.api.learning.create(user.id, user.id, learning_data, course_id)
+            interface.api.learning.create(user.id, user.id, learning_data, course_id)
             return redirect(
                 "record-learning"
             )  # TODO: Use class get to show success message when creating course instead of using redirect
