@@ -53,36 +53,53 @@ class UUIDPrimaryKeyBaseModelSchema(Schema):
     id = fields.UUID()
 
 
-def validate_time_to_complete(value):
+def validate_positive_integer(value, allow_blank=False, max=None, error_msg="There is an error with this value"):
+    if allow_blank:
+        if value == "":
+            return
     try:
-        int(value)
+        value = int(value)
+        if value < 0:
+            raise ValidationError(error_msg)
+        elif max and (value > max):
+            raise ValidationError(error_msg)
     except ValueError:
-        raise ValidationError("Please enter the time this course took to complete in minutes, e.g. 15")
+        raise ValidationError(error_msg)
+
+
+def validate_time_to_complete(value):
+    validate_positive_integer(value, error_msg="Please enter the time this course took to complete in minutes, e.g. 15")
+
+
+def validate_time_to_complete_hours(value):
+    hours_error = "Please enter the hours this course took to complete, for example, 2"
+    validate_positive_integer(value, allow_blank=True, max=None, error_msg=hours_error)
+
+
+def validate_time_to_complete_minutes(value):
+    minutes_error = "Please enter the minutes this course took to complete, between 1 and 59"
+    validate_positive_integer(value, allow_blank=False, max=59, error_msg=minutes_error)
 
 
 class CourseSchema(TimeStampedModelSchema, UUIDPrimaryKeyBaseModelSchema):
     title = SingleLineStr(required=True, validate=validate.Length(max=200))
     link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
     learning_type = make_choice_field(max_len=256, values=choices.CourseType.values, allow_none=True)
-    time_to_complete = fields.Str(required=False, validate=validate_time_to_complete) # TODO - just use Integer?
+    time_to_complete = fields.Str(required=False, validate=validate_time_to_complete)
 
 
 class LearningSchema(TimeStampedModelSchema, UUIDPrimaryKeyBaseModelSchema):
     title = SingleLineStr(required=True, validate=validate.Length(max=200))
     link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
     learning_type = make_choice_field(max_len=256, values=choices.CourseType.values, allow_none=True)
-    time_to_complete = fields.Str(required=False, validate=validate_time_to_complete) # TODO - just use Integer?
+    time_to_complete = fields.Str(required=False, validate=validate_time_to_complete)
     rating = fields.Str(required=False, allow_none=True)
 
 
-
-HOURS_ERROR = "Please enter the hours this course took to complete, for example, 2"
-MINUTES_ERROR = "Please enter the minutes this course took to complete, between 1 and 59"
-
-class RecordLearningSchema():
+class RecordLearningSchema(Schema):
     title = SingleLineStr(required=True, validate=validate.Length(max=200))
     link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
     learning_type = make_choice_field(max_len=256, values=choices.CourseType.values, allow_none=True)
-    time_to_complete_hours = fields.Integer(allow_none=True, validate=validate.Range(min=0), error_messages=HOURS_ERROR)
-    time_to_complete_minutes = fields.Integer(validate=validate.Range(min=0, max=59), error_messages=HOURS_ERROR)
+    time_to_complete_hours = fields.Str(required=False, validate=validate_time_to_complete_hours)
+    time_to_complete_minutes = fields.Str(validate=validate_time_to_complete_minutes)
     rating = fields.Str(required=False, allow_none=True)
