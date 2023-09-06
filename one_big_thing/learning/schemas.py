@@ -62,10 +62,7 @@ class UUIDPrimaryKeyBaseModelSchema(Schema):
     id = fields.UUID()
 
 
-def validate_positive_integer(value, allow_blank=False, max=None, error_msg="There is an error with this value"):
-    if allow_blank:
-        if value == "":
-            return
+def validate_positive_integer(value, max=None, error_msg="There is an error with this value"):
     try:
         value = int(value)
         if value < 0:
@@ -82,12 +79,12 @@ def validate_time_to_complete(value):
 
 def validate_time_to_complete_hours(value):
     hours_error = "Please enter the hours this course took to complete, for example, 2"
-    validate_positive_integer(value, allow_blank=True, max=None, error_msg=hours_error)
+    validate_positive_integer(value, max=None, error_msg=hours_error)
 
 
 def validate_time_to_complete_minutes(value):
-    minutes_error = "Please enter the minutes this course took to complete, between 1 and 59"
-    validate_positive_integer(value, allow_blank=False, max=59, error_msg=minutes_error)
+    minutes_error = "Please enter the minutes this course took to complete, between 0 and 59"
+    validate_positive_integer(value, max=59, error_msg=minutes_error)
 
 
 class CourseSchema(TimeStampedModelSchema, UUIDPrimaryKeyBaseModelSchema):
