@@ -9,7 +9,8 @@
     Login failed
   </h1>
   <p class="govuk-body">
-    This link may have expired or have already been used. <a href="{{url('index')}}">Resend the link</a> and try again.
+    Links can only be used once. You can <a class="govuk-link" href="{{url('index')}}">create a new link</a> by entering your email address.
   </p>
-  <p class="govuk-body">If you see this message again then please <a href="{{url('support')}}">contact us</a>.</p>
+  <p class="govuk-body">If that doesn’t work then <a class="govuk-link" href="{{url('index')}}">create a new link</a> by entering your email address. But do not press on it. Copy the link from the email and paste it into your browser.</p>
+  <p class="govuk-body">If you see this message again then please <a class="govuk-link" href="{{url('support')}}">contact us</a>.</p>
 {% endblock %}
