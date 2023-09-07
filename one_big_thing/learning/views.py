@@ -215,40 +215,39 @@ class RecordLearningView(utils.MethodDispatcher):
         if errors:
             return self.get(request, data=data, errors=errors)
         user = request.user
-        if user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys():
-            template_name = "streamlined-record-learning.html"
-        else:
-            template_name = "record-learning.html"
-        course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
-        transformed_data = transform_learning_record(data)
-        try:
-            course_schema.load(transformed_data, partial=True)
-        except marshmallow.exceptions.ValidationError as err:
-            errors = dict(err.messages)
-        else:
-            learning_data = {
-                "title": transformed_data.get("title", None),
-                "link": transformed_data.get("link", None),
-                "learning_type": transformed_data.get("learning_type", None),
-                "time_to_complete": transformed_data.get("time_to_complete", None),
-                "rating": transformed_data.get("rating", None),
-            }
-            interface.api.learning.create(user.id, user.id, learning_data, course_id)
-            return redirect(
-                "record-learning"
-            )  # TODO: Use class get to show success message when creating course instead of using redirect
-        time_completed = user.get_time_completed()
-        learning_types = choices.CourseType.choices
-        data = {"time_completed": time_completed, "learning_types": learning_types, **data}
-        return render(
-            request,
-            template_name=template_name,
-            context={
-                "request": request,
-                "data": data,
-                "errors": errors,
-            },
-        )
+        # if user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys():
+        #     template_name = "streamlined-record-learning.html"
+        # else:
+        #     template_name = "record-learning.html"
+        learning_data = transform_learning_record(data)
+        # try:
+        #     course_schema.load(transformed_data, partial=True)
+        # except marshmallow.exceptions.ValidationError as err:
+        #     errors = dict(err.messages)
+        # else:
+        #     learning_data = {
+        #         "title": transformed_data.get("title", None),
+        #         "link": transformed_data.get("link", None),
+        #         "learning_type": transformed_data.get("learning_type", None),
+        #         "time_to_complete": transformed_data.get("time_to_complete", None),
+        #         "rating": transformed_data.get("rating", None),
+        #     }
+        interface.api.learning.create(user.id, user.id, learning_data, course_id)
+        return redirect(
+            "record-learning"
+        )  # TODO: Use class get to show success message when creating course instead of using redirect
+        # time_completed = user.get_time_completed()
+        # learning_types = choices.CourseType.choices
+        # data = {"time_completed": time_completed, "learning_types": learning_types, **data}
+        # return render(
+        #     request,
+        #     template_name=template_name,
+        #     context={
+        #         "request": request,
+        #         "data": data,
+        #         "errors": errors,
+        #     },
+        # )
 
 
 @login_required

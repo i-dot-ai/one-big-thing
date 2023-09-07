@@ -77,9 +77,10 @@ def validate_time_to_complete(value):
     validate_positive_integer(value, error_msg="Please enter the time this course took to complete in minutes, e.g. 15")
 
 
+# TODO - limit number of hours - what should limit be?
 def validate_time_to_complete_hours(value):
     hours_error = "Please enter the hours this course took to complete, for example, 2"
-    validate_positive_integer(value, max=None, error_msg=hours_error)
+    validate_positive_integer(value, max=300, error_msg=hours_error)
 
 
 def validate_time_to_complete_minutes(value):
