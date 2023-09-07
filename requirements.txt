@@ -1,8 +1,8 @@
-boto3
+boto3~=1.28.29
 django<3.3
 django-cors-headers
 django-allow-cidr
-whitenoise
+whitenoise~=6.5.0
 watchdog[watchmedo]
 jinja2~=3.1.2
 django-environ
@@ -11,7 +11,7 @@ django-gov-notify==0.3.0
 django_use_email_as_username
 gunicorn
 psycopg2-binary
-pyyaml
+pyyaml~=5.4.1
 markdown-it-py
 
 httpx~=0.24.1
@@ -25,3 +25,7 @@ sentry-sdk
 django-permissions-policy
 django-single-session
 django-csp
+
+testino~=0.3.14
+nose~=1.3.7
+click~=8.1.7
