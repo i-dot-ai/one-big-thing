@@ -1,6 +1,8 @@
 # copied, pasted and adapted from https://github.com/azavea/django-ecsmanage
+import time
 
 import boto3
+import botocore
 import click
 
 AWS_REGION = "eu-west-2"
@@ -40,6 +42,7 @@ def run(env: str, cmd: str, *args: str) -> str:
         {"Name": "tag:Name", "Values": [f"i-dot-ai-{env}-vpc-private-eu-west-2b"]},
     ]
     subnets = ec2_client.describe_subnets(Filters=subnet_filters)
+    assert len(subnets["Subnets"]) == 1, "more than one subnet detected!"
     subnet_id = subnets["Subnets"][0]["SubnetId"]
 
     kwargs = {
@@ -59,12 +62,7 @@ def run(env: str, cmd: str, *args: str) -> str:
     }
 
     task_arn = ecs_client.run_task(**kwargs)["tasks"][0]["taskArn"].split("/")[-1]
-    url = (
-        f"https://console.aws.amazon.com/ecs/home?region={AWS_REGION}#"
-        f"/clusters/{cluster_name}/tasks/{task_arn}/details"
-    )
-
-    return url
+    return task_arn
 
 
 @click.group()
@@ -73,8 +71,16 @@ def cli():
     pass
 
 
+env_option = click.option(
+    "--env",
+    type=click.Choice(["dev", "prod"]),
+    default="dev",
+    help="environment to run command in.",
+)
+
+
 @cli.command()
-@click.option("--env", default="dev", help="environment to run command in.")
+@env_option
 def showmigrations(env):
     """show the migrations."""
     task = run(env, "showmigrations")
@@ -82,11 +88,41 @@ def showmigrations(env):
 
 
 @cli.command()
-@click.option("--env", default="dev", help="environment to run command in.")
+@env_option
 def user_stats(env):
     """gather user stats."""
     task = run(env, "user_stats")
     click.echo(task)
+
+
+@cli.command()
+@env_option
+@click.argument("arn", type=str)
+def get_logs(env, arn):
+    task_definition_name = f"one-big-thing-{env}"
+    container_name = f"one-big-thing-{env}"
+    cluster_name = f"i-dot-ai-one-big-thing-{env}"
+
+    url = (
+        f"https://console.aws.amazon.com/ecs/home?region={AWS_REGION}#" f"/clusters/{cluster_name}/tasks/{arn}/details"
+    )
+    click.secho(url, fg="blue")
+
+    log_stream_name = f"ecs/{task_definition_name}/{arn}"
+    log_group_name = f"/aws/ecs/{container_name}/{container_name}"
+
+    session = boto3.Session(profile_name="i-dot-ai")
+    log_client = session.client("logs", region_name=AWS_REGION)
+
+    log_events = log_client.get_log_events(
+        logGroupName=log_group_name,
+        logStreamName=log_stream_name,
+    )
+    for event in sorted(log_events["events"], key=lambda e: e["timestamp"]):
+        click.echo(event["message"])
+
+    if not log_events["events"]:
+        click.secho("no log events found, maybe try later?", fg="red")
 
 
 if __name__ == "__main__":

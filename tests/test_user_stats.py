@@ -2,6 +2,7 @@ from datetime import datetime
 from io import StringIO
 
 from django.core.management import call_command
+
 from one_big_thing.learning.models import User
 
 
