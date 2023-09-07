@@ -25,7 +25,7 @@
               <span class="govuk-visually-hidden">Error:</span> {{ errors["department"] }}
             </p>
           {% endif %}
-          <div id="select-field">
+          <div id="select-department">
             <select name="department" id="department" class="govuk-select govuk-!-width-full">
               <option value="" disabled class="govuk-button--disabled" {% if not data.department%}selected{% endif %}>Please select a department you belong to</option>
               {% for option in departments %}
@@ -47,7 +47,7 @@
               <span class="govuk-visually-hidden">Error:</span> {{ errors["grades"] }}
             </p>
           {% endif %}
-          <div id="select-field">
+          <div id="select-grade">
             <select name="grade" id="grade" class="govuk-select govuk-!-width-full">
               <option value="" disabled class="govuk-button--disabled" {% if not data.grade%}selected{% endif %}>Please select your grade</option>
               {% for option in grades %}
@@ -64,7 +64,7 @@
               <span class="govuk-visually-hidden">Error:</span> {{ errors["professions"] }}
             </p>
           {% endif %}
-          <div id="select-field">
+          <div id="select-profession">
             <select name="profession" id="profession" class="govuk-select govuk-!-width-full">
               <option value="" disabled class="govuk-button--disabled" {% if not data.profession%}selected{% endif %}>Please select your primary area of work</option>
               {% for option in professions %}
