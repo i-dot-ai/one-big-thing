@@ -118,7 +118,7 @@ additional_learning = {
             },
             {
                 "title": "Using data and AI to make decisions with Ben and Mallory",
-                "link": "https://vimeo.com/860891715/9aafb8d725",
+                "link": "https://vimeo.com/860891900/6c51b1d56a",
                 "provider": "Cabinet Office",
                 "type": "Video",
                 "duration": 16,
