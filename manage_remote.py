@@ -81,14 +81,6 @@ env_option = click.option(
 
 @cli.command()
 @env_option
-def showmigrations(env):
-    """show the migrations."""
-    task = run(env, "showmigrations")
-    click.echo(task)
-
-
-@cli.command()
-@env_option
 def user_stats(env):
     """gather user stats."""
     task = run(env, "user_stats")
