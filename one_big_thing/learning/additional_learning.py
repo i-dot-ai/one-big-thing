@@ -67,6 +67,62 @@ additional_learning = {
                 "type": "Webpage",
                 "duration": "Various",
             },
+			{
+				"title": "How we use real-time mobility data to provide situational awareness with Tom L",
+				"link": "https://vimeo.com/860893596/f7c399f9ba",
+				"provider": "Cabinet Office",
+				"type": "Video",
+				"duration": 11,
+            },
+			{
+				"title": "Brief introduction to data science with Tom C",
+				"link": "https://vimeo.com/860893541/a64d95515f",
+				"provider": "Cabinet Office",
+				"type": "Video",
+				"duration": 4,
+            },
+			{
+				"title": "Data catalogues with Darminder and Shane",
+				"link": "https://vimeo.com/860893385/e31d6518d8",
+				"provider": "Cabinet Office",
+				"type": "Video",
+				"duration": 3,
+            },
+			{
+				"title": "Introduction to economics in government with Vladd and Joely",
+				"link": "https://vimeo.com/860893092/89938e4fb9",
+				"provider": "Cabinet Office",
+				"type": "Video",
+				"duration": 5
+            },
+			{
+				"title": "Introduction to Official Statistics with Richard, Martin and Darren",
+				"link": "https://vimeo.com/860892433/8b57224e68",
+				"provider": "Cabinet Office",
+				"type": "Video",
+				"duration": 12,
+            },
+			{
+				"title": "A data driven approach to team goal setting with Cailin",
+				"link": "https://vimeo.com/860892338/66fae73762",
+				"provider": "Cabinet Office",
+				"type": "Video",
+				"duration": 5,
+            },
+			{
+				"title": "Policy evaluation in goverment with Lizzie and Philipp",
+				"link": "https://vimeo.com/860891715/9aafb8d725",
+				"provider": "Cabinet Office",
+				"type": "Video",
+				"duration": 11
+            },
+			{
+				"title": "Using data and AI to make decisions with Ben and Mallory",
+				"link": "https://vimeo.com/860891715/9aafb8d725",
+				"provider": "Cabinet Office",
+				"type": "Video",
+				"duration": 16
+            }
         ],
     },
     AWARENESS: {
