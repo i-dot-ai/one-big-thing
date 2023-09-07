@@ -13,7 +13,7 @@ def test_user_stats():
     for email, iso in [
         ("alice@co.gov.uk", "2000-01-01"),
         ("bob@co.gov.uk", "2000-01-01"),
-        ("charlie@co.gov.uk", "2000-01-02"),
+        ("chris@co.gov.uk", "2000-01-02"),
     ]:
         User.objects.create_user(email=email, date_joined=datetime.fromisoformat(iso))
 
