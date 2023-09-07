@@ -1,3 +1,5 @@
+# copied, pasted and adapted from https://github.com/azavea/django-ecsmanage
+
 import boto3
 import click
 
