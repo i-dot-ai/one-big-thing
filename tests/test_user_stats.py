@@ -6,8 +6,9 @@ from one_big_thing.learning.models import User
 
 
 def test_user_stats():
-    """we create 3 users, alice and bob were both joined on the same day
-    chris joined 1 day after, we expect to see this is the standard out"""
+    """we create 3 users, alice and bob both joined on the same day
+    chris joined 1 day after, we expect to see this is the standard output
+    """
 
     for email, iso in [
         ("alice@co.gov.uk", "2000-01-01"),
