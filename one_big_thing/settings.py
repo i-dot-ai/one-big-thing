@@ -197,7 +197,7 @@ if not DEBUG:
         environment=SENTRY_ENVIRONMENT,
         send_default_pii=False,
         traces_sample_rate=1.0,
-        profiles_sample_rate=1.0,
+        profiles_sample_rate=0.0,
     )
 
 LANGUAGE_CODE = "en-us"
