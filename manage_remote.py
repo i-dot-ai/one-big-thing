@@ -1,4 +1,12 @@
 # copied, pasted and adapted from https://github.com/azavea/django-ecsmanage
+#
+# NOTE to developers:
+# Right now the management commands exposed are safe, however,
+# in the future there may be a good case for adding commands that change the data.
+# Add these with caution!!
+# Also document unsafe command to ensure that whoever is running them gets that a
+# second pair when doing so.
+
 import time
 
 import boto3
@@ -83,6 +91,9 @@ env_option = click.option(
 @env_option
 def user_stats(env):
     """gather user stats."""
+    if env.upper() == "PROD":
+        click.secho("this is running things on the (live) server!", fg="red")
+
     task = run(env, "user_stats")
     click.echo(task)
 
@@ -91,6 +102,9 @@ def user_stats(env):
 @env_option
 @click.argument("arn", type=str)
 def get_logs(env, arn):
+    if env.upper() == "PROD":
+        click.secho("this is running things on the (live) server!", fg="red")
+
     task_definition_name = f"one-big-thing-{env}"
     container_name = f"one-big-thing-{env}"
     cluster_name = f"i-dot-ai-one-big-thing-{env}"
