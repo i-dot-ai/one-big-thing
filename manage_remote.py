@@ -7,10 +7,7 @@
 # Also document unsafe command to ensure that whoever is running them gets that a
 # second pair when doing so.
 
-import time
-
 import boto3
-import botocore
 import click
 
 AWS_REGION = "eu-west-2"
