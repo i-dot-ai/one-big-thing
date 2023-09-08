@@ -44,7 +44,7 @@ def run(env: str, cmd: str, *args: str) -> str:
     subnet_filters = [
         {"Name": "tag:Environment", "Values": [env]},
         {"Name": "tag:Project", "Values": ["ai-dot-ai"]},
-        {"Name": "tag:Name", "Values": [f"i-dot-ai-{env}-vpc-private-eu-west-2b"]},
+        {"Name": "tag:Name", "Values": [f"i-dot-ai-{env}-vpc-private-eu-west-2a"]},
     ]
     subnets = ec2_client.describe_subnets(Filters=subnet_filters)
     assert len(subnets["Subnets"]) == 1, "more than one subnet detected!"
