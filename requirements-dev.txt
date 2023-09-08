@@ -10,5 +10,6 @@ testino==0.3.14
 bandit
 sentry-sdk
 coverage
+click
 
 -r ./requirements.lock
