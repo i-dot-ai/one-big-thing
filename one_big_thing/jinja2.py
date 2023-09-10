@@ -59,8 +59,8 @@ def list_to_options(iterable):
     return result
 
 
-def humanize_timedelta(minutes=0):
-    if minutes > constants.TOTAL_MINUTES_LIMIT:
+def humanize_timedelta(minutes=0, hours_limit=200):
+    if minutes > hours_limit * 60:
         return -1
     else:
         delta = datetime.timedelta(minutes=minutes)
