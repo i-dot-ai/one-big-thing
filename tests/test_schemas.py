@@ -1,3 +1,5 @@
+import datetime
+
 from marshmallow import Schema, ValidationError
 from nose.tools import assert_raises_regexp, with_setup
 
@@ -8,8 +10,8 @@ from .utils import with_authenticated_client
 
 class MadeUpSchema(Schema):
     string_field = schemas.SingleLineStr(allow_none=True)
-    choice_field_one = schemas.make_choice_field(max_len=3, values=choices.CourseType.values, allow_none=True)
-    choice_field_two = schemas.make_choice_field(max_len=3, values=choices.CourseType.values, allow_none=False)
+    choice_field_one = schemas.make_choice_field(max_len=50, values=choices.CourseType.values, allow_none=True)
+    choice_field_two = schemas.make_choice_field(max_len=50, values=choices.CourseType.values, allow_none=False)
 
 
 def test_date_and_blank_field():
@@ -94,22 +96,28 @@ def test_user_schema():
     assert error_message == "This should be a valid Civil Service email", error_message
 
 
-# def test_make_choice_field():
-#     schema = MadeUpSchema()
-#     deserialized_obj = schema.load({"date": "2022-11-13", "choice_field_one": "", "choice_field_two": "YES"})
-#     assert deserialized_obj["date"] == date(2022, 11, 13)
-#     assert deserialized_obj["choice_field_one"] == ""
-#     assert deserialized_obj["choice_field_two"] == "YES"
-#     try:
-#         deserialized_obj = schema.load({"date": "2022-11-13", "choice_field_one": "NO", "choice_field_two": ""})
-#     except ValidationError as e:
-#         error_message = e.messages["choice_field_two"][0]
-#         assert "Must be one of: YES, NO." in error_message, error_message
-#     try:
-#         deserialized_obj = schema.load({"date": "2022-11-13", "choice_field_one": "bob", "choice_field_two": "NO"})
-#     except ValidationError as e:
-#         error_message = e.messages["choice_field_one"][0]
-#         assert "Must be one of: YES, NO." in error_message, error_message
+def test_make_choice_field():
+    schema = MadeUpSchema()
+    deserialized_obj = schema.load({"string_field": "valid string", "choice_field_one": "", "choice_field_two": "WRITTEN_RESOURCE"})
+    assert deserialized_obj["string_field"] == "valid string"
+    assert deserialized_obj["choice_field_one"] == ""
+    assert deserialized_obj["choice_field_two"] == "WRITTEN_RESOURCE"
+    try:
+        deserialized_obj = schema.load({"string_field": "valid string", "choice_field_one": "WRITTEN_RESOURCE", "choice_field_two": ""})
+    except ValidationError as e:
+        error_message = e.messages["choice_field_two"][0]
+        assert "Must be one of: WRITTEN_RESOURCE" in error_message, error_message
+    try:
+        deserialized_obj = schema.load({"string_field": "invalid string\n has a newline", "choice_field_one": "bob", "choice_field_two": "VIDEO"})
+    except ValidationError as e:
+        error_message = e.messages["string_field"][0]
+        assert "Cannot contain linebreaks" in error_message, error_message
+    try:
+        deserialized_obj = schema.load({"string_field": "valid str", "choice_field_one": "bob", "choice_field_two": "VIDEO"})
+    except ValidationError as e:
+        error_message = e.messages["choice_field_one"][0]
+        assert "Must be one of: WRITTEN_RESOURCE" in error_message, error_message
+
 
 
 def test_validate_time_to_complete_no_errors():
