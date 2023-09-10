@@ -20,7 +20,7 @@ def test_date_and_blank_field():
     assert deserialized_obj["string_field"] is None
 
 
-# Might not always want schemas to match, but we do for now
+# Don't always want schemas to match, but we do for some models
 def check_schema_model_match_fields(model_name, schema_name, related_fields_to_ignore={"learning"}):
     model = getattr(models, model_name)
     schema = getattr(schemas, schema_name)
@@ -110,3 +110,4 @@ def test_user_schema():
 #     except ValidationError as e:
 #         error_message = e.messages["choice_field_one"][0]
 #         assert "Must be one of: YES, NO." in error_message, error_message
+
