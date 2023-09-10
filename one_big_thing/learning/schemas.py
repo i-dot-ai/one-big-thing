@@ -65,7 +65,7 @@ class UUIDPrimaryKeyBaseModelSchema(Schema):
 def validate_positive_integer(value, max=None, error_msg="There is an error with this value", error_msg_max=""):
     """
     Checks if value is a positive integer, optionally checks if below max.
-    
+
     Args:
         value: Any value to be validated
         max: Optional value to check value is below max
@@ -92,7 +92,9 @@ def validate_time_to_complete(value):
 def validate_time_to_complete_hours(value):
     general_error = "Please enter the hours this course took to complete, for example, 2"
     max_hours_error = f"The course should be less than {constants.COURSE_HOURS_LIMIT} hours"
-    validate_positive_integer(value, max=constants.COURSE_HOURS_LIMIT, error_msg=general_error, error_msg_max=max_hours_error)
+    validate_positive_integer(
+        value, max=constants.COURSE_HOURS_LIMIT, error_msg=general_error, error_msg_max=max_hours_error
+    )
 
 
 def validate_time_to_complete_minutes(value):
