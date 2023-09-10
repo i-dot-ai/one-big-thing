@@ -21,7 +21,7 @@ from . import (
     utils,
 )
 from .additional_learning import additional_learning
-from .decorators import enforce_user_completes_pre_survey, login_required
+from .decorators import enforce_user_completes_details_and_pre_survey, login_required
 from .email_handler import send_learning_record_email
 
 
@@ -67,7 +67,7 @@ selected_level_label_map = {
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def homepage_view(request):
     user = request.user
     use_streamlined_view = user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
@@ -152,7 +152,7 @@ def transform_learning_record(data):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 class RecordLearningView(utils.MethodDispatcher):
     def get(
         self,
@@ -223,7 +223,7 @@ class RecordLearningView(utils.MethodDispatcher):
 
 
 @login_required
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 @require_http_methods(["GET"])
 def complete_hours_view(request):
     user = request.user
@@ -331,7 +331,7 @@ def save_data(survey_type, user, page_number, data):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def send_learning_record_view(request):
     user = request.user
     streamlined_department = user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
@@ -367,7 +367,7 @@ def send_learning_record_view(request):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def check_delete_learning_view(request, learning_id):
     if request.method == "POST":
         if "delete-learning" in request.POST:
@@ -378,7 +378,7 @@ def check_delete_learning_view(request, learning_id):
 
 @login_required
 @require_http_methods(["POST"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def delete_learning_view(request, learning_id):
     interface.api.learning.delete(user_id=request.user.id, learning_id=learning_id)
     return redirect("record-learning")
@@ -386,7 +386,7 @@ def delete_learning_view(request, learning_id):
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def additional_learning_view(request):
     additional_learning_records = additional_learning
     data = {
@@ -458,28 +458,28 @@ def intro_to_pre_survey_view(request):
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def end_pre_survey_view(request):
     return render(request, "end-pre-survey.html", {})
 
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def intro_to_post_survey_view(request):
     return render(request, "intro-post-survey.html", {})
 
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def end_post_survey_view(request):
     return render(request, "end-post-survey.html", {})
 
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def department_links_view(request):
     data = {"dept_links": constants.ALL_INTRANET_LINKS}
     errors = {}
