@@ -17,7 +17,7 @@ def login_required(func):
 
 
 enforce_user_completes_pre_survey = user_passes_test(
-    lambda user: (user.has_completed_pre_survey and user.is_active),
-    login_url="/intro-pre-survey/",
+    lambda user: (user.completed_personal_details and user.has_completed_pre_survey and user.is_active),
+    login_url="/my-details/",
     redirect_field_name=None,
 )
