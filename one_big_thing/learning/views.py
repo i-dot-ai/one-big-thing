@@ -400,7 +400,7 @@ def additional_learning_view(request):
 @login_required
 @require_http_methods(["POST", "GET"])
 class MyDetailsView(utils.MethodDispatcher):
-    template_name = "register.html"
+    template_name = "my-details.html"
     error_message = "Something has gone wrong. Please try again."
 
     def error(self, request):
@@ -442,7 +442,10 @@ class MyDetailsView(utils.MethodDispatcher):
             user.profession = profession
             user.save()
 
-            return redirect(reverse("questions", args=("pre",)))
+            if not user.has_completed_pre_survey:
+                return redirect(reverse("questions", args=("pre",)))
+            else:
+                return redirect(reverse("homepage"))
 
 
 # Don't enforce user completes pre survey as this is the page to redirect to
