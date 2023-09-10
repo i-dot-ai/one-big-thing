@@ -21,7 +21,10 @@ from . import (
     utils,
 )
 from .additional_learning import additional_learning
-from .decorators import enforce_user_completes_details_and_pre_survey, login_required
+from .decorators import (
+    enforce_user_completes_details_and_pre_survey,
+    login_required,
+)
 from .email_handler import send_learning_record_email
 
 
