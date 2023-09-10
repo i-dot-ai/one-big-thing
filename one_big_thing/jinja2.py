@@ -9,7 +9,6 @@ from django.utils.text import slugify
 from markdown_it import MarkdownIt
 
 from one_big_thing.settings import VCAP_APPLICATION
-from one_big_thing.learning import constants
 
 markdown_converter = MarkdownIt("js-default")  # Need js-default as secure setting
 
