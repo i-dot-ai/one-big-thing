@@ -9,6 +9,7 @@ from django.utils.text import slugify
 from markdown_it import MarkdownIt
 
 from one_big_thing.settings import VCAP_APPLICATION
+from one_big_thing.learning import constants
 
 markdown_converter = MarkdownIt("js-default")  # Need js-default as secure setting
 
@@ -59,8 +60,11 @@ def list_to_options(iterable):
 
 
 def humanize_timedelta(minutes=0):
-    delta = datetime.timedelta(minutes=minutes)
-    return humanize.precisedelta(delta, minimum_unit="minutes")
+    if minutes > constants.TOTAL_MINUTES_LIMIT:
+        return -1
+    else:
+        delta = datetime.timedelta(minutes=minutes)
+        return humanize.precisedelta(delta, minimum_unit="minutes")
 
 
 def environment(**options):
