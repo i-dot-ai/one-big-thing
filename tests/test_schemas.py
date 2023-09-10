@@ -1,5 +1,5 @@
 from marshmallow import Schema, ValidationError
-from nose.tools import with_setup, assert_raises_regexp
+from nose.tools import assert_raises_regexp, with_setup
 
 from one_big_thing.learning import choices, models, schemas
 
@@ -112,10 +112,13 @@ def test_user_schema():
 #         assert "Must be one of: YES, NO." in error_message, error_message
 
 
-def test_validate_time_to_complete_no_errors():    
+def test_validate_time_to_complete_no_errors():
     schemas.validate_time_to_complete(15)
-    schemas.validate_time_to_complete_minutes(57)
+    schemas.validate_time_to_complete("87")
+    schemas.validate_time_to_complete_minutes(59)
+    schemas.validate_time_to_complete_minutes(0)
     schemas.validate_time_to_complete_hours(24)
+    schemas.validate_time_to_complete_hours(200)
 
 
 def test_validate_time_to_complete_errors():
@@ -123,3 +126,21 @@ def test_validate_time_to_complete_errors():
         schemas.validate_time_to_complete("a long time")
     with assert_raises_regexp(ValidationError, "Please enter the time this course took to complete in minutes"):
         schemas.validate_time_to_complete(-9)
+
+
+def test_validate_time_to_complete_hour_errors():
+    with assert_raises_regexp(ValidationError, "Please enter the hours this course took to complete"):
+        schemas.validate_time_to_complete_hours("a long time")
+    with assert_raises_regexp(ValidationError, "The course should be less than 200 hours"):
+        schemas.validate_time_to_complete_hours("18000")
+    with assert_raises_regexp(ValidationError, "Please enter the hours this course took to complete"):
+        schemas.validate_time_to_complete_hours(-3)
+
+
+def test_validate_time_to_complete_minutes_errors():
+    with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
+        schemas.validate_time_to_complete_minutes(60)
+    with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
+        schemas.validate_time_to_complete_minutes("this is a string")
+    with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
+        schemas.validate_time_to_complete_minutes(-5)

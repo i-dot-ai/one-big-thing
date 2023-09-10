@@ -91,9 +91,7 @@ def validate_time_to_complete(value):
 def validate_time_to_complete_hours(value):
     general_error = "Please enter the hours this course took to complete, for example, 2"
     max_hours_error = f"The course should be less than {constants.HOURS_LIMIT} hours"
-    validate_positive_integer(
-        value, max=constants.HOURS_LIMIT, error_msg=general_error, error_msg_max=max_hours_error
-    )
+    validate_positive_integer(value, max=constants.HOURS_LIMIT, error_msg=general_error, error_msg_max=max_hours_error)
 
 
 def validate_time_to_complete_minutes(value):
