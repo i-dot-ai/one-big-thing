@@ -415,6 +415,7 @@ class MyDetailsView(utils.MethodDispatcher):
             "professions": choices.Profession.choices,
             "errors": errors or {},
             "data": data or {},
+            "completed": request.user.completed_personal_details,
         }
         return render(request, self.template_name, context)
 
@@ -452,6 +453,9 @@ class MyDetailsView(utils.MethodDispatcher):
 @login_required
 @require_http_methods(["GET"])
 def intro_to_pre_survey_view(request):
+    completed_personal_details = request.user.completed_personal_details
+    if not completed_personal_details:
+        return redirect("my-details")
     number_questions = len(survey_handling.questions_data["pre"])
     return render(request, "intro-pre-survey.html", {"number_questions": number_questions})
 
