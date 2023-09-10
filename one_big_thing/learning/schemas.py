@@ -2,7 +2,7 @@ from marshmallow import Schema, ValidationError, fields, validate
 
 from one_big_thing.learning.utils import is_civil_service_email
 
-from . import choices
+from . import choices, constants
 
 
 def validate_email(email):
@@ -62,12 +62,23 @@ class UUIDPrimaryKeyBaseModelSchema(Schema):
     id = fields.UUID()
 
 
-def validate_positive_integer(value, max=None, error_msg="There is an error with this value"):
+def validate_positive_integer(value, max=None, error_msg="There is an error with this value", error_msg_max=""):
+    """
+    Checks if value is a positive integer, optionally checks if below max.
+    
+    Args:
+        value: Any value to be validated
+        max: Optional value to check value is below max
+        error_msg (str): General error message to display
+        error_msg_max (str): Optional error message if number exceeds max, otherwise error_msg is displayed
+    """
     try:
         value = int(value)
         if value < 0:
             raise ValidationError(error_msg)
         elif max and (value > max):
+            if error_msg_max:
+                raise ValidationError(error_msg_max)
             raise ValidationError(error_msg)
     except ValueError:
         raise ValidationError(error_msg)
@@ -79,8 +90,9 @@ def validate_time_to_complete(value):
 
 # TODO - limit number of hours - what should limit be?
 def validate_time_to_complete_hours(value):
-    hours_error = "Please enter the hours this course took to complete, for example, 2"
-    validate_positive_integer(value, max=300, error_msg=hours_error)
+    general_error = "Please enter the hours this course took to complete, for example, 2"
+    max_hours_error = f"The course should be less than {constants.COURSE_HOURS_LIMIT} hours"
+    validate_positive_integer(value, max=constants.COURSE_HOURS_LIMIT, error_msg=general_error, error_msg_max=max_hours_error)
 
 
 def validate_time_to_complete_minutes(value):
