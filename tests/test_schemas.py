@@ -1,5 +1,5 @@
 from marshmallow import Schema, ValidationError
-from nose.tools import with_setup
+from nose.tools import with_setup, assert_raises_regexp
 
 from one_big_thing.learning import choices, models, schemas
 
@@ -111,3 +111,15 @@ def test_user_schema():
 #         error_message = e.messages["choice_field_one"][0]
 #         assert "Must be one of: YES, NO." in error_message, error_message
 
+
+def test_validate_time_to_complete_no_errors():    
+    schemas.validate_time_to_complete(15)
+    schemas.validate_time_to_complete_minutes(57)
+    schemas.validate_time_to_complete_hours(24)
+
+
+def test_validate_time_to_complete_errors():
+    with assert_raises_regexp(ValidationError, "Please enter the time this course took to complete in minutes"):
+        schemas.validate_time_to_complete("a long time")
+    with assert_raises_regexp(ValidationError, "Please enter the time this course took to complete in minutes"):
+        schemas.validate_time_to_complete(-9)
