@@ -3,10 +3,8 @@ name: Deploy to AWS
 on:
   push:
     branches:
-      - develop
-#      - feature/*
-#      - bugfix/*
-  workflow_dispatch:  # Add this section for manual triggers
+      - develop # on merge to main we will deploy to prod
+  workflow_dispatch:  # we can manually trigger a deployment to dev from any branch
 
 
 env:
@@ -77,23 +75,40 @@ jobs:
           terraform_version: 1.5.7
 
       - name: Checkout Terraform Repository
+        id: checkout_tf
         run: |
           git clone https://github.com/i-dot-ai/terraform-infrastructure/ 
+
+      - name: Set Environment
+        id: set_env
+        run: |
+          if [ $GITHUB_REF == "refs/heads/develop" ]; then
+            echo "::set-output name=env::prod"
+          else
+            echo "::set-output name=env::dev"
+          fi
+        shell: bash
 
       - name: Terraform Init and Apply
         run: |
           cd terraform-infrastructure
-          if [ $GITHUB_REF == "refs/heads/develop" ]; then
-            terraform workspace select prod
-            echo "using prod"
-          else
-            echo "using dev"
-            terraform workspace select dev
-          fi
-          terraform -chdir=instances/one-big-thing workspace select dev
+          terraform -chdir=instances/one-big-thing workspace select ${{ steps.set_env.outputs.env }}
           terraform -chdir=instances/one-big-thing init
-          terraform -chdir=instances/one-big-thing plan -var "image_tag=${{ github.sha }}"
-#          terraform -chdir=instances/one-big-thing apply -auto-approve -var "image_tag=${{ env.IMAGE_TAG }}"
+          terraform -chdir=instances/one-big-thing apply -auto-approve -var "image_tag=${{ env.IMAGE_TAG }}"
+
+      - name: Update hash code in tf repo
+        run: |
+          echo '"image_tag = ${{ github.sha }}"' > temp.tfvars
+          grep -v '^image_tag' instances/one-big-thing/variables/${{ steps.set_env.outputs.env }}.tfvars > updated.tfvars
+          cat temp.tfvars >> updated.tfvars
+          mv updated.tfvars instances/one-big-thing/variables/${{ steps.set_env.outputs.env }}.tfvars
+          
+          git add instances/one-big-thing/variables/${{ steps.set_env.outputs.env }}.tfvars
+          git commit -m"updated hash code"
+          git push
+          
+          rm temp.tfvars
+          updated.tfvars
 
       - name: Clean Up Temporary Terraform Directory
         run: rm -rf terraform-infrastructure
