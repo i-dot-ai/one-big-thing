@@ -58,9 +58,15 @@ def list_to_options(iterable):
     return result
 
 
-def humanize_timedelta(minutes=0):
-    delta = datetime.timedelta(minutes=minutes)
-    return humanize.precisedelta(delta, minimum_unit="minutes")
+def humanize_timedelta(minutes=0, hours_limit=200, too_large_msg=""):
+    if minutes > (hours_limit * 60):
+        if not too_large_msg:
+            return f"More than {hours_limit} hours"
+        else:
+            return too_large_msg
+    else:
+        delta = datetime.timedelta(minutes=minutes)
+        return humanize.precisedelta(delta, minimum_unit="minutes")
 
 
 def environment(**options):

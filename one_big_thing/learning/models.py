@@ -72,7 +72,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 
 
 class Course(TimeStampedModel, UUIDPrimaryKeyBase):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     link = models.URLField(blank=True, null=True)
     learning_type = models.CharField(max_length=128, blank=True, null=True)
     time_to_complete = models.IntegerField(blank=True, null=True)  # minutes
@@ -88,7 +88,7 @@ class Course(TimeStampedModel, UUIDPrimaryKeyBase):
 
 
 class Learning(TimeStampedModel, UUIDPrimaryKeyBase):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
     link = models.URLField(blank=True, null=True)
     learning_type = models.CharField(max_length=128, blank=True, null=True)
     time_to_complete = models.IntegerField()  # minutes

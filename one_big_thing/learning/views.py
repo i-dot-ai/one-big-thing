@@ -29,11 +29,6 @@ def frozendict(*args, **kwargs):
     return types.MappingProxyType(dict(*args, **kwargs))
 
 
-page_compulsory_field_map = {
-    "record-learning": ("title",),
-}
-
-# TODO: Finalise mandatory question list
 survey_questions_compulsory_field_map = {
     "pre": {
         1: [
@@ -53,10 +48,6 @@ survey_questions_compulsory_field_map = {
     },
 }
 
-
-missing_item_errors = {
-    "title": "Please provide a title for this course",
-}
 
 ratings = (
     {"value": "1", "text": "1 ★"},
@@ -143,15 +134,26 @@ def homepage_view(request):
     )
 
 
+def transform_learning_record(data):
+    time_to_complete_hours = data.get("time_to_complete_hours")
+    if not time_to_complete_hours:
+        time_to_complete_hours = 0
+    time_to_complete_total = int(time_to_complete_hours) * 60 + int(data.get("time_to_complete_minutes", 0))
+    time_to_complete_total = str(time_to_complete_total)
+    transformed_data = {
+        "title": data.get("title"),
+        "time_to_complete": time_to_complete_total,
+        "link": data.get("link"),
+        "learning_type": data.get("learning_type"),
+        "rating": data.get("rating", None) or None,
+    }
+    return transformed_data
+
+
 @login_required
 @require_http_methods(["GET", "POST"])
 @enforce_user_completes_pre_survey
 class RecordLearningView(utils.MethodDispatcher):
-    time_errors_map = {
-        "time_to_complete_hours": "Please enter the hours this course took to complete e.g. 2",
-        "time_to_complete_minutes": "Please enter the minutes this course took to complete, between 1 and 59",
-    }
-
     def get(
         self,
         request,
@@ -203,97 +205,21 @@ class RecordLearningView(utils.MethodDispatcher):
 
     def post(self, request, course_id=None):
         data = request.POST.dict()
-        errors = validate(request, "record-learning", data)
-        if not data["time_to_complete_hours"] and not data["time_to_complete_minutes"]:
-            errors = {
-                **errors,
-                "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
-                "time_to_complete_hours": self.time_errors_map["time_to_complete_hours"],
-            }
-        if errors:
-            return self.get(request, data=data, errors=errors)
-        if data["time_to_complete_hours"] or data["time_to_complete_minutes"]:
-            if data["time_to_complete_hours"]:
-                try:
-                    value = int(data["time_to_complete_hours"])
-                    if value < 0:
-                        raise ValueError
-                except ValueError:
-                    errors = {
-                        **errors,
-                        "time_to_complete_hours": self.time_errors_map["time_to_complete_hours"],
-                    }
-            else:
-                data["time_to_complete_hours"] = 0
-            if data["time_to_complete_minutes"]:
-                try:
-                    value = int(data["time_to_complete_minutes"])
-                    if value < 0:
-                        raise ValueError
-                    if int(data["time_to_complete_minutes"]) > 59:
-                        errors = {
-                            **errors,
-                            "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
-                        }
-                except ValueError:
-                    errors = {
-                        **errors,
-                        "time_to_complete_minutes": self.time_errors_map["time_to_complete_minutes"],
-                    }
-            else:
-                data["time_to_complete_minutes"] = 0
+        errors = {}
+        record_learning_schema = schemas.RecordLearningSchema(unknown=marshmallow.EXCLUDE)
+        try:
+            record_learning_schema.load(data, partial=False)
+        except marshmallow.exceptions.ValidationError as err:
+            validation_errors = dict(err.messages)
+            errors = validation_errors
         if errors:
             return self.get(request, data=data, errors=errors)
         user = request.user
-        if user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys():
-            template_name = "streamlined-record-learning.html"
-        else:
-            template_name = "record-learning.html"
-        course_schema = schemas.CourseSchema(unknown=marshmallow.EXCLUDE)
-        manipulated_data = {
-            "title": data["title"],
-            "time_to_complete": str(
-                (int(data["time_to_complete_hours"]) * 60) + int((data["time_to_complete_minutes"]))
-            ),
-            "link": data.get("link"),
-            "learning_type": data.get("learning_type", None),
-            "rating": data.get("rating", None) or None,
-        }
-        try:
-            course_schema.load(manipulated_data, partial=True)
-        except marshmallow.exceptions.ValidationError as err:
-            errors = dict(err.messages)
-        else:
-            learning_data = {
-                "title": manipulated_data.get("title", None),
-                "link": manipulated_data.get("link", None),
-                "learning_type": manipulated_data.get("learning_type", None),
-                "time_to_complete": manipulated_data.get("time_to_complete", None),
-                "rating": manipulated_data.get("rating", None),
-            }
-            _ = interface.api.learning.create(user.id, user.id, learning_data, course_id)
-            return redirect(
-                "record-learning"
-            )  # TODO: Use class get to show success message when creating course instead of using redirect
-        time_completed = user.get_time_completed()
-        learning_types = choices.CourseType.choices
-        data = {"time_completed": time_completed, "learning_types": learning_types, **data}
-        return render(
-            request,
-            template_name=template_name,
-            context={
-                "request": request,
-                "data": data,
-                "errors": errors,
-            },
-        )
-
-
-def validate(request, page_name, data):
-    fields = page_compulsory_field_map.get(page_name, ())
-    missing_fields = tuple(field for field in fields if not data.get(field))
-    errors = {field: missing_item_errors[field] for field in missing_fields}
-    return errors
+        learning_data = transform_learning_record(data)
+        interface.api.learning.create(user.id, user.id, learning_data, course_id)
+        return redirect(
+            "record-learning"
+        )  # TODO: Use class get to show success message when creating course instead of using redirect
 
 
 @login_required
