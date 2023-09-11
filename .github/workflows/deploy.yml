@@ -108,7 +108,7 @@ jobs:
           git push
           
           rm temp.tfvars
-          updated.tfvars
+          rm updated.tfvars
 
       - name: Clean Up Temporary Terraform Directory
         run: rm -rf terraform-infrastructure
