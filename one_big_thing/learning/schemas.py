@@ -3,6 +3,7 @@ from marshmallow import Schema, ValidationError, fields, validate
 from one_big_thing.learning.utils import is_civil_service_email
 
 from . import choices, constants
+from one_big_thing.learning.departments import Department
 
 
 def validate_email(email):
@@ -121,3 +122,10 @@ class RecordLearningSchema(Schema):
     time_to_complete_hours = fields.Str(required=False, validate=validate_time_to_complete_hours)
     time_to_complete_minutes = fields.Str(validate=validate_time_to_complete_minutes)
     rating = fields.Str(required=False, allow_none=True)
+
+
+class MyDetailsSchema(Schema):
+    # TODO - better validation
+    department = make_choice_field(max_len=254, values=Department.values, allow_none=True)
+    grade = make_choice_field(max_len=254, values=choices.Grade.values, allow_none=True)
+    profession = make_choice_field(max_len=254, values=choices.Profession.values, allow_none=True)
