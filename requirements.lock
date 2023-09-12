@@ -1,7 +1,7 @@
 anyio==4.0.0
 asgiref==3.7.2
-boto3==1.28.43
-botocore==1.31.43
+boto3==1.28.45
+botocore==1.31.45
 certifi==2023.7.22
 cffi==1.15.1
 charset-normalizer==3.2.0
