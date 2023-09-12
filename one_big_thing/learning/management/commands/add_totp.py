@@ -6,8 +6,8 @@ from one_big_thing.learning.models import User
 
 
 class Command(BaseCommand):
-    help = """This should be run once per environment 
-    to set the initial superuser, thereafter the superuser should 
+    help = """This should be run once per environment
+    to set the initial superuser, thereafter the superuser should
     assign specific staff users and send them the link to the Authenticator"""
 
     def add_arguments(self, parser):
