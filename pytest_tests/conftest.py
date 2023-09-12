@@ -5,7 +5,7 @@ import pytz
 
 from one_big_thing.learning.models import User
 
-UTC = pytz.timezone('UTC')
+UTC = pytz.timezone("UTC")
 
 
 @pytest.fixture
@@ -17,13 +17,16 @@ def create_user():
 
     return _create_user
 
+
 @pytest.fixture
 def alice(create_user):
     return create_user("alice@co.gov.uk", "2000-01-01")
 
+
 @pytest.fixture
 def bob(create_user):
     return create_user("bob@co.gov.uk", "2000-01-01")
+
 
 @pytest.fixture
 def chris(create_user):
