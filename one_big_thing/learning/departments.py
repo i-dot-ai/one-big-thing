@@ -1,5 +1,5 @@
 # List of departments/organisations
-# Let 10DS (Cailin) know if these change as it has an impact on their analysis
+# Let 10DS (Cailin) know if these change as it has an impact on their analysis
 
 from . import utils
 
