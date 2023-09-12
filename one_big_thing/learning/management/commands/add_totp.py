@@ -1,6 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django_otp.plugins.otp_totp.models import TOTPDevice
 from django.core.management import BaseCommand
+from django_otp.plugins.otp_totp.models import TOTPDevice
 
 from one_big_thing.learning.models import User
 
@@ -36,6 +36,3 @@ class Command(BaseCommand):
         device, _ = TOTPDevice.objects.get_or_create(user=user, confirmed=True, tolerance=0)
 
         self.stdout.write(device.config_url)
-
-
-
