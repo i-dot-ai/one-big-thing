@@ -411,13 +411,16 @@ class MyDetailsView(utils.MethodDispatcher):
         return render(request, self.template_name)
 
     def get(self, request, errors=None, data=None):
+        user = request.user
+        my_details_schema = schemas.MyDetailsSchema()
+        data = my_details_schema.dump(user)
         department_choices = departments.Department.choices
         context = {
             "departments": department_choices,
             "grades": choices.Grade.choices,
             "professions": choices.Profession.choices,
             "errors": errors or {},
-            "data": data or {},
+            "data": data,
             "completed": request.user.completed_personal_details,
         }
         return render(request, self.template_name, context)

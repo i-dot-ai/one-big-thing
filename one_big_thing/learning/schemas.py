@@ -125,7 +125,6 @@ class RecordLearningSchema(Schema):
 
 
 class MyDetailsSchema(Schema):
-    # TODO - better validation
     department = make_choice_field(max_len=254, values=Department.values, allow_none=True)
     grade = make_choice_field(max_len=254, values=choices.Grade.values, allow_none=True)
     profession = make_choice_field(max_len=254, values=choices.Profession.values, allow_none=True)
