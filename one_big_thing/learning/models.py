@@ -40,6 +40,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     has_completed_pre_survey = models.BooleanField(default=False)
     has_completed_post_survey = models.BooleanField(default=False)
 
+    @property
     def completed_personal_details(self):
         complete = False
         if self.department and self.grade and self.profession:
