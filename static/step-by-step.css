@@ -75,11 +75,6 @@ div.step-by-step {
 .step-by-step--content {
     padding: 10px;
     border-bottom: 2px solid #d4d4d4;
-
-    .step-by-step--content-title {
-        display: flex;
-        justify-content: space-between;
-    }
 }
 
 .step-by-step--content:last-of-type {
@@ -88,4 +83,11 @@ div.step-by-step {
 
 .step-by-step--step-label:nth-last-of-type(2)::after {
     display: none;
+}
+
+@media (min-width: 40.0625em) {
+    .step-by-step--content-title {
+        display: flex;
+        justify-content: space-between;
+    }
 }
