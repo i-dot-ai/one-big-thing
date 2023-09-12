@@ -1,5 +1,3 @@
-from django.conf import settings
-from django.contrib import admin
 from django.urls import path
 
 from one_big_thing.learning import (
@@ -8,6 +6,7 @@ from one_big_thing.learning import (
     info_views,
     views,
 )
+from one_big_thing.learning.admin import admin_site
 
 info_urlpatterns = [
     path("privacy-notice/", info_views.privacy_notice_view, name="privacy-notice"),
@@ -15,7 +14,7 @@ info_urlpatterns = [
     path("support/", info_views.support_view, name="support"),
 ]
 
-admin_urlpatterns = [path("admin/", admin.site.urls)]
+admin_urlpatterns = [path("admin/", admin_site.urls)]
 
 other_urlpatterns = [
     path("", authentication_views.CustomLoginView, name="index"),
@@ -42,7 +41,4 @@ other_urlpatterns = [
     path("department-links/", views.department_links_view, name="department-links"),
 ]
 
-urlpatterns = info_urlpatterns + other_urlpatterns
-
-if settings.DEBUG:
-    urlpatterns = urlpatterns + admin_urlpatterns
+urlpatterns = info_urlpatterns + other_urlpatterns + admin_urlpatterns

@@ -25,3 +25,8 @@ sentry-sdk
 django-permissions-policy
 django-single-session
 django-csp
+
+# TOTP
+pyotp
+qrcode[pil]
+django-otp

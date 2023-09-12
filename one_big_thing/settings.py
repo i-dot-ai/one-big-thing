@@ -75,6 +75,8 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.staticfiles",
     "single_session",
+    'django_otp',
+    'django_otp.plugins.otp_totp',
 ]
 
 CORS_APPS = [
@@ -96,6 +98,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "allow_cidr.middleware.AllowCIDRMiddleware",
     "csp.middleware.CSPMiddleware",
+    'django_otp.middleware.OTPMiddleware',
 ]
 
 CORS_MIDDLEWARE = [
@@ -168,21 +171,21 @@ AUTH_PASSWORD_VALIDATORS = [
             "min_length": 10,
         },
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
-    {
-        "NAME": "one_big_thing.custom_password_validators.SpecialCharacterValidator",
-    },
-    {
-        "NAME": "one_big_thing.custom_password_validators.LowercaseUppercaseValidator",
-    },
-    {
-        "NAME": "one_big_thing.custom_password_validators.BusinessPhraseSimilarityValidator",
-    },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    # },
+    # {
+    #     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    # },
+    # {
+    #     "NAME": "one_big_thing.custom_password_validators.SpecialCharacterValidator",
+    # },
+    # {
+    #     "NAME": "one_big_thing.custom_password_validators.LowercaseUppercaseValidator",
+    # },
+    # {
+    #     "NAME": "one_big_thing.custom_password_validators.BusinessPhraseSimilarityValidator",
+    # },
 ]
 
 if not DEBUG:
@@ -274,3 +277,8 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'", "'sha256-wQJppp72tbAs/gAyLSJEgQfdtams9qseMear9achv1o='")
+
+OTP_TOTP_ISSUER = 'OneBigThing'
+OTP_TOTP_AUTOCONF = True
+OTP_TOTP_KEY_LENGTH = 16
+OTP_TOTP_THROTTLE_FACTOR = 1.0
