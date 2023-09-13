@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django_otp.admin import OTPAdminSite
@@ -17,7 +18,11 @@ class OTPAdmin(OTPAdminSite):
 
 admin_site = OTPAdmin(name="OTPAdmin")
 admin_site.register(User)
-admin.site.register(models.Course)
-admin.site.register(models.Learning)
-admin.site.register(models.SurveyResult, SurveyResultAdmin)
 admin_site.register(TOTPDevice, TOTPDeviceAdmin)
+
+if settings.DEBUG:
+    # we only want to expose a minimum of User data
+    # outside of DEBUG mode
+    admin_site.register(models.Course)
+    admin_site.register(models.Learning)
+    admin_site.register(models.SurveyResult, SurveyResultAdmin)
