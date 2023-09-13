@@ -17,4 +17,4 @@ def get_secret(name: str):
 
 
 def fetch_generic_secret(env, secret_name):
-    return json.loads(get_secret(f"one-big-thing-{env}"))[secret_name]
+    return json.loads(get_secret(f"one-big-thing-{env}")).get(secret_name, None)
