@@ -171,18 +171,18 @@ AUTH_PASSWORD_VALIDATORS = [
             "min_length": 10,
         },
     },
-    # {
-    #     "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    # },
-    # {
-    #     "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    # },
-    # {
-    #     "NAME": "one_big_thing.custom_password_validators.SpecialCharacterValidator",
-    # },
-    # {
-    #     "NAME": "one_big_thing.custom_password_validators.LowercaseUppercaseValidator",
-    # },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
+    {
+        "NAME": "one_big_thing.custom_password_validators.SpecialCharacterValidator",
+    },
+    {
+        "NAME": "one_big_thing.custom_password_validators.LowercaseUppercaseValidator",
+    },
     # {
     #     "NAME": "one_big_thing.custom_password_validators.BusinessPhraseSimilarityValidator",
     # },
