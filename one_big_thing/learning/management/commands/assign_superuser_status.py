@@ -2,8 +2,8 @@ import getpass
 
 from django.core.management import BaseCommand
 from django_otp.plugins.otp_totp.models import TOTPDevice
-from one_big_thing.learning.models import User
 
+from one_big_thing.learning.models import User
 
 
 class Command(BaseCommand):
@@ -31,7 +31,7 @@ class Command(BaseCommand):
 
         user.is_superuser = True
         if not user.password:
-            password = getpass.getpass('Password: ')
+            password = getpass.getpass("Password: ")
             user.set_password(password)
 
         user.save()

@@ -20,4 +20,3 @@ def test_assign_superuser_status_happy_path():
     assert lines[0].startswith("otpauth://totp/OneBigThing")
     user.refresh_from_db()
     assert user.is_superuser is True
-
