@@ -1,5 +1,3 @@
-import getpass
-
 from django.core.management import BaseCommand
 from django_otp.plugins.otp_totp.models import TOTPDevice
 
@@ -7,18 +5,20 @@ from one_big_thing.learning.models import User
 
 
 class Command(BaseCommand):
-    help = """This should be run once per environment to set the initial superuser. 
-    Thereafter the superuser should assign new staff users via the admin and send 
+    help = """This should be run once per environment to set the initial superuser.
+    Thereafter the superuser should assign new staff users via the admin and send
     them the link to the Authenticator.
-    
-    Once run this command will return the link to a Time-One-Time-Pass that the 
+
+    Once run this command will return the link to a Time-One-Time-Pass that the
     superuser should use to enable login to the admin portal."""
 
     def add_arguments(self, parser):
         parser.add_argument("-e", "--email", type=str, help="user's email", required=True)
+        parser.add_argument("-p", "--password", type=str, help="user's new password")
 
     def handle(self, *args, **kwargs):
         email = kwargs["email"]
+        password = kwargs["password"]
 
         try:
             user = User.objects.get(email=email)
@@ -30,9 +30,11 @@ class Command(BaseCommand):
             return
 
         user.is_superuser = True
-        if not user.password:
-            password = getpass.getpass("Password: ")
+        if password:
             user.set_password(password)
+        elif not user.password:
+            self.stderr.write(self.style.ERROR(f"A password must be set for '{email}'."))
+            return
 
         user.save()
 
