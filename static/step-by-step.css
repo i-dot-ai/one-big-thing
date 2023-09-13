@@ -75,6 +75,10 @@ div.step-by-step {
 .step-by-step--content {
     padding: 10px;
     border-bottom: 2px solid #d4d4d4;
+    
+    .govuk-button{
+        width: fit-content;
+    }
 }
 
 .step-by-step--content:last-of-type {
