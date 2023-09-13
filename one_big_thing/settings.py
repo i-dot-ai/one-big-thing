@@ -29,18 +29,14 @@ if ENVIRONMENT in ["TESTS", "LOCAL"]:
     CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
     FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
     FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
-    ALLOWED_DOMAINS = env.str("ALLOWED_DOMAINS", default="").split(",")
     SECRET_KEY = env.str("DJANGO_SECRET_KEY")
     BASIC_AUTH = env.str("BASIC_AUTH", default="")
 else:
-    ALLOWED_DOMAINS = fetch_generic_secret(ENVIRONMENT, "ALLOWED_DOMAINS")
     CONTACT_EMAIL = fetch_generic_secret(ENVIRONMENT, "CONTACT_EMAIL")
     FROM_EMAIL = fetch_generic_secret(ENVIRONMENT, "FROM_EMAIL")
     FEEDBACK_EMAIL = fetch_generic_secret(ENVIRONMENT, "FEEDBACK_EMAIL")
     SECRET_KEY = fetch_generic_secret(ENVIRONMENT, "DJANGO_SECRET_KEY")
     BASIC_AUTH = fetch_generic_secret(ENVIRONMENT, "BASIC_AUTH")
-
-CIVIL_SERVICE_DOMAINS = frozenset(ALLOWED_DOMAINS)
 
 
 BASE_URL = env.str("BASE_URL")
@@ -235,12 +231,6 @@ LOGIN_REDIRECT_URL = "homepage"
 LOGIN_URL = "index"
 
 ALLOW_EXAMPLE_EMAILS = env.bool("ALLOW_EXAMPLE_EMAILS", default=True)
-
-if ALLOW_EXAMPLE_EMAILS:
-    ALLOWED_CIVIL_SERVICE_DOMAINS = CIVIL_SERVICE_DOMAINS.union({"example.com"})
-    # This is domain is used for testing, so for these purposes, count it as a CS domain
-else:
-    ALLOWED_CIVIL_SERVICE_DOMAINS = CIVIL_SERVICE_DOMAINS
 
 PASSWORD_RESET_TIMEOUT = 60 * 60
 
