@@ -92,6 +92,8 @@ jobs:
 
       - name: Terraform Init and Apply
         run: |
+          ls .
+          ls ${{ github.workspace }}
           cd ${{ github.workspace }}/terraform-infrastructure
           terraform -chdir=instances/one-big-thing workspace select ${{ steps.set_env.outputs.env }}
           terraform -chdir=instances/one-big-thing init
