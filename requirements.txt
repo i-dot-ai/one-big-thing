@@ -9,6 +9,7 @@ django-environ
 django-allauth~=0.54.0
 django-gov-notify==0.3.0
 djangorestframework~=3.14.0
+djangorestframework_simplejwt~=5.3.0
 django_use_email_as_username
 gunicorn
 psycopg2-binary
