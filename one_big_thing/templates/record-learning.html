@@ -16,7 +16,7 @@
     </div>
     <div class="govuk-notification-banner__content">
       <p class="govuk-notification-banner__heading">
-        You have completed {{ humanize_timedelta(data.time_completed) }} so far.
+        You have completed {{ humanize_timedelta(data.time_completed, 200, "over 200 hours") }} so far.
       </p>
       {% if data.completed_obt %}
         <p class="govuk-notification-banner__heading">

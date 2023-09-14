@@ -6,7 +6,6 @@ on:
       - develop # on merge to main we will deploy to prod
   workflow_dispatch:  # we can manually trigger a deployment to dev from any branch
 
-
 env:
   AWS_REGION: eu-west-2
 

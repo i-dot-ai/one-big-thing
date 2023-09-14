@@ -2,7 +2,7 @@ from marshmallow import Schema, ValidationError, fields, validate
 
 from one_big_thing.learning.utils import is_civil_service_email
 
-from . import choices
+from . import choices, constants
 
 
 def validate_email(email):
@@ -17,6 +17,15 @@ class SingleLineStr(fields.Str):
             single_line_value = " ".join(value.splitlines())
             if not value == single_line_value:
                 raise ValidationError("Cannot contain linebreaks")
+        return super()._deserialize(value, attr, data, **kwargs)
+
+
+class LearningTitleSingleLineStr(SingleLineStr):
+    def _deserialize(self, value, attr, data, **kwargs):
+        if not value:
+            raise ValidationError("Please provide a title for this course")
+        elif len(value) > 200:
+            raise ValidationError("The title must be less than 200 characters")
         return super()._deserialize(value, attr, data, **kwargs)
 
 
@@ -53,24 +62,62 @@ class UUIDPrimaryKeyBaseModelSchema(Schema):
     id = fields.UUID()
 
 
-def validate_time_to_complete(value):
+def validate_positive_integer(value, max=None, error_msg="There is an error with this value", error_msg_max=""):
+    """
+    Checks if value is a positive integer, optionally checks if below max.
+
+    Args:
+        value: Any value to be validated
+        max: Optional value to check value is below max
+        error_msg (str): General error message to display
+        error_msg_max (str): Optional error message if number exceeds max, otherwise error_msg is displayed
+    """
     try:
-        int(value)
+        value = int(value)
+        if value < 0:
+            raise ValidationError(error_msg)
+        elif max and (value > max):
+            if error_msg_max:
+                raise ValidationError(error_msg_max)
+            raise ValidationError(error_msg)
     except ValueError:
-        raise ValidationError("Please enter the time this course took to complete in minutes, e.g. 15")
+        raise ValidationError(error_msg)
+
+
+def validate_time_to_complete(value):
+    validate_positive_integer(value, error_msg="Please enter the time this course took to complete in minutes, e.g. 15")
+
+
+def validate_time_to_complete_hours(value):
+    general_error = "Please enter the hours this course took to complete, for example, 2"
+    max_hours_error = f"The course should be less than {constants.HOURS_LIMIT} hours"
+    validate_positive_integer(value, max=constants.HOURS_LIMIT, error_msg=general_error, error_msg_max=max_hours_error)
+
+
+def validate_time_to_complete_minutes(value):
+    minutes_error = "Please enter the minutes this course took to complete, between 0 and 59"
+    validate_positive_integer(value, max=59, error_msg=minutes_error)
 
 
 class CourseSchema(TimeStampedModelSchema, UUIDPrimaryKeyBaseModelSchema):
-    title = SingleLineStr(required=True, validate=validate.Length(max=1024))
+    title = SingleLineStr(required=True, validate=validate.Length(max=200))
     link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
     learning_type = make_choice_field(max_len=256, values=choices.CourseType.values, allow_none=True)
     time_to_complete = fields.Str(required=False, validate=validate_time_to_complete)
-    # strengths = fields.Str()  # Figure out if we're using these or not
 
 
 class LearningSchema(TimeStampedModelSchema, UUIDPrimaryKeyBaseModelSchema):
-    title = SingleLineStr(required=True, validate=validate.Length(max=1024))
+    title = SingleLineStr(required=True, validate=validate.Length(max=200))
     link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
     learning_type = make_choice_field(max_len=256, values=choices.CourseType.values, allow_none=True)
     time_to_complete = fields.Str(required=False, validate=validate_time_to_complete)
+    rating = fields.Str(required=False, allow_none=True)
+
+
+class RecordLearningSchema(Schema):
+    title = LearningTitleSingleLineStr(required=True)
+    link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
+    learning_type = make_choice_field(max_len=256, values=choices.CourseType.values, allow_none=True)
+    time_to_complete_hours = fields.Str(required=False, validate=validate_time_to_complete_hours)
+    time_to_complete_minutes = fields.Str(validate=validate_time_to_complete_minutes)
     rating = fields.Str(required=False, allow_none=True)
