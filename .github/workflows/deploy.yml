@@ -92,9 +92,8 @@ jobs:
 
       - name: Terraform Init and Apply
         run: |
-          ls .
           ls ${{ github.workspace }}
-          cd ${{ github.workspace }}/terraform-infrastructure
+          cd ${{ github.workspace }}
           terraform -chdir=instances/one-big-thing workspace select ${{ steps.set_env.outputs.env }}
           terraform -chdir=instances/one-big-thing init
           terraform -chdir=instances/one-big-thing plan -var "image_tag=${{ env.IMAGE_TAG }}"
