@@ -73,11 +73,6 @@ jobs:
         with:
           terraform_version: 1.5.7
 
-      - name: Checkout Terraform Repository
-        id: checkout_tf
-        run: |
-          git clone https://github.com/i-dot-ai/terraform-infrastructure.git
-
       - name: Set Environment
         id: set_env
         run: |
@@ -87,6 +82,11 @@ jobs:
             echo "::set-output name=env::dev"
           fi
         shell: bash
+
+      - name: Clone Terraform Repository
+        id: clone_tf
+        run: |
+          git clone https://github.com/i-dot-ai/terraform-infrastructure.git
 
       - name: Terraform Init and Apply
         run: |
