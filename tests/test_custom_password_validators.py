@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from nose.tools import assert_raises_regexp
 
 from one_big_thing.custom_password_validators import (
+    BusinessPhraseSimilarityValidator,
     LowercaseUppercaseValidator,
     SpecialCharacterValidator,
 )
@@ -35,3 +36,18 @@ def test_lowercase_uppercase_validator_fail():
     validator = LowercaseUppercaseValidator()
     with assert_raises_regexp(ValidationError, validator.msg):
         validator.validate("password")
+
+
+def test_business_phrase_similarity_validator_pass():
+    """we expect `password' to pass because it isnt black listed"""
+    validator = BusinessPhraseSimilarityValidator()
+    validator.validate("PassWord")
+    assert True
+
+
+def test_business_phrase_similarity_validator_fail():
+    """we expect `password' to fail because 'downing-street' is a blacklisted
+    password"""
+    validator = BusinessPhraseSimilarityValidator()
+    with assert_raises_regexp(ValidationError, validator.msg):
+        validator.validate("number 10 downing-street")
