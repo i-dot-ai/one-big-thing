@@ -1,9 +1,9 @@
 from marshmallow import Schema, ValidationError, fields, validate
 
+from one_big_thing.learning.departments import Department
 from one_big_thing.learning.utils import is_civil_service_email
 
 from . import choices, constants
-from one_big_thing.learning.departments import Department
 
 
 def validate_email(email):
@@ -50,7 +50,9 @@ def make_choice_field(max_len, values, allow_none=False, required=False, **kwarg
             **kwargs,
         )
     else:
-        field = SingleLineStr(validate=validate.And(validate.Length(max=max_len), validate.OneOf(values)), required=required, **kwargs)
+        field = SingleLineStr(
+            validate=validate.And(validate.Length(max=max_len), validate.OneOf(values)), required=required, **kwargs
+        )
     return field
 
 
@@ -129,30 +131,27 @@ class RecordLearningSchema(Schema):
 
 
 class MyDetailsSchema(Schema):
-    # department = make_choice_field(max_len=254, values=Department.values, required=True, none_error_msg="You must select a department")
-    # grade = make_choice_field(max_len=254, values=choices.Grade.values, required=True, none_error_msg="You must select a grade")
-    # profession = make_choice_field(max_len=254, values=choices.Profession.values, required=True, none_error_msg="You must select a profession")
     class Meta:
         ordered = True
-    
+
     department = fields.Str(
         required=True,
         validate=validate.OneOf(Department.values),
         error_messages={
-            'required': "You must select a department",
-        }
+            "required": "You must select a department",
+        },
     )
     grade = fields.Str(
         required=True,
         validate=validate.OneOf(choices.Grade.values),
         error_messages={
-            'required': "You must select a grade",
-         }
+            "required": "You must select a grade",
+        },
     )
     profession = fields.Str(
         required=True,
         validate=validate.OneOf(choices.Profession.values),
         error_messages={
-            'required': "You must select a profession", 
-        }
+            "required": "You must select a profession",
+        },
     )
