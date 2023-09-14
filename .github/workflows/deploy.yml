@@ -93,55 +93,22 @@ jobs:
           cd terraform-infrastructure
           terraform -chdir=instances/one-big-thing workspace select ${{ steps.set_env.outputs.env }}
           terraform -chdir=instances/one-big-thing init
-          terraform -chdir=instances/one-big-thing apply -auto-approve -var "image_tag=${{ env.IMAGE_TAG }}"
+          terraform -chdir=instances/one-big-thing plan -var "image_tag=${{ env.IMAGE_TAG }}"
+#          terraform -chdir=instances/one-big-thing apply -auto-approve -var "image_tag=${{ env.IMAGE_TAG }}"
 
-      - name: Update hash code in tf repo
-        run: |
-          echo '"image_tag = ${{ github.sha }}"' > temp.tfvars
-          grep -v '^image_tag' instances/one-big-thing/variables/${{ steps.set_env.outputs.env }}.tfvars > updated.tfvars
-          cat temp.tfvars >> updated.tfvars
-          mv updated.tfvars instances/one-big-thing/variables/${{ steps.set_env.outputs.env }}.tfvars
-          
-          git add instances/one-big-thing/variables/${{ steps.set_env.outputs.env }}.tfvars
-          git commit -m"updated hash code"
-          git push
-          
-          rm temp.tfvars
-          rm updated.tfvars
+#      - name: Update hash code in tf repo
+#        run: |
+#          echo '"image_tag = ${{ github.sha }}"' > temp.tfvars
+#          grep -v '^image_tag' instances/one-big-thing/variables/${{ steps.set_env.outputs.env }}.tfvars > updated.tfvars
+#          cat temp.tfvars >> updated.tfvars
+#          mv updated.tfvars instances/one-big-thing/variables/${{ steps.set_env.outputs.env }}.tfvars
+#
+#          git add instances/one-big-thing/variables/${{ steps.set_env.outputs.env }}.tfvars
+#          git commit -m"updated hash code"
+#          git push
+#
+#          rm temp.tfvars
+#          rm updated.tfvars
 
       - name: Clean Up Temporary Terraform Directory
         run: rm -rf terraform-infrastructure
-
-
-
-      # - name: Render Amazon ECS task definition for the load balancer target container
-      #   id: render-lb-target-container-web
-      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-      #   with:
-      #     task-definition: ${{ env.ECS_TASK_DEFINITION }}
-      #     container-name: ${{ env.LB_TARGET_CONTAINER_NAME }}
-      #     image: ${{ fromJSON(steps.build-and-push-web.outputs.metadata)['image.name'] }}
-
-      # - name: Deploy Amazon ECS task definition
-      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      #   with:
-      #     task-definition: ${{ steps.render-lb-target-container-web.outputs.task-definition }}
-      #     service: ${{ env.ECS_SERVICE }}
-      #     cluster: ${{ env.ECS_CLUSTER }}
-      #     wait-for-service-stability: true
-
-      # - name: Render Amazon ECS task definition for the load balancer target container
-      #   id: render-lb-target-container-proxy
-      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-      #   with:
-      #     task-definition: ${{ env.ECS_TASK_DEFINITION }}
-      #     container-name: ${{ env.LB_TARGET_CONTAINER_NAME }}
-      #     image: ${{ fromJSON(steps.build-and-push-proxy.outputs.metadata)['image.name'] }}
-
-      # - name: Deploy Amazon ECS task definition
-      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      #   with:
-      #     task-definition: ${{ steps.render-lb-target-container-proxy.outputs.task-definition }}
-      #     service: ${{ env.ECS_SERVICE }}
-      #     cluster: ${{ env.ECS_CLUSTER }}
-      #     wait-for-service-stability: true
