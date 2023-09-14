@@ -1,4 +1,6 @@
 from django.urls import path
+from rest_framework.routers import SimpleRouter
+from rest_framework_simplejwt.views import TokenRefreshView
 
 from one_big_thing.learning import (
     authentication_views,
@@ -7,6 +9,17 @@ from one_big_thing.learning import (
     views,
 )
 from one_big_thing.learning.admin import admin_site
+from one_big_thing.learning.api_views import MyTokenObtainPairView, UserViewSet
+
+router = SimpleRouter()
+
+router.register(r"api/user-statistics", UserViewSet, basename="user-statistics")
+
+api_urlpatterns = [
+    *router.urls,
+    path("api/token/", MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+]
 
 info_urlpatterns = [
     path("privacy-notice/", info_views.privacy_notice_view, name="privacy-notice"),
