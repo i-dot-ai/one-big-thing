@@ -7,9 +7,6 @@ from one_big_thing.learning.models import User
 
 class TOTPAdminTest(TestCase):
     def setUp(self):
-        """
-        Create a device at the fourth time step. The current token is 154567.
-        """
         self.superuser = User.objects.create_superuser(password="password", email="admin@example.com")
 
         # Create a TOTP device for the superuser
