@@ -1,5 +1,4 @@
 from django.urls import path
-from rest_framework.routers import SimpleRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from one_big_thing.learning import (
@@ -9,16 +8,12 @@ from one_big_thing.learning import (
     views,
 )
 from one_big_thing.learning.admin import admin_site
-from one_big_thing.learning.api_views import MyTokenObtainPairView, UserViewSet
-
-router = SimpleRouter()
-
-router.register(r"api/user-statistics", UserViewSet, basename="user-statistics")
+from one_big_thing.learning.api_views import JwtTokenObtainPairView, UserStatisticsView
 
 api_urlpatterns = [
-    *router.urls,
-    path("api/token/", MyTokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/token/", JwtTokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/user-statistics/", UserStatisticsView.as_view(), name="user_statistics"),
 ]
 
 info_urlpatterns = [
@@ -54,4 +49,4 @@ other_urlpatterns = [
     path("department-links/", views.department_links_view, name="department-links"),
 ]
 
-urlpatterns = info_urlpatterns + other_urlpatterns + admin_urlpatterns
+urlpatterns = info_urlpatterns + other_urlpatterns + admin_urlpatterns + api_urlpatterns
