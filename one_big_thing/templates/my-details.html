@@ -12,6 +12,8 @@
 
       {{csrf_input}}
 
+      {{data}}
+
       <fieldset class="govuk-fieldset">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
           <h2 class="govuk-fieldset__heading">
@@ -42,9 +44,9 @@
         </div>
         <div class="govuk-form-group {% if 'grades' in errors.keys() %}govuk-form-group--error{% endif %}">
           <label class="govuk-label" for="grade">What is your grade?</label>
-          {% if 'grades' in errors.keys() %}
+          {% if 'grade' in errors.keys() %}
             <p id="grade-error" class="govuk-error-message">
-              <span class="govuk-visually-hidden">Error:</span> {{ errors["grades"] }}
+              <span class="govuk-visually-hidden">Error:</span> {{ errors["grade"] }}
             </p>
           {% endif %}
           <div id="select-grade">
@@ -59,9 +61,9 @@
 
         <div class="govuk-form-group {% if 'professions' in errors.keys() %}govuk-form-group--error{% endif %}">
           <label class="govuk-label" for="profession">What is your primary area of work?</label>
-          {% if 'professions' in errors.keys() %}
+          {% if 'profession' in errors.keys() %}
             <p id="profession-error" class="govuk-error-message">
-              <span class="govuk-visually-hidden">Error:</span> {{ errors["professions"] }}
+              <span class="govuk-visually-hidden">Error:</span> {{ errors["profession"] }}
             </p>
           {% endif %}
           <div id="select-profession">

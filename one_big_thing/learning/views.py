@@ -412,10 +412,6 @@ class MyDetailsView(utils.MethodDispatcher):
         return render(request, self.template_name)
 
     def get(self, request, errors=None, data=None):
-        print("get - errors")
-        if not errors:
-            errors = {}
-        print(errors)
         user = request.user
         data = self.my_details_schema.dump(user)
         department_choices = departments.Department.choices
@@ -423,8 +419,8 @@ class MyDetailsView(utils.MethodDispatcher):
             "departments": department_choices,
             "grades": choices.Grade.choices,
             "professions": choices.Profession.choices,
-            "errors": errors,
-            "data": data,
+            "errors": errors or {},
+            "data": data or {},
             "completed": request.user.completed_personal_details,
         }
         return render(request, self.template_name, context)
@@ -432,14 +428,10 @@ class MyDetailsView(utils.MethodDispatcher):
     def post(self, request):
         user = request.user
         try:
-            print("request.POST")
-            print(request.POST)
             details = self.my_details_schema.load(request.POST)
-            print("details")
-            print(details)
-            print("=====")
             for k, v in details.items():
                 setattr(user, k, v)
+                user.save()
             if not user.has_completed_pre_survey:
                 return redirect(reverse("questions", args=("pre",)))
             else:
@@ -447,11 +439,9 @@ class MyDetailsView(utils.MethodDispatcher):
         except marshmallow.exceptions.ValidationError as err:
             validation_errors = dict(err.messages)
             errors = validation_errors
-            print("errors")
-            print(errors)
-            errors_combined = [e[0] for e in errors.values()]
-            errors_combined = "\n".join(errors_combined)
-            messages.error(request, errors_combined)
+            errors = {k: v[0] for k,v in validation_errors.items()}
+            for v in errors.values():
+                messages.error(request, v)
             return self.get(request, errors, data=request.POST.dict())
 
         # department = request.POST.get("department")
