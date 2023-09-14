@@ -89,7 +89,7 @@ jobs:
             repository: i-dot-ai/terraform-infrastructure
             ref: develop
         env:
-          GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GH_TOKEN: ${{ secrets.TF_REPO }}
 
       - name: Terraform Init and Apply
         run: |
