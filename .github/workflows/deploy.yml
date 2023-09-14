@@ -94,8 +94,8 @@ jobs:
         run: |
           ls ${{ github.workspace }}
           cd ${{ github.workspace }}
-          terraform -chdir=instances/one-big-thing workspace select ${{ steps.set_env.outputs.env }}
           terraform -chdir=instances/one-big-thing init
+          terraform -chdir=instances/one-big-thing workspace select ${{ steps.set_env.outputs.env }}
           terraform -chdir=instances/one-big-thing plan -var "image_tag=${{ env.IMAGE_TAG }}"
 #          terraform -chdir=instances/one-big-thing apply -auto-approve -var "image_tag=${{ env.IMAGE_TAG }}"
 
