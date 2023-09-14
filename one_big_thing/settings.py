@@ -48,6 +48,7 @@ ALLOWED_HOSTS = [
     "dev.onebigthing.civilservice.gov.uk",
     "onebigthing.civilservice.gov.uk",
     "web",
+    "testserver",
 ]
 
 # CSRF settings
