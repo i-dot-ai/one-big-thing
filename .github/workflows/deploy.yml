@@ -76,7 +76,7 @@ jobs:
       - name: Checkout Terraform Repository
         id: checkout_tf
         run: |
-          git clone https://github.com/i-dot-ai/terraform-infrastructure/ 
+          git clone https://github.com/i-dot-ai/terraform-infrastructure.git
 
       - name: Set Environment
         id: set_env
