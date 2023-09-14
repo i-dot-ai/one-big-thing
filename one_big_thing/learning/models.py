@@ -39,6 +39,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     profession = models.CharField(max_length=254, blank=True, null=True)
     has_completed_pre_survey = models.BooleanField(default=False)
     has_completed_post_survey = models.BooleanField(default=False)
+    has_api_access = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
