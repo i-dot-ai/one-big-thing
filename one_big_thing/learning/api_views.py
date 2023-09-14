@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from one_big_thing.api_serializers import (
-    JwtTokenObtainPairSerializer,
     EntitySerializer,
+    JwtTokenObtainPairSerializer,
 )
 from one_big_thing.learning.api_permissions import IsAPIUser
 
