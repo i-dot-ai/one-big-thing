@@ -32,11 +32,13 @@ class Command(BaseCommand):
         user.is_superuser = True
         if password:
             user.set_password(password)
-        elif not user.password:
-            self.stderr.write(self.style.ERROR(f"A password must be set for '{email}'."))
-            return
 
         user.save()
+        user.refresh_from_db()
+
+        if not user.password:
+            self.stderr.write(self.style.ERROR(f"A password must be set for '{email}'."))
+            return
 
         device, _ = TOTPDevice.objects.get_or_create(user=user, confirmed=True, tolerance=0)
         self.stdout.write(device.config_url)

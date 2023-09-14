@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.auth.models import User
+from one_big_thing.learning.models import User
 from django_otp.admin import OTPAdminSite
 from django_otp.plugins.otp_totp.admin import TOTPDeviceAdmin
 from django_otp.plugins.otp_totp.models import TOTPDevice
