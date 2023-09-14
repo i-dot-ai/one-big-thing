@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name="user",
-            name="has_api_access",
+            name="is_api_user",
             field=models.BooleanField(default=False),
         ),
     ]
