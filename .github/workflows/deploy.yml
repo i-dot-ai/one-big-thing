@@ -84,10 +84,11 @@ jobs:
         shell: bash
 
       - name: Clone Terraform Repository
-        id: clone_tf
-        run: |
-          git clone https://github.com/i-dot-ai/terraform-infrastructure.git
-
+        uses: actions/checkout@v2
+        with:
+            repository: i-dot-ai/terraform-infrastructure
+            ref: develop
+            
       - name: Terraform Init and Apply
         run: |
           cd terraform-infrastructure
