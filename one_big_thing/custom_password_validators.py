@@ -3,14 +3,7 @@ import string
 
 from django.core.exceptions import ValidationError
 
-BUSINESS_SPECIFIC_WORDS = [
-    "one big thing",
-    "whitehall",
-    "civil service",
-    "home office",
-    "cabinet office",
-    "downing street",
-]
+from one_big_thing.learning.constants import BUSINESS_SPECIFIC_WORDS
 
 
 class SpecialCharacterValidator:

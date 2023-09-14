@@ -111,3 +111,12 @@ COMPETENCY_DETERMINATION_MAPPING = {
 
 HOURS_LIMIT = 200
 TOTAL_MINUTES_LIMIT = HOURS_LIMIT * 60 + 59
+
+BUSINESS_SPECIFIC_WORDS = [
+    "one big thing",
+    "whitehall",
+    "civil service",
+    "home office",
+    "cabinet office",
+    "downing street",
+]
