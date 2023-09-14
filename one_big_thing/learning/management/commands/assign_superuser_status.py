@@ -20,16 +20,10 @@ class Command(BaseCommand):
         email = kwargs["email"]
         password = kwargs["password"]
 
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            self.stderr.write(self.style.ERROR(f"User with email '{email}' does not exist."))
-            return
-        except User.MultipleObjectsReturned:
-            self.stderr.write(self.style.ERROR(f"Multiple users found with email '{email}'."))
-            return
+        user, _ = User.objects.get_or_create(email=email)
 
         user.is_superuser = True
+        user.is_staff = True
         if password:
             user.set_password(password)
 

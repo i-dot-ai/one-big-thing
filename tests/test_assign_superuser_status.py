@@ -10,11 +10,12 @@ def test_assign_superuser_status_happy_path():
     we then make them one and check that:
     1. a TOTP link is returned
     2. the user now has a password
-    3. the user is now a superuser
+    3. the user is now a staff and superuser
     """
     email, password = "diana@co.gov.uk", "P4ssw0rd!"
     user = User.objects.create_user(email="diana@co.gov.uk")
     assert user.is_superuser is False
+    assert user.is_staff is False
 
     stdout = StringIO()
 
@@ -30,5 +31,6 @@ def test_assign_superuser_status_happy_path():
     # 2. has the password been set correctly?
     assert user.check_password(password), user.password
 
-    # 3. is the user a superuser?
+    # 3. is the user a staff and superuser?
     assert user.is_superuser is True
+    assert user.is_staff is True
