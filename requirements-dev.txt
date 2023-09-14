@@ -11,5 +11,7 @@ bandit
 sentry-sdk
 coverage
 click
+pytest
+pytest-django
 
 -r ./requirements.lock
