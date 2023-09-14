@@ -84,7 +84,7 @@ jobs:
         shell: bash
 
       - name: Clone Terraform Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
             repository: i-dot-ai/terraform-infrastructure
             ref: develop
