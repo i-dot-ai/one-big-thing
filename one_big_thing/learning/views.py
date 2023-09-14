@@ -405,21 +405,25 @@ def additional_learning_view(request):
 class MyDetailsView(utils.MethodDispatcher):
     template_name = "my-details.html"
     error_message = "Something has gone wrong. Please try again."
+    my_details_schema = schemas.MyDetailsSchema(unknown=marshmallow.EXCLUDE)
 
     def error(self, request):
         messages.error(request, self.error_message)
         return render(request, self.template_name)
 
     def get(self, request, errors=None, data=None):
+        print("get - errors")
+        if not errors:
+            errors = {}
+        print(errors)
         user = request.user
-        my_details_schema = schemas.MyDetailsSchema()
-        data = my_details_schema.dump(user)
+        data = self.my_details_schema.dump(user)
         department_choices = departments.Department.choices
         context = {
             "departments": department_choices,
             "grades": choices.Grade.choices,
             "professions": choices.Profession.choices,
-            "errors": errors or {},
+            "errors": errors,
             "data": data,
             "completed": request.user.completed_personal_details,
         }
@@ -427,32 +431,52 @@ class MyDetailsView(utils.MethodDispatcher):
 
     def post(self, request):
         user = request.user
-        department = request.POST.get("department")
-        grade = request.POST.get("grade")
-        profession = request.POST.get("profession")
-
-        if not department or not grade or not profession:
-            errors = {}
-            if not department:
-                messages.error(request, "You must select a department.")
-                errors["department"] = "You must select a department"
-            if not grade:
-                messages.error(request, "You must select a grade.")
-                errors["grades"] = "You must select a grade"
-            if not profession:
-                messages.error(request, "You must select a profession.")
-                errors["professions"] = "You must select a profession"
-            return self.get(request, errors, data=request.POST.dict())
-        else:
-            user.department = department
-            user.grade = grade
-            user.profession = profession
-            user.save()
-
+        try:
+            print("request.POST")
+            print(request.POST)
+            details = self.my_details_schema.load(request.POST)
+            print("details")
+            print(details)
+            print("=====")
+            for k, v in details.items():
+                setattr(user, k, v)
             if not user.has_completed_pre_survey:
                 return redirect(reverse("questions", args=("pre",)))
             else:
                 return redirect(reverse("homepage"))
+        except marshmallow.exceptions.ValidationError as err:
+            validation_errors = dict(err.messages)
+            errors = validation_errors
+            print("errors")
+            print(errors)
+            errors_combined = [e[0] for e in errors.values()]
+            errors_combined = "\n".join(errors_combined)
+            messages.error(request, errors_combined)
+            return self.get(request, errors, data=request.POST.dict())
+
+        # department = request.POST.get("department")
+        # grade = request.POST.get("grade")
+        # profession = request.POST.get("profession")
+
+        # if not department or not grade or not profession:
+        #     errors = {}
+        #     if not department:
+        #         messages.error(request, "You must select a department.")
+        #         errors["department"] = "You must select a department"
+        #     if not grade:
+        #         messages.error(request, "You must select a grade.")
+        #         errors["grades"] = "You must select a grade"
+        #     if not profession:
+        #         messages.error(request, "You must select a profession.")
+        #         errors["professions"] = "You must select a profession"
+        #     return self.get(request, errors, data=request.POST.dict())
+        # else:
+        #     user.department = department
+        #     user.grade = grade
+        #     user.profession = profession
+        #     user.save()
+
+
 
 
 # Don't enforce user completes pre survey as this is the page to redirect to

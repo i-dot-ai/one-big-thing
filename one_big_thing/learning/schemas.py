@@ -18,6 +18,9 @@ class SingleLineStr(fields.Str):
             single_line_value = " ".join(value.splitlines())
             if not value == single_line_value:
                 raise ValidationError("Cannot contain linebreaks")
+        none_error_msg = kwargs.get("none_error_msg")
+        if none_error_msg:
+            raise ValidationError(none_error_msg)
         return super()._deserialize(value, attr, data, **kwargs)
 
 
@@ -38,15 +41,16 @@ def validate_choice_and_length_or_none(values):
     return validator
 
 
-def make_choice_field(max_len, values, allow_none=False, **kwargs):
+def make_choice_field(max_len, values, allow_none=False, required=False, **kwargs):
     if allow_none:
         field = SingleLineStr(
             validate=validate.And(validate.Length(max=max_len), validate_choice_and_length_or_none(values)),
             allow_none=True,
+            required=required,
             **kwargs,
         )
     else:
-        field = SingleLineStr(validate=validate.And(validate.Length(max=max_len), validate.OneOf(values)), **kwargs)
+        field = SingleLineStr(validate=validate.And(validate.Length(max=max_len), validate.OneOf(values)), required=required, **kwargs)
     return field
 
 
@@ -125,6 +129,27 @@ class RecordLearningSchema(Schema):
 
 
 class MyDetailsSchema(Schema):
-    department = make_choice_field(max_len=254, values=Department.values, allow_none=True)
-    grade = make_choice_field(max_len=254, values=choices.Grade.values, allow_none=True)
-    profession = make_choice_field(max_len=254, values=choices.Profession.values, allow_none=True)
+    # department = make_choice_field(max_len=254, values=Department.values, required=True, none_error_msg="You must select a department")
+    # grade = make_choice_field(max_len=254, values=choices.Grade.values, required=True, none_error_msg="You must select a grade")
+    # profession = make_choice_field(max_len=254, values=choices.Profession.values, required=True, none_error_msg="You must select a profession")
+    department = fields.Str(
+        required=True,
+        validate=validate.OneOf(Department.values),
+        error_messages={
+            'required': "You must select a department",
+        }
+    )
+    grade = fields.Str(
+        required=True,
+        validate=validate.OneOf(choices.Grade.values),
+        error_messages={
+            'required': "You must select a grade",
+         }
+    )
+    profession = fields.Str(
+        required=True,
+        validate=validate.OneOf(choices.Profession.values),
+        error_messages={
+            'required': "You must select a profession", 
+        }
+    )
