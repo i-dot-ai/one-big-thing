@@ -398,7 +398,6 @@ def additional_learning_view(request):
     return render(request, "additional-learning.html", {"data": data})
 
 
-# Need login otherwise can't save against unknown user
 # This happens before pre_survey
 @login_required
 @require_http_methods(["POST", "GET"])
@@ -444,7 +443,6 @@ class MyDetailsView(utils.MethodDispatcher):
             return self.get(request, errors, data=request.POST.dict())
 
 
-# Don't enforce user completes pre survey as this is the page to redirect to
 @login_required
 @require_http_methods(["GET"])
 def intro_to_pre_survey_view(request):
