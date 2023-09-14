@@ -437,36 +437,11 @@ class MyDetailsView(utils.MethodDispatcher):
             else:
                 return redirect(reverse("homepage"))
         except marshmallow.exceptions.ValidationError as err:
-            validation_errors = dict(err.messages)
-            errors = validation_errors
-            errors = {k: v[0] for k,v in validation_errors.items()}
-            for v in errors.values():
-                messages.error(request, v)
+            errors = dict(err.messages)
+            for k, v in errors.items():
+                errors[k] = v[0]
+                messages.error(request, v[0])
             return self.get(request, errors, data=request.POST.dict())
-
-        # department = request.POST.get("department")
-        # grade = request.POST.get("grade")
-        # profession = request.POST.get("profession")
-
-        # if not department or not grade or not profession:
-        #     errors = {}
-        #     if not department:
-        #         messages.error(request, "You must select a department.")
-        #         errors["department"] = "You must select a department"
-        #     if not grade:
-        #         messages.error(request, "You must select a grade.")
-        #         errors["grades"] = "You must select a grade"
-        #     if not profession:
-        #         messages.error(request, "You must select a profession.")
-        #         errors["professions"] = "You must select a profession"
-        #     return self.get(request, errors, data=request.POST.dict())
-        # else:
-        #     user.department = department
-        #     user.grade = grade
-        #     user.profession = profession
-        #     user.save()
-
-
 
 
 # Don't enforce user completes pre survey as this is the page to redirect to

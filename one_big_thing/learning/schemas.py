@@ -132,6 +132,9 @@ class MyDetailsSchema(Schema):
     # department = make_choice_field(max_len=254, values=Department.values, required=True, none_error_msg="You must select a department")
     # grade = make_choice_field(max_len=254, values=choices.Grade.values, required=True, none_error_msg="You must select a grade")
     # profession = make_choice_field(max_len=254, values=choices.Profession.values, required=True, none_error_msg="You must select a profession")
+    class Meta:
+        ordered = True
+    
     department = fields.Str(
         required=True,
         validate=validate.OneOf(Department.values),
