@@ -6,15 +6,17 @@ from . import utils
 def test_send_email_learning_record():
     client = utils.make_testino_client()
     email = "jim@example.com"
-    page = client.get("/").follow()
+    page = client.get("/")
     form = page.get_form()
     form["email"] = email
     page = form.submit()
     user = models.User.objects.get(email=email)
     user.has_completed_pre_survey = True
     user.verified = True
+    user.grade = "GRADE7"
+    user.profession = "ANALYSIS"
+    user.department = "cabinet-office"
     user.save()
-
     url = utils._get_latest_email_url()
     page = client.get(url)
     page = client.get("/send-learning-record/")
