@@ -84,7 +84,8 @@ def _get_latest_email_url():
 
 
 def complete_about_you(client):
-    page = client.get("/").follow().follow().follow()  # should redirect to 'About you'
+    # homepage should redirect to pre-survey which redirects to about me (if not completed)
+    page = client.get("/").follow().follow().follow()
     assert page.has_text("About you")
     form = page.get_form("""form:not([action])""")
     form["profession"] = "DIGITAL_DATA_AND_TECHNOLOGY"
