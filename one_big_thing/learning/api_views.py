@@ -63,11 +63,16 @@ def get_signups_by_date():
 
 
 def get_learning_breakdown_data():
-    department_dict = defaultdict()
-
-    users = models.User.objects.annotate(
-        total_time_completed=Cast(Sum("learning__time_to_complete"), IntegerField()),
-        total_time_completed_trimmed=Cast(Sum("learning__time_to_complete"), IntegerField()) / 60,
+    groupings = models.User.objects.values("department", "grade", "profession").annotate(
+        # First cast to a total, then check it exists to populate table with "0" if no time to complete is found
+        total_time_completed_total=(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60),
+        total_time_completed=Case(
+            When(total_time_completed_total__gte=0, then=Sum("learning__time_to_complete")),
+            default=0,
+            output_field=IntegerField(),
+        )
+        / 60,
+        number_of_sign_ups=Cast(Sum(1), IntegerField()),
         completed_first_evaluation=Case(
             When(has_completed_pre_survey=True, then=1), default=0, output_field=IntegerField()
         ),
@@ -76,59 +81,15 @@ def get_learning_breakdown_data():
         ),
         **{
             f"completed_{i}_hours_of_learning": Case(
-                When(total_time_completed_trimmed=i, then=1), default=0, output_field=IntegerField()
+                When(total_time_completed=i, then=1), default=0, output_field=IntegerField()
             )
             for i in range(1, 7)
         },
         completed_7_plus_hours_of_learning=Case(
-            When(total_time_completed_trimmed=7, then=1), default=0, output_field=IntegerField()
+            When(total_time_completed__gte=7, then=1), default=0, output_field=IntegerField()
         ),
     )
-
-    for user in users:
-        department = user.department
-        grade = user.grade
-        profession = user.profession
-
-        if (department, grade, profession) not in department_dict:
-            department_dict[(department, grade, profession)] = {
-                "total_time_completed": 0,
-                "number_of_sign_ups": 0,
-                "completed_first_evaluation": 0,
-                "completed_second_evaluation": 0,
-                **{f"completed_{i}_hours_of_learning": 0 for i in range(1, 7)},
-                "completed_7_plus_hours_of_learning": 0,
-            }
-
-        department_dict[(department, grade, profession)]["total_time_completed"] += (
-            user.total_time_completed if user.total_time_completed else 0
-        )
-        department_dict[(department, grade, profession)]["number_of_sign_ups"] += 1
-        department_dict[(department, grade, profession)][
-            "completed_first_evaluation"
-        ] += user.completed_first_evaluation
-        department_dict[(department, grade, profession)][
-            "completed_second_evaluation"
-        ] += user.completed_second_evaluation
-        for i in range(1, 7):
-            department_dict[(department, grade, profession)][f"completed_{i}_hours_of_learning"] += getattr(
-                user, f"completed_{i}_hours_of_learning"
-            )
-        department_dict[(department, grade, profession)][
-            "completed_7_plus_hours_of_learning"
-        ] += user.completed_7_plus_hours_of_learning
-
-    department_dict = [
-        {
-            "department": k[0],
-            "grade": k[1],
-            "profession": k[2],
-            **v,
-            "total_time_completed": (v["total_time_completed"] / 60),
-        }
-        for k, v in department_dict.items()
-    ]
-    return department_dict
+    return groupings
 
 
 class JwtTokenObtainPairView(TokenObtainPairView):
