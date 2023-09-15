@@ -66,7 +66,8 @@ def get_learning_breakdown_data():
     department_dict = defaultdict()
 
     users = models.User.objects.annotate(
-        total_time_completed=Cast(Sum("learning__time_to_complete"), IntegerField()) / 60,
+        total_time_completed=Cast(Sum("learning__time_to_complete"), IntegerField()),
+        total_time_completed_trimmed=Cast(Sum("learning__time_to_complete"), IntegerField()) / 60,
         completed_first_evaluation=Case(
             When(has_completed_pre_survey=True, then=1), default=0, output_field=IntegerField()
         ),
@@ -75,12 +76,12 @@ def get_learning_breakdown_data():
         ),
         **{
             f"completed_{i}_hours_of_learning": Case(
-                When(total_time_completed=i, then=1), default=0, output_field=IntegerField()
+                When(total_time_completed_trimmed=i, then=1), default=0, output_field=IntegerField()
             )
             for i in range(1, 7)
         },
         completed_7_plus_hours_of_learning=Case(
-            When(total_time_completed__gte=7, then=1), default=0, output_field=IntegerField()
+            When(total_time_completed_trimmed=7, then=1), default=0, output_field=IntegerField()
         ),
     )
 
@@ -117,7 +118,16 @@ def get_learning_breakdown_data():
             "completed_7_plus_hours_of_learning"
         ] += user.completed_7_plus_hours_of_learning
 
-    department_dict = [{"department": k[0], "grade": k[1], "profession": k[2], **v} for k, v in department_dict.items()]
+    department_dict = [
+        {
+            "department": k[0],
+            "grade": k[1],
+            "profession": k[2],
+            **v,
+            "total_time_completed": (v["total_time_completed"] / 60),
+        }
+        for k, v in department_dict.items()
+    ]
     return department_dict
 
 
