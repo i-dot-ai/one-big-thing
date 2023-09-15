@@ -1,9 +1,7 @@
 from collections import defaultdict
 
-from django.db.models import Count, Sum, Case, When, IntegerField
-from django.db.models.functions import Cast
-from django.db.models.functions import TruncDate
-from rest_framework.fields import FloatField
+from django.db.models import Case, Count, IntegerField, Sum, When
+from django.db.models.functions import Cast, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
