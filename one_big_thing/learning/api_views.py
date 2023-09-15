@@ -1,7 +1,5 @@
-from collections import defaultdict
-
 from django.db.models import Case, Count, IntegerField, Sum, When
-from django.db.models.functions import Cast, TruncDate
+from django.db.models.functions import Cast, Coalesce, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -64,14 +62,7 @@ def get_signups_by_date():
 
 def get_learning_breakdown_data():
     groupings = models.User.objects.values("department", "grade", "profession").annotate(
-        # First cast to a total, then check it exists to populate table with "0" if no time to complete is found
-        total_time_completed_total=(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60),
-        total_time_completed=Case(
-            When(total_time_completed_total__gte=0, then=Sum("learning__time_to_complete")),
-            default=0,
-            output_field=IntegerField(),
-        )
-        / 60,
+        total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
         number_of_sign_ups=Cast(Sum(1), IntegerField()),
         completed_first_evaluation=Case(
             When(has_completed_pre_survey=True, then=1), default=0, output_field=IntegerField()
