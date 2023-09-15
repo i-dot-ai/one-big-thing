@@ -46,9 +46,7 @@ def make_choice_field(max_len, values, allow_none=False, **kwargs):
             **kwargs,
         )
     else:
-        field = SingleLineStr(
-            validate=validate.And(validate.Length(max=max_len), validate.OneOf(values)), **kwargs
-        )
+        field = SingleLineStr(validate=validate.And(validate.Length(max=max_len), validate.OneOf(values)), **kwargs)
     return field
 
 

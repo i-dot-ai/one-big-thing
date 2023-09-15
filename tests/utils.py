@@ -56,7 +56,9 @@ def register(client, email, password):
     form["email"] = email
     form.submit().follow()
     url = _get_latest_email_url()
-    page = client.get(url).follow()
+    response = client.get(url)
+    assert response.status_code == 302
+    complete_about_you(client)
     user = User.objects.get(email=email)
     complete_pre_survey(client, user)
     page = client.get("/").follow()
@@ -79,6 +81,17 @@ def _get_latest_email_url():
     whole_url = email_url.strip(",")
     url = f"/{whole_url.split(TEST_SERVER_URL)[-1]}".replace("?", "?")
     return url
+
+
+def complete_about_you(client):
+    page = client.get("/").follow().follow().follow()  # should redirect to 'About you'
+    assert page.has_text("About you")
+    form = page.get_form("""form:not([action])""")
+    form["profession"] = "DIGITAL_DATA_AND_TECHNOLOGY"
+    form["grade"] = "EXECUTIVE_OFFICER"
+    form["department"] = "cabinet-office"
+    next_page = form.submit().follow()
+    return next_page
 
 
 def complete_pre_survey(client, user, competency_level_answers=["confident", "not-confident", "not-confident"]):
