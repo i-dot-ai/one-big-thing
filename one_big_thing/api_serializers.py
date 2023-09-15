@@ -15,9 +15,47 @@ class JwtTokenObtainPairSerializer(TokenObtainPairSerializer):
         return data
 
 
-class EntitySerializer(serializers.Serializer):
-    field1 = serializers.CharField()
-    field2 = serializers.IntegerField()
+class DateJoinedSerializer(serializers.Serializer):
+    date_joined = serializers.DateField()
+    number_of_signups = serializers.IntegerField()
 
     class Meta:
-        fields = ["field1", "field2"]
+        fields = [
+            "date_joined",
+            "number_of_signups",
+        ]
+
+
+class DepartmentBreakdownSerializer(serializers.Serializer):
+    department = serializers.CharField(allow_null=True)
+    grade = serializers.CharField(allow_null=True)
+    profession = serializers.CharField(allow_null=True)
+    number_of_sign_ups = serializers.IntegerField()
+    completed_first_evaluation = serializers.IntegerField()
+    completed_second_evaluation = serializers.IntegerField()
+    completed_1_hours_of_learning = serializers.IntegerField()
+    completed_2_hours_of_learning = serializers.IntegerField()
+    completed_3_hours_of_learning = serializers.IntegerField()
+    completed_4_hours_of_learning = serializers.IntegerField()
+    completed_5_hours_of_learning = serializers.IntegerField()
+    completed_6_hours_of_learning = serializers.IntegerField()
+    completed_7_plus_hours_of_learning = serializers.IntegerField()
+    total_time_completed = serializers.IntegerField()
+
+    class Meta:
+        fields = [
+            "department",
+            "grade",
+            "profession",
+            "number_of_sign_ups",
+            "completed_first_evaluation",
+            "completed_second_evaluation",
+            "completed_1_hours_of_learning",
+            "completed_2_hours_of_learning",
+            "completed_3_hours_of_learning",
+            "completed_4_hours_of_learning",
+            "completed_5_hours_of_learning",
+            "completed_6_hours_of_learning",
+            "completed_7_plus_hours_of_learning",
+            "total_time_completed",
+        ]
