@@ -25,7 +25,6 @@ class UserSignupStatsView(APIView):
 
     def get(self, request):
         signups = get_signups_by_date()
-        signups = [{"date_joined": k, "number_of_signups": v} for k, v in signups.items()]
         serializer = DateJoinedSerializer(
             signups,
             many=True,
@@ -43,8 +42,7 @@ class UserStatisticsView(APIView):
     def get(self, request):
         department_dict = defaultdict(lambda: defaultdict(int))
         department_dict = get_learning_breakdown_data(department_dict)
-        final_dict = [{"department": k[0], "grade": k[1], "profession": k[2], **v} for k, v in department_dict.items()]
-        serializer = DepartmentBreakdownSerializer(final_dict, many=True, partial=True, allow_null=True)
+        serializer = DepartmentBreakdownSerializer(department_dict, many=True, partial=True, allow_null=True)
         serialized_data = serializer.data
         return Response(serialized_data)
 
@@ -62,6 +60,7 @@ def get_signups_by_date():
         signup_date = user_count["signup_date"].strftime("%d/%m/%Y")
         count = user_count["count"]
         signups[signup_date] = count
+    signups = [{"date_joined": k, "number_of_signups": v} for k, v in signups.items()]
     return signups
 
 
@@ -92,6 +91,7 @@ def get_learning_breakdown_data(department_dict):
     for k, v in department_dict.items():
         department_dict[k]["total_time_completed"] = department_dict[k]["total_time_completed"] / 60
 
+    department_dict = [{"department": k[0], "grade": k[1], "profession": k[2], **v} for k, v in department_dict.items()]
     return department_dict
 
 
