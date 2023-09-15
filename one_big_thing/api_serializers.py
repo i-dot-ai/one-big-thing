@@ -1,8 +1,5 @@
 from rest_framework import exceptions, serializers
-from rest_framework.serializers import ModelSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-
-from one_big_thing.learning.models import User
 
 
 class JwtTokenObtainPairSerializer(TokenObtainPairSerializer):

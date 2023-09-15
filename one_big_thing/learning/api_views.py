@@ -1,5 +1,4 @@
 from collections import defaultdict
-from datetime import datetime
 
 from django.db.models import Count
 from django.db.models.functions import TruncDate
@@ -9,9 +8,9 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from one_big_thing.api_serializers import (
+    DateJoinedSerializer,
     DepartmentBreakdownSerializer,
     JwtTokenObtainPairSerializer,
-    DateJoinedSerializer,
 )
 from one_big_thing.learning import models
 from one_big_thing.learning.api_permissions import IsAPIUser
@@ -84,7 +83,7 @@ def get_learning_breakdown_data(department_dict):
             department_dict[(department, grade, profession)][f"completed_{i}_hours_of_learning"] += (
                 1 if total_hours_completed / 60 == i else 0
             )
-        department_dict[(department, grade, profession)][f"completed_7_plus_hours_of_learning"] += (
+        department_dict[(department, grade, profession)]["completed_7_plus_hours_of_learning"] += (
             1 if total_hours_completed / 60 >= 7 else 0
         )
 
