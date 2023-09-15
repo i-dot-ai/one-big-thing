@@ -18,9 +18,6 @@ class SingleLineStr(fields.Str):
             single_line_value = " ".join(value.splitlines())
             if not value == single_line_value:
                 raise ValidationError("Cannot contain linebreaks")
-        none_error_msg = kwargs.get("none_error_msg")
-        if none_error_msg:
-            raise ValidationError(none_error_msg)
         return super()._deserialize(value, attr, data, **kwargs)
 
 
@@ -41,17 +38,16 @@ def validate_choice_and_length_or_none(values):
     return validator
 
 
-def make_choice_field(max_len, values, allow_none=False, required=False, **kwargs):
+def make_choice_field(max_len, values, allow_none=False, **kwargs):
     if allow_none:
         field = SingleLineStr(
             validate=validate.And(validate.Length(max=max_len), validate_choice_and_length_or_none(values)),
             allow_none=True,
-            required=required,
             **kwargs,
         )
     else:
         field = SingleLineStr(
-            validate=validate.And(validate.Length(max=max_len), validate.OneOf(values)), required=required, **kwargs
+            validate=validate.And(validate.Length(max=max_len), validate.OneOf(values)), **kwargs
         )
     return field
 
