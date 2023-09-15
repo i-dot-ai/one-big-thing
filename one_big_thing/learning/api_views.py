@@ -1,7 +1,9 @@
 from collections import defaultdict
 
-from django.db.models import Count
+from django.db.models import Count, Sum, Case, When, IntegerField
+from django.db.models.functions import Cast
 from django.db.models.functions import TruncDate
+from rest_framework.fields import FloatField
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -39,8 +41,7 @@ class UserStatisticsView(APIView):
     )
 
     def get(self, request):
-        department_dict = defaultdict(lambda: defaultdict(int))
-        department_dict = get_learning_breakdown_data(department_dict)
+        department_dict = get_learning_breakdown_data()
         serializer = DepartmentBreakdownSerializer(department_dict, many=True, partial=True, allow_null=True)
         serialized_data = serializer.data
         return Response(serialized_data)
@@ -63,32 +64,60 @@ def get_signups_by_date():
     return signups
 
 
-def get_learning_breakdown_data(department_dict):
-    for user in models.User.objects.all():
+def get_learning_breakdown_data():
+    department_dict = defaultdict()
+
+    users = models.User.objects.annotate(
+        total_time_completed=Cast(Sum("learning__time_to_complete"), IntegerField()) / 60,
+        completed_first_evaluation=Case(
+            When(has_completed_pre_survey=True, then=1), default=0, output_field=IntegerField()
+        ),
+        completed_second_evaluation=Case(
+            When(has_completed_post_survey=True, then=1), default=0, output_field=IntegerField()
+        ),
+        **{
+            f"completed_{i}_hours_of_learning": Case(
+                When(total_time_completed=i, then=1), default=0, output_field=IntegerField()
+            )
+            for i in range(1, 7)
+        },
+        completed_7_plus_hours_of_learning=Case(
+            When(total_time_completed__gte=7, then=1), default=0, output_field=IntegerField()
+        ),
+    )
+
+    for user in users:
         department = user.department
         grade = user.grade
         profession = user.profession
 
-        learning_records = user.learning_set.all()
-        total_hours_completed = sum([record.time_to_complete for record in learning_records])
-        department_dict[(department, grade, profession)]["total_time_completed"] += total_hours_completed
-        department_dict[(department, grade, profession)]["number_of_sign_ups"] += 1
-        department_dict[(department, grade, profession)]["completed_first_evaluation"] += (
-            1 if user.has_completed_pre_survey else 0
-        )
-        department_dict[(department, grade, profession)]["completed_second_evaluation"] += (
-            1 if user.has_completed_post_survey else 0
-        )
-        for i in range(1, 7):
-            department_dict[(department, grade, profession)][f"completed_{i}_hours_of_learning"] += (
-                1 if total_hours_completed / 60 == i else 0
-            )
-        department_dict[(department, grade, profession)]["completed_7_plus_hours_of_learning"] += (
-            1 if total_hours_completed / 60 >= 7 else 0
-        )
+        if (department, grade, profession) not in department_dict:
+            department_dict[(department, grade, profession)] = {
+                "total_time_completed": 0,
+                "number_of_sign_ups": 0,
+                "completed_first_evaluation": 0,
+                "completed_second_evaluation": 0,
+                **{f"completed_{i}_hours_of_learning": 0 for i in range(1, 7)},
+                "completed_7_plus_hours_of_learning": 0,
+            }
 
-    for k, v in department_dict.items():
-        department_dict[k]["total_time_completed"] = department_dict[k]["total_time_completed"] / 60
+        department_dict[(department, grade, profession)]["total_time_completed"] += (
+            user.total_time_completed if user.total_time_completed else 0
+        )
+        department_dict[(department, grade, profession)]["number_of_sign_ups"] += 1
+        department_dict[(department, grade, profession)][
+            "completed_first_evaluation"
+        ] += user.completed_first_evaluation
+        department_dict[(department, grade, profession)][
+            "completed_second_evaluation"
+        ] += user.completed_second_evaluation
+        for i in range(1, 7):
+            department_dict[(department, grade, profession)][f"completed_{i}_hours_of_learning"] += getattr(
+                user, f"completed_{i}_hours_of_learning"
+            )
+        department_dict[(department, grade, profession)][
+            "completed_7_plus_hours_of_learning"
+        ] += user.completed_7_plus_hours_of_learning
 
     department_dict = [{"department": k[0], "grade": k[1], "profession": k[2], **v} for k, v in department_dict.items()]
     return department_dict
