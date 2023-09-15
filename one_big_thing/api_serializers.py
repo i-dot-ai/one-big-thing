@@ -17,10 +17,7 @@ class DateJoinedSerializer(serializers.Serializer):
     number_of_signups = serializers.IntegerField()
 
     class Meta:
-        fields = [
-            "date_joined",
-            "number_of_signups",
-        ]
+        fields = ["__all__"]
 
 
 class DepartmentBreakdownSerializer(serializers.Serializer):
@@ -40,19 +37,4 @@ class DepartmentBreakdownSerializer(serializers.Serializer):
     total_time_completed = serializers.IntegerField()
 
     class Meta:
-        fields = [
-            "department",
-            "grade",
-            "profession",
-            "number_of_sign_ups",
-            "completed_first_evaluation",
-            "completed_second_evaluation",
-            "completed_1_hours_of_learning",
-            "completed_2_hours_of_learning",
-            "completed_3_hours_of_learning",
-            "completed_4_hours_of_learning",
-            "completed_5_hours_of_learning",
-            "completed_6_hours_of_learning",
-            "completed_7_plus_hours_of_learning",
-            "total_time_completed",
-        ]
+        fields = ["__all__"]
