@@ -30,9 +30,11 @@ def token_fixture():
     return token
 
 
-@pytest.mark.django_db
-def test_get_token(token_fixture):
-    assert token_fixture, token_fixture
+@pytest.fixture
+def authenticated_api_client_fixture(token_fixture):
+    client = APIClient()
+    client.credentials(HTTP_AUTHORIZATION="Bearer " + token_fixture)
+    return client
 
 
 @pytest.mark.django_db
@@ -57,11 +59,9 @@ def test_get_token_user_does_not_have_access():
 
 
 @pytest.mark.django_db
-def test_get_signup_data(token_fixture):
-    client = APIClient()
+def test_get_signup_data(authenticated_api_client_fixture):
     url = reverse("signup_statistics")
-    client.credentials(HTTP_AUTHORIZATION="Bearer " + token_fixture)
-    response = client.get(url)
+    response = authenticated_api_client_fixture.get(url)
     assert response.status_code == 200, response.status_code
     today_date = datetime.today().date().strftime("%d/%m/%Y")
     dates = [item["date_joined"] for item in response.data]
@@ -78,11 +78,9 @@ def test_get_signup_date_failure():
 
 
 @pytest.mark.django_db
-def test_get_data_breakdown(token_fixture):
-    client = APIClient()
+def test_get_data_breakdown(authenticated_api_client_fixture):
     url = reverse("user_statistics")
-    client.credentials(HTTP_AUTHORIZATION="Bearer " + token_fixture)
-    response = client.get(url)
+    response = authenticated_api_client_fixture.get(url)
     assert response.status_code == 200, response.status_code
     selected_item = None
     for item in response.data:
