@@ -6,7 +6,7 @@ from . import utils
 def test_send_email_learning_record():
     client = utils.make_testino_client()
     email = "jim@example.com"
-    page = client.get("/")
+    page = client.get("/").follow()
     form = page.get_form()
     form["email"] = email
     page = form.submit()
@@ -16,9 +16,7 @@ def test_send_email_learning_record():
     user.save()
 
     url = utils._get_latest_email_url()
-
     page = client.get(url)
-
     page = client.get("/send-learning-record/")
     form = page.get_form()
     new_person_email = "a_different_email@example.com"
