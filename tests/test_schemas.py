@@ -157,3 +157,17 @@ def test_validate_time_to_complete_minutes_errors():
         schemas.validate_time_to_complete_minutes("this is a string")
     with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
         schemas.validate_time_to_complete_minutes(-5)
+
+
+def test_my_details_schema():
+    my_details_schema = schemas.MyDetailsSchema()
+    details_no_errors = my_details_schema.load(
+        {"department": "cabinet-office", "grade": "GRADE7", "profession": "ANALYSIS"}
+    )
+    assert details_no_errors
+    with assert_raises_regexp(ValidationError, "You must select a department"):
+        my_details_schema.load({"grade": "HIGHER_EXECUTIVE_OFFICER", "profession": "ANALYSIS"})
+    with assert_raises_regexp(ValidationError, "You must select a grade"):
+        my_details_schema.load({"profession": "ANALYSIS"})
+    with assert_raises_regexp(ValidationError, "You must select a profession"):
+        my_details_schema.load({"grade": "HIGHER_EXECUTIVE_OFFICER"})
