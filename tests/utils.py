@@ -50,7 +50,7 @@ def make_testino_client():
     return client
 
 
-def register(client, email, password):
+def register(client, email, password, pre_survey=True):
     page = client.get("/")
     form = page.get_form()
     form["email"] = email
@@ -60,9 +60,10 @@ def register(client, email, password):
     assert response.status_code == 302
     complete_about_you(client)
     user = User.objects.get(email=email)
-    complete_pre_survey(client, user)
-    page = client.get("/").follow()
-    assert page.has_text("Overview - One Big Thing - GOV.UK")
+    if pre_survey:
+        complete_pre_survey(client, user)
+        page = client.get("/").follow()
+        assert page.has_text("Overview - One Big Thing - GOV.UK")
 
 
 def _get_latest_email_text():
