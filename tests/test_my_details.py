@@ -1,4 +1,5 @@
 from one_big_thing.learning import models
+
 from . import utils
 
 
@@ -29,7 +30,7 @@ def test_validation_about_you():
     form.submit().follow()
     url = utils._get_latest_email_url()
     client.get(url)
-	# Now test "about you"
+    # Now test "about you"
     page = client.get("/").follow().follow().follow()
     assert page.has_text("About you")
     form = page.get_form("""form:not([action])""")
@@ -39,7 +40,30 @@ def test_validation_about_you():
     assert page.has_text("Next")
     assert page.has_text("There is a problem")
     models.User.objects.get(email="email@example.com").delete()
-    
 
-    
 
+def test_my_details_redirect():
+    """
+    Does it redirect even when user has completed pre-survey but not
+    completed details?
+    """
+    email = "no_details@example.com"
+    user = models.User(email=email, has_completed_pre_survey=True)
+    user.save()
+    client = utils.make_testino_client()
+    # Login
+    page = client.get("/")
+    form = page.get_form()
+    form["email"] = email
+    form.submit().follow()
+    url = utils._get_latest_email_url()
+    client.get(url)
+    # Check pages redirect
+    page = client.get("/").follow().follow().follow()
+    assert page.has_text("About you")
+    page = client.get("/record-learning/").follow().follow()
+    assert page.has_text("About you")
+    page = client.get("/home/").follow().follow()
+    assert page.has_text("About you")
+    page = client.get("/intro-pre-survey/").follow()
+    assert page.has_text("About you")
