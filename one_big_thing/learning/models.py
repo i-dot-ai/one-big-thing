@@ -44,7 +44,6 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     def completed_personal_details(self):
         return self.department and self.grade and self.profession
 
-
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
         super().save(*args, **kwargs)
