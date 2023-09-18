@@ -1,4 +1,4 @@
-from django.db.models import Case, Count, IntegerField, DateField, Sum, When
+from django.db.models import Case, Count, DateField, IntegerField, Sum, When
 from django.db.models.functions import Cast, Coalesce, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response

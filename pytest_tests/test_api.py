@@ -63,7 +63,7 @@ def test_get_signup_data(authenticated_api_client_fixture):
     url = reverse("signup_statistics")
     response = authenticated_api_client_fixture.get(url)
     assert response.status_code == 200, response.status_code
-    today_date = datetime.today().date().strftime("%d/%m/%Y")
+    today_date = datetime.today().date().strftime("%Y-%m-%d")
     dates = [item["date_joined"] for item in response.data]
     assert today_date in dates, dates
     assert response.data, response.data
