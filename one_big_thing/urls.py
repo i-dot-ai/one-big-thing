@@ -14,7 +14,7 @@ info_urlpatterns = [
     path("support/", info_views.support_view, name="support"),
 ]
 
-admin_urlpatterns = [path("admin/", admin_site.urls)]
+# admin_urlpatterns = [path("admin/", admin_site.urls)]
 
 other_urlpatterns = [
     path("", authentication_views.CustomLoginView, name="index"),
@@ -41,4 +41,4 @@ other_urlpatterns = [
     path("department-links/", views.department_links_view, name="department-links"),
 ]
 
-urlpatterns = info_urlpatterns + other_urlpatterns + admin_urlpatterns
+urlpatterns = info_urlpatterns + other_urlpatterns  # + admin_urlpatterns
