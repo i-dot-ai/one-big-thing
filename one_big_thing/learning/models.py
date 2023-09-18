@@ -42,10 +42,8 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 
     @property
     def completed_personal_details(self):
-        complete = False
-        if self.department and self.grade and self.profession:
-            complete = True
-        return complete
+        return self.department and self.grade and self.profession
+
 
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
