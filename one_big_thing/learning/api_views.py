@@ -1,4 +1,4 @@
-from django.db.models import Case, Count, IntegerField, Sum, When
+from django.db.models import Case, Count, IntegerField, DateField, Sum, When
 from django.db.models.functions import Cast, Coalesce, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -15,6 +15,10 @@ from one_big_thing.learning.api_permissions import IsAPIUser
 
 
 class UserSignupStatsView(APIView):
+    """
+    Endpoint used by 10DS to get information about user signups per date
+    """
+
     permission_classes = (
         IsAuthenticated,
         IsAPIUser,
@@ -31,6 +35,10 @@ class UserSignupStatsView(APIView):
 
 
 class UserStatisticsView(APIView):
+    """
+    Endpoint used by 10DS to get information about department signups
+    """
+
     permission_classes = (
         IsAuthenticated,
         IsAPIUser,
@@ -44,23 +52,29 @@ class UserStatisticsView(APIView):
 
 
 def get_signups_by_date():
-    signups = {}
-
-    user_counts = (
+    """
+    Calculates the number of signups per day
+    @return: A dictionary containing a key for date, and value of number of signups
+    """
+    signups = (
         models.User.objects.annotate(signup_date=TruncDate("date_joined"))
         .values("signup_date")
-        .annotate(count=Count("id"))
+        .annotate(
+            count=Count("id"),
+            date_joined=Cast("signup_date", output_field=DateField()),
+            number_of_signups=Cast("count", output_field=IntegerField()),
+        )
+        .values("date_joined", "number_of_signups")
     )
 
-    for user_count in user_counts:
-        signup_date = user_count["signup_date"].strftime("%d/%m/%Y")
-        count = user_count["count"]
-        signups[signup_date] = count
-    signups = [{"date_joined": k, "number_of_signups": v} for k, v in signups.items()]
     return signups
 
 
 def get_learning_breakdown_data():
+    """
+    Calculates the number of signups per combination of department/grade/profession
+    @return: A queryset that contains a list of each grouping
+    """
     groupings = models.User.objects.values("department", "grade", "profession").annotate(
         total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
         number_of_sign_ups=Cast(Sum(1), IntegerField()),
