@@ -34,6 +34,7 @@ def test_reused_token():
     page = page.follow().follow().follow().follow()
     assert page.has_text("About you")
     user = models.User.objects.get(email=email)
+    assert not user.completed_personal_details
     assert user.last_login
     page = client.get(url)
     assert page.has_text("Login failed")
