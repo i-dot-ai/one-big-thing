@@ -72,20 +72,16 @@
             </select>
           </div>
         </div>
-
-        {% if completed %}
-          <div class="govuk-button-group">
-            <button class="govuk-button" data-module="govuk-button">
-              Submit
-            </button>
-          </div>
-        {% else %}
-          <div class="govuk-button-group">
-            <button class="govuk-button" data-module="govuk-button">
-              Next
-            </button>
-          </div>
-        {% endif %}
+        
+        <div class="govuk-button-group">
+          <button class="govuk-button" data-module="govuk-button">
+          {% if completed %}
+            Submit
+          {% else %}
+            Next
+          {% endif %}
+        </button>
+        </div>
       </fieldset>
     </form>
   </section>
