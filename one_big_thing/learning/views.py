@@ -21,7 +21,10 @@ from . import (
     utils,
 )
 from .additional_learning import additional_learning
-from .decorators import enforce_user_completes_pre_survey, login_required
+from .decorators import (
+    enforce_user_completes_details_and_pre_survey,
+    login_required,
+)
 from .email_handler import send_learning_record_email
 
 
@@ -67,7 +70,7 @@ selected_level_label_map = {
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def homepage_view(request):
     user = request.user
     use_streamlined_view = user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
@@ -152,7 +155,7 @@ def transform_learning_record(data):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 class RecordLearningView(utils.MethodDispatcher):
     def get(
         self,
@@ -223,7 +226,7 @@ class RecordLearningView(utils.MethodDispatcher):
 
 
 @login_required
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 @require_http_methods(["GET"])
 def complete_hours_view(request):
     user = request.user
@@ -331,7 +334,7 @@ def save_data(survey_type, user, page_number, data):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def send_learning_record_view(request):
     user = request.user
     streamlined_department = user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
@@ -367,7 +370,7 @@ def send_learning_record_view(request):
 
 @login_required
 @require_http_methods(["GET", "POST"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def check_delete_learning_view(request, learning_id):
     if request.method == "POST":
         if "delete-learning" in request.POST:
@@ -378,7 +381,7 @@ def check_delete_learning_view(request, learning_id):
 
 @login_required
 @require_http_methods(["POST"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def delete_learning_view(request, learning_id):
     interface.api.learning.delete(user_id=request.user.id, learning_id=learning_id)
     return redirect("record-learning")
@@ -386,7 +389,7 @@ def delete_learning_view(request, learning_id):
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def additional_learning_view(request):
     additional_learning_records = additional_learning
     data = {
@@ -395,19 +398,21 @@ def additional_learning_view(request):
     return render(request, "additional-learning.html", {"data": data})
 
 
-# Need login otherwise can't save against unknown user
 # This happens before pre_survey
 @login_required
 @require_http_methods(["POST", "GET"])
-class RegisterView(utils.MethodDispatcher):
-    template_name = "register.html"
+class MyDetailsView(utils.MethodDispatcher):
+    template_name = "my-details.html"
     error_message = "Something has gone wrong. Please try again."
+    my_details_schema = schemas.MyDetailsSchema(unknown=marshmallow.EXCLUDE)
 
     def error(self, request):
         messages.error(request, self.error_message)
         return render(request, self.template_name)
 
     def get(self, request, errors=None, data=None):
+        user = request.user
+        data = self.my_details_schema.dump(user)
         department_choices = departments.Department.choices
         context = {
             "departments": department_choices,
@@ -415,68 +420,63 @@ class RegisterView(utils.MethodDispatcher):
             "professions": choices.Profession.choices,
             "errors": errors or {},
             "data": data or {},
+            "completed": request.user.completed_personal_details,
         }
         return render(request, self.template_name, context)
 
     def post(self, request):
         user = request.user
-        department = request.POST.get("department")
-        grade = request.POST.get("grade")
-        profession = request.POST.get("profession")
-
-        if not department or not grade or not profession:
-            errors = {}
-            if not department:
-                messages.error(request, "You must select a department.")
-                errors["department"] = "You must select a department"
-            if not grade:
-                messages.error(request, "You must select a grade.")
-                errors["grades"] = "You must select a grade"
-            if not profession:
-                messages.error(request, "You must select a profession.")
-                errors["professions"] = "You must select a profession"
+        try:
+            details = self.my_details_schema.load(request.POST)
+            for k, v in details.items():
+                setattr(user, k, v)
+                user.save()
+            if not user.has_completed_pre_survey:
+                return redirect(reverse("questions", args=("pre",)))
+            else:
+                return redirect(reverse("homepage"))
+        except marshmallow.exceptions.ValidationError as err:
+            errors = dict(err.messages)
+            for k, v in errors.items():
+                errors[k] = v[0]
+                messages.error(request, v[0])
             return self.get(request, errors, data=request.POST.dict())
-        else:
-            user.department = department
-            user.grade = grade
-            user.profession = profession
-            user.save()
-
-            return redirect(reverse("questions", args=("pre",)))
 
 
-# Don't enforce user completes pre survey as this is the page to redirect to
 @login_required
 @require_http_methods(["GET"])
 def intro_to_pre_survey_view(request):
+    completed_personal_details = request.user.completed_personal_details
+    if not completed_personal_details:
+        return redirect("my-details")
     number_questions = len(survey_handling.questions_data["pre"])
     return render(request, "intro-pre-survey.html", {"number_questions": number_questions})
 
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def end_pre_survey_view(request):
     return render(request, "end-pre-survey.html", {})
 
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def intro_to_post_survey_view(request):
     return render(request, "intro-post-survey.html", {})
 
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def end_post_survey_view(request):
     return render(request, "end-post-survey.html", {})
 
 
 @login_required
 @require_http_methods(["GET"])
-@enforce_user_completes_pre_survey
+@enforce_user_completes_details_and_pre_survey
 def department_links_view(request):
     data = {"dept_links": constants.ALL_INTRANET_LINKS}
     errors = {}

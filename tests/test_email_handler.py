@@ -13,12 +13,12 @@ def test_send_email_learning_record():
     user = models.User.objects.get(email=email)
     user.has_completed_pre_survey = True
     user.verified = True
+    user.grade = "GRADE7"
+    user.profession = "ANALYSIS"
+    user.department = "cabinet-office"
     user.save()
-
     url = utils._get_latest_email_url()
-
     page = client.get(url)
-
     page = client.get("/send-learning-record/")
     form = page.get_form()
     new_person_email = "a_different_email@example.com"

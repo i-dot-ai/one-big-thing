@@ -1,5 +1,6 @@
 from marshmallow import Schema, ValidationError, fields, validate
 
+from one_big_thing.learning.departments import Department
 from one_big_thing.learning.utils import is_civil_service_email
 
 from . import choices, constants
@@ -121,3 +122,30 @@ class RecordLearningSchema(Schema):
     time_to_complete_hours = fields.Str(required=False, validate=validate_time_to_complete_hours)
     time_to_complete_minutes = fields.Str(validate=validate_time_to_complete_minutes)
     rating = fields.Str(required=False, allow_none=True)
+
+
+class MyDetailsSchema(Schema):
+    class Meta:
+        ordered = True
+
+    department = fields.Str(
+        required=True,
+        validate=validate.OneOf(Department.values),
+        error_messages={
+            "required": "You must select a department",
+        },
+    )
+    grade = fields.Str(
+        required=True,
+        validate=validate.OneOf(choices.Grade.values),
+        error_messages={
+            "required": "You must select a grade",
+        },
+    )
+    profession = fields.Str(
+        required=True,
+        validate=validate.OneOf(choices.Profession.values),
+        error_messages={
+            "required": "You must select a profession",
+        },
+    )

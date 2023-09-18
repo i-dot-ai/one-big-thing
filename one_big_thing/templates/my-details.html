@@ -9,7 +9,6 @@
   <section class="wrapper">
 
     <form method="POST">
-
       {{csrf_input}}
 
       <fieldset class="govuk-fieldset">
@@ -40,11 +39,11 @@
             <li>If you work for more than one department, please choose the one where you spend the most time. If your role is split equally, you can select either department.</li>
           </ul>
         </div>
-        <div class="govuk-form-group {% if 'grades' in errors.keys() %}govuk-form-group--error{% endif %}">
+        <div class="govuk-form-group {% if 'grade' in errors.keys() %}govuk-form-group--error{% endif %}">
           <label class="govuk-label" for="grade">What is your grade?</label>
-          {% if 'grades' in errors.keys() %}
+          {% if 'grade' in errors.keys() %}
             <p id="grade-error" class="govuk-error-message">
-              <span class="govuk-visually-hidden">Error:</span> {{ errors["grades"] }}
+              <span class="govuk-visually-hidden">Error:</span> {{ errors["grade"] }}
             </p>
           {% endif %}
           <div id="select-grade">
@@ -57,11 +56,11 @@
           </div>
         </div>
 
-        <div class="govuk-form-group {% if 'professions' in errors.keys() %}govuk-form-group--error{% endif %}">
+        <div class="govuk-form-group {% if 'profession' in errors.keys() %}govuk-form-group--error{% endif %}">
           <label class="govuk-label" for="profession">What is your primary area of work?</label>
-          {% if 'professions' in errors.keys() %}
+          {% if 'profession' in errors.keys() %}
             <p id="profession-error" class="govuk-error-message">
-              <span class="govuk-visually-hidden">Error:</span> {{ errors["professions"] }}
+              <span class="govuk-visually-hidden">Error:</span> {{ errors["profession"] }}
             </p>
           {% endif %}
           <div id="select-profession">
@@ -73,11 +72,15 @@
             </select>
           </div>
         </div>
-
+        
         <div class="govuk-button-group">
           <button class="govuk-button" data-module="govuk-button">
+          {% if completed %}
+            Submit
+          {% else %}
             Next
-          </button>
+          {% endif %}
+        </button>
         </div>
       </fieldset>
     </form>

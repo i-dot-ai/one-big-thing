@@ -50,17 +50,20 @@ def make_testino_client():
     return client
 
 
-def register(client, email, password):
+def register(client, email, password, pre_survey=True):
     page = client.get("/")
     form = page.get_form()
     form["email"] = email
     form.submit().follow()
     url = _get_latest_email_url()
-    page = client.get(url).follow()
+    response = client.get(url)
+    assert response.status_code == 302
+    complete_about_you(client)
     user = User.objects.get(email=email)
-    complete_pre_survey(client, user)
-    page = client.get("/").follow()
-    assert page.has_text("Overview - One Big Thing - GOV.UK")
+    if pre_survey:
+        complete_pre_survey(client, user)
+        page = client.get("/").follow()
+        assert page.has_text("Overview - One Big Thing - GOV.UK")
 
 
 def _get_latest_email_text():
@@ -79,6 +82,18 @@ def _get_latest_email_url():
     whole_url = email_url.strip(",")
     url = f"/{whole_url.split(TEST_SERVER_URL)[-1]}".replace("?", "?")
     return url
+
+
+def complete_about_you(client):
+    # homepage should redirect to pre-survey which redirects to about me (if not completed)
+    page = client.get("/").follow().follow().follow()
+    assert page.has_text("About you")
+    form = page.get_form("""form:not([action])""")
+    form["profession"] = "DIGITAL_DATA_AND_TECHNOLOGY"
+    form["grade"] = "EXECUTIVE_OFFICER"
+    form["department"] = "cabinet-office"
+    next_page = form.submit().follow()
+    return next_page
 
 
 def complete_pre_survey(client, user, competency_level_answers=["confident", "not-confident", "not-confident"]):

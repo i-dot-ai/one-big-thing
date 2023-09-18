@@ -49,3 +49,17 @@ def test_determine_competency_levels():
     assert expected3 == actual3, actual3
     assert expected4 == actual4, actual4
     assert expected5 == actual5, actual5
+
+
+def test_completed_personal_details():
+    user = models.User(email="jane@example.com")
+    user.save()
+    assert not user.completed_personal_details, user.completed_personal_details
+    user.grade = "HEO"
+    user.save()
+    assert not user.completed_personal_details, user.completed_personal_details
+    user.profession = "ANALYSIS"
+    user.department = "cabinet-office"
+    user.save()
+    assert user.completed_personal_details, user.completed_personal_details
+    user.delete()
