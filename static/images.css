@@ -1,0 +1,5 @@
+.video--iframe {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  margin-bottom: 35px;
+}
