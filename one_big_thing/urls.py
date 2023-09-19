@@ -54,4 +54,5 @@ other_urlpatterns = [
     path("department-links/", views.department_links_view, name="department-links"),
 ]
 
-urlpatterns = info_urlpatterns + other_urlpatterns + admin_urlpatterns + api_urlpatterns
+# TODO - readd urls once IP securelist sorted
+urlpatterns = info_urlpatterns + other_urlpatterns  # admin_urlpatterns + api_urlpatterns
