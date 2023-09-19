@@ -39,6 +39,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     profession = models.CharField(max_length=254, blank=True, null=True)
     has_completed_pre_survey = models.BooleanField(default=False)
     has_completed_post_survey = models.BooleanField(default=False)
+    is_api_user = models.BooleanField(default=False, null=True, blank=True)
 
     @property
     def completed_personal_details(self):

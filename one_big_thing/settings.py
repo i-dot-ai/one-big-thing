@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -76,6 +78,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.staticfiles",
     "single_session",
+    "rest_framework",
     "django_otp",
     "django_otp.plugins.otp_totp",
 ]
@@ -283,3 +286,14 @@ OTP_TOTP_ISSUER = "OneBigThing"
 OTP_TOTP_AUTOCONF = True
 OTP_TOTP_KEY_LENGTH = 16
 OTP_TOTP_THROTTLE_FACTOR = 1.0
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}
