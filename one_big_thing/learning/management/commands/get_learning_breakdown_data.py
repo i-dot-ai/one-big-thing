@@ -12,5 +12,9 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         groupings = get_learning_breakdown_data()
         output = DepartmentBreakdownSerializer(groupings, many=True)
-        output_str = json.dumps(output.data)
-        self.stdout.write(output_str)
+        output_list = output.data
+        self.stdout.write("[")
+        for item in output_list:
+            output_str = json.dumps(item)
+            self.stdout.write(output_str+ ",")
+        self.stdout.write("]")
