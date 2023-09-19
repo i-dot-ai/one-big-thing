@@ -155,7 +155,6 @@ def get_logs(env, arn):
         click.secho("no log events found, maybe try later?", fg="red")
 
 
-
 @cli.command()
 @env_option
 def get_signups_by_date(env):
@@ -174,7 +173,6 @@ def get_learning_breakdown_data(env):
 
     task = run(env, "get_learning_breakdown_data")
     click.echo(task)
-
 
 
 if __name__ == "__main__":
