@@ -155,5 +155,27 @@ def get_logs(env, arn):
         click.secho("no log events found, maybe try later?", fg="red")
 
 
+
+@cli.command()
+@env_option
+def get_signups_by_date(env):
+    if env.upper() == "PROD":
+        click.secho("this is running things on the (live) server!", fg="red")
+
+    task = run(env, "get_signups_by_date")
+    click.echo(task)
+
+
+@cli.command()
+@env_option
+def get_learning_breakdown_data(env):
+    if env.upper() == "PROD":
+        click.secho("this is running things on the (live) server!", fg="red")
+
+    task = run(env, "get_learning_breakdown_data")
+    click.echo(task)
+
+
+
 if __name__ == "__main__":
     cli()
