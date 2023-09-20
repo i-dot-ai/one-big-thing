@@ -1,4 +1,4 @@
-This purpose of this project is to create a "One Big Thing Learning Record" for the tracking of Civil Servants learning. This will allow users and auditors across government to review what training Civil Servants are completing and get survey data on their progress.
+This purpose of this project is to create a "One Big Thing Learning Record" for the tracking of civil servants learning. This will allow users and auditors across government to review what training civil servants are completing and get survey data on their progress.
 
 ## How to run
 
@@ -34,18 +34,18 @@ Update the list in `one_big_thing/learning/domains.py`. We currently allow all `
 
 Note that once changes to the domains have been made, they will need to be deployed to take effect.
 
-## running management commands in dev and prod
-A limited number of management commands can be run on the `dev` and `prod` environment.
+## Running management commands in dev and prod
+A limited number of management commands can be run on the `dev` and `prod` environment. If you want to run your command remotely, it will need to be added to the `manage_remote.py` file.
 
 Obviously great care needs to be taken when running against `prod`! 
 
 In order to run the commands you will need:
 1. to have (AWS credentials)[https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html] set up 
-2. to have the relevant packages, boto and click, installed before running
+2. to have the relevant packages, boto3 and click, installed before running
 
 Commands can then be run like:
 
-`python -m remote_manage --env dev user-stats`
+`python -m manage_remote user-stats --env dev`
 
 Documentation for each command can be access with `--help`
 
@@ -61,9 +61,13 @@ Options:
 Commands:
   get-logs
   user-stats  gather user stats.
+  get-learning-breakdown-data Replicate the data from the API
+  get-signups-by-date Replicate the data from the API
  ```
 
-## how to access the admin
+If your command prints things to the console (most of them do), you will have to run `get-logs` after you've run the command to see the logs.
+
+## How to access the admin
 
 Access to the admin is authenticated via username & password and TOTP and authorized for `staff` users.
 
