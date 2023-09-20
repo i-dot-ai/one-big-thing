@@ -97,6 +97,17 @@ def user_stats(env):
 
 @cli.command()
 @env_option
+def get_learning_breakdown_data(env):
+    """gather user stats."""
+    if env.upper() == "PROD":
+        click.secho("this is running things on the (live) server!", fg="red")
+
+    task = run(env, "get_learning_breakdown_data")
+    click.echo(task)
+
+
+@cli.command()
+@env_option
 @click.option("--email", type=str)
 @click.option("--password", type=str)
 def assign_superuser_status(env, email, password=None):
