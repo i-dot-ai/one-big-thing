@@ -13,12 +13,16 @@ class SurveyResultAdmin(admin.ModelAdmin):
     readonly_fields = ("id", "modified_at", "created_at")
 
 
+class UserAdmin(admin.ModelAdmin):
+    search_fields = ("email", "first_name", "last_name")
+
+
 class OTPAdmin(OTPAdminSite):
     pass
 
 
 admin_site = OTPAdmin(name="OTPAdmin")
-admin_site.register(User)
+admin_site.register(User, UserAdmin)
 admin_site.register(TOTPDevice, TOTPDeviceAdmin)
 
 if settings.DEBUG:
