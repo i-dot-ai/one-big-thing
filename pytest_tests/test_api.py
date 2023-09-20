@@ -6,7 +6,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from one_big_thing.learning import models
-from pytest_tests.utils import TEST_USER_EMAIL, TEST_USER_PASSWORD, add_user
+from pytest_tests.utils import TEST_USER_EMAIL, TEST_USER_PASSWORD
 
 
 @pytest.fixture
