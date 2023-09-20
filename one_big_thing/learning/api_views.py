@@ -90,7 +90,7 @@ def get_learning_breakdown_data():
             When(total_time_completed__gte=7, then=1), default=0, output_field=IntegerField()
         ),
     )
-    return groupings
+    return groupings.distinct()
 
 
 class JwtTokenObtainPairView(TokenObtainPairView):
