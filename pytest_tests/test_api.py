@@ -6,7 +6,11 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from one_big_thing.learning import models
-from pytest_tests.utils import TEST_USER_EMAIL, TEST_USER_PASSWORD
+from pytest_tests.utils import (  # noqa: F401
+    TEST_USER_EMAIL,
+    TEST_USER_PASSWORD,
+    add_user,
+)
 
 
 @pytest.fixture
@@ -101,7 +105,7 @@ def test_get_data_breakdown_failure():
 
 
 @pytest.mark.django_db
-def test_breakdown_stats(authenticated_api_client_fixture, add_user):
+def test_breakdown_stats(authenticated_api_client_fixture, add_user):  # noqa: F811
     num_of_users = random.randint(0, 1200)
     for i in range(0, num_of_users):
         add_user(i)
