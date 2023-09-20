@@ -110,6 +110,7 @@ def assign_superuser_status(env, email, password=None):
         task = run(env, "assign_superuser_status", "--email", email, "--password", password)
     click.echo(task)
 
+
 @cli.command()
 @env_option
 @click.argument("arn", type=str)
