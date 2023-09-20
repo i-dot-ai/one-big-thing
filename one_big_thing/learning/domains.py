@@ -44,6 +44,7 @@ EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
         "hee.nhs.uk",
         "heritagefund.org.uk",
         "highwaysengland.co.uk",
+        "hefcw.ac.uk",
         "hs2.org.uk",
         "ico.org.uk",
         "ima-citizensrights.org.uk",
