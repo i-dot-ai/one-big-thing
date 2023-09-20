@@ -77,7 +77,7 @@ def get_learning_breakdown_data():
     """
     groupings = models.User.objects.values("department", "grade", "profession").annotate(
         total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
-        number_of_sign_ups=Count("id"),
+        number_of_sign_ups=Count("id", distinct=True),
         completed_first_evaluation=Count(Cast("has_completed_pre_survey", IntegerField())),
         completed_second_evaluation=Count(Cast("has_completed_post_survey", IntegerField())),
         **{

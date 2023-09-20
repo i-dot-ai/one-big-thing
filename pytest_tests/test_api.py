@@ -1,10 +1,11 @@
+import random
 from datetime import datetime
 
 import pytest
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from one_big_thing.learning import models
+from one_big_thing.learning import models, constants, departments, choices
 
 TEST_USER_EMAIL = "test_api@example.com"
 TEST_USER_PASSWORD = "test-api-password"
@@ -99,3 +100,41 @@ def test_get_data_breakdown_failure():
     url = reverse("user_statistics")
     response = client.get(url)
     assert response.status_code == 401, response.status_code
+
+
+@pytest.mark.django_db
+def test_breakdown_stats(authenticated_api_client_fixture):
+    num_of_users = random.randint(0, 1200)
+    for i in range(0, num_of_users):
+        add_user(i)
+    url = reverse("user_statistics")
+    response = authenticated_api_client_fixture.get(url)
+    assert response.status_code == 200, response.status_code
+    selected_item = None
+    for item in response.data:
+        if item["department"] == "acas" and item["grade"] == "GRADE7" and item["profession"] == "ANALYSIS":
+            selected_item = item
+    num_user_in_data = sum([a["number_of_sign_ups"] for a in response.data])
+    assert num_user_in_data == num_of_users + 1, (num_user_in_data, num_of_users)
+    assert selected_item is not None, selected_item
+    assert selected_item["number_of_sign_ups"] == 1, selected_item
+    assert response.data, response.data
+
+
+def add_user(unique_id=random.randint(0, 2000)):
+    user, _ = models.User.objects.get_or_create(
+        email=f"test_{unique_id}@example.com",
+        is_api_user=False,
+        department=departments.department_tuples[random.randint(0, len(departments.department_tuples) - 1)][0],
+        grade=choices.Grade.labels[random.randint(0, len(choices.Grade.labels) - 1)],
+        profession=choices.Profession.labels[random.randint(0, len(choices.Profession.labels) - 1)],
+    )
+    user.set_password(TEST_USER_PASSWORD)
+    user.save()
+    for i in range(0, 4):
+        learning = models.Learning.objects.create(
+            title=f"test learning {unique_id}",
+            time_to_complete=random.randint(10, 120),
+            user_id=user.id,
+        )
+        learning.save()
