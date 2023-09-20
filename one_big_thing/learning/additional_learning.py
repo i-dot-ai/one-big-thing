@@ -123,6 +123,13 @@ additional_learning = {
                 "type": "Video",
                 "duration": 16,
             },
+            {
+                "title": "Moving from spreadsheets to coding with Hanna",
+                "link": "https://vimeo.com/863524596/0977b482e3",
+                "provider": "Cabinet Office",
+                "type": "Video",
+                "duration": 8,
+            },
         ],
     },
     AWARENESS: {
