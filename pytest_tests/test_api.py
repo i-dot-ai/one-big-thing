@@ -5,7 +5,7 @@ import pytest
 from django.urls import reverse
 from rest_framework.test import APIClient
 
-from one_big_thing.learning import choices, constants, departments, models
+from one_big_thing.learning import choices, departments, models
 
 TEST_USER_EMAIL = "test_api@example.com"
 TEST_USER_PASSWORD = "test-api-password"
