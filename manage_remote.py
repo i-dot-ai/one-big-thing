@@ -97,6 +97,21 @@ def user_stats(env):
 
 @cli.command()
 @env_option
+@click.option("--email", type=str)
+@click.option("--password", type=str)
+def assign_superuser_status(env, email, password=None):
+    """assign superuser status to a user"""
+    if env.upper() == "PROD":
+        click.secho("this is running things on the (live) server!", fg="red")
+
+    if password is None:
+        task = run(env, "assign_superuser_status?", "--email", email)
+    else:
+        task = run(env, "assign_superuser_status", "--email", email, "--password", password)
+    click.echo(task)
+
+@cli.command()
+@env_option
 @click.argument("arn", type=str)
 def get_logs(env, arn):
     if env.upper() == "PROD":
