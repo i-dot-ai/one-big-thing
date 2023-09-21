@@ -1,5 +1,6 @@
 @import 'inputs.css';
 @import 'step-by-step.css';
+@import 'images.css';
 
 :root {
   --main-bg-color: #E52163;
