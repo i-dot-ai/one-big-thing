@@ -34,31 +34,6 @@ pre_questions_data = [
         ],
     },
     {
-        "title": "To what extent do you agree or disagree with the following statement?",  # noqa: E501
-        "questions": [
-            {
-                "id": "aware-of-the-aims",
-                "text": "I am aware of the aims of One Big Thing",
-                "answer_type": "agree-1-5",
-            },
-        ],
-    },
-    {
-        "title": "To what extent do you agree or disagree with the following statements?",
-        "questions": [
-            {
-                "id": "shared-identity",
-                "text": "I feel connected with the wider Civil Service",
-                "answer_type": "agree-1-5",
-            },
-            {
-                "id": "identity-is-important",
-                "text": "My identity as a civil servant is important to me",
-                "answer_type": "agree-1-5",
-            },
-        ],
-    },
-    {
         "title": "To what extent do you agree or disagree with the following statements?",
         "questions": [
             {
@@ -125,6 +100,31 @@ pre_questions_data = [
                 "id": "training-analytical-component",
                 "text": "If yes, did it have an analytical component (eg data, evaluation)",
                 "answer_type": "radio",
+            },
+        ],
+    },
+    {
+        "title": "To what extent do you agree or disagree with the following statement?",  # noqa: E501
+        "questions": [
+            {
+                "id": "aware-of-the-aims",
+                "text": "I am aware of the aims of One Big Thing",
+                "answer_type": "agree-1-5",
+            },
+        ],
+    },
+    {
+        "title": "To what extent do you agree or disagree with the following statements?",
+        "questions": [
+            {
+                "id": "shared-identity",
+                "text": "I feel connected with the wider Civil Service",
+                "answer_type": "agree-1-5",
+            },
+            {
+                "id": "identity-is-important",
+                "text": "My identity as a civil servant is important to me",
+                "answer_type": "agree-1-5",
             },
         ],
     },
