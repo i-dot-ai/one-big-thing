@@ -77,16 +77,12 @@ def get_learning_breakdown_data():
     """
     groupings = models.User.objects.values("department", "grade", "profession").annotate(
         total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
-        number_of_sign_ups=Cast(Sum(1), IntegerField()),
-        completed_first_evaluation=Case(
-            When(has_completed_pre_survey=True, then=1), default=0, output_field=IntegerField()
-        ),
-        completed_second_evaluation=Case(
-            When(has_completed_post_survey=True, then=1), default=0, output_field=IntegerField()
-        ),
+        number_of_sign_ups=Count("id", distinct=True),
+        completed_first_evaluation=Count(Cast("has_completed_pre_survey", IntegerField())),
+        completed_second_evaluation=Count(Cast("has_completed_post_survey", IntegerField())),
         **{
             f"completed_{i}_hours_of_learning": Case(
-                When(total_time_completed=i, then=1), default=0, output_field=IntegerField()
+                When(total_time_completed__gt=i, then=1), default=0, output_field=IntegerField()
             )
             for i in range(1, 7)
         },
@@ -94,7 +90,7 @@ def get_learning_breakdown_data():
             When(total_time_completed__gte=7, then=1), default=0, output_field=IntegerField()
         ),
     )
-    return groupings
+    return groupings.distinct()
 
 
 class JwtTokenObtainPairView(TokenObtainPairView):
