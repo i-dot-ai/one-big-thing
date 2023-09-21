@@ -15,7 +15,13 @@
 
 {% block content %}
 
-  {% call macros.form_wrapper(prev_url, "Next") -%}
+  {% if is_final_page %}
+    {% set button_label = "Complete" %}
+  {% else %}
+    {% set button_label = "Next" %}
+  {% endif %}
+
+  {% call macros.form_wrapper(prev_url, button_label) -%}
     <fieldset class="govuk-fieldset">
       <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
         <h2 class="govuk-heading-l">
