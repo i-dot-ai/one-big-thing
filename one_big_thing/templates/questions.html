@@ -21,18 +21,19 @@
     {% set button_label = "Next" %}
   {% endif %}
 
-  {% call macros.form_wrapper(prev_url, button_label) -%}
-    <fieldset class="govuk-fieldset">
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-        <h2 class="govuk-heading-l">
-          {{ section.title }}
-        </h2>
-      </legend>
+  {% call macros.form_wrapper(prev_url, "Next") -%}
+
+    {% if section.questions|length > 1 %}
+
+      <h1 class="govuk-heading-l">
+        {{ section.title }}
+      </h1>
+
       {% for question in section.questions %}
         {% if question.answer_type == "radio" %}
-          {{macros.question_radios(question)}}
+          {{macros.question_radios(question, loop)}}
         {% elif question.answer_type == "checkboxes" %}
-          {{macros.checkboxes(question)}}
+          {{macros.checkboxes(question, loop)}}
         {% elif question.answer_type == "agree-1-5" %}
             {{macros.agree_1_5(question, loop)}}
         {% elif question.answer_type == "likely-1-5" %}
@@ -41,6 +42,31 @@
           {{macros.question_textarea(question)}}
         {% endif %}
       {% endfor %}
-    </fieldset>
+
+    {% else %}
+
+      <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+          <h1 class="govuk-heading-l">
+            {{ section.title }}
+          </h1>
+        </legend>
+        {% for question in section.questions %}
+          {% if question.answer_type == "radio" %}
+            {{macros.question_radios(question, loop)}}
+          {% elif question.answer_type == "checkboxes" %}
+            {{macros.checkboxes(question, loop)}}
+          {% elif question.answer_type == "agree-1-5" %}
+              {{macros.agree_1_5(question, loop)}}
+          {% elif question.answer_type == "likely-1-5" %}
+              {{macros.likely_1_5(question, loop)}}
+          {% elif question.answer_type == "textarea" %}
+            {{macros.question_textarea(question)}}
+          {% endif %}
+        {% endfor %}
+      </fieldset>
+
+    {% endif %}
+
   {%- endcall %}
 {% endblock %}
