@@ -132,11 +132,11 @@ pre_questions_data = [
 
 post_questions_data = [
     {
-        "title": "Training completed",
+        "title": "Which level of training did you participate in?",
         "questions": [
             {
                 "id": "training-level",
-                "text": "Which level of training did you participate in?",
+                "text": "",
                 "answer_type": "radio",
             }
         ],
