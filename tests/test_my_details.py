@@ -33,7 +33,7 @@ def test_validation_about_you():
     # Now test "about you"
     page = client.get("/").follow().follow().follow()
     assert page.has_text("About you")
-    form = page.get_form("""form:not([action])""")
+    form = page.get_form()
     form["profession"] = "DIGITAL_DATA_AND_TECHNOLOGY"
     page = form.submit()
     assert page.has_text("About you")

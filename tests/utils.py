@@ -88,7 +88,7 @@ def complete_about_you(client):
     # homepage should redirect to pre-survey which redirects to about me (if not completed)
     page = client.get("/").follow().follow().follow()
     assert page.has_text("About you")
-    form = page.get_form("""form:not([action])""")
+    form = page.get_form()
     form["profession"] = "DIGITAL_DATA_AND_TECHNOLOGY"
     form["grade"] = "EXECUTIVE_OFFICER"
     form["department"] = "cabinet-office"
@@ -213,7 +213,7 @@ def complete_pre_survey(client, user, competency_level_answers=["confident", "no
 def step_survey_page(page, title, fields):
     assert page.status_code == 200, page.status_code
     assert page.has_text(title), title
-    form = page.get_form("""form:not([action])""")
+    form = page.get_form()
     for field in fields:
         form[field] = fields[field]
     next_page = form.submit().follow()
