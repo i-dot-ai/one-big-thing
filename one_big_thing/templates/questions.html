@@ -21,7 +21,7 @@
     {% set button_label = "Next" %}
   {% endif %}
 
-  {% call macros.form_wrapper(prev_url, "Next") -%}
+  {% call macros.form_wrapper(prev_url, button_label) -%}
 
     {% if section.questions|length > 1 %}
 
