@@ -117,19 +117,6 @@ def complete_pre_survey(client, user, competency_level_answers=["confident", "no
             },
         ),
         (
-            "To what extent do you agree or disagree with the following statement?",
-            {
-                "aware-of-the-aims": 1,
-            },
-        ),
-        (
-            "To what extent do you agree or disagree with the following statements?",
-            {
-                "shared-identity": 2,
-                "identity-is-important": 1,
-            },
-        ),
-        (
             "To what extent do you agree or disagree with the following statements?",
             {
                 "confident-day-to-day": 1,
@@ -153,6 +140,19 @@ def complete_pre_survey(client, user, competency_level_answers=["confident", "no
             {
                 "training-last-six-months": "yes",
                 "training-analytical-component": "yes",
+            },
+        ),
+        (
+            "To what extent do you agree or disagree with the following statement?",
+            {
+                "aware-of-the-aims": 1,
+            },
+        ),
+        (
+            "To what extent do you agree or disagree with the following statements?",
+            {
+                "shared-identity": 2,
+                "identity-is-important": 1,
             },
         ),
     )
@@ -179,12 +179,6 @@ def complete_pre_survey(client, user, competency_level_answers=["confident", "no
     assert question_data.survey_type == "pre", question_data.survey_type
 
     question_data = completed_surveys.get(page_number=4)
-    assert question_data.data == {"aware-of-the-aims": "1"}, question_data.data
-
-    question_data = completed_surveys.get(page_number=5)
-    assert question_data.data == {"shared-identity": "2", "identity-is-important": "1"}, question_data.data
-
-    question_data = completed_surveys.get(page_number=6)
     assert question_data.data == {
         "confident-day-to-day": "1",
         "data-is-relevant-to-role": "1",
@@ -192,10 +186,10 @@ def complete_pre_survey(client, user, competency_level_answers=["confident", "no
         "data-support-day-to-day": "1",
     }, question_data.data
 
-    question_data = completed_surveys.get(page_number=7)
+    question_data = completed_surveys.get(page_number=5)
     assert question_data.data == {"line-manager": "yes"}, question_data.data
 
-    question_data = completed_surveys.get(page_number=8)
+    question_data = completed_surveys.get(page_number=6)
     assert question_data.survey_type == "pre", question_data.survey_type
     assert question_data.data == {
         "help-team": "1",
@@ -203,11 +197,17 @@ def complete_pre_survey(client, user, competency_level_answers=["confident", "no
         "coach-team": "",
     }, question_data.data
 
-    question_data = completed_surveys.get(page_number=9)
+    question_data = completed_surveys.get(page_number=7)
     assert question_data.data == {
         "training-last-six-months": "yes",
         "training-analytical-component": "yes",
     }, question_data.data
+
+    question_data = completed_surveys.get(page_number=8)
+    assert question_data.data == {"aware-of-the-aims": "1"}, question_data.data
+
+    question_data = completed_surveys.get(page_number=9)
+    assert question_data.data == {"shared-identity": "2", "identity-is-important": "1"}, question_data.data
 
 
 def step_survey_page(page, title, fields):

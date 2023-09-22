@@ -254,6 +254,7 @@ def questions_view_get(request, survey_type, page_number, errors=frozendict()):
     survey_type = survey_type
     section = survey_handling.questions_data[survey_type][page_number - 1]
     data = get_data(request.user, survey_type, page_number)
+    is_final_page = (page_number >= len(survey_handling.questions_data[survey_type])) & (survey_type != "post")
     return render(
         request,
         template_name="questions.html",
@@ -265,6 +266,7 @@ def questions_view_get(request, survey_type, page_number, errors=frozendict()):
             "page_number": page_number,
             "errors": errors,
             "answer_labels": survey_handling.answer_labels,
+            "is_final_page": is_final_page,
         },
     )
 
