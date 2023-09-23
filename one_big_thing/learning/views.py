@@ -139,9 +139,16 @@ def homepage_view(request):
 
 def transform_learning_record(data):
     time_to_complete_hours = data.get("time_to_complete_hours")
+    time_to_complete_minutes = data.get("time_to_complete_minutes")
     if not time_to_complete_hours:
         time_to_complete_hours = 0
-    time_to_complete_total = int(time_to_complete_hours) * 60 + int(data.get("time_to_complete_minutes", 0))
+    else:
+        time_to_complete_hours = int(time_to_complete_hours)
+    if not time_to_complete_minutes:
+        time_to_complete_minutes = 0
+    else:
+        time_to_complete_minutes = int(time_to_complete_minutes)
+    time_to_complete_total = time_to_complete_hours * 60 + time_to_complete_minutes
     time_to_complete_total = str(time_to_complete_total)
     transformed_data = {
         "title": data.get("title"),
@@ -212,9 +219,14 @@ class RecordLearningView(utils.MethodDispatcher):
         record_learning_schema = schemas.RecordLearningSchema(unknown=marshmallow.EXCLUDE)
         try:
             record_learning_schema.load(data, partial=False)
+            print("schema")
+            print(record_learning_schema.load(data, partial=False))
+
         except marshmallow.exceptions.ValidationError as err:
             validation_errors = dict(err.messages)
             errors = validation_errors
+        print("errors")
+        print(errors)
         if errors:
             return self.get(request, data=data, errors=errors)
         user = request.user

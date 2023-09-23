@@ -1,9 +1,18 @@
-from marshmallow import Schema, ValidationError, fields, validate
+from marshmallow import (
+    Schema,
+    ValidationError,
+    fields,
+    validate,
+    validates_schema,
+)
 
 from one_big_thing.learning.departments import Department
 from one_big_thing.learning.utils import is_civil_service_email
 
 from . import choices, constants
+
+HOURS_ERROR = "Please enter the hours this course took to complete, for example, 2"
+MINUTES_ERROR = "Please enter the minutes this course took to complete, between 0 and 59"
 
 
 def validate_email(email):
@@ -73,6 +82,8 @@ def validate_positive_integer(value, max=None, error_msg="There is an error with
         error_msg (str): General error message to display
         error_msg_max (str): Optional error message if number exceeds max, otherwise error_msg is displayed
     """
+    if value == "":
+        return
     try:
         value = int(value)
         if value < 0:
@@ -90,13 +101,13 @@ def validate_time_to_complete(value):
 
 
 def validate_time_to_complete_hours(value):
-    general_error = "Please enter the hours this course took to complete, for example, 2"
+    general_error = HOURS_ERROR
     max_hours_error = f"The course should be less than {constants.HOURS_LIMIT} hours"
     validate_positive_integer(value, max=constants.HOURS_LIMIT, error_msg=general_error, error_msg_max=max_hours_error)
 
 
 def validate_time_to_complete_minutes(value):
-    minutes_error = "Please enter the minutes this course took to complete, between 0 and 59"
+    minutes_error = MINUTES_ERROR
     validate_positive_integer(value, max=59, error_msg=minutes_error)
 
 
@@ -116,12 +127,23 @@ class LearningSchema(TimeStampedModelSchema, UUIDPrimaryKeyBaseModelSchema):
 
 
 class RecordLearningSchema(Schema):
+    class Meta:
+        ordered = True
+
     title = LearningTitleSingleLineStr(required=True)
     link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
     learning_type = make_choice_field(max_len=256, values=choices.CourseType.values, allow_none=True)
     time_to_complete_hours = fields.Str(required=False, validate=validate_time_to_complete_hours)
-    time_to_complete_minutes = fields.Str(validate=validate_time_to_complete_minutes)
+    time_to_complete_minutes = fields.Str(required=False, validate=validate_time_to_complete_minutes)
     rating = fields.Str(required=False, allow_none=True)
+
+    @validates_schema
+    def validate_fields(self, data, **kwargs):
+        hours_value = data.get("time_to_complete_hours")
+        minutes_value = data.get("time_to_complete_minutes")
+
+        if not hours_value and not minutes_value:
+            raise ValidationError({"time_to_complete_hours": HOURS_ERROR, "time_to_complete_minutes": MINUTES_ERROR})
 
 
 class MyDetailsSchema(Schema):
