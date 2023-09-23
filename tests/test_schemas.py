@@ -132,6 +132,7 @@ def test_validate_time_to_complete_no_errors():
     schemas.validate_time_to_complete_minutes(0)
     schemas.validate_time_to_complete_hours(24)
     schemas.validate_time_to_complete_hours(200)
+    schemas.validate_time_to_complete_hours("87")
 
 
 def test_validate_time_to_complete_errors():
@@ -171,3 +172,21 @@ def test_my_details_schema():
         my_details_schema.load({"profession": "ANALYSIS"})
     with assert_raises_regexp(ValidationError, "You must select a profession"):
         my_details_schema.load({"grade": "HIGHER_EXECUTIVE_OFFICER"})
+
+
+def test_record_learning_schema():
+    record_learning_schema = schemas.RecordLearningSchema()
+    data_no_errors = record_learning_schema.load({"title": "Data training", "time_to_complete_hours": "2"})
+    assert data_no_errors
+    data_no_errors = record_learning_schema.load({"title": "Data training", "time_to_complete_minutes": "25"})
+    assert data_no_errors
+    data_no_errors = record_learning_schema.load(
+        {"title": "Data training", "time_to_complete_hours": "1", "time_to_complete_minutes": "25"}
+    )
+    assert data_no_errors
+    with assert_raises_regexp(ValidationError, "Please enter the hours"):
+        record_learning_schema.load({"title": "Hi", "link": "http://example.com"})
+    with assert_raises_regexp(ValidationError, "Please enter the minutes"):
+        record_learning_schema.load({"title": "Hi", "link": "http://example.com"})
+    with assert_raises_regexp(ValidationError, "Please enter the minutes"):
+        record_learning_schema.load({"title": "Hi", "link": "http://example.com", "time_to_complete_minutes": "string"})

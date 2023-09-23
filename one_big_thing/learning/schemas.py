@@ -137,7 +137,7 @@ class RecordLearningSchema(Schema):
     time_to_complete_minutes = fields.Str(required=False, validate=validate_time_to_complete_minutes)
     rating = fields.Str(required=False, allow_none=True)
 
-    @validates_schema
+    @validates_schema(skip_on_field_errors=False)
     def validate_fields(self, data, **kwargs):
         hours_value = data.get("time_to_complete_hours")
         minutes_value = data.get("time_to_complete_minutes")

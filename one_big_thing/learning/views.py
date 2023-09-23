@@ -219,14 +219,9 @@ class RecordLearningView(utils.MethodDispatcher):
         record_learning_schema = schemas.RecordLearningSchema(unknown=marshmallow.EXCLUDE)
         try:
             record_learning_schema.load(data, partial=False)
-            print("schema")
-            print(record_learning_schema.load(data, partial=False))
-
         except marshmallow.exceptions.ValidationError as err:
             validation_errors = dict(err.messages)
             errors = validation_errors
-        print("errors")
-        print(errors)
         if errors:
             return self.get(request, data=data, errors=errors)
         user = request.user
