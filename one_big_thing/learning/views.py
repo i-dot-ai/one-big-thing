@@ -215,13 +215,8 @@ class RecordLearningView(utils.MethodDispatcher):
 
     def post(self, request, course_id=None):
         data = request.POST.dict()
-        errors = {}
         record_learning_schema = schemas.RecordLearningSchema(unknown=marshmallow.EXCLUDE)
-        try:
-            record_learning_schema.load(data, partial=False)
-        except marshmallow.exceptions.ValidationError as err:
-            validation_errors = dict(err.messages)
-            errors = validation_errors
+        errors = record_learning_schema.validate(data, partial=False)
         if errors:
             return self.get(request, data=data, errors=errors)
         user = request.user
