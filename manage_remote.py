@@ -98,7 +98,6 @@ def user_stats(env):
 @cli.command()
 @env_option
 def get_learning_breakdown_data(env):
-    """gather user stats."""
     if env.upper() == "PROD":
         click.secho("this is running things on the (live) server!", fg="red")
 
@@ -153,6 +152,16 @@ def get_logs(env, arn):
 
     if not log_events["events"]:
         click.secho("no log events found, maybe try later?", fg="red")
+
+
+@cli.command()
+@env_option
+def get_signups_by_date(env):
+    if env.upper() == "PROD":
+        click.secho("this is running things on the (live) server!", fg="red")
+
+    task = run(env, "get_signups_by_date")
+    click.echo(task)
 
 
 if __name__ == "__main__":
