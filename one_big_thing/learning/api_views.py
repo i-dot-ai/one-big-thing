@@ -1,4 +1,12 @@
-from django.db.models import Case, Count, DateField, IntegerField, Sum, When
+from django.db.models import (
+    Case,
+    Count,
+    DateField,
+    IntegerField,
+    Sum,
+    Value,
+    When,
+)
 from django.db.models.functions import Cast, Coalesce, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -78,11 +86,25 @@ def get_learning_breakdown_data():
     groupings = models.User.objects.values("department", "grade", "profession").annotate(
         total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
         number_of_sign_ups=Count("id", distinct=True),
-        completed_first_evaluation=Count(Cast("has_completed_pre_survey", IntegerField()), distinct=True),
-        completed_second_evaluation=Count(Cast("has_completed_post_survey", IntegerField()), distinct=True),
+        completed_first_evaluation=Count(
+            Case(
+                When(
+                    has_completed_pre_survey=True,
+                    then=Value(1),
+                ),
+            ),
+        ),
+        completed_second_evaluation=Count(
+            Case(
+                When(
+                    has_completed_post_survey=True,
+                    then=Value(1),
+                ),
+            ),
+        ),
         **{
             f"completed_{i}_hours_of_learning": Case(
-                When(total_time_completed__gt=i, then=1), default=0, output_field=IntegerField()
+                When(total_time_completed__gte=i, then=1), default=0, output_field=IntegerField()
             )
             for i in range(1, 7)
         },
