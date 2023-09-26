@@ -123,6 +123,17 @@ def assign_superuser_status(env, email, password=None):
 
 @cli.command()
 @env_option
+def get_simple_stats(env):
+    """get simple breakdown of data from user breakdown"""
+    if env.upper() == "PROD":
+        click.secho("this is running things on the (live) server!", fg="red")
+
+    task = run(env, "get_simple_stats")
+    click.echo(task)
+
+
+@cli.command()
+@env_option
 @click.argument("arn", type=str)
 def get_logs(env, arn):
     if env.upper() == "PROD":

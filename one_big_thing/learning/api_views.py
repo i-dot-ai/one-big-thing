@@ -84,7 +84,9 @@ def get_learning_breakdown_data():
     @return: A queryset that contains a list of each grouping
     """
     groupings = models.User.objects.values("department", "grade", "profession").annotate(
-        total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
+        total_time_completed=Coalesce(
+            Cast(Sum("learning__time_to_complete", distinct=True), IntegerField(default=0)) / 60, 0
+        ),
         number_of_sign_ups=Count("id", distinct=True),
         completed_first_evaluation=Count(
             Case(
@@ -93,6 +95,7 @@ def get_learning_breakdown_data():
                     then=Value(1),
                 ),
             ),
+            distinct=True,
         ),
         completed_second_evaluation=Count(
             Case(
@@ -101,6 +104,7 @@ def get_learning_breakdown_data():
                     then=Value(1),
                 ),
             ),
+            distinct=True,
         ),
         **{
             f"completed_{i}_hours_of_learning": Case(
