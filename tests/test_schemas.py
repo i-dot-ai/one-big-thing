@@ -136,29 +136,29 @@ def test_validate_time_to_complete_no_errors():
 
 
 def test_get_error_message_for_integer_validation_valid_inputs():
-    error1 = schemas.get_error_message_for_integer_validation("98")
-    assert not error1
-    error2 = schemas.get_error_message_for_integer_validation(78)
-    assert not error2
-    error3 = schemas.get_error_message_for_integer_validation(None)
-    assert not error3
-    error4 = schemas.get_error_message_for_integer_validation(78, max=100, error_msg="error", error_msg_max="error max")
-    assert not error4
-    error5 = schemas.get_error_message_for_integer_validation("", max=100)
-    assert not error5
+    error = schemas.get_error_message_for_integer_validation("98")
+    assert not error
+    error = schemas.get_error_message_for_integer_validation(78)
+    assert not error
+    error = schemas.get_error_message_for_integer_validation(None)
+    assert not error
+    error = schemas.get_error_message_for_integer_validation(78, max=100, error_msg="error", error_msg_max="error max")
+    assert not error
+    error = schemas.get_error_message_for_integer_validation("", max=100)
+    assert not error
 
 
 def test_get_error_message_for_integer_validation_invalid_inputs():
-    error1 = schemas.get_error_message_for_integer_validation("i")
-    assert error1.startswith("There is an error with this value")
-    error2 = schemas.get_error_message_for_integer_validation(3000, max=100, error_msg="error")
-    assert error2 == "error"
-    error3 = schemas.get_error_message_for_integer_validation(-1)
-    assert error3.startwith("There is an error with this value")
-    error4 = schemas.get_error_message_for_integer_validation(
+    error = schemas.get_error_message_for_integer_validation("i")
+    assert "There is an error with this value" in error
+    error = schemas.get_error_message_for_integer_validation(3000, max=100, error_msg="error")
+    assert error == "error", error
+    error = schemas.get_error_message_for_integer_validation(-1)
+    assert "There is an error with this value" in error
+    error = schemas.get_error_message_for_integer_validation(
         3000, max=100, error_msg="error", error_msg_max="max error"
     )
-    assert error4 == error
+    assert error == "max error", error
 
 
 def test_record_learning_schema():
