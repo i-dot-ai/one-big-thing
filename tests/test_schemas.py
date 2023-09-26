@@ -128,11 +128,6 @@ def test_make_choice_field():
 def test_validate_time_to_complete_no_errors():
     schemas.validate_time_to_complete(15)
     schemas.validate_time_to_complete("87")
-    # schemas.validate_time_to_complete_minutes(59)
-    # schemas.validate_time_to_complete_minutes(0)
-    # schemas.validate_time_to_complete_hours(24)
-    # schemas.validate_time_to_complete_hours(200)
-    # schemas.validate_time_to_complete_hours("87")
 
 
 def test_get_error_message_for_integer_validation_valid_inputs():
@@ -196,7 +191,9 @@ def test_record_learning_schema():
     assert "link" not in errors
     assert "learning_type" not in errors
     assert errors["time_to_complete_hours"] == "Please enter the hours this course took to complete, for example, 2"
-    assert errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
+    assert (
+        errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
+    )
     assert "rating" not in errors
     invalid = {
         "title": "A data course",
@@ -208,7 +205,9 @@ def test_record_learning_schema():
     }
     errors = learning_schema.validate(invalid)
     assert errors["time_to_complete_hours"] == "The course should be less than 200 hours"
-    assert errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
+    assert (
+        errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
+    )
     invalid = {
         "title": "A data course",
         "link": "http://example.com",
@@ -219,7 +218,9 @@ def test_record_learning_schema():
     }
     errors = learning_schema.validate(invalid)
     assert errors["time_to_complete_hours"] == "Please enter the hours this course took to complete, for example, 2"
-    assert errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
+    assert (
+        errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
+    )
     invalid = {
         "title": "A data course",
         "link": "http://example.com",
@@ -231,35 +232,9 @@ def test_record_learning_schema():
     errors = learning_schema.validate(invalid)
     assert "title" not in errors
     assert "time_to_complete_hours" not in errors
-    assert errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
-
-
-
-
-
-# def test_validate_time_to_complete_errors():
-#     with assert_raises_regexp(ValidationError, "Please enter the time this course took to complete in minutes"):
-#         schemas.validate_time_to_complete("a long time")
-#     with assert_raises_regexp(ValidationError, "Please enter the time this course took to complete in minutes"):
-#         schemas.validate_time_to_complete(-9)
-
-
-# def test_validate_time_to_complete_hour_errors():
-#     with assert_raises_regexp(ValidationError, "Please enter the hours this course took to complete"):
-#         schemas.validate_time_to_complete_hours("a long time")
-#     with assert_raises_regexp(ValidationError, "The course should be less than 200 hours"):
-#         schemas.validate_time_to_complete_hours("18000")
-#     with assert_raises_regexp(ValidationError, "Please enter the hours this course took to complete"):
-#         schemas.validate_time_to_complete_hours(-3)
-
-
-# def test_validate_time_to_complete_minutes_errors():
-#     with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
-#         schemas.validate_time_to_complete_minutes(60)
-#     with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
-#         schemas.validate_time_to_complete_minutes("this is a string")
-#     with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
-#         schemas.validate_time_to_complete_minutes(-5)
+    assert (
+        errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
+    )
 
 
 def test_my_details_schema():
