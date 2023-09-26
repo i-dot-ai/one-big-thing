@@ -251,7 +251,7 @@ def test_my_details_schema():
         my_details_schema.load({"grade": "HIGHER_EXECUTIVE_OFFICER"})
 
 
-def test_record_learning_schema_again():
+def test_record_learning_schema_validation_errors():
     record_learning_schema = schemas.RecordLearningSchema()
     data_no_errors = record_learning_schema.load({"title": "Data training", "time_to_complete_hours": "2"})
     assert data_no_errors
