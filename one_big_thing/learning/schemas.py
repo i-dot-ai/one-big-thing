@@ -131,17 +131,6 @@ def validate_time_to_complete(value):
         raise ValidationError(error_message)
 
 
-# def validate_time_to_complete_hours(value):
-#     general_error = HOURS_ERROR
-#     max_hours_error = f"The course should be less than {constants.HOURS_LIMIT} hours"
-#     validate_positive_integer(value, max=constants.HOURS_LIMIT, error_msg=general_error, error_msg_max=max_hours_error)
-
-
-# def validate_time_to_complete_minutes(value):
-#     minutes_error = MINUTES_ERROR
-#     validate_positive_integer(value, max=59, error_msg=minutes_error)
-
-
 class CourseSchema(TimeStampedModelSchema, UUIDPrimaryKeyBaseModelSchema):
     title = SingleLineStr(required=True, validate=validate.Length(max=200))
     link = SingleLineStr(validate=validate.Length(max=256), allow_none=True)
