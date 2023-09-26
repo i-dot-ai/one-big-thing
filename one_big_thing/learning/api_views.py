@@ -1,4 +1,7 @@
-from django.db.models import Case, Count, DateField, IntegerField, Sum, When
+import json
+
+from django.db import connection
+from django.db.models import Case, Count, DateField, IntegerField, Sum, When, Value
 from django.db.models.functions import Cast, Coalesce, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -78,11 +81,25 @@ def get_learning_breakdown_data():
     groupings = models.User.objects.values("department", "grade", "profession").annotate(
         total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
         number_of_sign_ups=Count("id", distinct=True),
-        completed_first_evaluation=Count(Cast("has_completed_pre_survey", IntegerField()), distinct=True),
-        completed_second_evaluation=Count(Cast("has_completed_post_survey", IntegerField()), distinct=True),
+        completed_first_evaluation=Count(
+            Case(
+                When(
+                    has_completed_pre_survey=True,
+                    then=Value(1),
+                ),
+            ),
+        ),
+        completed_second_evaluation=Count(
+            Case(
+                When(
+                    has_completed_post_survey=True,
+                    then=Value(1),
+                ),
+            ),
+        ),
         **{
             f"completed_{i}_hours_of_learning": Case(
-                When(total_time_completed__gt=i, then=1), default=0, output_field=IntegerField()
+                When(total_time_completed__gte=i, then=1), default=0, output_field=IntegerField()
             )
             for i in range(1, 7)
         },
@@ -91,6 +108,103 @@ def get_learning_breakdown_data():
         ),
     )
     return groupings.distinct()
+
+
+class TestView(APIView):
+    """
+    Endpoint used by 10DS to get information about department signups
+    """
+
+    permission_classes = (
+        IsAuthenticated,
+        IsAPIUser,
+    )
+
+    def get(self, request):
+        data = run_raw_sql()
+        return Response(data)
+
+
+def dictfetchall(cursor):
+    "Return all rows from a cursor as a dict"
+    columns = [col[0] for col in cursor.description]
+    return [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+
+def run_raw_sql():
+    with connection.cursor() as cursor:
+        cursor.execute(
+            """SELECT
+                DATE(date_joined) as date_joined,
+                department,
+                grade,
+                profession,
+                count(*) as number_of_sign_ups,
+                count(CASE WHEN u.has_completed_pre_survey THEN 1 END) as completed_first_evaluation,
+                count(CASE WHEN u.has_completed_post_survey THEN 1 END) as completed_second_evaluation,
+                sum(l.completed_1_hours_of_learning) as completed_1_hours_of_learning,
+                sum(l.completed_2_hours_of_learning) as completed_2_hours_of_learning,
+                sum(l.completed_3_hours_of_learning) as completed_3_hours_of_learning,
+                sum(l.completed_4_hours_of_learning) as completed_4_hours_of_learning,
+                sum(l.completed_5_hours_of_learning) as completed_5_hours_of_learning,
+                sum(l.completed_6_hours_of_learning) as completed_6_hours_of_learning,
+                sum(l.completed_7_plus_hours_of_learning) as completed_7_plus_hours_of_learning
+            FROM public.learning_user as u
+            LEFT JOIN (
+                SELECT
+                    user_id,
+                    CASE
+                        WHEN hours_learning > 1  THEN 1
+                        ELSE 0
+                        END as completed_1_hours_of_learning,
+                    CASE
+                        WHEN hours_learning > 2  THEN 1
+                        ELSE 0
+                    END as completed_2_hours_of_learning,
+                    CASE
+                        WHEN hours_learning > 3  THEN 1
+                        ELSE 0
+                    END as completed_3_hours_of_learning,
+                    CASE
+                        WHEN hours_learning > 4  THEN 1
+                        ELSE 0
+                    END as completed_4_hours_of_learning,
+                    CASE
+                        WHEN hours_learning > 5  THEN 1
+                        ELSE 0
+                    END as completed_5_hours_of_learning,
+                    CASE
+                        WHEN hours_learning > 6  THEN 1
+                        ELSE 0
+                    END as completed_6_hours_of_learning,
+                    CASE
+                        WHEN hours_learning > 7  THEN 1
+                        ELSE 0
+                    END as completed_7_plus_hours_of_learning
+                    FROM (
+                        SELECT
+                            sum(time_to_complete)/60 as hours_learning,
+                            user_id
+                        FROM public.learning_learning
+                        GROUP BY user_id
+                    ) inner_l
+            ) l
+            ON l.user_id = u.id
+            GROUP BY department,
+                grade,
+                profession,
+                date_joined"""
+        )
+        rows = dictfetchall(cursor)
+        return rows
+    # cursor = connection.cursor()
+    # cursor.execute(
+    #     """"""
+    # )
+    # rows = cursor.fetchall()
+    # print(type(rows[0][0]))
+    # all_rows = json.dumps(rows, indent=4, sort_keys=True, default=str)
+    # return all_rows
 
 
 class JwtTokenObtainPairView(TokenObtainPairView):

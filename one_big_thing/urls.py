@@ -12,6 +12,7 @@ from one_big_thing.learning.api_views import (
     JwtTokenObtainPairView,
     UserSignupStatsView,
     UserStatisticsView,
+    TestView,
 )
 
 api_urlpatterns = [
@@ -19,6 +20,7 @@ api_urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/user-statistics/", UserStatisticsView.as_view(), name="user_statistics"),
     path("api/signup-statistics/", UserSignupStatsView.as_view(), name="signup_statistics"),
+    path("api/test-statistics/", TestView.as_view(), name="test_statistics"),
 ]
 
 info_urlpatterns = [
