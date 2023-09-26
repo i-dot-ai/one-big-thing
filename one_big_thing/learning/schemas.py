@@ -72,31 +72,6 @@ class UUIDPrimaryKeyBaseModelSchema(Schema):
     id = fields.UUID()
 
 
-def validate_positive_integer(value, max=None, error_msg="There is an error with this value", error_msg_max=""):
-    """
-    Checks if value is a positive integer, optionally checks if below max.
-
-    Args:
-        value: Any value to be validated
-        max: Optional value to check value is below max
-        error_msg (str): General error message to display
-        error_msg_max (str): Optional error message if number exceeds max, otherwise error_msg is displayed
-    """
-    if value == "":
-        return
-    try:
-        value = int(value)
-        if value < 0:
-            raise ValidationError(error_msg)
-        elif max and (value > max):
-            if error_msg_max:
-                raise ValidationError(error_msg_max)
-            else:
-                raise ValidationError(error_msg)
-    except ValueError:
-        raise ValidationError(error_msg)
-
-
 def get_error_message_for_integer_validation(
     value, max=None, error_msg="There is an error with this value", error_msg_max=""
 ):
