@@ -157,7 +157,7 @@ def test_get_error_message_for_integer_validation_invalid_inputs():
 
 
 def test_record_learning_schema():
-    learning_schema = schema.RecordLearningSchema()
+    learning_schema = schemas.RecordLearningSchema()
     valid = {
         "title": "A good title",
         "link": "",
@@ -251,7 +251,7 @@ def test_my_details_schema():
         my_details_schema.load({"grade": "HIGHER_EXECUTIVE_OFFICER"})
 
 
-def test_record_learning_schema():
+def test_record_learning_schema_again():
     record_learning_schema = schemas.RecordLearningSchema()
     data_no_errors = record_learning_schema.load({"title": "Data training", "time_to_complete_hours": "2"})
     assert data_no_errors
