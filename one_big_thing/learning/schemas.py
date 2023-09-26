@@ -97,7 +97,9 @@ def validate_positive_integer(value, max=None, error_msg="There is an error with
         raise ValidationError(error_msg)
 
 
-def get_error_message_for_integer_validation(value, max=None, error_msg="There is an error with this value", error_msg_max=""):
+def get_error_message_for_integer_validation(
+    value, max=None, error_msg="There is an error with this value", error_msg_max=""
+):
     """
     Checks if value is a positive integer, optionally checks if below max.
 
@@ -121,9 +123,10 @@ def get_error_message_for_integer_validation(value, max=None, error_msg="There i
         return error_msg
 
 
-
 def validate_time_to_complete(value):
-    error_message = get_error_message_for_integer_validation(value, error_msg="Please enter the time this course took to complete in minutes, e.g. 15")
+    error_message = get_error_message_for_integer_validation(
+        value, error_msg="Please enter the time this course took to complete in minutes, e.g. 15"
+    )
     if error_message:
         raise ValidationError(error_message)
 
@@ -173,8 +176,10 @@ class RecordLearningSchema(Schema):
         max_hours_error = f"The course should be less than {constants.HOURS_LIMIT} hours"
         errors_dictionary = {}
 
-        hours_error_msg = get_error_message_for_integer_validation(hours_value, max=constants.HOURS_LIMIT, error_msg=HOURS_ERROR, error_msg_max=max_hours_error)
-        minutes_error_msg = get_error_message_for_integer_validation(minutes_value, error_msg=MINUTES_ERROR)
+        hours_error_msg = get_error_message_for_integer_validation(
+            hours_value, max=constants.HOURS_LIMIT, error_msg=HOURS_ERROR, error_msg_max=max_hours_error
+        )
+        minutes_error_msg = get_error_message_for_integer_validation(minutes_value, max=59, error_msg=MINUTES_ERROR)
 
         if hours_error_msg:
             errors_dictionary["time_to_complete_hours"] = hours_error_msg

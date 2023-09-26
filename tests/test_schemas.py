@@ -128,36 +128,138 @@ def test_make_choice_field():
 def test_validate_time_to_complete_no_errors():
     schemas.validate_time_to_complete(15)
     schemas.validate_time_to_complete("87")
-    schemas.validate_time_to_complete_minutes(59)
-    schemas.validate_time_to_complete_minutes(0)
-    schemas.validate_time_to_complete_hours(24)
-    schemas.validate_time_to_complete_hours(200)
-    schemas.validate_time_to_complete_hours("87")
+    # schemas.validate_time_to_complete_minutes(59)
+    # schemas.validate_time_to_complete_minutes(0)
+    # schemas.validate_time_to_complete_hours(24)
+    # schemas.validate_time_to_complete_hours(200)
+    # schemas.validate_time_to_complete_hours("87")
 
 
-def test_validate_time_to_complete_errors():
-    with assert_raises_regexp(ValidationError, "Please enter the time this course took to complete in minutes"):
-        schemas.validate_time_to_complete("a long time")
-    with assert_raises_regexp(ValidationError, "Please enter the time this course took to complete in minutes"):
-        schemas.validate_time_to_complete(-9)
+def test_get_error_message_for_integer_validation_valid_inputs():
+    error1 = schemas.get_error_message_for_integer_validation("98")
+    assert not error1
+    error2 = schemas.get_error_message_for_integer_validation(78)
+    assert not error2
+    error3 = schemas.get_error_message_for_integer_validation(None)
+    assert not error3
+    error4 = schemas.get_error_message_for_integer_validation(78, max=100, error_msg="error", error_msg_max="error max")
+    assert not error4
+    error5 = schemas.get_error_message_for_integer_validation("", max=100)
+    assert not error5
 
 
-def test_validate_time_to_complete_hour_errors():
-    with assert_raises_regexp(ValidationError, "Please enter the hours this course took to complete"):
-        schemas.validate_time_to_complete_hours("a long time")
-    with assert_raises_regexp(ValidationError, "The course should be less than 200 hours"):
-        schemas.validate_time_to_complete_hours("18000")
-    with assert_raises_regexp(ValidationError, "Please enter the hours this course took to complete"):
-        schemas.validate_time_to_complete_hours(-3)
+def test_get_error_message_for_integer_validation_invalid_inputs():
+    error1 = schemas.get_error_message_for_integer_validation("i")
+    assert error1.startswith("There is an error with this value")
+    error2 = schemas.get_error_message_for_integer_validation(3000, max=100, error_msg="error")
+    assert error2 == "error"
+    error3 = schemas.get_error_message_for_integer_validation(-1)
+    assert error3.startwith("There is an error with this value")
+    error4 = schemas.get_error_message_for_integer_validation(
+        3000, max=100, error_msg="error", error_msg_max="max error"
+    )
+    assert error4 == error
 
 
-def test_validate_time_to_complete_minutes_errors():
-    with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
-        schemas.validate_time_to_complete_minutes(60)
-    with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
-        schemas.validate_time_to_complete_minutes("this is a string")
-    with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
-        schemas.validate_time_to_complete_minutes(-5)
+def test_record_learning_schema():
+    learning_schema = schema.RecordLearningSchema()
+    valid = {
+        "title": "A good title",
+        "link": "",
+        "learning_type": "",
+        "time_to_complete_hours": "6",
+        "time_to_complete_minutes": "",
+        "rating": "",
+    }
+    errors = learning_schema.validate(valid)
+    assert not errors
+    valid = {
+        "title": "A good title",
+        "link": "http://example.com",
+        "learning_type": "VIDEO",
+        "time_to_complete_hours": "6",
+        "time_to_complete_minutes": "30",
+        "rating": "5",
+    }
+    errors = learning_schema.validate(valid)
+    assert not errors
+    invalid = {
+        "title": "",
+        "link": "",
+        "learning_type": "",
+        "time_to_complete_hours": "",
+        "time_to_complete_minutes": "",
+        "rating": "",
+    }
+    errors = learning_schema.validate(invalid)
+    assert "title" in errors
+    assert "link" not in errors
+    assert "learning_type" not in errors
+    assert errors["time_to_complete_hours"] == "Please enter the hours this course took to complete, for example, 2"
+    assert errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
+    assert "rating" not in errors
+    invalid = {
+        "title": "A data course",
+        "link": "http://example.com",
+        "learning_type": "",
+        "time_to_complete_hours": "99999",
+        "time_to_complete_minutes": "-1",
+        "rating": "",
+    }
+    errors = learning_schema.validate(invalid)
+    assert errors["time_to_complete_hours"] == "The course should be less than 200 hours"
+    assert errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
+    invalid = {
+        "title": "A data course",
+        "link": "http://example.com",
+        "learning_type": "",
+        "time_to_complete_hours": "-1",
+        "time_to_complete_minutes": "some text",
+        "rating": "",
+    }
+    errors = learning_schema.validate(invalid)
+    assert errors["time_to_complete_hours"] == "Please enter the hours this course took to complete, for example, 2"
+    assert errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
+    invalid = {
+        "title": "A data course",
+        "link": "http://example.com",
+        "learning_type": "",
+        "time_to_complete_hours": "",
+        "time_to_complete_minutes": "70",
+        "rating": "",
+    }
+    errors = learning_schema.validate(invalid)
+    assert "title" not in errors
+    assert "time_to_complete_hours" not in errors
+    assert errors["time_to_complete_minutes"] == "Please enter the minutes this course took to complete, between 0 and 59"
+
+
+
+
+
+# def test_validate_time_to_complete_errors():
+#     with assert_raises_regexp(ValidationError, "Please enter the time this course took to complete in minutes"):
+#         schemas.validate_time_to_complete("a long time")
+#     with assert_raises_regexp(ValidationError, "Please enter the time this course took to complete in minutes"):
+#         schemas.validate_time_to_complete(-9)
+
+
+# def test_validate_time_to_complete_hour_errors():
+#     with assert_raises_regexp(ValidationError, "Please enter the hours this course took to complete"):
+#         schemas.validate_time_to_complete_hours("a long time")
+#     with assert_raises_regexp(ValidationError, "The course should be less than 200 hours"):
+#         schemas.validate_time_to_complete_hours("18000")
+#     with assert_raises_regexp(ValidationError, "Please enter the hours this course took to complete"):
+#         schemas.validate_time_to_complete_hours(-3)
+
+
+# def test_validate_time_to_complete_minutes_errors():
+#     with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
+#         schemas.validate_time_to_complete_minutes(60)
+#     with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
+#         schemas.validate_time_to_complete_minutes("this is a string")
+#     with assert_raises_regexp(ValidationError, "Please enter the minutes this course took to complete"):
+#         schemas.validate_time_to_complete_minutes(-5)
 
 
 def test_my_details_schema():
