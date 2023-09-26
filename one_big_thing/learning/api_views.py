@@ -142,7 +142,7 @@ def get_learning_breakdown_data():
             ),
         )
     )
-    return groupings.distinct()
+    return groupings
 
 
 class JwtTokenObtainPairView(TokenObtainPairView):
