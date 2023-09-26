@@ -2,8 +2,7 @@ import random
 
 from django.core.management import BaseCommand
 
-from one_big_thing.learning import models, departments, choices
-
+from one_big_thing.learning import choices, departments, models
 
 TEST_USER_PASSWORD = "dummy-user-password"
 
