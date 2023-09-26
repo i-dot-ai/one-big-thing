@@ -114,33 +114,61 @@ def get_learning_breakdown_data():
     #     ),
     # )
 
-    groupings = (
-        models.User.objects.annotate(
-            completed_first_evaluation=Case(
-                When(has_completed_pre_survey=True, then=Value(1)), default=Value(0), output_field=IntegerField()
-            ),
-            completed_second_evaluation=Case(
-                When(has_completed_post_survey=True, then=Value(1)), default=Value(0), output_field=IntegerField()
-            ),
-        )
-        .values("department", "grade", "profession", "completed_first_evaluation", "completed_second_evaluation")
-        .annotate(
-            total_time_completed=Coalesce(
-                Cast(Sum("learning__time_to_complete", distinct=True), IntegerField(default=0)) / 60, 0
-            ),
-            number_of_sign_ups=Count("id", distinct=True),
-            completed_first_evaluation_count=Sum("completed_first_evaluation"),
-            completed_second_evaluation_count=Sum("completed_second_evaluation"),
-            **{
-                f"completed_{i}_hours_of_learning": Case(
-                    When(total_time_completed__gte=i, then=1), default=0, output_field=IntegerField()
-                )
-                for i in range(1, 7)
-            },
-            completed_7_plus_hours_of_learning=Case(
-                When(total_time_completed__gte=7, then=1), default=0, output_field=IntegerField()
-            ),
-        )
+    # groupings = (
+    #     models.User.objects.annotate(
+    #         completed_first_evaluation=Case(
+    #             When(has_completed_pre_survey=True, then=Value(1)), default=Value(0), output_field=IntegerField()
+    #         ),
+    #         completed_second_evaluation=Case(
+    #             When(has_completed_post_survey=True, then=Value(1)), default=Value(0), output_field=IntegerField()
+    #         ),
+    #     )
+    #     .values("department", "grade", "profession", "completed_first_evaluation", "completed_second_evaluation")
+    #     .annotate(
+    #         total_time_completed=Coalesce(
+    #             Cast(Sum("learning__time_to_complete", distinct=True), IntegerField(default=0)) / 60, 0
+    #         ),
+    #         number_of_sign_ups=Count("id", distinct=True),
+    #         completed_first_evaluation_count=Sum("completed_first_evaluation"),
+    #         completed_second_evaluation_count=Sum("completed_second_evaluation"),
+    #         **{
+    #             f"completed_{i}_hours_of_learning": Case(
+    #                 When(total_time_completed__gte=i, then=1), default=0, output_field=IntegerField()
+    #             )
+    #             for i in range(1, 7)
+    #         },
+    #         completed_7_plus_hours_of_learning=Case(
+    #             When(total_time_completed__gte=7, then=1), default=0, output_field=IntegerField()
+    #         ),
+    #     )
+    # )
+
+    groupings = models.User.objects.annotate(
+        completed_first_evaluation=Case(
+            When(has_completed_pre_survey=True, then=Value(1)), default=Value(0), output_field=IntegerField()
+        ),
+        completed_second_evaluation=Case(
+            When(has_completed_post_survey=True, then=Value(1)), default=Value(0), output_field=IntegerField()
+        ),
+    )
+
+    # Then, group by department, grade, and profession
+    groupings = groupings.values("department", "grade", "profession").annotate(
+        number_of_sign_ups=Count("id", distinct=True),
+        total_time_completed=Coalesce(
+            Cast(Sum("learning__time_to_complete", distinct=True), IntegerField(default=0)) / 60, 0
+        ),
+        completed_first_evaluation_count=Sum("completed_first_evaluation"),
+        completed_second_evaluation_count=Sum("completed_second_evaluation"),
+        **{
+            f"completed_{i}_hours_of_learning": Case(
+                When(total_time_completed__gte=i, then=1), default=0, output_field=IntegerField()
+            )
+            for i in range(1, 7)
+        },
+        completed_7_plus_hours_of_learning=Case(
+            When(total_time_completed__gte=7, then=1), default=0, output_field=IntegerField()
+        ),
     )
     return groupings
 
