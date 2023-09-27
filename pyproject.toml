@@ -14,7 +14,6 @@ DJANGO_SETTINGS_MODULE = "one_big_thing.settings"
 env = [
     "DJANGO_SECRET_KEY=1n53cur3K3y",
     "POSTGRES_PORT=5432",
-    "POSTGRES_HOST=localhost",
     "POSTGRES_DB=one-big-thing",
     "POSTGRES_USER=one-big-thing",
     "POSTGRES_PASSWORD=insecure",
