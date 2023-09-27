@@ -1,4 +1,4 @@
-from django.db.models import Case, Count, DateField, IntegerField, Q, Sum, When
+from django.db.models import Count, DateField, IntegerField, Q, Sum
 from django.db.models.functions import Cast, Coalesce, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -68,11 +68,6 @@ def get_signups_by_date():
     )
 
     return signups
-
-
-def cumulative_learning(total_time_completed: int):
-    expr = Case(When(total_time_completed__gte=total_time_completed, then=1), default=0, output_field=IntegerField())
-    return expr
 
 
 def get_learning_breakdown_data():

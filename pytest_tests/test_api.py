@@ -7,7 +7,38 @@ from rest_framework.test import APIClient
 
 from one_big_thing.learning import models
 from one_big_thing.learning.api_views import get_learning_breakdown_data
-from pytest_tests.utils import TEST_USER_PASSWORD, add_user  # noqa: F401
+from pytest_tests.utils import (  # noqa: F401
+    TEST_USER_EMAIL,
+    TEST_USER_PASSWORD,
+    add_user,
+)
+
+
+@pytest.fixture
+def token_fixture():
+    user, _ = models.User.objects.get_or_create(
+        email=TEST_USER_EMAIL,
+        is_api_user=True,
+        department="acas",
+        grade="GRADE7",
+        profession="ANALYSIS",
+    )
+    user.set_password(TEST_USER_PASSWORD)
+    user.save()
+    client = APIClient()
+    url = reverse("token_obtain_pair")
+    response = client.post(url, {"email": TEST_USER_EMAIL, "password": TEST_USER_PASSWORD})
+    assert response.status_code == 200, response.status_code
+    assert response.data.get("access"), response.data
+    token = response.data.get("access")
+    return token
+
+
+@pytest.fixture
+def authenticated_api_client_fixture(token_fixture):
+    client = APIClient()
+    client.credentials(HTTP_AUTHORIZATION="Bearer " + token_fixture)
+    return client
 
 
 @pytest.mark.django_db

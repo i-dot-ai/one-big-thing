@@ -3,11 +3,8 @@ from datetime import datetime
 
 import pytest
 import pytz
-from django.urls import reverse
-from rest_framework.test import APIClient
 
 from one_big_thing.learning.models import Learning, User
-from pytest_tests.utils import TEST_USER_EMAIL, TEST_USER_PASSWORD
 
 UTC = pytz.timezone("UTC")
 
@@ -79,34 +76,3 @@ def chris(create_user):
         has_completed_pre_survey=True,
         has_completed_post_survey=True,
     )
-
-
-@pytest.fixture
-def api_client():
-    client = APIClient()
-    yield client
-
-
-@pytest.fixture
-def token(api_client):
-    user, _ = User.objects.get_or_create(
-        email=TEST_USER_EMAIL,
-        is_api_user=True,
-        department="acas",
-        grade="GRADE7",
-        profession="ANALYSIS",
-    )
-    user.set_password(TEST_USER_PASSWORD)
-    user.save()
-    url = reverse("token_obtain_pair")
-    response = api_client.post(url, {"email": TEST_USER_EMAIL, "password": TEST_USER_PASSWORD})
-    assert response.status_code == 200, response.status_code
-    assert response.data.get("access"), response.data
-    token = response.data.get("access")
-    return token
-
-
-@pytest.fixture
-def authenticated_api_client_fixture(token, api_client):
-    api_client.credentials(HTTP_AUTHORIZATION="Bearer " + token)
-    return api_client
