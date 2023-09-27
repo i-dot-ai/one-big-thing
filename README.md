@@ -26,7 +26,16 @@ To update the requirement lockfiles:
 
 To run tests:
 
-    make test
+1. in docker, as used in CI
+```commandline
+make test
+```
+
+2. locally, e.g. so you can debug in an IDE
+```commandline
+POSTGRES_HOST=localhost python -m pytest
+```
+note that this assumes that postgres is running in docker, if in doubt run `docker-compose up -d db` first
 
 ## To update the allowed email domains
 
