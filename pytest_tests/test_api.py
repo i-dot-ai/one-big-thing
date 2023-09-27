@@ -131,15 +131,17 @@ def test_breakdown_stats(alice, bob, chris):  # noqa: F811
     assert learning_breakdown_data.count() == 2
 
     grade7 = learning_breakdown_data.filter(grade="GRADE7").first()
-    assert grade7["number_of_sign_ups"] == 2
-    assert grade7["completed_first_evaluation"] == 2
+    assert grade7["number_of_sign_ups"] == 2  # alice and bob are grade 7
+    assert grade7["completed_first_evaluation"] == 2  # alice has done no training, bob has done the first one
     assert grade7["completed_second_evaluation"] == 0
-    assert grade7["completed_1_hours_of_learning"] == 2
-    assert grade7["completed_2_hours_of_learning"] == 1
+    assert (
+        grade7["completed_1_hours_of_learning"] == 2
+    )  # alice has done 1 course of 1 hour, bob has done 1 course of one hour and one with 2
+    assert grade7["completed_2_hours_of_learning"] == 1  # one bob shows up here
 
     grade6 = learning_breakdown_data.filter(grade="GRADE6").first()
-    assert grade6["number_of_sign_ups"] == 1
-    assert grade6["completed_first_evaluation"] == 1
-    assert grade6["completed_second_evaluation"] == 1
+    assert grade6["number_of_sign_ups"] == 1  # only chris has this grade
+    assert grade6["completed_first_evaluation"] == 1  # chris has completed both evaluations
+    assert grade6["completed_second_evaluation"] == 1  # 1 course, 1 hour
     assert grade6["completed_1_hours_of_learning"] == 1
     assert grade6["completed_2_hours_of_learning"] == 0

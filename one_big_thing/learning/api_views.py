@@ -70,6 +70,12 @@ def get_signups_by_date():
     return signups
 
 
+def count_users_where(**kwargs):
+    """expression builder to count users that fulfill some criteria"""
+    expression = Count("learning__user", filter=Q(**kwargs))
+    return expression
+
+
 def get_learning_breakdown_data():
     """
     Calculates the number of signups per combination of department/grade/profession
@@ -80,15 +86,15 @@ def get_learning_breakdown_data():
     users_count_by_group = models.User.objects.values("department", "grade", "profession").annotate(
         number_of_sign_ups=Count("id"),
         total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
-        completed_first_evaluation=Count("id", filter=Q(has_completed_pre_survey=True)),
-        completed_second_evaluation=Count("id", filter=Q(has_completed_post_survey=True)),
-        completed_1_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=60)),
-        completed_2_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=120)),
-        completed_3_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=180)),
-        completed_4_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=240)),
-        completed_5_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=300)),
-        completed_6_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=360)),
-        completed_7_plus_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=420)),
+        completed_first_evaluation=count_users_where(has_completed_pre_survey=True),
+        completed_second_evaluation=count_users_where(has_completed_post_survey=True),
+        completed_1_hours_of_learning=count_users_where(learning__time_to_complete__gte=60),
+        completed_2_hours_of_learning=count_users_where(learning__time_to_complete__gte=120),
+        completed_3_hours_of_learning=count_users_where(learning__time_to_complete__gte=180),
+        completed_4_hours_of_learning=count_users_where(learning__time_to_complete__gte=240),
+        completed_5_hours_of_learning=count_users_where(learning__time_to_complete__gte=300),
+        completed_6_hours_of_learning=count_users_where(learning__time_to_complete__gte=360),
+        completed_7_plus_hours_of_learning=count_users_where(learning__time_to_complete__gte=420),
     )
 
     return users_count_by_group
