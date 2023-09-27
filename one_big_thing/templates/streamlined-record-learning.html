@@ -48,9 +48,9 @@
   <input type="hidden" name="title" id="title" value="Completed department content" />
   </fieldset>
 {%- endcall %}
-      <h1 class="govuk-heading-l">
+      <h2 class="govuk-heading-l">
         Learning I've recorded
-      </h1>
+      </h2>
   <a class="govuk-button govuk-button--secondary" href="{{url('send-learning-record')}}" name="send-learning-record">Email my learning record</a>
   <table class="govuk-table">
     <thead class="govuk-table__head">
@@ -65,7 +65,9 @@
       <tr class="govuk-table__row">
         <th scope="row" class="govuk-table__header">{{course.title}}</th>
         <td class="govuk-table__cell govuk-table__cell--numeric">{{humanize_timedelta(course.time_to_complete)}}</td>
-        <td class="govuk-table__cell govuk-table__cell--numeric"><a href="{{ url('delete-learning-check', course.id) }}">Delete</a></td>
+        <td class="govuk-table__cell govuk-table__cell--numeric">
+          <a href="{{ url('delete-learning-check', course.id) }}" aria-label="Delete line from learning record">Delete</a>
+        </td>
       </tr>
     {% endfor %}
     </tbody>

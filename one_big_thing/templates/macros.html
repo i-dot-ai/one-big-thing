@@ -91,25 +91,6 @@
 {%- endmacro%}
 
 
-{% macro checkboxes(name, label, options, data, errors) -%}
-  <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-    {% for option in options %}
-      {% if errors.get(option[0]) %}
-        <p id="question-{{option[0]}}-error" class="govuk-error-message">
-          <span class="govuk-visually-hidden">Error:</span> {{errors.get(option[0])}}
-        </p>
-      {% endif %}
-      <div class="govuk-checkboxes__item">
-        <input class="govuk-checkboxes__input" id="{{option[0]}}" name="{{name}}" type="checkbox"  value=True {{is_checked(data, name, option[0])}} aria-describedby="{{option[0]}}-hint">
-        <label class="govuk-label govuk-checkboxes__label" for="{{option[0]}}-option-{{slugify(value)}}">
-          {{option[1]}}
-        </label>
-      </div>
-    {% endfor %}
-  </div>
-{%- endmacro%}
-
-
 {% macro form_wrapper(prev_url, button_label="Continue") -%}
   {% if prev_url %}
     <a href="{{prev_url}}" class="govuk-back-link">Back</a>
@@ -119,7 +100,7 @@
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-      <form method="post" novalidate>
+      <form method="post" action="{{request.path}}" novalidate>
         {{csrf_input}}
 
         {{caller()}}
@@ -200,42 +181,102 @@
   {% endif %}
 
   <div class="i-ai-range govuk-form-group">
-    <span>
-      <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-        <h2 class="govuk-fieldset__heading">
-          {{question.text}}
-        </h2>
-      </legend>
+
+    {% if loop.length > 1 %}
+      <fieldset class="govuk-fieldset">
+
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+            <h2 class="govuk-fieldset__heading">
+              {{question.text}}
+            </h2>
+          </legend>
+
+          {% if errors[question.id] %}
+            <p id="where-do-you-live-error" class="govuk-error-message">
+              <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
+            </p>
+          {% endif %}
+
+          {% if question.hint %}
+            <div class="govuk-hint">
+              {{question.hint}}
+            </div>
+          {% endif %}
+
+        <div class="govuk-radios govuk-radios--small " data-module="govuk-radios">
+          {% for i, label in labels.items() %}
+            <div class="govuk-radios__item">
+              <input class="govuk-radios__input" id="{{question.id}}-{{i}}" name="{{question.id}}" type="radio" value="{{i}}" {{(data.get(question.id)==i) and "checked" or ""}}/>
+              <label class="govuk-label govuk-radios__label" for="{{question.id}}-{{i}}">{{label}}</label>
+            </div>
+          {% endfor %}
+        </div>
+      </fieldset>
+
+    {% else %}
+      <span>
+        <div class="govuk-fieldset__legend govuk-fieldset__legend--m">
+          <h2 class="govuk-fieldset__heading">
+            {{question.text}}
+          </h2>
+        </div>
+
+        {% if errors[question.id] %}
+          <p id="where-do-you-live-error" class="govuk-error-message">
+            <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
+          </p>
+        {% endif %}
+
+        {% if question.hint %}
+          <div class="govuk-hint">
+            {{question.hint}}
+          </div>
+        {% endif %}
+      </span>
+
+      <div class="govuk-radios govuk-radios--small " data-module="govuk-radios">
+        {% for i, label in labels.items() %}
+          <div class="govuk-radios__item">
+            <input class="govuk-radios__input" id="{{question.id}}-{{i}}" name="{{question.id}}" type="radio" value="{{i}}" {{(data.get(question.id)==i) and "checked" or ""}}/>
+            <label class="govuk-label govuk-radios__label" for="{{question.id}}-{{i}}">{{label}}</label>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+
+{%- endmacro %}
+
+{% macro question_radios(question, loop) -%}
+  <div class="govuk-form-group {% if errors[question.id] %}govuk-form-group--error{% endif %}">
+    {% if loop.length > 1 %}
+
+      <fieldset class="govuk-fieldset">
+      {% if question.text %}
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h2 class="govuk-fieldset__legend govuk-fieldset__legend--l">{{question.text}}</h2></legend>
+      {% endif %}
 
       {% if errors[question.id] %}
-        <p id="where-do-you-live-error" class="govuk-error-message">
+        <p id="{{question.id}}-error" class="govuk-error-message">
           <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
         </p>
       {% endif %}
 
-      {% if question.hint %}
-        <div class="govuk-hint">
-          {{question.hint}}
-        </div>
-      {% endif %}
-    </span>
+      <div class="govuk-radios" data-module="govuk-radios">
+        {% for answer in answer_labels[question.id].items() %}
+          <div class="govuk-radios__item">
+            <input required class="govuk-radios__input" id="{{question.id}}-{{answer[0]}}" name="{{question.id}}" type="radio" value="{{answer[0]}}">
+            <label class="govuk-label govuk-radios__label" for="{{question.id}}-{{answer[0]}}">{{answer[1]}}</label>
+          </div>
+        {% endfor %}
+      </div>
+    </fieldset>
 
-    <div class="govuk-radios govuk-radios--small " data-module="govuk-radios">
-      {% for i, label in labels.items() %}
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="{{question.id}}-{{i}}" name="{{question.id}}" type="radio" value="{{i}}" {{(data.get(question.id)==i) and "checked" or ""}}/>
-          <label class="govuk-label govuk-radios__label" for="{{question.id}}-{{i}}">{{label}}</label>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-
-{%- endmacro%}
-
-{% macro question_radios(question) -%}
-  <div class="govuk-form-group {% if errors[question.id] %}govuk-form-group--error{% endif %}">
+  {% else %}
+  
     {% if question.text %}
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h2 class="govuk-fieldset__legend govuk-fieldset__legend--l">{{question.text}}</h2></legend>
+        <div class="govuk-fieldset__legend govuk-fieldset__legend--l"><h2 class="govuk-fieldset__legend govuk-fieldset__legend--l">{{question.text}}</h2></div>
     {% endif %}
 
     {% if errors[question.id] %}
@@ -252,46 +293,82 @@
         </div>
       {% endfor %}
     </div>
+
+  {% endif %}
   </div>
 {%- endmacro %}
 
-{% macro checkboxes(question) -%}
+{% macro checkboxes(question, loop) -%}
 <div class="govuk-form-group">
-  <fieldset class="govuk-fieldset" aria-describedby="{{question.id}}-hint">
-    <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-      <h2 class="govuk-fieldset__heading">
-        {{question.text}}
-      </h2>
-    </legend>
-    <div id="{{question.id}}-hint" class="govuk-hint">
-      Select all that apply.
+  
+  {% if loop.length > 1 %}
+
+    <fieldset class="govuk-fieldset" aria-describedby="{{question.id}}-hint">
+      <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h2 class="govuk-fieldset__heading">
+          {{question.text}}
+        </h2>
+      </legend>
+      <div id="{{question.id}}-hint" class="govuk-hint">
+        Select all that apply.
+      </div>
+      {% if errors[question.id] %}
+        <p id="{{question.id}}-error" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
+        </p>
+      {% endif %}
+      <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+        {% for answer in answer_labels[question.id].items() %}
+          <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" {% if answer[0] in data.get(question.id, []) %} checked {% endif %} id="{{question.id}}-{{answer[0]}}" name="{{question.id}}" type="checkbox" value="{{answer[0]}}">
+            <label class="govuk-label govuk-checkboxes__label" for="{{question.id}}-{{answer[0]}}">
+              {{answer[1]}}
+            </label>
+          </div>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+  {% else %}
+
+    <div aria-describedby="{{question.id}}-hint">
+      <div class="govuk-fieldset__legend govuk-fieldset__legend--l">
+        <h2 class="govuk-fieldset__heading">
+          {{question.text}}
+        </h2>
+      </div>
+      <div id="{{question.id}}-hint" class="govuk-hint">
+        Select all that apply.
+      </div>
+      {% if errors[question.id] %}
+        <p id="{{question.id}}-error" class="govuk-error-message">
+          <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
+        </p>
+      {% endif %}
+      <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+        {% for answer in answer_labels[question.id].items() %}
+          <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" {% if answer[0] in data.get(question.id, []) %} checked {% endif %} id="{{question.id}}-{{answer[0]}}" name="{{question.id}}" type="checkbox" value="{{answer[0]}}">
+            <label class="govuk-label govuk-checkboxes__label" for="{{question.id}}-{{answer[0]}}">
+              {{answer[1]}}
+            </label>
+          </div>
+        {% endfor %}
+      </div>
     </div>
-    {% if errors[question.id] %}
-      <p id="{{question.id}}-error" class="govuk-error-message">
-        <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
-      </p>
-    {% endif %}
-    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-      {% for answer in answer_labels[question.id].items() %}
-        <div class="govuk-checkboxes__item">
-          <input class="govuk-checkboxes__input" {% if answer[0] in data.get(question.id, []) %} checked {% endif %} id="{{question.id}}-{{answer[0]}}" name="{{question.id}}" type="checkbox" value="{{answer[0]}}">
-          <label class="govuk-label govuk-checkboxes__label" for="{{question.id}}-{{answer[0]}}">
-            {{answer[1]}}
-          </label>
-        </div>
-      {% endfor %}
-    </div>
-  </fieldset>
+
+  {% endif %}
+
 </div>
 {%- endmacro %}
 
 {% macro question_textarea(question) -%}
 <div class="govuk-form-group">
-  <h1 class="govuk-label-wrapper">
+  <h2 class="govuk-label-wrapper">
     <label class="govuk-label govuk-label--m" for="{{question.id}}">
       {{question.text}}
     </label>
-  </h1>
+  </h2>
   {% if errors[question.id] %}
       <p id="{{question.id}}-error" class="govuk-error-message">
         <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
