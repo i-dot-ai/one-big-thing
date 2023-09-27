@@ -1,12 +1,4 @@
-from django.db.models import (
-    Case,
-    Count,
-    DateField,
-    IntegerField,
-    Sum,
-    Value,
-    When,
-)
+from django.db.models import Case, Count, DateField, IntegerField, Q, Sum, When
 from django.db.models.functions import Cast, Coalesce, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -78,41 +70,33 @@ def get_signups_by_date():
     return signups
 
 
+def cumulative_learning(total_time_completed: int):
+    expr = Case(When(total_time_completed__gte=total_time_completed, then=1), default=0, output_field=IntegerField())
+    return expr
+
+
 def get_learning_breakdown_data():
     """
     Calculates the number of signups per combination of department/grade/profession
     @return: A queryset that contains a list of each grouping
     """
-    groupings = models.User.objects.values("department", "grade", "profession").annotate(
+
+    # Count the total number of users in each group
+    users_count_by_group = models.User.objects.values("department", "grade", "profession").annotate(
+        number_of_sign_ups=Count("id"),
         total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
-        number_of_sign_ups=Count("id", distinct=True),
-        completed_first_evaluation=Count(
-            Case(
-                When(
-                    has_completed_pre_survey=True,
-                    then=Value(1),
-                ),
-            ),
-        ),
-        completed_second_evaluation=Count(
-            Case(
-                When(
-                    has_completed_post_survey=True,
-                    then=Value(1),
-                ),
-            ),
-        ),
-        **{
-            f"completed_{i}_hours_of_learning": Case(
-                When(total_time_completed__gte=i, then=1), default=0, output_field=IntegerField()
-            )
-            for i in range(1, 7)
-        },
-        completed_7_plus_hours_of_learning=Case(
-            When(total_time_completed__gte=7, then=1), default=0, output_field=IntegerField()
-        ),
+        completed_first_evaluation=Count("id", filter=Q(has_completed_pre_survey=True)),
+        completed_second_evaluation=Count("id", filter=Q(has_completed_post_survey=True)),
+        completed_1_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=60)),
+        completed_2_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=120)),
+        completed_3_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=180)),
+        completed_4_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=240)),
+        completed_5_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=300)),
+        completed_6_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=360)),
+        completed_7_plus_hours_of_learning=Count("learning__user", filter=Q(learning__time_to_complete__gte=420)),
     )
-    return groupings.distinct()
+
+    return users_count_by_group
 
 
 class JwtTokenObtainPairView(TokenObtainPairView):
