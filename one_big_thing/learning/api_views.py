@@ -72,7 +72,7 @@ def get_signups_by_date():
 
 def count_users_where(**kwargs):
     """expression builder to count users that fulfill some criteria"""
-    expression = Count("learning__user", filter=Q(**kwargs))
+    expression = Count("learning__user", filter=Q(**kwargs), distinct=True)
     return expression
 
 
@@ -84,7 +84,7 @@ def get_learning_breakdown_data():
 
     # Count the total number of users in each group
     users_count_by_group = models.User.objects.values("department", "grade", "profession").annotate(
-        number_of_sign_ups=Count("id"),
+        number_of_sign_ups=Count("id", distinct=True),
         total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
         completed_first_evaluation=count_users_where(has_completed_pre_survey=True),
         completed_second_evaluation=count_users_where(has_completed_post_survey=True),
