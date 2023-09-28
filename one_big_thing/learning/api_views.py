@@ -1,13 +1,6 @@
-from django.db.models import (
-    Case,
-    Count,
-    DateField,
-    IntegerField,
-    Sum,
-    Value,
-    When,
-)
-from django.db.models.functions import Cast, Coalesce, TruncDate
+from django.db import connection
+from django.db.models import Count, DateField, IntegerField
+from django.db.models.functions import Cast, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -83,36 +76,97 @@ def get_learning_breakdown_data():
     Calculates the number of signups per combination of department/grade/profession
     @return: A queryset that contains a list of each grouping
     """
-    groupings = models.User.objects.values("department", "grade", "profession").annotate(
-        total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
-        number_of_sign_ups=Count("id", distinct=True),
-        completed_first_evaluation=Count(
-            Case(
-                When(
-                    has_completed_pre_survey=True,
-                    then=Value(1),
-                ),
-            ),
-        ),
-        completed_second_evaluation=Count(
-            Case(
-                When(
-                    has_completed_post_survey=True,
-                    then=Value(1),
-                ),
-            ),
-        ),
-        **{
-            f"completed_{i}_hours_of_learning": Case(
-                When(total_time_completed__gte=i, then=1), default=0, output_field=IntegerField()
-            )
-            for i in range(1, 7)
-        },
-        completed_7_plus_hours_of_learning=Case(
-            When(total_time_completed__gte=7, then=1), default=0, output_field=IntegerField()
-        ),
-    )
-    return groupings.distinct()
+
+    with connection.cursor() as cursor:
+        # Define your SQL query
+        sql_query = """
+SELECT
+    DATE(date_joined) as date_joined,
+    department,
+    grade,
+    profession,
+    count(*) as number_of_sign_ups,
+    count(CASE WHEN u.has_completed_pre_survey THEN 1 END) as completed_first_evaluation,
+    count(CASE WHEN u.has_completed_post_survey THEN 1 END) as completed_second_evaluation,
+    sum(l.completed_1_hours_of_learning) as completed_1_hours_of_learning,
+    sum(l.completed_2_hours_of_learning) as completed_2_hours_of_learning,
+    sum(l.completed_3_hours_of_learning) as completed_3_hours_of_learning,
+    sum(l.completed_4_hours_of_learning) as completed_4_hours_of_learning,
+    sum(l.completed_5_hours_of_learning) as completed_5_hours_of_learning,
+    sum(l.completed_6_hours_of_learning) as completed_6_hours_of_learning,
+    sum(l.completed_7_plus_hours_of_learning) as completed_7_plus_hours_of_learning
+FROM public.learning_user as u
+LEFT JOIN (
+    SELECT
+    user_id,
+    CASE
+        WHEN hours_learning > 1  THEN 1
+        ELSE 0
+        END as completed_1_hours_of_learning,
+    CASE
+        WHEN hours_learning > 2  THEN 1
+        ELSE 0
+    END as completed_2_hours_of_learning,
+    CASE
+        WHEN hours_learning > 3  THEN 1
+        ELSE 0
+    END as completed_3_hours_of_learning,
+    CASE
+        WHEN hours_learning > 4  THEN 1
+        ELSE 0
+    END as completed_4_hours_of_learning,
+    CASE
+        WHEN hours_learning > 5  THEN 1
+        ELSE 0
+    END as completed_5_hours_of_learning,
+    CASE
+        WHEN hours_learning > 6  THEN 1
+        ELSE 0
+    END as completed_6_hours_of_learning,
+    CASE
+        WHEN hours_learning > 7  THEN 1
+        ELSE 0
+    END as completed_7_plus_hours_of_learning
+    FROM (
+        SELECT
+            sum(time_to_complete)/60 as hours_learning,
+            user_id
+        FROM public.learning_learning
+        GROUP BY user_id
+    ) inner_l
+) l
+ON l.user_id = u.id
+GROUP BY department,
+grade,
+profession,
+date_joined;"""
+
+        # Execute the SQL query
+        cursor.execute(sql_query)
+
+        # Fetch results, e.g., fetch all rows
+        results = cursor.fetchall()
+
+    field_names = [
+        "date_joined",
+        "department",
+        "grade",
+        "profession",
+        "number_of_sign_ups",
+        "completed_first_evaluation",
+        "completed_second_evaluation",
+        "completed_1_hours_of_learning",
+        "completed_2_hours_of_learning",
+        "completed_3_hours_of_learning",
+        "completed_4_hours_of_learning",
+        "completed_5_hours_of_learning",
+        "completed_6_hours_of_learning",
+        "completed_7_plus_hours_of_learning",
+    ]
+
+    # Process the results
+    for row in results:
+        yield dict(zip(field_names, row))
 
 
 class JwtTokenObtainPairView(TokenObtainPairView):
