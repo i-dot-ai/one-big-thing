@@ -137,7 +137,7 @@ def test_breakdown_stats(alice, bob, chris, daisy, eric):  # noqa: F811
     assert (
         grade7["completed_1_hours_of_learning"] == 2
     )  # alice has done 1 course of 1 hour, bob has done 1 course of one hour and one with 2
-    assert grade7["completed_2_hours_of_learning"] == 1  # one bob shows up here
+    assert grade7["completed_2_hours_of_learning"] == 1  # only bob shows up here
 
     grade6 = next(x for x in learning_breakdown_data if x["grade"] == "GRADE6")
     assert grade6["number_of_sign_ups"] == 3  # chris & daisy have this grade
