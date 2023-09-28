@@ -1,4 +1,5 @@
-from django.db.models import Count, DateField, IntegerField, Sum
+from django.db import connection
+from django.db.models import Count, DateField, IntegerField
 from django.db.models.functions import Cast, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -76,59 +77,95 @@ def get_learning_breakdown_data():
     @return: A queryset that contains a list of each grouping
     """
 
-    user_learning_times = models.User.objects.annotate(time_to_complete=Sum("learning__time_to_complete")).order_by(
-        "department", "grade", "profession"
-    )
+    with connection.cursor() as cursor:
+        # Define your SQL query
+        sql_query = """SELECT
+DATE(date_joined) as date_joined,
+department,
+grade,
+profession,
+count(*) as number_of_sign_ups,
+count(CASE WHEN u.has_completed_pre_survey THEN 1 END) as completed_first_evaluation,
+count(CASE WHEN u.has_completed_post_survey THEN 1 END) as completed_second_evaluation,
+sum(l.completed_1_hours_of_learning) as completed_1_hours_of_learning,
+sum(l.completed_2_hours_of_learning) as completed_2_hours_of_learning,
+sum(l.completed_3_hours_of_learning) as completed_3_hours_of_learning,
+sum(l.completed_4_hours_of_learning) as completed_4_hours_of_learning,
+sum(l.completed_5_hours_of_learning) as completed_5_hours_of_learning,
+sum(l.completed_6_hours_of_learning) as completed_6_hours_of_learning,
+sum(l.completed_7_plus_hours_of_learning) as completed_7_plus_hours_of_learning
+FROM public.learning_user as u
+LEFT JOIN (
+SELECT
+user_id,
+CASE
+    WHEN hours_learning > 1  THEN 1
+    ELSE 0
+    END as completed_1_hours_of_learning,
+CASE
+    WHEN hours_learning > 2  THEN 1
+    ELSE 0
+END as completed_2_hours_of_learning,
+CASE
+    WHEN hours_learning > 3  THEN 1
+    ELSE 0
+END as completed_3_hours_of_learning,
+CASE
+    WHEN hours_learning > 4  THEN 1
+    ELSE 0
+END as completed_4_hours_of_learning,
+CASE
+    WHEN hours_learning > 5  THEN 1
+    ELSE 0
+END as completed_5_hours_of_learning,
+CASE
+    WHEN hours_learning > 6  THEN 1
+    ELSE 0
+END as completed_6_hours_of_learning,
+CASE
+    WHEN hours_learning > 7  THEN 1
+    ELSE 0
+END as completed_7_plus_hours_of_learning
+FROM (
+    SELECT
+        sum(time_to_complete)/60 as hours_learning,
+        user_id
+    FROM public.learning_learning
+    GROUP BY user_id
+) inner_l
+) l
+ON l.user_id = u.id
+GROUP BY department,
+grade,
+profession,
+date_joined;"""
 
-    payload = []
+        # Execute the SQL query
+        cursor.execute(sql_query)
 
-    class UserGroup:
-        def __init__(self, user):
-            self.department = user.department
-            self.grade = user.grade
-            self.profession = user.profession
-            self.time_to_complete = []
-            self.has_completed_pre_survey = 0
-            self.has_completed_post_survey = 0
+        # Fetch results, e.g., fetch all rows
+        results = cursor.fetchall()
 
-        def add(self, user):
-            self.time_to_complete += [user.time_to_complete or 0]
-            self.has_completed_pre_survey += int(user.has_completed_pre_survey)
-            self.has_completed_post_survey += int(user.has_completed_post_survey)
+    field_names = [
+        "date_joined",
+        "department",
+        "grade",
+        "profession",
+        "number_of_sign_ups",
+        "completed_first_evaluation",
+        "completed_second_evaluation",
+        "completed_1_hours_of_learning",
+        "completed_2_hours_of_learning",
+        "completed_3_hours_of_learning",
+        "completed_4_hours_of_learning",
+        "completed_5_hours_of_learning",
+        "completed_6_hours_of_learning",
+        "completed_7_plus_hours_of_learning",
+    ]
 
-        def completed(self, minutes):
-            return sum(1 for x in self.time_to_complete if x >= minutes)
-
-    grouped_users = {}
-
-    for user in user_learning_times:
-        group = user.department, user.grade, user.profession
-        if group not in grouped_users:
-            grouped_users[group] = UserGroup(user)
-
-        grouped_users[group].add(user)
-
-    for (department, grade, profession), user_group in grouped_users.items():
-        payload.append(
-            {
-                "department": department,
-                "grade": grade,
-                "profession": profession,
-                "number_of_sign_ups": len(user_group.time_to_complete),
-                "total_time_completed": sum(user_group.time_to_complete) / 60,
-                "completed_first_evaluation": user_group.has_completed_pre_survey,
-                "completed_second_evaluation": user_group.has_completed_post_survey,
-                "completed_1_hours_of_learning": user_group.completed(1 * 60),
-                "completed_2_hours_of_learning": user_group.completed(2 * 60),
-                "completed_3_hours_of_learning": user_group.completed(3 * 60),
-                "completed_4_hours_of_learning": user_group.completed(4 * 60),
-                "completed_5_hours_of_learning": user_group.completed(5 * 60),
-                "completed_6_hours_of_learning": user_group.completed(6 * 60),
-                "completed_7_plus_hours_of_learning": user_group.completed(7 * 60),
-            }
-        )
-
-    return payload
+    # Process the results
+    for row in results:
+        yield dict(zip(field_names, row))
 
 
 class JwtTokenObtainPairView(TokenObtainPairView):

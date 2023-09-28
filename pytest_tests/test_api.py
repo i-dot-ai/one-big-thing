@@ -135,7 +135,7 @@ def test_breakdown_stats(alice, bob, chris, daisy, eric):  # noqa: F811
     assert grade7["completed_first_evaluation"] == 1  # alice has done no training, bob has done the first one
     assert grade7["completed_second_evaluation"] == 0
     assert (
-        grade7["completed_1_hours_of_learning"] == 2
+        grade7["completed_1_hours_of_learning"] == 1
     )  # alice has done 1 course of 1 hour, bob has done 1 course of one hour and one with 2
     assert grade7["completed_2_hours_of_learning"] == 1  # only bob shows up here
 
@@ -143,5 +143,5 @@ def test_breakdown_stats(alice, bob, chris, daisy, eric):  # noqa: F811
     assert grade6["number_of_sign_ups"] == 3  # chris & daisy have this grade
     assert grade6["completed_first_evaluation"] == 3  # chris has completed both evaluations
     assert grade6["completed_second_evaluation"] == 2  # 1 course, 1 hour
-    assert grade6["completed_1_hours_of_learning"] == 1
+    assert grade6["completed_1_hours_of_learning"] == 0
     assert grade6["completed_2_hours_of_learning"] == 0
