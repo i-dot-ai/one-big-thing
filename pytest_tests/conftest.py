@@ -68,7 +68,7 @@ def bob(create_user):
         date_joined="2000-01-01",
         times_to_complete=[60, 120],
         has_completed_pre_survey=True,
-        has_completed_post_survey = False,
+        has_completed_post_survey=False,
     )
 
 
@@ -83,6 +83,7 @@ def chris(create_user):
         has_completed_post_survey=True,
     )
 
+
 @pytest.fixture
 def daisy(create_user):
     return create_user(
@@ -92,6 +93,7 @@ def daisy(create_user):
         has_completed_pre_survey=True,
         has_completed_post_survey=False,
     )
+
 
 @pytest.fixture
 def eric(create_user):

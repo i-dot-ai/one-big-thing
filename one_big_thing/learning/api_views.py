@@ -1,7 +1,7 @@
-from collections import defaultdict
+import itertools
 
-from django.db.models import Count, DateField, IntegerField, Q, Sum, When, Case, Value, BooleanField
-from django.db.models.functions import Cast, Coalesce, TruncDate
+from django.db.models import Count, DateField, IntegerField, Q, Sum
+from django.db.models.functions import Cast, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -84,61 +84,42 @@ def get_learning_breakdown_data():
     @return: A queryset that contains a list of each grouping
     """
 
-    user_learning_times = models.User.objects.annotate(
-        time_to_complete=Sum("learning__time_to_complete")
-    ).order_by("department", "grade", "profession")
+    user_learning_times = models.User.objects.annotate(time_to_complete=Sum("learning__time_to_complete")).order_by(
+        "department", "grade", "profession"
+    )
 
+    def completed(times_to_complete: list[int], hours: int) -> int:
+        return sum(1 for time in times_to_complete if time >= hours * 60)
 
-    class UserGroup:
-        def __init__(self, user: models.User):
-            self.department = user.department
-            self.grade = user.grade
-            self.profession = user.profession
-            self.count = 1
-            self.total_time_completed = user.time_to_complete or 0
-            self.time_to_complete = [user.time_to_complete or 0]
-            self.has_completed_pre_survey = user.has_completed_pre_survey
-            self.has_completed_post_survey = user.has_completed_post_survey
+    for (department, grade, profession), users in itertools.groupby(
+        user_learning_times, key=lambda x: (x.department, x.grade, x.profession)
+    ):
+        time_to_complete = []
+        count = 0
+        has_completed_pre_survey = 0
+        has_completed_post_survey = 0
+        for user in users:
+            count += 1
+            time_to_complete.append(user.time_to_complete or 0)
+            has_completed_pre_survey += user.has_completed_pre_survey
+            has_completed_post_survey += user.has_completed_post_survey
 
-        def add(self, user: models.User):
-            self.count += 1
-            self.total_time_completed += user.time_to_complete or 0
-            self.time_to_complete.append(user.time_to_complete or 0)
-            self.has_completed_pre_survey += int(user.has_completed_pre_survey)
-            self.has_completed_post_survey += int(user.has_completed_post_survey)
-
-        def completed(self, hours: int) -> int:
-            return sum(1 for x in self.time_to_complete if x >= hours * 60)
-
-        def to_dict(self):
-            return {
-            "department": self.department,
-            "grade": self.grade,
-            "profession": self.profession,
-            "number_of_sign_ups": self.count,
-            "total_time_completed": self.total_time_completed,
-            "completed_first_evaluation": self.has_completed_pre_survey,
-            "completed_second_evaluation": self.has_completed_post_survey,
-            "completed_1_hours_of_learning": self.completed(1),
-            "completed_2_hours_of_learning": self.completed(2),
-            "completed_3_hours_of_learning": self.completed(3),
-            "completed_4_hours_of_learning": self.completed(4),
-            "completed_5_hours_of_learning": self.completed(5),
-            "completed_6_hours_of_learning": self.completed(6),
-            "completed_7_plus_hours_of_learning": self.completed(7),
+        yield {
+            "department": department,
+            "grade": grade,
+            "profession": profession,
+            "number_of_sign_ups": count,
+            "total_time_completed": sum(time_to_complete),
+            "completed_first_evaluation": has_completed_pre_survey,
+            "completed_second_evaluation": has_completed_post_survey,
+            "completed_1_hours_of_learning": completed(time_to_complete, 1),
+            "completed_2_hours_of_learning": completed(time_to_complete, 2),
+            "completed_3_hours_of_learning": completed(time_to_complete, 3),
+            "completed_4_hours_of_learning": completed(time_to_complete, 4),
+            "completed_5_hours_of_learning": completed(time_to_complete, 5),
+            "completed_6_hours_of_learning": completed(time_to_complete, 6),
+            "completed_7_plus_hours_of_learning": completed(time_to_complete, 7),
         }
-
-    d = {}
-    for user in user_learning_times:
-        group = user.department, user.grade, user.profession
-        if group in d:
-            d[group].add(user)
-        else:
-            d[group] = UserGroup(user)
-
-    return [x.to_dict() for x in d.values()]
-
-
 
 
 class JwtTokenObtainPairView(TokenObtainPairView):

@@ -130,7 +130,7 @@ def test_breakdown_stats(alice, bob, chris, daisy, eric):  # noqa: F811
 
     assert len(learning_breakdown_data) == 2
 
-    grade7 = next(x for x in learning_breakdown_data if x["grade"]=="GRADE7")
+    grade7 = next(x for x in learning_breakdown_data if x["grade"] == "GRADE7")
     assert grade7["number_of_sign_ups"] == 2  # alice and bob are grade 7
     assert grade7["completed_first_evaluation"] == 1  # alice has done no training, bob has done the first one
     assert grade7["completed_second_evaluation"] == 0
@@ -139,7 +139,7 @@ def test_breakdown_stats(alice, bob, chris, daisy, eric):  # noqa: F811
     )  # alice has done 1 course of 1 hour, bob has done 1 course of one hour and one with 2
     assert grade7["completed_2_hours_of_learning"] == 1  # one bob shows up here
 
-    grade6 = next(x for x in learning_breakdown_data if x["grade"]=="GRADE6")
+    grade6 = next(x for x in learning_breakdown_data if x["grade"] == "GRADE6")
     assert grade6["number_of_sign_ups"] == 3  # chris & daisy have this grade
     assert grade6["completed_first_evaluation"] == 3  # chris has completed both evaluations
     assert grade6["completed_second_evaluation"] == 2  # 1 course, 1 hour
