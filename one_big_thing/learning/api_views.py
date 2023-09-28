@@ -1,4 +1,6 @@
-from django.db.models import Count, DateField, IntegerField, Q, Sum
+from collections import defaultdict
+
+from django.db.models import Count, DateField, IntegerField, Q, Sum, When, Case, Value, BooleanField
 from django.db.models.functions import Cast, Coalesce, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -72,7 +74,7 @@ def get_signups_by_date():
 
 def count_users_where(**kwargs):
     """expression builder to count users that fulfill some criteria"""
-    expression = Count("learning__user", filter=Q(**kwargs), distinct=True)
+    expression = Count("learning__user__id", filter=Q(**kwargs), distinct=True)
     return expression
 
 
@@ -82,22 +84,61 @@ def get_learning_breakdown_data():
     @return: A queryset that contains a list of each grouping
     """
 
-    # Count the total number of users in each group
-    users_count_by_group = models.User.objects.values("department", "grade", "profession").annotate(
-        number_of_sign_ups=Count("id", distinct=True),
-        total_time_completed=Coalesce(Cast(Sum("learning__time_to_complete"), IntegerField(default=0)) / 60, 0),
-        completed_first_evaluation=count_users_where(has_completed_pre_survey=True),
-        completed_second_evaluation=count_users_where(has_completed_post_survey=True),
-        completed_1_hours_of_learning=count_users_where(learning__time_to_complete__gte=60),
-        completed_2_hours_of_learning=count_users_where(learning__time_to_complete__gte=120),
-        completed_3_hours_of_learning=count_users_where(learning__time_to_complete__gte=180),
-        completed_4_hours_of_learning=count_users_where(learning__time_to_complete__gte=240),
-        completed_5_hours_of_learning=count_users_where(learning__time_to_complete__gte=300),
-        completed_6_hours_of_learning=count_users_where(learning__time_to_complete__gte=360),
-        completed_7_plus_hours_of_learning=count_users_where(learning__time_to_complete__gte=420),
-    )
+    user_learning_times = models.User.objects.annotate(
+        time_to_complete=Sum("learning__time_to_complete")
+    ).order_by("department", "grade", "profession")
 
-    return users_count_by_group
+
+    class UserGroup:
+        def __init__(self, user: models.User):
+            self.department = user.department
+            self.grade = user.grade
+            self.profession = user.profession
+            self.count = 1
+            self.total_time_completed = user.time_to_complete or 0
+            self.time_to_complete = [user.time_to_complete or 0]
+            self.has_completed_pre_survey = user.has_completed_pre_survey
+            self.has_completed_post_survey = user.has_completed_post_survey
+
+        def add(self, user: models.User):
+            self.count += 1
+            self.total_time_completed += user.time_to_complete or 0
+            self.time_to_complete.append(user.time_to_complete or 0)
+            self.has_completed_pre_survey += int(user.has_completed_pre_survey)
+            self.has_completed_post_survey += int(user.has_completed_post_survey)
+
+        def completed(self, hours: int) -> int:
+            return sum(1 for x in self.time_to_complete if x >= hours * 60)
+
+        def to_dict(self):
+            return {
+            "department": self.department,
+            "grade": self.grade,
+            "profession": self.profession,
+            "number_of_sign_ups": self.count,
+            "total_time_completed": self.total_time_completed,
+            "completed_first_evaluation": self.has_completed_pre_survey,
+            "completed_second_evaluation": self.has_completed_post_survey,
+            "completed_1_hours_of_learning": self.completed(1),
+            "completed_2_hours_of_learning": self.completed(2),
+            "completed_3_hours_of_learning": self.completed(3),
+            "completed_4_hours_of_learning": self.completed(4),
+            "completed_5_hours_of_learning": self.completed(5),
+            "completed_6_hours_of_learning": self.completed(6),
+            "completed_7_plus_hours_of_learning": self.completed(7),
+        }
+
+    d = {}
+    for user in user_learning_times:
+        group = user.department, user.grade, user.profession
+        if group in d:
+            d[group].add(user)
+        else:
+            d[group] = UserGroup(user)
+
+    return [x.to_dict() for x in d.values()]
+
+
 
 
 class JwtTokenObtainPairView(TokenObtainPairView):

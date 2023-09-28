@@ -64,7 +64,11 @@ def alice(create_user):
 @pytest.fixture
 def bob(create_user):
     return create_user(
-        email="bob@co.gov.uk", date_joined="2000-01-01", times_to_complete=[60, 120], has_completed_pre_survey=True
+        email="bob@co.gov.uk",
+        date_joined="2000-01-01",
+        times_to_complete=[60, 120],
+        has_completed_pre_survey=True,
+        has_completed_post_survey = False,
     )
 
 
@@ -75,6 +79,26 @@ def chris(create_user):
         date_joined="2000-01-02",
         grade="GRADE6",
         times_to_complete=[60],
+        has_completed_pre_survey=True,
+        has_completed_post_survey=True,
+    )
+
+@pytest.fixture
+def daisy(create_user):
+    return create_user(
+        email="daisy@co.gov.uk",
+        date_joined="2000-01-02",
+        grade="GRADE6",
+        has_completed_pre_survey=True,
+        has_completed_post_survey=False,
+    )
+
+@pytest.fixture
+def eric(create_user):
+    return create_user(
+        email="eric@co.gov.uk",
+        date_joined="2000-01-02",
+        grade="GRADE6",
         has_completed_pre_survey=True,
         has_completed_post_survey=True,
     )
