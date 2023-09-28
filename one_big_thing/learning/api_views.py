@@ -1,6 +1,6 @@
 import itertools
 
-from django.db.models import Count, DateField, IntegerField, Q, Sum
+from django.db.models import Count, DateField, IntegerField, Sum
 from django.db.models.functions import Cast, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -72,12 +72,6 @@ def get_signups_by_date():
     return signups
 
 
-def count_users_where(**kwargs):
-    """expression builder to count users that fulfill some criteria"""
-    expression = Count("learning__user__id", filter=Q(**kwargs), distinct=True)
-    return expression
-
-
 def get_learning_breakdown_data():
     """
     Calculates the number of signups per combination of department/grade/profession
@@ -109,7 +103,7 @@ def get_learning_breakdown_data():
             "grade": grade,
             "profession": profession,
             "number_of_sign_ups": count,
-            "total_time_completed": sum(time_to_complete),
+            "total_time_completed": sum(time_to_complete) / 60,
             "completed_first_evaluation": has_completed_pre_survey,
             "completed_second_evaluation": has_completed_post_survey,
             "completed_1_hours_of_learning": completed(time_to_complete, 1),
