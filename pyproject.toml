@@ -19,6 +19,5 @@ env = [
     "POSTGRES_PASSWORD=insecure",
     "BASE_URL=http://localhost:8055/",
     "EMAIL_BACKEND_TYPE=FILE",
-    "EMAIL_FILE_PATH",
-    "/app/mail",
+    "EMAIL_FILE_PATH=/app/mail",
 ]
