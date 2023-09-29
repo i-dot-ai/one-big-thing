@@ -130,6 +130,20 @@ additional_learning = {
                 "type": "Video",
                 "duration": 8,
             },
+            {
+                "title": "Data and decision-making with Dr Laura Gilbert",
+                "link": "https://vimeo.com/869081373/21d5499980",
+                "provider": "Cabinet Office",
+                "type": "Video",
+                "duration": 6,
+            },
+            {
+                "title": "Tableau with Matthew and Ajiri",
+                "link": "https://vimeo.com/869108122/9c458cea46",
+                "provider": "Cabinet Office",
+                "type": "Video",
+                "duration": 3,
+            },
         ],
     },
     AWARENESS: {
