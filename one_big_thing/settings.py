@@ -212,9 +212,9 @@ if not DEBUG:
         send_default_pii=False,
         traces_sample_rate=1.0,
         profiles_sample_rate=0.0,
-        before_send=before_send
+        before_send=before_send,
     )
-    
+
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
