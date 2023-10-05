@@ -33,6 +33,7 @@ MOJ_LINK = "https://intranet.justice.gov.uk/guidance/hr/learning-and-development
 DFE_LINK = "https://educationgovuk.sharepoint.com/sites/lvewp00394/SitePages/One-Big-Thing.aspx"
 DCMS_LINK = "https://intranet.dcms.gov.uk/home/ls/community/my-ld-community"
 DBT_LINK = "https://www.learninghub.trade.gov.uk/course/view.php?id=1178"
+GLD_LINK = "https://governmentlegal.sharepoint.com/how-do-i/learndev/onebigthing/Pages/default.aspx"
 
 
 # These are departments having the "streamlined view"
@@ -83,6 +84,7 @@ ALL_INTRANET_LINKS = OrderedDict(
         "Department for Work and Pensions (DWP)": DWP_LINK,
         "Driver and Vehicle Licensing Agency (DVLA)": DVLA_LINK,
         "Foreign, Commonwealth & Development Office (FCDO)": FCDO_INTRANET_LINK,
+        "Government Legal Department": GLD_LINK,
         "Home Office (HO)": HO_INTRANET_LINK,
         "HM Courts & Tribunal Service (HMCTS)": HM_COURTS_AND_TRIBUNAL_SERVICE,
         "HM Revenue & Customs (HMRC)": HMRC_INTRANET_LINK,
