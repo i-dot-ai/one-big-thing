@@ -34,6 +34,7 @@ DFE_LINK = "https://educationgovuk.sharepoint.com/sites/lvewp00394/SitePages/One
 DCMS_LINK = "https://intranet.dcms.gov.uk/home/ls/community/my-ld-community"
 DBT_LINK = "https://www.learninghub.trade.gov.uk/course/view.php?id=1178"
 GLD_LINK = "https://governmentlegal.sharepoint.com/how-do-i/learndev/onebigthing/Pages/default.aspx"
+BL_LINK = "https://wiki.bl.uk:8443/display/DSSP/Calendar+of+Events"
 
 
 # These are departments having the "streamlined view"
@@ -70,6 +71,7 @@ DEPARTMENTS_USING_INTRANET_LINKS = {
 # regardless of whether they are using the streamlined view
 ALL_INTRANET_LINKS = OrderedDict(
     {
+        "British Library": BL_LINK,
         "Cabinet Office": CABINET_OFFICE_LINK,
         "Crown Prosecution Service (CPS)": CROWN_PROSECUTION_SERVICE_LINK,
         "Department for Business and Trade (DBT)": DBT_LINK,
