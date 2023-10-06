@@ -192,20 +192,28 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+def before_send(event, hint):
+    if event.get("message") == "Invalid HTTP_HOST header":
+        return None
+    return event
+
+
 if not DEBUG:
     SENTRY_DSN = env.str("SENTRY_DSN", default="")
-    SENTRY_ENVIRONMENT = env.str("SENTRY_ENVIRONMENT", default="")
 
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[
             DjangoIntegration(),
         ],
-        environment=SENTRY_ENVIRONMENT,
+        environment=ENVIRONMENT,
         send_default_pii=False,
         traces_sample_rate=1.0,
         profiles_sample_rate=0.0,
+        before_send=before_send,
     )
+
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
