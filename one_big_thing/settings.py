@@ -194,7 +194,12 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 def before_send(event, hint):
-    if event.get("message") == "Invalid HTTP_HOST header":
+    messages_to_ignore = [
+        "InvalidAuthError('No auth header set')",  # Failing basic auth on dev
+        "Invalid HTTP_HOST header",  # Scrapers and bots
+        "Slow DB Query",  # 10DS data query
+    ]
+    if event.get("message") in messages_to_ignore:
         return None
     return event
 
