@@ -199,7 +199,8 @@ def before_send(event, hint):
         "Invalid HTTP_HOST header",  # Scrapers and bots
         "Slow DB Query",  # 10DS data query
     ]
-    if event.get("message") in messages_to_ignore:
+    event_message = event.get("message")
+    if any(event_message.startswith(prefix) for prefix in messages_to_ignore):
         return None
     return event
 
