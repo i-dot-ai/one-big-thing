@@ -215,7 +215,7 @@ if not DEBUG:
         ],
         environment=ENVIRONMENT,
         send_default_pii=False,
-        traces_sample_rate=1.0,
+        traces_sample_rate=0.2,
         profiles_sample_rate=0.0,
         before_send=before_send,
     )
