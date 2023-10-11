@@ -37,3 +37,16 @@ class DepartmentBreakdownSerializer(serializers.Serializer):
 
     class Meta:
         fields = ["__all__"]
+
+
+class NormalizedUserStatisticsSerializer(serializers.Serializer):
+    department = serializers.CharField()
+    grade = serializers.CharField()
+    profession = serializers.CharField()
+    has_completed_pre_survey = serializers.BooleanField()
+    has_completed_post_survey = serializers.BooleanField()
+    number_of_sign_ups = serializers.IntegerField()
+    total_hours = serializers.IntegerField(allow_null=True)
+
+    class Meta:
+        fields = ["__all__"]

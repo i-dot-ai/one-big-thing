@@ -6,7 +6,10 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from one_big_thing.learning import models
-from one_big_thing.learning.api_views import get_learning_breakdown_data
+from one_big_thing.learning.api_views import (
+    get_learning_breakdown_data,
+    get_normalized_user_stats,
+)
 from pytest_tests.utils import (  # noqa: F401
     TEST_USER_EMAIL,
     TEST_USER_PASSWORD,
@@ -145,3 +148,95 @@ def test_breakdown_stats(alice, bob, chris, daisy, eric):  # noqa: F811
     assert grade6["completed_second_evaluation"] == 2  # 1 course, 1 hour
     assert grade6["completed_1_hours_of_learning"] == 0
     assert grade6["completed_2_hours_of_learning"] == 0
+
+
+@pytest.mark.django_db
+def test_normalized_user_stats_request(authenticated_api_client_fixture, alice, bob, chris, daisy, eric):
+    url = reverse("normalized_user_statistics")
+    response = authenticated_api_client_fixture.get(url)
+    assert response.status_code == 200, response.status_code
+    expected = [
+        {
+            "department": "acas",
+            "grade": "GRADE6",
+            "profession": "ANALYSIS",
+            "has_completed_pre_survey": True,
+            "has_completed_post_survey": False,
+            "total_hours": None,
+            "number_of_sign_ups": 1,
+        },
+        {
+            "department": "acas",
+            "grade": "GRADE6",
+            "profession": "ANALYSIS",
+            "has_completed_pre_survey": True,
+            "has_completed_post_survey": True,
+            "total_hours": 1,
+            "number_of_sign_ups": 2,
+        },
+        {
+            "department": "acas",
+            "grade": "GRADE7",
+            "profession": "ANALYSIS",
+            "has_completed_pre_survey": False,
+            "has_completed_post_survey": False,
+            "total_hours": 1,
+            "number_of_sign_ups": 2,
+        },
+        {
+            "department": "acas",
+            "grade": "GRADE7",
+            "profession": "ANALYSIS",
+            "has_completed_pre_survey": True,
+            "has_completed_post_survey": False,
+            "total_hours": 3,
+            "number_of_sign_ups": 1,
+        },
+    ]
+
+    assert response.json() == expected
+
+
+@pytest.mark.django_db
+def test_normalized_user_stats_query(alice, bob, chris, daisy, eric):
+    learning_breakdown_data = list(get_normalized_user_stats())
+    expected = [
+        {
+            "department": "acas",
+            "grade": "GRADE6",
+            "profession": "ANALYSIS",
+            "has_completed_pre_survey": True,
+            "has_completed_post_survey": False,
+            "total_hours": None,
+            "number_of_sign_ups": 1,
+        },
+        {
+            "department": "acas",
+            "grade": "GRADE6",
+            "profession": "ANALYSIS",
+            "has_completed_pre_survey": True,
+            "has_completed_post_survey": True,
+            "total_hours": 1,
+            "number_of_sign_ups": 2,
+        },
+        {
+            "department": "acas",
+            "grade": "GRADE7",
+            "profession": "ANALYSIS",
+            "has_completed_pre_survey": False,
+            "has_completed_post_survey": False,
+            "total_hours": 1,
+            "number_of_sign_ups": 1,
+        },
+        {
+            "department": "acas",
+            "grade": "GRADE7",
+            "profession": "ANALYSIS",
+            "has_completed_pre_survey": True,
+            "has_completed_post_survey": False,
+            "total_hours": 3,
+            "number_of_sign_ups": 1,
+        },
+    ]
+
+    assert learning_breakdown_data == expected

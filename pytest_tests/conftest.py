@@ -55,7 +55,7 @@ def alice(create_user):
     return create_user(
         email="alice@co.gov.uk",
         date_joined="2000-01-01",
-        times_to_complete=[60],
+        times_to_complete=[61],
         has_completed_pre_survey=False,
         has_completed_post_survey=False,
     )

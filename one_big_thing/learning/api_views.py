@@ -1,6 +1,6 @@
 from django.db import connection
-from django.db.models import Count, DateField, IntegerField
-from django.db.models.functions import Cast, TruncDate
+from django.db.models import Count, DateField, IntegerField, Sum
+from django.db.models.functions import Cast, Floor, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,6 +10,7 @@ from one_big_thing.api_serializers import (
     DateJoinedSerializer,
     DepartmentBreakdownSerializer,
     JwtTokenObtainPairSerializer,
+    NormalizedUserStatisticsSerializer,
 )
 from one_big_thing.learning import models
 from one_big_thing.learning.api_permissions import IsAPIUser
@@ -52,6 +53,23 @@ class UserStatisticsView(APIView):
         return Response(serialized_data)
 
 
+class NormalizedUserStatisticsView(APIView):
+    """
+    Similar to endpoint used by 10DS but normalized
+    """
+
+    permission_classes = (
+        IsAuthenticated,
+        IsAPIUser,
+    )
+
+    def get(self, request):
+        department_dict = get_normalized_user_stats()
+        serializer = NormalizedUserStatisticsSerializer(department_dict, many=True, partial=True, allow_null=True)
+        serialized_data = serializer.data
+        return Response(serialized_data)
+
+
 def get_signups_by_date():
     """
     Calculates the number of signups per day
@@ -69,6 +87,31 @@ def get_signups_by_date():
     )
 
     return signups
+
+
+def get_normalized_user_stats():
+    group_by = [
+        "department",
+        "grade",
+        "profession",
+        "has_completed_pre_survey",
+        "has_completed_post_survey",
+        "total_hours",
+    ]
+
+    users_with_total_learning_hours = models.User.objects.annotate(
+        total_hours=Floor(Sum("learning__time_to_complete") / 60.0)
+    )
+
+    aggregated_user_count = (
+        users_with_total_learning_hours.values(*group_by)
+        .annotate(
+            number_of_sign_ups=Count("pk", distinct=True),
+        )
+        .order_by(*group_by)
+    )
+
+    return aggregated_user_count
 
 
 def get_learning_breakdown_data():
