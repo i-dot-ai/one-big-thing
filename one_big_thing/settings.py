@@ -296,7 +296,12 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'", "'sha256-wQJppp72tbAs/gAyLSJEgQfdtams9qseMear9achv1o='")
 CSP_FRAME_SRC = ("https://player.vimeo.com/",)
-CSP_SCRIPT_SRC = ("'self'", "'sha256-PBqraf9NRNe1eMLXFzOqAJIf8tTCYe8BuTrSHvqTBEc='")
+CSP_SCRIPT_SRC = ("'self'", "'sha256-PBqraf9NRNe1eMLXFzOqAJIf8tTCYe8BuTrSHvqTBEc='", "localhost:8000")
+CSP_CONNECT_SRC = (
+    "'self'",
+    "'dev.onebigthing.civilservice.gov.uk'",
+    "'onebigthing.civilservice.gov.uk'",
+)
 
 
 OTP_TOTP_ISSUER = "OneBigThing"
