@@ -301,6 +301,7 @@ CSP_CONNECT_SRC = (
     "'self'",
     "dev.onebigthing.civilservice.gov.uk",
     "onebigthing.civilservice.gov.uk",
+    "plausible.io",
 )
 
 
