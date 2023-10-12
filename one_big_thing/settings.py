@@ -296,7 +296,12 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'", "'sha256-wQJppp72tbAs/gAyLSJEgQfdtams9qseMear9achv1o='")
 CSP_FRAME_SRC = ("https://player.vimeo.com/",)
-CSP_SCRIPT_SRC = ("'self'", "'sha256-PBqraf9NRNe1eMLXFzOqAJIf8tTCYe8BuTrSHvqTBEc='", "plausible.io")
+CSP_SCRIPT_SRC = (
+    "'self'",
+    "'sha256-PBqraf9NRNe1eMLXFzOqAJIf8tTCYe8BuTrSHvqTBEc='",
+    "'sha256-meQy8e5Yiq23veqfbkeTdax2P6gI1gfSHSV1cbsIcyY='",
+    "plausible.io",
+)
 CSP_CONNECT_SRC = (
     "'self'",
     "dev.onebigthing.civilservice.gov.uk",
