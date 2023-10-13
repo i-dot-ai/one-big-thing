@@ -6,7 +6,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from one_big_thing.learning import models
-from one_big_thing.learning.api_views import get_learning_breakdown_data
+from one_big_thing.learning.api_views import get_learning_breakdown_data, get_learning_breakdown_data_v2
 from pytest_tests.utils import (  # noqa: F401
     TEST_USER_EMAIL,
     TEST_USER_PASSWORD,
@@ -110,7 +110,7 @@ def test_breakdown_stats(authenticated_api_client_fixture, add_user):  # noqa: F
     num_of_users = random.randint(0, 1200)
     for i in range(0, num_of_users):
         add_user(i)
-    url = reverse("user_statistics")
+    url = reverse("user_statistics_v2")
     response = authenticated_api_client_fixture.get(url)
     assert response.status_code == 200, response.status_code
     selected_item = None
@@ -126,7 +126,7 @@ def test_breakdown_stats(authenticated_api_client_fixture, add_user):  # noqa: F
 
 @pytest.mark.django_db
 def test_breakdown_stats(alice, bob, chris, daisy, eric):  # noqa: F811
-    learning_breakdown_data = list(get_learning_breakdown_data())
+    learning_breakdown_data = list(get_learning_breakdown_data_v2())
 
     assert len(learning_breakdown_data) == 2
 
@@ -145,3 +145,4 @@ def test_breakdown_stats(alice, bob, chris, daisy, eric):  # noqa: F811
     assert grade6["completed_second_evaluation"] == 2  # 1 course, 1 hour
     assert grade6["completed_1_hours_of_learning"] == 0
     assert grade6["completed_2_hours_of_learning"] == 0
+
