@@ -9,6 +9,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from one_big_thing.api_serializers import (
     DateJoinedSerializer,
     DepartmentBreakdownSerializer,
+    DepartmentBreakdownV2Serializer,
     JwtTokenObtainPairSerializer,
 )
 from one_big_thing.learning import models
@@ -65,7 +66,7 @@ class UserStatisticsV2View(APIView):
 
     def get(self, request):
         department_dict = get_learning_breakdown_data_v2()
-        serializer = DepartmentBreakdownSerializer(department_dict, many=True, partial=True, allow_null=True)
+        serializer = DepartmentBreakdownV2Serializer(department_dict, many=True, partial=True, allow_null=True)
         serialized_data = serializer.data
         return Response(serialized_data)
 
@@ -91,7 +92,7 @@ def get_signups_by_date():
 
 def get_learning_breakdown_data():
     """
-    Use get_learning_breakdown_data_v2 instead
+    Deprecated: see get_learning_breakdown_data_v2 instead
 
     Calculates the number of signups per combination of department/grade/profession
     @return: A queryset that contains a list of each grouping
@@ -206,6 +207,7 @@ SELECT
     count(*) as number_of_sign_ups,
     count(CASE WHEN u.has_completed_pre_survey THEN 1 END) as completed_first_evaluation,
     count(CASE WHEN u.has_completed_post_survey THEN 1 END) as completed_second_evaluation,
+    sum(l.completed_0_hours_of_learning) as completed_0_hours_of_learning,
     sum(l.completed_1_hours_of_learning) as completed_1_hours_of_learning,
     sum(l.completed_2_hours_of_learning) as completed_2_hours_of_learning,
     sum(l.completed_3_hours_of_learning) as completed_3_hours_of_learning,
@@ -218,31 +220,35 @@ LEFT JOIN (
     SELECT
     user_id,
     CASE
-        WHEN hours_learning > 1  THEN 1
+        WHEN hours_learning >= 0  THEN 1
+        ELSE 0
+        END as completed_0_hours_of_learning,
+    CASE
+        WHEN hours_learning >= 1  THEN 1
         ELSE 0
         END as completed_1_hours_of_learning,
     CASE
-        WHEN hours_learning > 2  THEN 1
+        WHEN hours_learning >= 2  THEN 1
         ELSE 0
     END as completed_2_hours_of_learning,
     CASE
-        WHEN hours_learning > 3  THEN 1
+        WHEN hours_learning >= 3  THEN 1
         ELSE 0
     END as completed_3_hours_of_learning,
     CASE
-        WHEN hours_learning > 4  THEN 1
+        WHEN hours_learning >= 4  THEN 1
         ELSE 0
     END as completed_4_hours_of_learning,
     CASE
-        WHEN hours_learning > 5  THEN 1
+        WHEN hours_learning >= 5  THEN 1
         ELSE 0
     END as completed_5_hours_of_learning,
     CASE
-        WHEN hours_learning > 6  THEN 1
+        WHEN hours_learning >= 6  THEN 1
         ELSE 0
     END as completed_6_hours_of_learning,
     CASE
-        WHEN hours_learning > 7  THEN 1
+        WHEN hours_learning >= 7  THEN 1
         ELSE 0
     END as completed_7_plus_hours_of_learning
     FROM (
@@ -273,6 +279,7 @@ date_joined;"""
         "number_of_sign_ups",
         "completed_first_evaluation",
         "completed_second_evaluation",
+        "completed_0_hours_of_learning",
         "completed_1_hours_of_learning",
         "completed_2_hours_of_learning",
         "completed_3_hours_of_learning",

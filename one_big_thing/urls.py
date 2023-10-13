@@ -11,7 +11,8 @@ from one_big_thing.learning.admin import admin_site
 from one_big_thing.learning.api_views import (
     JwtTokenObtainPairView,
     UserSignupStatsView,
-    UserStatisticsView, UserStatisticsV2View,
+    UserStatisticsV2View,
+    UserStatisticsView,
 )
 
 api_urlpatterns = [

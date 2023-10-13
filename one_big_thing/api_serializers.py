@@ -36,4 +36,11 @@ class DepartmentBreakdownSerializer(serializers.Serializer):
     completed_7_plus_hours_of_learning = serializers.IntegerField()
 
     class Meta:
-        fields = ["__all__"]
+        fields = "__all__"
+
+
+class DepartmentBreakdownV2Serializer(DepartmentBreakdownSerializer):
+    completed_0_hours_of_learning = serializers.IntegerField()
+
+    class Meta:
+        fields = "__all__"
