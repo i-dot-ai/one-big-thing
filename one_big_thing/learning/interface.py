@@ -19,6 +19,16 @@ class CreateLearningResponseSchema(marshmallow.Schema):
     learning_id = marshmallow.fields.UUID()
 
 
+class CreateFeedbackSchema(marshmallow.Schema):
+    user_id = marshmallow.fields.UUID()
+    data = marshmallow.fields.Nested(schemas.FeedbackSchema)
+    user_to_add = marshmallow.fields.UUID()
+
+
+class CreateFeedbackResponseSchema(marshmallow.Schema):
+    feedback_id = marshmallow.fields.UUID()
+
+
 class DeleteLearningSchema(marshmallow.Schema):
     user_id = marshmallow.fields.UUID()
     learning_id = marshmallow.fields.UUID()
@@ -65,4 +75,18 @@ class Learning(Entity):
         return response
 
 
-api = Interface(course=Course(), learning=Learning())
+class Feedback(Entity):
+    @with_schema(load=CreateFeedbackSchema, dump=CreateFeedbackResponseSchema)
+    @register_event("Feedback created")
+    def create(self, user_id, user_to_add, data):
+        feedback = models.Feedback()
+        user = models.User.objects.get(pk=user_to_add)
+        for key, value in data.items():
+            setattr(feedback, key, value)
+        feedback.user = user
+        feedback.save()
+        response = {"feedback_id": feedback.id}
+        return response
+
+
+api = Interface(course=Course(), learning=Learning(), feedback=Feedback())
