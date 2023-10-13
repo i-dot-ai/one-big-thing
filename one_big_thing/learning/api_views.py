@@ -220,7 +220,7 @@ LEFT JOIN (
     SELECT
     user_id,
     CASE
-        WHEN hours_learning >= 0  THEN 1
+        WHEN hours_learning > 0  THEN 1
         ELSE 0
         END as completed_0_hours_of_learning,
     CASE
