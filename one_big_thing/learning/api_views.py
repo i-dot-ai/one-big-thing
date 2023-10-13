@@ -328,30 +328,36 @@ def get_normalized_learning_data():
 
     sql_query = """
     WITH USER_LEARNING AS (
-    SELECT
-        u.*,
-        SUM(l.time_to_complete) OVER (PARTITION BY u.id) / 60.0 as hours_learning
-    FROM
-        public.learning_user as u
-    LEFT JOIN public.learning_learning as l
-        ON l.user_id = u.id
+        SELECT
+            u.id,
+            u.department,
+            u.grade,
+            u.profession,
+            u.has_completed_pre_survey,
+            u.has_completed_post_survey,
+            SUM(l.time_to_complete) / 60.0 as hours_learning
+        FROM
+            public.learning_user as u
+        LEFT JOIN public.learning_learning as l
+            ON l.user_id = u.id
+        GROUP BY u.id
     ),
 
     BUCKETED_HOURS as (
-     SELECT
-        *,
-        CASE
-            WHEN hours_learning >= 7.0 THEN '[7,∞)'
-            WHEN hours_learning >= 6.0 THEN '[6,7)'
-            WHEN hours_learning >= 5.0 THEN '[5,6)'
-            WHEN hours_learning >= 4.0 THEN '[4,5)'
-            WHEN hours_learning >= 3.0 THEN '[3,4)'
-            WHEN hours_learning >= 2.0 THEN '[2,3)'
-            WHEN hours_learning >= 1.0 THEN '[1,2)'
-            WHEN hours_learning >  0.0 THEN '[0,1)'
-            ELSE '0'
-        END as bucketed_hours
-     FROM USER_LEARNING
+        SELECT
+            *,
+            CASE
+                WHEN hours_learning >= 7.0 THEN '[7,∞)'
+                WHEN hours_learning >= 6.0 THEN '[6,7)'
+                WHEN hours_learning >= 5.0 THEN '[5,6)'
+                WHEN hours_learning >= 4.0 THEN '[4,5)'
+                WHEN hours_learning >= 3.0 THEN '[3,4)'
+                WHEN hours_learning >= 2.0 THEN '[2,3)'
+                WHEN hours_learning >= 1.0 THEN '[1,2)'
+                WHEN hours_learning >  0.0 THEN '[0,1)'
+                ELSE '0'
+            END as bucketed_hours
+        FROM USER_LEARNING
     )
 
     SELECT
