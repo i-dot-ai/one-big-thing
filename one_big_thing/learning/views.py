@@ -496,15 +496,6 @@ def department_links_view(request):
     )
 
 
-# @login_required
-# @require_http_methods(["GET", "POST"])
-# def feedback_view(request):
-#     if request.method == "POST":
-#
-#     else:
-#
-
-
 @login_required
 @require_http_methods(["GET", "POST"])
 class FeedbackView(utils.MethodDispatcher):
