@@ -361,7 +361,7 @@ def get_normalized_learning_data():
         has_completed_pre_survey,
         has_completed_post_survey,
         bucketed_hours,
-        COUNT(*) as user_count
+        COUNT(DISTINCT id) as user_count
     FROM
         BUCKETED_HOURS
     GROUP BY
