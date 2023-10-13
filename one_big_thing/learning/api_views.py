@@ -361,7 +361,7 @@ def get_normalized_learning_data():
         has_completed_pre_survey,
         has_completed_post_survey,
         bucketed_hours,
-        COUNT(*) as number_of_sign_ups
+        COUNT(*) as user_count
     FROM
         BUCKETED_HOURS
     GROUP BY
@@ -381,7 +381,7 @@ def get_normalized_learning_data():
         "has_completed_pre_survey",
         "has_completed_post_survey",
         "bucketed_hours",
-        "number_of_sign_ups",
+        "user_count",
     ]
 
     with connection.cursor() as cursor:

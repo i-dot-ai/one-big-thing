@@ -50,7 +50,7 @@ class NormalizedDepartmentBreakdownSerializer(serializers.Serializer):
     department = serializers.CharField(allow_null=True)
     grade = serializers.CharField(allow_null=True)
     profession = serializers.CharField(allow_null=True)
-    number_of_sign_ups = serializers.IntegerField()
+    user_count = serializers.IntegerField()
     has_completed_pre_survey = serializers.IntegerField()
     has_completed_post_survey = serializers.IntegerField()
     bucketed_hours = serializers.CharField()
