@@ -354,7 +354,7 @@ def get_normalized_learning_data():
                 WHEN hours_learning >= 3.0 THEN '[3,4)'
                 WHEN hours_learning >= 2.0 THEN '[2,3)'
                 WHEN hours_learning >= 1.0 THEN '[1,2)'
-                WHEN hours_learning >  0.0 THEN '[0,1)'
+                WHEN hours_learning >  0.0 THEN '(0,1)'
                 ELSE '0'
             END as bucketed_hours
         FROM USER_LEARNING
