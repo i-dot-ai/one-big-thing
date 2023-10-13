@@ -7,6 +7,7 @@ feedback_questions_data = [
     {
         "id": "improve_the_service",
         "text": "How could we improve the service? (optional)",
+        "extra_hint": "Do not include personal or financial information.",
         "answer_type": "textarea",
     },
     {
