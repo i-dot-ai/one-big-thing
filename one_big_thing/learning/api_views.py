@@ -10,7 +10,8 @@ from one_big_thing.api_serializers import (
     DateJoinedSerializer,
     DepartmentBreakdownSerializer,
     DepartmentBreakdownV2Serializer,
-    JwtTokenObtainPairSerializer, NormalizedDepartmentBreakdownSerializer,
+    JwtTokenObtainPairSerializer,
+    NormalizedDepartmentBreakdownSerializer,
 )
 from one_big_thing.learning import models
 from one_big_thing.learning.api_permissions import IsAPIUser
@@ -327,7 +328,7 @@ def get_normalized_learning_data():
 
     sql_query = """
     WITH USER_LEARNING AS (
-    SELECT 
+    SELECT
         u.*,
         LEAST(FLOOR(SUM(l.time_to_complete) OVER (PARTITION BY u.id) / 60.0), 7) as hours_learning
     FROM
@@ -335,7 +336,7 @@ def get_normalized_learning_data():
     LEFT JOIN public.learning_learning as l
         ON l.user_id = u.id
     )
-    SELECT 
+    SELECT
         department,
         grade,
         profession,
@@ -343,9 +344,9 @@ def get_normalized_learning_data():
         has_completed_post_survey,
         hours_learning,
         COUNT(*) as number_of_sign_ups
-    FROM 
+    FROM
         USER_LEARNING
-    WHERE 
+    WHERE
         hours_learning > 0
     GROUP BY
         department,
@@ -375,4 +376,3 @@ def get_normalized_learning_data():
 
         for row in results:
             yield dict(zip(field_names, row))
-

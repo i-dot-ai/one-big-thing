@@ -10,9 +10,10 @@ from one_big_thing.learning import (
 from one_big_thing.learning.admin import admin_site
 from one_big_thing.learning.api_views import (
     JwtTokenObtainPairView,
+    NormalizedUserStatisticsView,
     UserSignupStatsView,
     UserStatisticsV2View,
-    UserStatisticsView, NormalizedUserStatisticsView,
+    UserStatisticsView,
 )
 
 api_urlpatterns = [
@@ -22,7 +23,6 @@ api_urlpatterns = [
     path("api/normalized-user-statistics/", NormalizedUserStatisticsView.as_view(), name="normalized_user_statistics"),
     path("api/v2/user-statistics/", UserStatisticsV2View.as_view(), name="user_statistics_v2"),
     path("api/signup-statistics/", UserSignupStatsView.as_view(), name="signup_statistics"),
-
 ]
 
 info_urlpatterns = [
