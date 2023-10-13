@@ -149,3 +149,10 @@ def test_breakdown_stats(alice, bob, chris, daisy, eric):  # noqa: F811
     assert grade6["completed_0_hours_of_learning"] == 1
     assert grade6["completed_1_hours_of_learning"] == 1
     assert grade6["completed_2_hours_of_learning"] == 0
+
+
+@pytest.mark.django_db
+def test_breakdown_stats(authenticated_api_client_fixture,alice, bob, chris, daisy, eric):  # noqa: F811
+    url = reverse("normalized_user_statistics")
+    response = authenticated_api_client_fixture.get(url)
+    assert response.status_code == 200, response.status_code

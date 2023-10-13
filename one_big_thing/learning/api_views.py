@@ -10,7 +10,7 @@ from one_big_thing.api_serializers import (
     DateJoinedSerializer,
     DepartmentBreakdownSerializer,
     DepartmentBreakdownV2Serializer,
-    JwtTokenObtainPairSerializer,
+    JwtTokenObtainPairSerializer, NormalizedDepartmentBreakdownSerializer,
 )
 from one_big_thing.learning import models
 from one_big_thing.learning.api_permissions import IsAPIUser
@@ -67,6 +67,23 @@ class UserStatisticsV2View(APIView):
     def get(self, request):
         department_dict = get_learning_breakdown_data_v2()
         serializer = DepartmentBreakdownV2Serializer(department_dict, many=True, partial=True, allow_null=True)
+        serialized_data = serializer.data
+        return Response(serialized_data)
+
+
+class NormalizedUserStatisticsView(APIView):
+    """
+    Endpoint used by 10DS and others to get normalised information about department signups
+    """
+
+    permission_classes = (
+        IsAuthenticated,
+        IsAPIUser,
+    )
+
+    def get(self, request):
+        department_dict = get_normalized_learning_data()
+        serializer = NormalizedDepartmentBreakdownSerializer(department_dict, many=True, partial=True, allow_null=True)
         serialized_data = serializer.data
         return Response(serialized_data)
 
@@ -296,3 +313,66 @@ date_joined;"""
 
 class JwtTokenObtainPairView(TokenObtainPairView):
     serializer_class = JwtTokenObtainPairSerializer
+
+
+def get_normalized_learning_data():
+    """
+    Calculates the number of signups per combination of department/grade/profession
+    @return: A queryset that contains a list of each grouping
+    """
+
+    # this is basically a group-by & sum
+    # no, `annotate` doesnt work here, django miss-understands that it needs to group-by
+    # the calculated field
+
+    sql_query = """
+    WITH USER_LEARNING AS (
+    SELECT 
+        u.*,
+        LEAST(FLOOR(SUM(l.time_to_complete) OVER (PARTITION BY u.id) / 60.0), 7) as hours_learning
+    FROM
+        public.learning_user as u
+    LEFT JOIN public.learning_learning as l
+        ON l.user_id = u.id
+    )
+    SELECT 
+        department,
+        grade,
+        profession,
+        has_completed_pre_survey,
+        has_completed_post_survey,
+        hours_learning,
+        COUNT(*) as number_of_sign_ups
+    FROM 
+        USER_LEARNING
+    WHERE 
+        hours_learning > 0
+    GROUP BY
+        department,
+        grade,
+        profession,
+        has_completed_pre_survey,
+        has_completed_post_survey,
+        hours_learning
+    ;
+    """
+
+    field_names = [
+        "department",
+        "grade",
+        "profession",
+        "has_completed_pre_survey",
+        "has_completed_post_survey",
+        "hours_learning",
+        "number_of_sign_ups",
+    ]
+
+    with connection.cursor() as cursor:
+        cursor.execute(sql_query)
+
+        # Fetch results, e.g., fetch all rows
+        results = cursor.fetchall()
+
+        for row in results:
+            yield dict(zip(field_names, row))
+
