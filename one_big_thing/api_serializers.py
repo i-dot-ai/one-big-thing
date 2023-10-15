@@ -39,13 +39,6 @@ class DepartmentBreakdownSerializer(serializers.Serializer):
         fields = "__all__"
 
 
-class DepartmentBreakdownV2Serializer(DepartmentBreakdownSerializer):
-    completed_0_hours_of_learning = serializers.IntegerField()
-
-    class Meta:
-        fields = "__all__"
-
-
 class NormalizedDepartmentBreakdownSerializer(serializers.Serializer):
     department = serializers.CharField(allow_null=True)
     grade = serializers.CharField(allow_null=True)
