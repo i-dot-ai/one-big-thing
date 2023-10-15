@@ -1,6 +1,14 @@
 from django.db import connection
-from django.db.models import Count, DateField, IntegerField
-from django.db.models.functions import Cast, TruncDate
+from django.db.models import (
+    Case,
+    Count,
+    DateField,
+    IntegerField,
+    Sum,
+    Value,
+    When,
+)
+from django.db.models.functions import Cast, Floor, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -194,6 +202,38 @@ class JwtTokenObtainPairView(TokenObtainPairView):
     serializer_class = JwtTokenObtainPairSerializer
 
 
+def get_normalized_learning_data_v2():
+    results = (
+        models.User.objects.annotate(hours_learning=Sum("learning__time_to_complete") / 60)
+        .annotate(
+            bucketed_hours=Case(
+                When(hours_learning=0, then=Value(None)),
+                When(hours_learning__gte=7, then=Value(7)),
+                default=Floor("hours_learning"),
+            )
+        )
+        .values(
+            "department",
+            "grade",
+            "profession",
+            "has_completed_pre_survey",
+            "has_completed_post_survey",
+            "bucketed_hours",
+        )
+        .annotate(user_count=Count("id"))
+    )
+
+    return results
+
+
+class NormalizedUserStatisticsV2View(NormalizedUserStatisticsView):
+    def get(self, request):
+        department_dict = get_normalized_learning_data_v2()
+        serializer = NormalizedDepartmentBreakdownSerializer(department_dict, many=True, partial=True, allow_null=True)
+        serialized_data = serializer.data
+        return Response(serialized_data)
+
+
 def get_normalized_learning_data():
     """
     Calculates the number of signups per combination of department/grade/profession
@@ -249,6 +289,13 @@ def get_normalized_learning_data():
     FROM
         BUCKETED_HOURS
     GROUP BY
+        department,
+        grade,
+        profession,
+        has_completed_pre_survey,
+        has_completed_post_survey,
+        bucketed_hours
+    ORDER BY
         department,
         grade,
         profession,

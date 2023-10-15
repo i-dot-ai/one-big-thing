@@ -44,8 +44,8 @@ class NormalizedDepartmentBreakdownSerializer(serializers.Serializer):
     grade = serializers.CharField(allow_null=True)
     profession = serializers.CharField(allow_null=True)
     user_count = serializers.IntegerField()
-    has_completed_pre_survey = serializers.IntegerField()
-    has_completed_post_survey = serializers.IntegerField()
+    has_completed_pre_survey = serializers.BooleanField()
+    has_completed_post_survey = serializers.BooleanField()
     bucketed_hours = serializers.CharField()
 
     class Meta:
