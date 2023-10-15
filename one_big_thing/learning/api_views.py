@@ -47,7 +47,7 @@ class UserSignupStatsView(APIView):
 
 class UserStatisticsView(APIView):
     """
-    Deprecated: use UserStatisticsV2View instead
+    Deprecated: use NormalizedUserStatisticsView instead
     Endpoint used by 10DS to get information about department signups
     """
 
