@@ -5,6 +5,7 @@ from collections import Counter
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
+from django_cte import CTEManager
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 
 from one_big_thing.learning import choices, constants
@@ -27,8 +28,16 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
+class UserManager(BaseUserManager, CTEManager):
+    """https://dimagi.github.io/django-cte/
+    we need to do some complex queries on this model
+    """
+
+    pass
+
+
 class User(BaseUser, UUIDPrimaryKeyBase):
-    objects = BaseUserManager()
+    objects = UserManager()
     username = None
     verified = models.BooleanField(default=False, blank=True, null=True)
     invited_at = models.DateTimeField(default=None, blank=True, null=True)

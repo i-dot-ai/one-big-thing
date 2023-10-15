@@ -9,6 +9,7 @@ from django.db.models import (
     When,
 )
 from django.db.models.functions import Cast, TruncDate
+from django_cte import With
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -203,9 +204,9 @@ class JwtTokenObtainPairView(TokenObtainPairView):
 
 
 def get_normalized_learning_data_v2():
-    results = (
-        models.User.objects.annotate(hours_learning=Sum("learning__time_to_complete") / 60)
-        .annotate(
+    cte = With(
+        models.User.objects.annotate(
+            hours_learning=Sum("learning__time_to_complete") / 60.0,
             bucketed_hours=Case(
                 When(hours_learning__gte=7, then=Value("[7,∞)")),
                 When(hours_learning__gte=6, then=Value("[6,7)")),
@@ -216,25 +217,25 @@ def get_normalized_learning_data_v2():
                 When(hours_learning__gte=1, then=Value("[1,2)")),
                 When(hours_learning__gt=0, then=Value("(0,1)")),
                 default=Value("0"),
-            )
+            ),
         )
-        .values(
-            "department",
-            "grade",
-            "profession",
-            "has_completed_pre_survey",
-            "has_completed_post_survey",
-            "bucketed_hours",
-        )
+    )
+
+    group_and_order_by = [
+        "department",
+        "grade",
+        "profession",
+        "has_completed_pre_survey",
+        "has_completed_post_survey",
+        "bucketed_hours",
+    ]
+
+    results = (
+        cte.queryset()
+        .with_cte(cte)
+        .values(*group_and_order_by)
         .annotate(user_count=Count("id"))
-        .order_by(
-            "department",
-            "grade",
-            "profession",
-            "has_completed_pre_survey",
-            "has_completed_post_survey",
-            "bucketed_hours",
-        )
+        .order_by(*group_and_order_by)
     )
 
     return results
