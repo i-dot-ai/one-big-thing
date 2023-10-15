@@ -13,7 +13,7 @@ IMAGE=$(ECR_REPO_URL):$(IMAGE_TAG)
 
 
 define _update_requirements
-	docker compose run requirements bash -c "pip install -U pip setuptools && pip install -U -r /app/$(1).txt && pip freeze > /app/$(1).lock"
+	docker-compose run requirements bash -c "pip install -U pip setuptools && pip install -U -r /app/$(1).txt && pip freeze > /app/$(1).lock"
 endef
 
 .PHONY: update-requirements
