@@ -8,7 +8,7 @@ from django.db.models import (
     Value,
     When,
 )
-from django.db.models.functions import Cast, Floor, TruncDate
+from django.db.models.functions import Cast, TruncDate
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -207,9 +207,15 @@ def get_normalized_learning_data_v2():
         models.User.objects.annotate(hours_learning=Sum("learning__time_to_complete") / 60)
         .annotate(
             bucketed_hours=Case(
-                When(hours_learning=0, then=Value(None)),
-                When(hours_learning__gte=7, then=Value(7)),
-                default=Floor("hours_learning"),
+                When(hours_learning__gte=7, then=Value("[7,∞)")),
+                When(hours_learning__gte=6, then=Value("[6,7)")),
+                When(hours_learning__gte=5, then=Value("[5,6)")),
+                When(hours_learning__gte=4, then=Value("[4,5)")),
+                When(hours_learning__gte=3, then=Value("[3,4)")),
+                When(hours_learning__gte=2, then=Value("[2,3)")),
+                When(hours_learning__gte=1, then=Value("[1,2)")),
+                When(hours_learning__gt=0, then=Value("(0,1)")),
+                default=Value("0"),
             )
         )
         .values(
@@ -221,6 +227,14 @@ def get_normalized_learning_data_v2():
             "bucketed_hours",
         )
         .annotate(user_count=Count("id"))
+        .order_by(
+            "department",
+            "grade",
+            "profession",
+            "has_completed_pre_survey",
+            "has_completed_post_survey",
+            "bucketed_hours",
+        )
     )
 
     return results
