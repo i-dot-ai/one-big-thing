@@ -123,10 +123,9 @@ def test_breakdown_stats(authenticated_api_client_fixture, add_user):  # noqa: F
     assert response.data, response.data
 
 
-@pytest.mark.parametrize("url", ["normalized_user_statistics_v2", "normalized_user_statistics"])
 @pytest.mark.django_db
-def test_breakdown_stats(authenticated_api_client_fixture, alice, bob, chris, daisy, eric, url):  # noqa: F811
-    url = reverse(url)
+def test_breakdown_stats(authenticated_api_client_fixture, alice, bob, chris, daisy, eric):  # noqa: F811
+    url = reverse("normalized_user_statistics")
     response = authenticated_api_client_fixture.get(url)
     assert response.status_code == 200, response.status_code
 

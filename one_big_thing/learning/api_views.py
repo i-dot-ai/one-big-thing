@@ -101,7 +101,7 @@ def get_signups_by_date():
 
 def get_learning_breakdown_data():
     """
-    Deprecated: see get_learning_breakdown_data_v2 instead
+    Deprecated: see get_normalized_learning_data instead
 
     Calculates the number of signups per combination of department/grade/profession
     @return: A queryset that contains a list of each grouping
@@ -203,7 +203,7 @@ class JwtTokenObtainPairView(TokenObtainPairView):
     serializer_class = JwtTokenObtainPairSerializer
 
 
-def get_normalized_learning_data_v2():
+def get_normalized_learning_data():
     cte = With(
         models.User.objects.annotate(
             hours_learning=Sum("learning__time_to_complete") / 60.0,
@@ -215,7 +215,9 @@ def get_normalized_learning_data_v2():
                 When(hours_learning__gte=3, then=Value("[3,4)")),
                 When(hours_learning__gte=2, then=Value("[2,3)")),
                 When(hours_learning__gte=1, then=Value("[1,2)")),
+                # 10DS needs to distinguish between this case, and...
                 When(hours_learning__gt=0, then=Value("(0,1)")),
+                # ...this one
                 default=Value("0"),
             ),
         )
@@ -239,102 +241,3 @@ def get_normalized_learning_data_v2():
     )
 
     return results
-
-
-class NormalizedUserStatisticsV2View(NormalizedUserStatisticsView):
-    def get(self, request):
-        department_dict = get_normalized_learning_data_v2()
-        serializer = NormalizedDepartmentBreakdownSerializer(department_dict, many=True, partial=True, allow_null=True)
-        serialized_data = serializer.data
-        return Response(serialized_data)
-
-
-def get_normalized_learning_data():
-    """
-    Calculates the number of signups per combination of department/grade/profession
-    @return: A queryset that contains a list of each grouping
-    """
-
-    # this is basically a group-by & sum
-    # no, `annotate` doesnt work here, django miss-understands that it needs to group-by
-    # the calculated field
-
-    sql_query = """
-    WITH USER_LEARNING AS (
-        SELECT
-            u.id,
-            u.department,
-            u.grade,
-            u.profession,
-            u.has_completed_pre_survey,
-            u.has_completed_post_survey,
-            SUM(l.time_to_complete) / 60.0 as hours_learning
-        FROM
-            public.learning_user as u
-        LEFT JOIN public.learning_learning as l
-            ON l.user_id = u.id
-        GROUP BY u.id
-    ),
-
-    BUCKETED_HOURS as (
-        SELECT
-            *,
-            CASE
-                WHEN hours_learning >= 7.0 THEN '[7,∞)'
-                WHEN hours_learning >= 6.0 THEN '[6,7)'
-                WHEN hours_learning >= 5.0 THEN '[5,6)'
-                WHEN hours_learning >= 4.0 THEN '[4,5)'
-                WHEN hours_learning >= 3.0 THEN '[3,4)'
-                WHEN hours_learning >= 2.0 THEN '[2,3)'
-                WHEN hours_learning >= 1.0 THEN '[1,2)'
-                WHEN hours_learning >  0.0 THEN '(0,1)'
-                ELSE '0'
-            END as bucketed_hours
-        FROM USER_LEARNING
-    )
-
-    SELECT
-        department,
-        grade,
-        profession,
-        has_completed_pre_survey,
-        has_completed_post_survey,
-        bucketed_hours,
-        COUNT(DISTINCT id) as user_count
-    FROM
-        BUCKETED_HOURS
-    GROUP BY
-        department,
-        grade,
-        profession,
-        has_completed_pre_survey,
-        has_completed_post_survey,
-        bucketed_hours
-    ORDER BY
-        department,
-        grade,
-        profession,
-        has_completed_pre_survey,
-        has_completed_post_survey,
-        bucketed_hours
-    ;
-    """
-
-    field_names = [
-        "department",
-        "grade",
-        "profession",
-        "has_completed_pre_survey",
-        "has_completed_post_survey",
-        "bucketed_hours",
-        "user_count",
-    ]
-
-    with connection.cursor() as cursor:
-        cursor.execute(sql_query)
-
-        # Fetch results, e.g., fetch all rows
-        results = cursor.fetchall()
-
-        for row in results:
-            yield dict(zip(field_names, row))
