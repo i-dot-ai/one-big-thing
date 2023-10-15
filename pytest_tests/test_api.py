@@ -109,7 +109,7 @@ def test_breakdown_stats(authenticated_api_client_fixture, add_user):  # noqa: F
     num_of_users = random.randint(0, 1200)
     for i in range(0, num_of_users):
         add_user(i)
-    url = reverse("user_statistics_v2")
+    url = reverse("user_statistics")
     response = authenticated_api_client_fixture.get(url)
     assert response.status_code == 200, response.status_code
     selected_item = None
