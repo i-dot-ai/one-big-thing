@@ -148,4 +148,4 @@ def test_breakdown_stats(authenticated_api_client_fixture, alice, bob, chris, da
         (7, 1, False, False, "[1,2)"),  # alice
         (7, 1, True, False, "[3,4)"),  # bob
     ]
-    assert response.json() == [f(*x) for x in expected]
+    assert response.json()["results"] == [f(*x) for x in expected]

@@ -10,6 +10,8 @@ from django.db.models import (
 )
 from django.db.models.functions import Cast, TruncDate
 from django_cte import With
+from rest_framework.generics import ListAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -59,23 +61,6 @@ class UserStatisticsView(APIView):
     def get(self, request):
         department_dict = get_learning_breakdown_data()
         serializer = DepartmentBreakdownSerializer(department_dict, many=True, partial=True, allow_null=True)
-        serialized_data = serializer.data
-        return Response(serialized_data)
-
-
-class NormalizedUserStatisticsView(APIView):
-    """
-    Endpoint used by 10DS and others to get normalised information about department signups
-    """
-
-    permission_classes = (
-        IsAuthenticated,
-        IsAPIUser,
-    )
-
-    def get(self, request):
-        department_dict = get_normalized_learning_data()
-        serializer = NormalizedDepartmentBreakdownSerializer(department_dict, many=True, partial=True, allow_null=True)
         serialized_data = serializer.data
         return Response(serialized_data)
 
@@ -241,3 +226,18 @@ def get_normalized_learning_data():
     )
 
     return results
+
+
+class NormalizedUserStatisticsView(ListAPIView):
+    """
+    Endpoint used by 10DS and others to get normalised information about department signups
+    """
+
+    permission_classes = (
+        IsAuthenticated,
+        IsAPIUser,
+    )
+
+    queryset = get_normalized_learning_data()
+    serializer_class = NormalizedDepartmentBreakdownSerializer
+    pagination_class = PageNumberPagination
