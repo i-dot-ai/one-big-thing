@@ -27,6 +27,7 @@ sentry-sdk
 django-permissions-policy
 django-single-session
 django-csp
+django-cte
 
 # TOTP
 pyotp
