@@ -91,7 +91,7 @@
 {%- endmacro%}
 
 
-{% macro form_wrapper(prev_url, button_label="Continue") -%}
+{% macro form_wrapper(prev_url, button_label="Continue", event_name="") -%}
   {% if prev_url %}
     <a href="{{prev_url}}" class="govuk-back-link">Back</a>
   {% endif %}
@@ -105,7 +105,7 @@
 
         {{caller()}}
 
-        <button class="govuk-button" data-module="govuk-button">
+        <button class="govuk-button plausible-event-name={{event_name}}" data-module="govuk-button">
           {{button_label}}
         </button>
       </form>
