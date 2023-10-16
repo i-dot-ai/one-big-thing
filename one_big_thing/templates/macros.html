@@ -254,7 +254,7 @@
 
       <fieldset class="govuk-fieldset">
       {% if question.text %}
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h2 class="govuk-fieldset__legend govuk-fieldset__legend--l">{{question.text}}</h2></legend>
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h2 class="govuk-fieldset__legend govuk-fieldset__legend--m">{{question.text}}</h2></legend>
       {% endif %}
 
       {% if errors[question.id] %}
@@ -365,7 +365,7 @@
 {% macro question_textarea(question) -%}
 <div class="govuk-form-group">
   <h2 class="govuk-label-wrapper">
-    <label class="govuk-label govuk-label--l" for="{{question.id}}">
+    <label class="govuk-label govuk-label--m" for="{{question.id}}">
       {{question.text}}
     </label>
   </h2>
