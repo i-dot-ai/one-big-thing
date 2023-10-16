@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("learning", "0017_user_is_api_user"),
+        ("learning", "0018_add_index_to_user"),
     ]
 
     operations = [
