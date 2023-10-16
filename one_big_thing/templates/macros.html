@@ -105,7 +105,7 @@
 
         {{caller()}}
 
-        <button class="govuk-button" {{ event_name and "plausible-event-name='{{event_name}}'" or ""}} data-module="govuk-button">
+        <button class="govuk-button {{ event_name and ("plausible-event-name=" + event_name) or ""}}"  data-module="govuk-button">
           {{button_label}}
         </button>
       </form>
