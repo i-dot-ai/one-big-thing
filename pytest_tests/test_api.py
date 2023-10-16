@@ -14,7 +14,7 @@ from pytest_tests.utils import (  # noqa: F401
 
 
 @pytest.fixture
-def token_fixture():
+def authenticated_api_client_fixture(client_for_user):
     user, _ = models.User.objects.get_or_create(
         email=TEST_USER_EMAIL,
         is_api_user=True,
@@ -22,21 +22,7 @@ def token_fixture():
         grade="GRADE7",
         profession="ANALYSIS",
     )
-    user.set_password(TEST_USER_PASSWORD)
-    user.save()
-    client = APIClient()
-    url = reverse("token_obtain_pair")
-    response = client.post(url, {"email": TEST_USER_EMAIL, "password": TEST_USER_PASSWORD})
-    assert response.status_code == 200, response.status_code
-    assert response.data.get("access"), response.data
-    token = response.data.get("access")
-    return token
-
-
-@pytest.fixture
-def authenticated_api_client_fixture(token_fixture):
-    client = APIClient()
-    client.credentials(HTTP_AUTHORIZATION="Bearer " + token_fixture)
+    client = client_for_user(user, TEST_USER_PASSWORD)
     return client
 
 
@@ -123,29 +109,55 @@ def test_breakdown_stats(authenticated_api_client_fixture, add_user):  # noqa: F
     assert response.data, response.data
 
 
-@pytest.mark.django_db
-def test_breakdown_stats(authenticated_api_client_fixture, alice, bob, chris, daisy, eric):  # noqa: F811
-    url = reverse("normalized_user_statistics")
-    response = authenticated_api_client_fixture.get(url)
-    assert response.status_code == 200, response.status_code
+def make_response(grade, user_count, has_completed_pre_survey, has_completed_post_survey, bucketed_hours):
+    r = {
+        "department": "acas",
+        "grade": f"GRADE{grade}",
+        "profession": "ANALYSIS",
+        "user_count": user_count,
+        "has_completed_pre_survey": has_completed_pre_survey,
+        "has_completed_post_survey": has_completed_post_survey,
+        "bucketed_hours": bucketed_hours,
+    }
+    return r
 
-    def f(grade, user_count, has_completed_pre_survey, has_completed_post_survey, bucketed_hours):
-        r = {
-            "department": "acas",
-            "grade": f"GRADE{grade}",
-            "profession": "ANALYSIS",
-            "user_count": user_count,
-            "has_completed_pre_survey": has_completed_pre_survey,
-            "has_completed_post_survey": has_completed_post_survey,
-            "bucketed_hours": bucketed_hours,
-        }
-        return r
+
+@pytest.mark.django_db
+def test_breakdown_stats_no10(client_for_user, alice, bob, chris, daisy, eric):  # noqa: F811
+    """alice works for number 10, she should see everything"""
+    client = client_for_user(alice, "password")
+    url = reverse("normalized_user_statistics")
+    response = client.get(url)
+    assert response.status_code == 200, response.status_code
 
     expected = [
         (6, 1, True, True, "(0,1)"),  # eric
         (6, 2, True, True, "[1,2)"),  # chris & daisy
-        (7, 1, False, False, "0"),  # authenticated user for the client!
         (7, 1, False, False, "[1,2)"),  # alice
         (7, 1, True, False, "[3,4)"),  # bob
     ]
-    assert response.json()["results"] == [f(*x) for x in expected]
+    assert response.json()["results"] == [make_response(*x) for x in expected]
+
+
+@pytest.mark.django_db
+def test_breakdown_stats_dwp(client_for_user, alice, bob, chris, daisy, eric):  # noqa: F811
+    """bob and chris have dwp email addresses, bob should only be able to see dwp stats"""
+    client = client_for_user(bob, "password")
+    url = reverse("normalized_user_statistics")
+    response = client.get(url)
+    assert response.status_code == 200, response.status_code
+
+    expected = [
+        (6, 1, True, True, "[1,2)"),  # chris
+        (7, 1, True, False, "[3,4)"),  # bob
+    ]
+    assert response.json()["results"] == [make_response(*x) for x in expected]
+
+
+@pytest.mark.django_db
+def test_breakdown_stats_fco(client_for_user, alice, bob, chris, daisy, eric):  # noqa: F811
+    """daisy has a fco email addresses, she cant see anything"""
+    client = client_for_user(daisy, "password")
+    url = reverse("normalized_user_statistics")
+    response = client.get(url)
+    assert response.status_code == 403, response.status_code

@@ -3,6 +3,8 @@ from datetime import datetime
 
 import pytest
 import pytz
+from django.urls import reverse
+from rest_framework.test import APIClient
 
 from one_big_thing.learning.models import Learning, User
 
@@ -53,19 +55,20 @@ def create_user():
 @pytest.fixture
 def alice(create_user):
     return create_user(
-        email="alice@co.gov.uk",
+        email="alice@no10.gov.uk",
         date_joined="2000-01-01",
         grade="GRADE7",
         times_to_complete=[60],
         has_completed_pre_survey=False,
         has_completed_post_survey=False,
+        is_api_user=True,
     )
 
 
 @pytest.fixture
 def bob(create_user):
     return create_user(
-        email="bob@co.gov.uk",
+        email="bob@dwp.gov.uk",
         date_joined="2000-01-01",
         grade="GRADE7",
         times_to_complete=[60, 120],
@@ -77,7 +80,7 @@ def bob(create_user):
 @pytest.fixture
 def chris(create_user):
     return create_user(
-        email="chris@co.gov.uk",
+        email="chris@dwp.gov.uk",
         date_joined="2000-01-02",
         grade="GRADE6",
         times_to_complete=[60],
@@ -89,7 +92,7 @@ def chris(create_user):
 @pytest.fixture
 def daisy(create_user):
     return create_user(
-        email="daisy@co.gov.uk",
+        email="daisy@fco.gov.uk",
         date_joined="2000-01-02",
         grade="GRADE6",
         times_to_complete=[30, 60],
@@ -108,3 +111,21 @@ def eric(create_user):
         has_completed_pre_survey=True,
         has_completed_post_survey=True,
     )
+
+
+@pytest.fixture
+def client_for_user():
+    def make_client_for_user(user: User, password: str) -> APIClient:
+        user.set_password(password)
+        user.is_api_user = True
+        user.save()
+        client = APIClient()
+        url = reverse("token_obtain_pair")
+        response = client.post(url, {"email": user.email, "password": password})
+        assert response.status_code == 200, response.status_code
+        assert response.data.get("access"), response.data
+        token = response.data.get("access")
+        client.credentials(HTTP_AUTHORIZATION="Bearer " + token)
+        return client
+
+    return make_client_for_user

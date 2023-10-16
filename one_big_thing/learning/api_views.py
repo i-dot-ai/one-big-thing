@@ -26,7 +26,6 @@ from one_big_thing.api_serializers import (
 )
 from one_big_thing.learning import models
 from one_big_thing.learning.api_permissions import IsAPIUser
-from one_big_thing.learning.departments import DOMAINS
 
 
 class UserSignupStatsView(APIView):
@@ -248,10 +247,17 @@ class NormalizedUserStatisticsView(ListAPIView):
         This view should return a list of all the purchases for
         the user as determined by the username portion of the URL.
         """
-        user = self.request.user
-        domain = user.email.split("@")[-1]
+
+        domains = [
+            "ukexportfinance.gov.uk",
+            "levellingup.gov.uk",
+            "education.gov.uk",
+            "dwp.gov.uk",
+        ]
+
+        domain = self.request.user.email.split("@")[-1]
         if domain == "no10.gov.uk":
             return get_normalized_learning_data()
-        if departments := DOMAINS.get(domain):
-            return get_normalized_learning_data(department__in=departments)
+        if domain in domains:
+            return get_normalized_learning_data(email__endswith=domain)
         raise exceptions.PermissionDenied()
