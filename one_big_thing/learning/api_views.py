@@ -1,3 +1,4 @@
+from django.core import exceptions
 from django.db import connection
 from django.db.models import (
     Case,
@@ -25,6 +26,7 @@ from one_big_thing.api_serializers import (
 )
 from one_big_thing.learning import models
 from one_big_thing.learning.api_permissions import IsAPIUser
+from one_big_thing.learning.departments import DOMAINS
 
 
 class UserSignupStatsView(APIView):
@@ -188,9 +190,9 @@ class JwtTokenObtainPairView(TokenObtainPairView):
     serializer_class = JwtTokenObtainPairSerializer
 
 
-def get_normalized_learning_data():
+def get_normalized_learning_data(**kwargs):
     cte = With(
-        models.User.objects.annotate(
+        models.User.objects.filter(**kwargs).annotate(
             hours_learning=Sum("learning__time_to_complete") / 60.0,
             bucketed_hours=Case(
                 When(hours_learning__gte=7, then=Value("[7,∞)")),
@@ -238,6 +240,18 @@ class NormalizedUserStatisticsView(ListAPIView):
         IsAPIUser,
     )
 
-    queryset = get_normalized_learning_data()
     serializer_class = NormalizedDepartmentBreakdownSerializer
     pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases for
+        the user as determined by the username portion of the URL.
+        """
+        user = self.request.user
+        domain = user.email.split("@")[-1]
+        if domain == "no10.gov.uk":
+            return get_normalized_learning_data()
+        if departments := DOMAINS.get(domain):
+            return get_normalized_learning_data(department__in=departments)
+        raise exceptions.PermissionDenied()

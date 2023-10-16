@@ -9,6 +9,7 @@ from django_cte import CTEManager
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 
 from one_big_thing.learning import choices, constants
+from one_big_thing.learning.departments import department_tuples
 
 logger = logging.getLogger(__name__)
 
@@ -43,7 +44,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     invited_at = models.DateTimeField(default=None, blank=True, null=True)
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
-    department = models.CharField(max_length=254, blank=True, null=True)
+    department = models.CharField(max_length=254, blank=True, null=True, choices=department_tuples)
     grade = models.CharField(max_length=254, blank=True, null=True)
     profession = models.CharField(max_length=254, blank=True, null=True)
     has_completed_pre_survey = models.BooleanField(default=False)
