@@ -1,6 +1,17 @@
 from django.db import connection
-from django.db.models import Count, DateField, IntegerField
+from django.db.models import (
+    Case,
+    Count,
+    DateField,
+    IntegerField,
+    Sum,
+    Value,
+    When,
+)
 from django.db.models.functions import Cast, TruncDate
+from django_cte import With
+from rest_framework.generics import ListAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -10,6 +21,7 @@ from one_big_thing.api_serializers import (
     DateJoinedSerializer,
     DepartmentBreakdownSerializer,
     JwtTokenObtainPairSerializer,
+    NormalizedDepartmentBreakdownSerializer,
 )
 from one_big_thing.learning import models
 from one_big_thing.learning.api_permissions import IsAPIUser
@@ -37,6 +49,7 @@ class UserSignupStatsView(APIView):
 
 class UserStatisticsView(APIView):
     """
+    Deprecated: use NormalizedUserStatisticsView instead
     Endpoint used by 10DS to get information about department signups
     """
 
@@ -73,6 +86,8 @@ def get_signups_by_date():
 
 def get_learning_breakdown_data():
     """
+    Deprecated: see get_normalized_learning_data instead
+
     Calculates the number of signups per combination of department/grade/profession
     @return: A queryset that contains a list of each grouping
     """
@@ -171,3 +186,58 @@ date_joined;"""
 
 class JwtTokenObtainPairView(TokenObtainPairView):
     serializer_class = JwtTokenObtainPairSerializer
+
+
+def get_normalized_learning_data():
+    cte = With(
+        models.User.objects.annotate(
+            hours_learning=Sum("learning__time_to_complete") / 60.0,
+            bucketed_hours=Case(
+                When(hours_learning__gte=7, then=Value("[7,∞)")),
+                When(hours_learning__gte=6, then=Value("[6,7)")),
+                When(hours_learning__gte=5, then=Value("[5,6)")),
+                When(hours_learning__gte=4, then=Value("[4,5)")),
+                When(hours_learning__gte=3, then=Value("[3,4)")),
+                When(hours_learning__gte=2, then=Value("[2,3)")),
+                When(hours_learning__gte=1, then=Value("[1,2)")),
+                # 10DS needs to distinguish between this case, and...
+                When(hours_learning__gt=0, then=Value("(0,1)")),
+                # ...this one
+                default=Value("0"),
+            ),
+        )
+    )
+
+    group_and_order_by = [
+        "department",
+        "grade",
+        "profession",
+        "has_completed_pre_survey",
+        "has_completed_post_survey",
+        "bucketed_hours",
+    ]
+
+    results = (
+        cte.queryset()
+        .with_cte(cte)
+        .values(*group_and_order_by)
+        .annotate(user_count=Count("id"))
+        .order_by(*group_and_order_by)
+    )
+
+    return results
+
+
+class NormalizedUserStatisticsView(ListAPIView):
+    """
+    Endpoint used by 10DS and others to get normalised information about department signups
+    """
+
+    permission_classes = (
+        IsAuthenticated,
+        IsAPIUser,
+    )
+
+    queryset = get_normalized_learning_data()
+    serializer_class = NormalizedDepartmentBreakdownSerializer
+    pagination_class = PageNumberPagination

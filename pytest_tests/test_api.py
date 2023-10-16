@@ -6,7 +6,6 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from one_big_thing.learning import models
-from one_big_thing.learning.api_views import get_learning_breakdown_data
 from pytest_tests.utils import (  # noqa: F401
     TEST_USER_EMAIL,
     TEST_USER_PASSWORD,
@@ -125,23 +124,28 @@ def test_breakdown_stats(authenticated_api_client_fixture, add_user):  # noqa: F
 
 
 @pytest.mark.django_db
-def test_breakdown_stats(alice, bob, chris, daisy, eric):  # noqa: F811
-    learning_breakdown_data = list(get_learning_breakdown_data())
+def test_breakdown_stats(authenticated_api_client_fixture, alice, bob, chris, daisy, eric):  # noqa: F811
+    url = reverse("normalized_user_statistics")
+    response = authenticated_api_client_fixture.get(url)
+    assert response.status_code == 200, response.status_code
 
-    assert len(learning_breakdown_data) == 2
+    def f(grade, user_count, has_completed_pre_survey, has_completed_post_survey, bucketed_hours):
+        r = {
+            "department": "acas",
+            "grade": f"GRADE{grade}",
+            "profession": "ANALYSIS",
+            "user_count": user_count,
+            "has_completed_pre_survey": has_completed_pre_survey,
+            "has_completed_post_survey": has_completed_post_survey,
+            "bucketed_hours": bucketed_hours,
+        }
+        return r
 
-    grade7 = next(x for x in learning_breakdown_data if x["grade"] == "GRADE7")
-    assert grade7["number_of_sign_ups"] == 2  # alice and bob are grade 7
-    assert grade7["completed_first_evaluation"] == 1  # alice has done no training, bob has done the first one
-    assert grade7["completed_second_evaluation"] == 0
-    assert (
-        grade7["completed_1_hours_of_learning"] == 1
-    )  # alice has done 1 course of 1 hour, bob has done 1 course of one hour and one with 2
-    assert grade7["completed_2_hours_of_learning"] == 1  # only bob shows up here
-
-    grade6 = next(x for x in learning_breakdown_data if x["grade"] == "GRADE6")
-    assert grade6["number_of_sign_ups"] == 3  # chris & daisy have this grade
-    assert grade6["completed_first_evaluation"] == 3  # chris has completed both evaluations
-    assert grade6["completed_second_evaluation"] == 2  # 1 course, 1 hour
-    assert grade6["completed_1_hours_of_learning"] == 0
-    assert grade6["completed_2_hours_of_learning"] == 0
+    expected = [
+        (6, 1, True, True, "(0,1)"),  # eric
+        (6, 2, True, True, "[1,2)"),  # chris & daisy
+        (7, 1, False, False, "0"),  # authenticated user for the client!
+        (7, 1, False, False, "[1,2)"),  # alice
+        (7, 1, True, False, "[3,4)"),  # bob
+    ]
+    assert response.json()["results"] == [f(*x) for x in expected]
