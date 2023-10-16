@@ -84,6 +84,13 @@ class User(BaseUser, UUIDPrimaryKeyBase):
             level = determine_competency_levels(competency_answers)
         return level
 
+    class Meta:
+        indexes = [
+            models.Index(
+                fields=("department", "grade", "profession", "has_completed_pre_survey", "has_completed_post_survey")
+            )
+        ]
+
 
 class Course(TimeStampedModel, UUIDPrimaryKeyBase):
     title = models.CharField(max_length=200)
