@@ -11,7 +11,14 @@
     <meta name="theme-color" content="blue">
 
 {#      <script defer data-domain="http://localhost:8000" src="http://localhost:8000/js/script.js"></script>#}
-      <script defer data-domain="dev.onebigthing.civilservice.gov.uk" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
+      <script defer  {% if request.user.is_authenticated %}
+        event-department="{{request.user.department}}"
+        event-logged_in="true"
+        {% else %}
+        event-logged_in="true"
+        (% endif %)
+      
+       data-domain="dev.onebigthing.civilservice.gov.uk" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
 
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
