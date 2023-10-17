@@ -247,10 +247,10 @@ additional_learning = {
             },
             {
                 "title": "The good, the bad and the unfair - all about data quality and ethics",
-                "link": "",
+                "link": "https://vimeo.com/875184473/66fe939198",
                 "provider": "Cabinet Office and the Office for National Statistics",
                 "type": "Video",
-                "duration": 0,
+                "duration": 45,
             },
             {
                 "title": "Economy...society...pandemic...what would YOU have done?",
