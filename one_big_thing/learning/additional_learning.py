@@ -261,10 +261,10 @@ additional_learning = {
             },
             {
                 "title": "Data in action",
-                "link": "", # TODO - add link
+                "link": "https://vimeo.com/875236601",
                 "provider": "Cabinet Office and the Office for National Statistics",
                 "type": "Video",
-                "duration": 0, # TODO - add duration
+                "duration": 49,
             },
         ],
     },
