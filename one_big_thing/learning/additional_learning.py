@@ -236,7 +236,7 @@ additional_learning = {
                 "link": "https://vimeo.com/875157624",
                 "provider": "Cabinet Office and the Office for National Statistics",
                 "type": "Video",
-                "duration": 0,
+                "duration": 64,
             },
             {
                 "title": "So you think you know about data",
@@ -254,17 +254,17 @@ additional_learning = {
             },
             {
                 "title": "Economy...society...pandemic...what would YOU have done?",
-                "link": "",
+                "link": "https://vimeo.com/875229064",
                 "provider": "Cabinet Office and the Office for National Statistics",
                 "type": "Video",
-                "duration": 0,
+                "duration": 65,
             },
             {
                 "title": "Data in action",
-                "link": "",
+                "link": "", # TODO - add link
                 "provider": "Cabinet Office and the Office for National Statistics",
                 "type": "Video",
-                "duration": 0,
+                "duration": 0, # TODO - add duration
             },
         ],
     },
