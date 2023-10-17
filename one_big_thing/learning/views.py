@@ -12,7 +12,6 @@ from django.views.decorators.http import require_http_methods
 from . import (
     choices,
     constants,
-    departments,
     interface,
     models,
     schemas,
@@ -176,7 +175,7 @@ class RecordLearningView(utils.MethodDispatcher):
         if not data:
             data = {}
         user = request.user
-        if user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys():
+        if user.new_department.code in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys():
             template_name = "streamlined-record-learning.html"
         else:
             template_name = "record-learning.html"

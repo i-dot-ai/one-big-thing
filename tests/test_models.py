@@ -1,4 +1,5 @@
 from one_big_thing.learning import models
+from one_big_thing.learning.models import Department
 
 
 def test_model_fields():
@@ -59,7 +60,7 @@ def test_completed_personal_details():
     user.save()
     assert not user.completed_personal_details, user.completed_personal_details
     user.profession = "ANALYSIS"
-    user.department = "cabinet-office"
+    user.new_department = Department.objects.get(code="cabinet-office")
     user.save()
     assert user.completed_personal_details, user.completed_personal_details
     user.delete()

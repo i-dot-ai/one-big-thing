@@ -6,10 +6,10 @@ from marshmallow import (
     validates_schema,
 )
 
-from one_big_thing.learning.departments import Department
 from one_big_thing.learning.utils import is_civil_service_email
 
 from . import choices, constants
+from .models import Department
 
 HOURS_ERROR = "Please enter the hours this course took to complete, for example, 2"
 MINUTES_ERROR = "Please enter the minutes this course took to complete, between 0 and 59"
@@ -162,7 +162,7 @@ class MyDetailsSchema(Schema):
 
     department = fields.Str(
         required=True,
-        validate=validate.OneOf(Department.values),
+        validate=validate.OneOf([code for code, _ in Department.choices()]),
         error_messages={
             "required": "You must select a department",
         },
