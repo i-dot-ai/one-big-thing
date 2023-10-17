@@ -30,6 +30,80 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
+class Department(TimeStampedModel):
+    ATTORNEY_GENERALS_DEPARTMENTS = "ATTORNEY_GENERALS_DEPARTMENTS"
+    CABINET_OFFICE = "CABINET_OFFICE"
+    CHANCELLORS_OTHER_DEPARTMENTS = "CHANCELLORS_OTHER_DEPARTMENTS"
+    CHARITY_COMMISSION = "CHARITY_COMMISSION"
+    COMPETITION_AND_MARKETS_AUTHORITY = "COMPETITION_AND_MARKETS_AUTHORITY"
+    CROWN_PROSECUTION_SERVICE = "CROWN_PROSECUTION_SERVICE"
+    DEPARTMENT_FOR_BUSINESS_AND_TRADE_ = "DEPARTMENT_FOR_BUSINESS_AND_TRADE_"
+    DEPARTMENT_FOR_CULTURE_MEDIA_AND_SPORT = "DEPARTMENT_FOR_CULTURE_MEDIA_AND_SPORT"
+    DEPARTMENT_FOR_EDUCATION = "DEPARTMENT_FOR_EDUCATION"
+    DEPARTMENT_FOR_ENERGY_SECURITY_AND_NET_ZERO = "DEPARTMENT_FOR_ENERGY_SECURITY_AND_NET_ZERO"
+    DEPARTMENT_FOR_ENVIRONMENT_FOOD_AND_RURAL_AFFAIRS = "DEPARTMENT_FOR_ENVIRONMENT_FOOD_AND_RURAL_AFFAIRS"
+    DEPARTMENT_FOR_LEVELLING_UP_HOUSING_AND_COMMUNITIES = "DEPARTMENT_FOR_LEVELLING_UP_HOUSING_AND_COMMUNITIES"
+    DEPARTMENT_FOR_SCIENCE_INNOVATION_AND_TECHNOLOGY = "DEPARTMENT_FOR_SCIENCE_INNOVATION_AND_TECHNOLOGY"
+    DEPARTMENT_FOR_TRANSPORT = "DEPARTMENT_FOR_TRANSPORT"
+    DEPARTMENT_FOR_WORK_AND_PENSIONS = "DEPARTMENT_FOR_WORK_AND_PENSIONS"
+    DEPARTMENT_OF_HEALTH_AND_SOCIAL_CARE = "DEPARTMENT_OF_HEALTH_AND_SOCIAL_CARE"
+    FOOD_STANDARDS_AGENCY = "FOOD_STANDARDS_AGENCY"
+    FOREIGN_COMMONWEALTH_AND_DEVELOPMENT_OFFICE = "FOREIGN_COMMONWEALTH_AND_DEVELOPMENT_OFFICE"
+    HM_LAND_REGISTRY = "HM_LAND_REGISTRY"
+    HM_REVENUE_AND_CUSTOMS = "HM_REVENUE_AND_CUSTOMS"
+    HM_TREASURY = "HM_TREASURY"
+    HOME_OFFICE = "HOME_OFFICE"
+    MINISTRY_OF_DEFENCE = "MINISTRY_OF_DEFENCE"
+    MINISTRY_OF_JUSTICE = "MINISTRY_OF_JUSTICE"
+    NATIONAL_CRIME_AGENCY = "NATIONAL_CRIME_AGENCY"
+    SCOTTISH_GOVERNMENT = "SCOTTISH_GOVERNMENT"
+    UK_EXPORT_FINANCE = "UK_EXPORT_FINANCE"
+    UK_STATISTICS_AUTHORITY = "UK_STATISTICS_AUTHORITY"
+    WATER_SERVICES_REGULATION_AUTHORITY = "WATER_SERVICES_REGULATION_AUTHORITY"
+    WELSH_GOVERNMENT = "WELSH_GOVERNMENT"
+
+    PARENTS = [
+        (ATTORNEY_GENERALS_DEPARTMENTS, "Attorney General's Departments"),
+        (CABINET_OFFICE, "Cabinet Office"),
+        (CHANCELLORS_OTHER_DEPARTMENTS, "Chancellor's other departments"),
+        (CHARITY_COMMISSION, "Charity Commission"),
+        (COMPETITION_AND_MARKETS_AUTHORITY, "Competition and Markets Authority"),
+        (CROWN_PROSECUTION_SERVICE, "Crown Prosecution Service"),
+        (DEPARTMENT_FOR_BUSINESS_AND_TRADE_, "Department for Business and Trade "),
+        (DEPARTMENT_FOR_CULTURE_MEDIA_AND_SPORT, "Department for Culture, Media & Sport"),
+        (DEPARTMENT_FOR_EDUCATION, "Department for Education"),
+        (DEPARTMENT_FOR_ENERGY_SECURITY_AND_NET_ZERO, "Department for Energy Security & Net Zero"),
+        (DEPARTMENT_FOR_ENVIRONMENT_FOOD_AND_RURAL_AFFAIRS, "Department for Environment Food & Rural Affairs"),
+        (DEPARTMENT_FOR_LEVELLING_UP_HOUSING_AND_COMMUNITIES, "Department for Levelling Up, Housing and Communities"),
+        (DEPARTMENT_FOR_SCIENCE_INNOVATION_AND_TECHNOLOGY, "Department for Science, Innovation & Technology"),
+        (DEPARTMENT_FOR_TRANSPORT, "Department for Transport"),
+        (DEPARTMENT_FOR_WORK_AND_PENSIONS, "Department for Work & Pensions"),
+        (DEPARTMENT_OF_HEALTH_AND_SOCIAL_CARE, "Department of Health & Social Care"),
+        (FOOD_STANDARDS_AGENCY, "Food Standards Agency"),
+        (FOREIGN_COMMONWEALTH_AND_DEVELOPMENT_OFFICE, "Foreign, Commonwealth & Development Office"),
+        (HM_LAND_REGISTRY, "HM Land Registry"),
+        (HM_REVENUE_AND_CUSTOMS, "HM Revenue & Customs"),
+        (HM_TREASURY, "HM Treasury"),
+        (HOME_OFFICE, "Home Office"),
+        (MINISTRY_OF_DEFENCE, "Ministry of Defence"),
+        (MINISTRY_OF_JUSTICE, "Ministry of Justice"),
+        (NATIONAL_CRIME_AGENCY, "National Crime Agency"),
+        (SCOTTISH_GOVERNMENT, "Scottish Government"),
+        (UK_EXPORT_FINANCE, "UK Export Finance"),
+        (UK_STATISTICS_AUTHORITY, "UK Statistics Authority"),
+        (WATER_SERVICES_REGULATION_AUTHORITY, "Water Services Regulation Authority"),
+        (WELSH_GOVERNMENT, "Welsh Government"),
+    ]
+
+    code = models.CharField(max_length=128, unique=True, help_text="unique code for department")
+    display = models.CharField(max_length=128, help_text="display name")
+    parent = models.CharField(max_length=128, choices=PARENTS, help_text="parent department")
+
+    @classmethod
+    def choices(cls) -> tuple[str, str]:
+        return [(department.code, department.display) for department in cls.objects.all()]
+
+
 class UserManager(BaseUserManager, CTEManager):
     """https://dimagi.github.io/django-cte/
     we need to do some complex queries on this model
@@ -46,6 +120,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
     department = models.CharField(max_length=254, blank=True, null=True, choices=department_tuples)
+    new_department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=True, null=True)
     grade = models.CharField(max_length=254, blank=True, null=True, choices=Grade.choices)
     profession = models.CharField(max_length=254, blank=True, null=True, choices=Profession.choices)
     has_completed_pre_survey = models.BooleanField(default=False)
