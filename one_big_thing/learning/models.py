@@ -98,10 +98,6 @@ class Department(TimeStampedModel):
     display = models.CharField(max_length=128, help_text="display name")
     parent = models.CharField(max_length=128, choices=PARENTS, help_text="parent department")
 
-    @classmethod
-    def choices(cls) -> tuple[str, str]:
-        return [(department.code, department.display) for department in cls.objects.all()]
-
 
 class UserManager(BaseUserManager, CTEManager):
     """https://dimagi.github.io/django-cte/
@@ -118,8 +114,8 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     invited_at = models.DateTimeField(default=None, blank=True, null=True)
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
-    department = models.CharField(max_length=254, blank=True, null=True, choices=[])
-    new_department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=True, null=True)
+    old_department = models.CharField(max_length=254, blank=True, null=True, choices=[])
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=True, null=True)
     grade = models.CharField(max_length=254, blank=True, null=True, choices=Grade.choices)
     profession = models.CharField(max_length=254, blank=True, null=True, choices=Profession.choices)
     has_completed_pre_survey = models.BooleanField(default=False)
@@ -128,7 +124,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 
     @property
     def completed_personal_details(self):
-        return self.new_department and self.grade and self.profession
+        return self.department and self.grade and self.profession
 
     def save(self, *args, **kwargs):
         self.email = self.email.lower()

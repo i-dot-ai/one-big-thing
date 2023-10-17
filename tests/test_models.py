@@ -60,7 +60,7 @@ def test_completed_personal_details():
     user.save()
     assert not user.completed_personal_details, user.completed_personal_details
     user.profession = "ANALYSIS"
-    user.new_department = Department.objects.get(code="cabinet-office")
+    user.department = Department.objects.get(code="cabinet-office")
     user.save()
     assert user.completed_personal_details, user.completed_personal_details
     user.delete()

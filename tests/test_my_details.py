@@ -17,7 +17,7 @@ def test_step_through_change_details():
     user = models.User.objects.get(email=email)
     assert user.grade == "HIGHER_EXECUTIVE_OFFICER", user.grade
     assert user.profession == "COMMERCIAL", user.profession
-    assert user.new_department.code == "cabinet-office", user.new_department.code
+    assert user.department.code == "cabinet-office", user.department.code
     user.delete()
 
 

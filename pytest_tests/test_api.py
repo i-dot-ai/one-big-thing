@@ -6,6 +6,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from one_big_thing.learning import models
+from one_big_thing.learning.models import Department
 from pytest_tests.utils import (  # noqa: F401
     TEST_USER_EMAIL,
     TEST_USER_PASSWORD,
@@ -18,7 +19,7 @@ def token_fixture():
     user, _ = models.User.objects.get_or_create(
         email=TEST_USER_EMAIL,
         is_api_user=True,
-        department="acas",
+        department=Department.objects.get(code="acas"),
         grade="GRADE7",
         profession="ANALYSIS",
     )

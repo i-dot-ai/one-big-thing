@@ -162,7 +162,7 @@ class MyDetailsSchema(Schema):
 
     department = fields.Str(
         required=True,
-        validate=validate.OneOf([code for code, _ in Department.choices()]),
+        validate=validate.OneOf([department.code for department in Department.objects.all()]),
         error_messages={
             "required": "You must select a department",
         },

@@ -97,7 +97,7 @@ def get_learning_breakdown_data():
         sql_query = """
 SELECT
     DATE(date_joined) as date_joined,
-    department,
+    d.code as department,
     grade,
     profession,
     count(*) as number_of_sign_ups,
@@ -111,6 +111,7 @@ SELECT
     sum(l.completed_6_hours_of_learning) as completed_6_hours_of_learning,
     sum(l.completed_7_plus_hours_of_learning) as completed_7_plus_hours_of_learning
 FROM public.learning_user as u
+LEFT JOIN public.learning_department as d on d.id = u.department_id
 LEFT JOIN (
     SELECT
     user_id,
@@ -151,7 +152,7 @@ LEFT JOIN (
     ) inner_l
 ) l
 ON l.user_id = u.id
-GROUP BY department,
+GROUP BY d.code,
 grade,
 profession,
 date_joined;"""
@@ -209,7 +210,7 @@ def get_normalized_learning_data():
     )
 
     group_and_order_by = [
-        "department",
+        "department__code",
         "grade",
         "profession",
         "has_completed_pre_survey",

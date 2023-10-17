@@ -40,7 +40,7 @@ class DepartmentBreakdownSerializer(serializers.Serializer):
 
 
 class NormalizedDepartmentBreakdownSerializer(serializers.Serializer):
-    department = serializers.CharField(allow_null=True)
+    department = serializers.CharField(allow_null=True, source="department__code")
     grade = serializers.CharField(allow_null=True)
     profession = serializers.CharField(allow_null=True)
     user_count = serializers.IntegerField()

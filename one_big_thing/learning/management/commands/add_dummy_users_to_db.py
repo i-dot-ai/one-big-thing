@@ -3,6 +3,7 @@ import random
 from django.core.management import BaseCommand
 
 from one_big_thing.learning import choices, departments, models
+from one_big_thing.learning.models import Department
 
 TEST_USER_PASSWORD = "dummy-user-password"
 
@@ -15,11 +16,14 @@ class Command(BaseCommand):
             _ = _add_user(i)
 
 
+department_tuples = [(x.code, x.display) for x in Department.objects.all()]
+
+
 def _add_user(unique_id=random.randint(0, 2000)):
     user, _ = models.User.objects.get_or_create(
         email=f"test_{unique_id}@example.com",
         is_api_user=False,
-        department=departments.department_tuples[random.randint(0, len(departments.department_tuples) - 1)][0],
+        department=department_tuples[random.randint(0, len(departments.department_tuples) - 1)][0],
         grade=choices.Grade.labels[random.randint(0, len(choices.Grade.labels) - 1)],
         profession=choices.Profession.labels[random.randint(0, len(choices.Profession.labels) - 1)],
         has_completed_post_survey=bool(random.choice([True, False])),
