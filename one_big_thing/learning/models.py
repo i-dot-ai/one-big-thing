@@ -127,9 +127,9 @@ class SurveyResult(UUIDPrimaryKeyBase, TimeStampedModel):
 
 
 class Feedback(TimeStampedModel, UUIDPrimaryKeyBase):
-    satisfaction = models.CharField(max_length=254, blank=True, null=True)
+    satisfaction = models.CharField(max_length=254, blank=True, null=True, choices=choices.Satisfaction.choices)
     improve_the_service = models.CharField(null=True, blank=True, max_length=2048)
-    take_part_in_user_research = models.CharField(max_length=3, blank=False, null=False)
+    take_part_in_user_research = models.CharField(max_length=3, blank=False, null=False, choices=choices.YesNo.choices)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
