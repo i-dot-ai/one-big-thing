@@ -164,5 +164,15 @@ def get_signups_by_date(env):
     click.echo(task)
 
 
+@cli.command()
+@env_option
+def users_willing_to_follow_up(env):
+    if env.upper() == "PROD":
+        click.secho("this is running things on the (live) server!", fg="red")
+
+    task = run(env, "users_willing_to_follow_up")
+    click.echo(task)
+
+
 if __name__ == "__main__":
     cli()
