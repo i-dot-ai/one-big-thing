@@ -123,7 +123,7 @@ def make_response(grade, user_count, has_completed_pre_survey, has_completed_pos
 
 
 @pytest.mark.django_db
-def test_breakdown_stats_no10(client_for_user, alice, bob, chris, daisy, eric):  # noqa: F811
+def test_breakdown_stats_no10(client_for_user, alice, bob, chris, daisy, eric):
     """alice works for number 10, she should see everything"""
     client = client_for_user(alice, "password")
     url = reverse("normalized_user_statistics")
@@ -140,7 +140,7 @@ def test_breakdown_stats_no10(client_for_user, alice, bob, chris, daisy, eric): 
 
 
 @pytest.mark.django_db
-def test_breakdown_stats_dwp(client_for_user, alice, bob, chris, daisy, eric):  # noqa: F811
+def test_breakdown_stats_dwp(client_for_user, alice, bob, chris, daisy, eric):
     """bob and chris have dwp email addresses, bob should only be able to see dwp stats"""
     client = client_for_user(bob, "password")
     url = reverse("normalized_user_statistics")
@@ -155,7 +155,7 @@ def test_breakdown_stats_dwp(client_for_user, alice, bob, chris, daisy, eric):  
 
 
 @pytest.mark.django_db
-def test_breakdown_stats_fco(client_for_user, alice, bob, chris, daisy, eric):  # noqa: F811
+def test_breakdown_stats_fco(client_for_user, alice, bob, chris, daisy, eric):
     """daisy has a fco email addresses, she cant see anything"""
     client = client_for_user(daisy, "password")
     url = reverse("normalized_user_statistics")
