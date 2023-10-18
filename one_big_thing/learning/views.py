@@ -3,7 +3,7 @@ import types
 import marshmallow
 from django.conf import settings
 from django.contrib import messages
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.validators import EmailValidator
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -429,6 +429,11 @@ class MyDetailsView(utils.MethodDispatcher):
         user = request.user
         try:
             details = self.my_details_schema.load(request.POST)
+            if department := details.pop("department", None):
+                try:
+                    user.department = Department.objects.get(code=department)
+                except ObjectDoesNotExist:
+                    raise marshmallow.exceptions.ValidationError(f"{department} is not a valid department")
             for k, v in details.items():
                 setattr(user, k, v)
                 user.save()

@@ -1,6 +1,5 @@
 from one_big_thing.learning import models
-
-from . import utils
+from tests import utils
 
 
 def test_step_through_change_details():
@@ -11,6 +10,7 @@ def test_step_through_change_details():
     form = page.get_form()
     form["grade"] = "HIGHER_EXECUTIVE_OFFICER"
     form["profession"] = "COMMERCIAL"
+    form["department"] = "cabinet-office"
     page.has_text("Submit")
     page = form.submit().follow()
     assert page.has_text("One Big Thing overview")  # homepage
