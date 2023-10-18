@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from marshmallow import (
     Schema,
     ValidationError,
@@ -162,7 +163,6 @@ class MyDetailsSchema(Schema):
 
     department = fields.Str(
         required=True,
-        validate=validate.OneOf([department.code for department in Department.objects.all()]),
         error_messages={
             "required": "You must select a department",
         },
@@ -181,3 +181,10 @@ class MyDetailsSchema(Schema):
             "required": "You must select a profession",
         },
     )
+
+    def validate_department(self, value):
+        try:
+            Department.objects.get(code=value)
+        except ObjectDoesNotExist:
+            codes = [code for code, _ in Department.choices()]
+            raise ValidationError(f"Must be one of: {codes}.")

@@ -16,7 +16,7 @@ class Command(BaseCommand):
             _ = _add_user(i)
 
 
-department_tuples = [(x.code, x.display) for x in Department.objects.all()]
+department_tuples = Department.choices()
 
 
 def _add_user(unique_id=random.randint(0, 2000)):

@@ -1,6 +1,7 @@
 import logging
 import uuid
 from collections import Counter
+from typing import Any
 
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
@@ -97,6 +98,11 @@ class Department(TimeStampedModel):
     code = models.CharField(max_length=128, unique=True, help_text="unique code for department")
     display = models.CharField(max_length=128, help_text="display name")
     parent = models.CharField(max_length=128, choices=PARENTS, help_text="parent department")
+    url = models.URLField(null=True, blank=True, help_text="intranet link")
+
+    @classmethod
+    def choices(cls) -> list[tuple[Any, Any]]:
+        return [(x.code, x.display) for x in cls.objects.all()]
 
 
 class UserManager(BaseUserManager, CTEManager):
@@ -114,7 +120,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     invited_at = models.DateTimeField(default=None, blank=True, null=True)
     invite_accepted_at = models.DateTimeField(default=None, blank=True, null=True)
     last_token_sent_at = models.DateTimeField(editable=False, blank=True, null=True)
-    old_department = models.CharField(max_length=254, blank=True, null=True, choices=[])
+    old_department = models.CharField(max_length=254, blank=True, null=True)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=True, null=True)
     grade = models.CharField(max_length=254, blank=True, null=True, choices=Grade.choices)
     profession = models.CharField(max_length=254, blank=True, null=True, choices=Profession.choices)

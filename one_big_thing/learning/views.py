@@ -73,7 +73,6 @@ selected_level_label_map = {
 @enforce_user_completes_details_and_pre_survey
 def homepage_view(request):
     user = request.user
-    use_streamlined_view = user.department.code in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
     errors = {}
     selected_level = user.determine_competency_level()
     if selected_level:
@@ -111,10 +110,10 @@ def homepage_view(request):
         "selected_level_course": selected_level_course,
         "all_level_courses": all_level_courses_information,
         "completed_feedback_survey": completed_feedback_survey,
-        "streamlined_version": use_streamlined_view,
+        "streamlined_version": user.department.url is not None,
     }
-    if use_streamlined_view:
-        intranet_link = constants.DEPARTMENTS_USING_INTRANET_LINKS[user.department.code]
+    if user.department.url:
+        intranet_link = user.department.url
         data["intranet_link"] = intranet_link
         return render(
             request,
@@ -176,7 +175,7 @@ class RecordLearningView(utils.MethodDispatcher):
         if not data:
             data = {}
         user = request.user
-        if user.department.code in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys():
+        if user.department.url:
             template_name = "streamlined-record-learning.html"
         else:
             template_name = "record-learning.html"
@@ -341,11 +340,10 @@ def save_data(survey_type, user, page_number, data):
 @enforce_user_completes_details_and_pre_survey
 def send_learning_record_view(request):
     user = request.user
-    streamlined_department = user.department.code in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
     courses = models.Learning.objects.filter(user=user)
     data = {
         "courses": courses,
-        "streamlined_department": streamlined_department,
+        "streamlined_department": user.department.url,
     }
     errors = {}
     if request.method == "POST":
@@ -417,9 +415,8 @@ class MyDetailsView(utils.MethodDispatcher):
     def get(self, request, errors=None, data=None):
         user = request.user
         data = self.my_details_schema.dump(user)
-        department_choices = [(department.code, department.value) for department in Department.objects.all()]
         context = {
-            "departments": department_choices,
+            "departments": Department.choices(),
             "grades": choices.Grade.choices,
             "professions": choices.Profession.choices,
             "errors": errors or {},
