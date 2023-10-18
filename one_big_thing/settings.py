@@ -200,7 +200,7 @@ def before_send(event, hint):
         "Slow DB Query",  # 10DS data query
     ]
     event_message = event.get("message")
-    if any(event_message.startswith(prefix) for prefix in messages_to_ignore):
+    if any(message in event_message for message in messages_to_ignore):
         return None
     return event
 
