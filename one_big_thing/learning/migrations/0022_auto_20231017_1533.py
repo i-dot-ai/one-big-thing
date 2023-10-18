@@ -18,27 +18,10 @@ class Migration(migrations.Migration):
             name="department",
             field=models.CharField(blank=True, max_length=254, null=True),
         ),
-        migrations.AddIndex(
-            model_name="user",
-            index=models.Index(
-                fields=[
-                    "new_department",
-                    "grade",
-                    "profession",
-                    "has_completed_pre_survey",
-                    "has_completed_post_survey",
-                ],
-                name="learning_us_new_dep_70a7e0_idx",
-            ),
-        ),
         migrations.RenameField(
             model_name="user",
             old_name="department",
             new_name="old_department",
-        ),
-        migrations.RemoveIndex(
-            model_name="user",
-            name="learning_us_new_dep_70a7e0_idx",
         ),
         migrations.RenameField(
             model_name="user",
