@@ -104,6 +104,9 @@ class Department(TimeStampedModel):
     def choices(cls) -> list[tuple[Any, Any]]:
         return [(x.code, x.display) for x in cls.objects.all()]
 
+    def __str__(self):
+        return self.display
+
 
 class UserManager(BaseUserManager, CTEManager):
     """https://dimagi.github.io/django-cte/

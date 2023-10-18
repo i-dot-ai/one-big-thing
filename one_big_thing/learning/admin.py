@@ -20,6 +20,7 @@ class SurveyResultAdmin(admin.ModelAdmin):
 
 class UserAdmin(admin.ModelAdmin):
     search_fields = ("email", "first_name", "last_name")
+    list_display = ("email", "department")
 
 
 class OTPAdmin(OTPAdminSite):
@@ -30,6 +31,7 @@ if settings.DEBUG:
     # we only want to expose a minimum of User data
     # outside of DEBUG mode
     admin_site = admin.AdminSite()
+    admin_site.register(User, UserAdmin)
     admin_site.register(models.Course)
     admin_site.register(models.Learning)
     admin_site.register(models.SurveyResult, SurveyResultAdmin)

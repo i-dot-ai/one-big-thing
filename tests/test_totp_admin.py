@@ -44,6 +44,6 @@ class TOTPAdminTest(TestCase):
         )
 
         # Check if the login was unsuccessful (bizarrely this is an HTTP 302 status code)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         # check that the correct error is returned
         self.assertContains(response, "Invalid token. Please make sure you have entered it correctly.")
