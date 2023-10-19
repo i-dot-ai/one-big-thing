@@ -27,4 +27,30 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.RunPython(populate_department_model),
+        migrations.RemoveIndex(
+            model_name="user",
+            name="learning_us_departm_081e46_idx",
+        ),
+        migrations.AlterField(
+            model_name="user",
+            name="department",
+            field=models.CharField(blank=True, max_length=254, null=True),
+        ),
+        migrations.RenameField(
+            model_name="user",
+            old_name="department",
+            new_name="old_department",
+        ),
+        migrations.RenameField(
+            model_name="user",
+            old_name="new_department",
+            new_name="department",
+        ),
+        migrations.AddIndex(
+            model_name="user",
+            index=models.Index(
+                fields=["department", "grade", "profession", "has_completed_pre_survey", "has_completed_post_survey"],
+                name="learning_us_departm_a9c393_idx",
+            ),
+        ),
     ]
