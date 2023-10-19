@@ -9,5 +9,5 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         for email, *_ in User.objects.filter(
             surveyresult__data__contains={"willing-to-follow-up": "yes"},
-        ).values_list("user__email"):
+        ).values_list("email"):
             self.stdout.write(email)
