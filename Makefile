@@ -45,9 +45,9 @@ check-migrations:
 
 .PHONY: test
 test:
-	docker compose down
-	docker compose build tests-one_big_thing one_big_thing-test-db && docker compose run --rm tests-one_big_thing
-	docker compose down
+	docker-compose down
+	docker-compose build tests-one_big_thing one_big_thing-test-db && docker-compose run --rm tests-one_big_thing
+	docker-compose down
 
 .PHONY: loadtests
 loadtests:
