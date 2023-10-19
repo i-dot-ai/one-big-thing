@@ -1,9 +1,8 @@
+import pytest
 from marshmallow import Schema, ValidationError
-from nose.tools import assert_raises_regexp, with_setup
+from nose.tools import assert_raises_regexp
 
 from one_big_thing.learning import choices, models, schemas
-
-from .utils import with_authenticated_client
 
 
 class MadeUpSchema(Schema):
@@ -36,23 +35,20 @@ def test_course_schema_has_relevant_fields():
     check_schema_model_match_fields(model_name="Course", schema_name="CourseSchema")
 
 
-def setup_course():
-    new_course = models.Course(title="Test course schemas", time_to_complete="120")
-    new_course.save()
+@pytest.fixture
+def new_course():
+    course = models.Course(title="Test course schemas", time_to_complete="120")
+    course.save()
     # TODO - add more fields
-    new_course.save()
+    course.save()
+    yield course
 
 
-def teardown_course():
-    course = models.Course.objects.get(title="Test course schemas")
-    course.delete()
-
-
-@with_setup(setup_course, teardown_course)
-@with_authenticated_client
-def test_course_schema_dump(client):
+@pytest.mark.django_db
+def test_course_schema_dump(client, alice, new_course):
+    client.force_login(alice)
     course_schema = schemas.CourseSchema()
-    course = models.Course.objects.get(title="Test course schemas")
+    course = models.Course.objects.get(title=new_course.title)
     serialized_course = course_schema.dump(course)
     assert serialized_course
 
