@@ -1,5 +1,5 @@
+import pytest
 from django.core.exceptions import ValidationError
-from nose.tools import assert_raises_regexp
 
 from one_big_thing.custom_password_validators import (
     BusinessPhraseSimilarityValidator,
@@ -18,8 +18,9 @@ def test_special_character_validator_pass():
 def test_special_character_validator_fail():
     """we expect `password' to fail because it contains no special characters"""
     validator = SpecialCharacterValidator()
-    with assert_raises_regexp(ValidationError, validator.msg):
+    with pytest.raises(ValidationError) as error:
         validator.validate("password")
+    assert validator.msg in error.value.args
 
 
 def test_lowercase_uppercase_validator_pass():
@@ -34,8 +35,9 @@ def test_lowercase_uppercase_validator_pass():
 def test_lowercase_uppercase_validator_fail():
     """we expect `password' to fail because is entirely lower case"""
     validator = LowercaseUppercaseValidator()
-    with assert_raises_regexp(ValidationError, validator.msg):
+    with pytest.raises(ValidationError) as error:
         validator.validate("password")
+    assert validator.msg in error.value.args
 
 
 def test_business_phrase_similarity_validator_pass():
@@ -49,5 +51,6 @@ def test_business_phrase_similarity_validator_fail():
     """we expect `password' to fail because 'downing-street' is a blacklisted
     password"""
     validator = BusinessPhraseSimilarityValidator()
-    with assert_raises_regexp(ValidationError, validator.msg):
+    with pytest.raises(ValidationError) as error:
         validator.validate("number 10 downing-street")
+    assert validator.msg in error.value.args
