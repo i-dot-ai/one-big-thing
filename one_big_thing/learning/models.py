@@ -71,7 +71,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 
     def get_time_completed(self) -> int:
         learning = self.learning_set.aggregate(total=Sum("time_to_complete"))
-        return learning["total"]
+        return learning["total"] or 0
 
     def has_completed_course(self, course_id: int) -> bool:
         return self.learning_set.filter(course_id=course_id).exists()
