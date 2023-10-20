@@ -13,7 +13,7 @@
 "cabinet-office", "Cabinet Office", "CABINET_OFFICE", null
 "central-civil-service-fast-stream", "Central Civil Service Fast Stream", "CABINET_OFFICE", null
 "centre-for-environment-fisheries-and-aquaculture-science", "Centre for Environment, Fisheries and Aquaculture Science (Cefas)", "DEPARTMENT_FOR_ENVIRONMENT_FOOD_AND_RURAL_AFFAIRS", "https://defra.sharepoint.com/sites/Community739/SitePages/One-Big-Thing.aspx?OR=Teams-HL&CT=1693306749553"
-"charity-commission", "The Charity Commission (Charity Commission)", "CHARITY_COMMISSION", null
+"charity-commission", "The Charity Commission (Charity Commission)", "Charity Commission overall", null
 "companies-house", "Companies House  (Companies House)", "DEPARTMENT_FOR_BUSINESS_AND_TRADE", null
 "competition-and-markets-authority", "Competition and Markets Authority (CMA)", "COMPETITION_AND_MARKETS_AUTHORITY", null
 "construction-industry-training-board", "Construction Industry Training Board (CITB)", "DEPARTMENT_FOR_EDUCATION", null
@@ -33,7 +33,7 @@
 "department-for-education", "Department for Education (DfE)", "DEPARTMENT_FOR_EDUCATION", null
 "department-for-energy-security-and-net-zero", "Department for Energy Security and Net Zero (DESNZ)", "DEPARTMENT_FOR_ENERGY_SECURITY_AND_NET_ZERO", null
 "department-for-environment-food-rural-affairs", "Department for Environment, Food & Rural Affairs (Defra)", "DEPARTMENT_FOR_ENVIRONMENT_FOOD_AND_RURAL_AFFAIRS", "https://defra.sharepoint.com/sites/Community739/SitePages/One-Big-Thing.aspx?OR=Teams-HL&CT=1693306749553"
-"department-for-levelling-up-housing-and-communities", "Department for Levelling Up, Housing and Communities  (DLUHC)", "DEPARTMENT_FOR_LEVELLING_UP_HOUSING_AND_COMMUNITIES", null
+"department-for-levelling-up-housing-and-communities", "Department for Levelling Up, Housing and Communities  (DLUHC)", "Department for Levelling Up, Housing & Communities", null
 "department-for-science-innovation-and-technology", "Department for Science, Innovation and Technology (DSIT)", "DEPARTMENT_FOR_SCIENCE_INNOVATION_AND_TECHNOLOGY", null
 "department-for-transport", "Department for Transport (DfT)", "DEPARTMENT_FOR_TRANSPORT", null
 "department-of-health-and-social-care", "Department of Health and Social Care (DHSC)", "DEPARTMENT_OF_HEALTH_AND_SOCIAL_CARE", null
@@ -108,7 +108,7 @@
 "ministry-of-defence-civilian", "Ministry of Defence (MOD) - Civilian Staff", "MINISTRY_OF_DEFENCE", null
 "ministry-of-defence-military", "Ministry of Defence (MOD) - Military Staff", "MINISTRY_OF_DEFENCE", null
 "ministry-of-justice", "Ministry of Justice (MOJ)", "MINISTRY_OF_JUSTICE", null
-"single-financial-guidance-body", "Money and Pensions Service (MaPS)", "DEPARTMENT_FOR_WORK_AND_PENSIONS", null
+"single-financial-guidance-body", "Money and Pensions Service (MaPS)", null, null
 "national-crime-agency", "National Crime Agency (NCA)", "NATIONAL_CRIME_AGENCY", null
 "national-forest-company", "National Forest Company (NFC)", "DEPARTMENT_FOR_ENVIRONMENT_FOOD_AND_RURAL_AFFAIRS", null
 "national-infrastructure-commission", "National Infrastructure Commission", "HM_TREASURY", null
@@ -136,11 +136,11 @@
 "office-of-the-secretary-of-state-for-wales", "Office of the Secretary of State for Wales (UK Government in Wales)", "OFFICE_OF_THE_SECRETARY_OF_STATE_FOR_WALES", null
 "official-solicitor-and-public-trustee", "Official Solicitor and Public Trustee (OSPT)", "MINISTRY_OF_JUSTICE", null
 "peak-district-national-park", "Peak District National Park Authority (PDNP)", "DEPARTMENT_FOR_ENVIRONMENT_FOOD_AND_RURAL_AFFAIRS", null
-"planning-inspectorate", "Planning Inspectorate (The Planning Inspectorate)", "DEPARTMENT_FOR_LEVELLING_UP_HOUSING_AND_COMMUNITIES", null
+"planning-inspectorate", "Planning Inspectorate (The Planning Inspectorate)", "Department for Levelling Up, Housing & Communities", null
 "plant-varieties-and-seeds-tribunal", "Plant Varieties and Seeds Tribunal (PVST)", "DEPARTMENT_FOR_ENVIRONMENT_FOOD_AND_RURAL_AFFAIRS", null
 "prime-ministers-office-10-downing-street", "Prime Minister's Office, 10 Downing Street (Number 10)", "CABINET_OFFICE", null
 "prisons-and-probation-ombudsman", "Prisons and Probation Ombudsman (PPO)", "MINISTRY_OF_JUSTICE", null
-"queen-elizabeth-ii-conference-centre", "Queen Elizabeth II Conference Centre (QEIICC)", "DEPARTMENT_FOR_LEVELLING_UP_HOUSING_AND_COMMUNITIES", null
+"queen-elizabeth-ii-conference-centre", "Queen Elizabeth II Conference Centre (QEIICC)", "Department for Levelling Up, Housing & Communities", null
 "royal-fleet-auxiliary", "Royal Fleet Auxiliary", "MINISTRY_OF_DEFENCE", null
 "rural-payments-agency", "Rural Payments Agency (RPA)", "DEPARTMENT_FOR_ENVIRONMENT_FOOD_AND_RURAL_AFFAIRS", "https://defra.sharepoint.com/sites/Community739/SitePages/One-Big-Thing.aspx?OR=Teams-HL&CT=1693306749553"
 "the-scottish-government", "The Scottish Government (The Scottish Government)", "SCOTTISH_GOVERNMENT", null
