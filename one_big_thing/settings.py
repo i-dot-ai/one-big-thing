@@ -31,6 +31,8 @@ CONTACT_EMAIL = env.str("CONTACT_EMAIL", default="test@example.com")
 FROM_EMAIL = env.str("FROM_EMAIL", default="test@example.com")
 FEEDBACK_EMAIL = env.str("FEEDBACK_EMAIL", default="test@example.com")
 ALLOWED_DOMAINS = env.str("ALLOWED_DOMAINS", default="").split(",")
+PLAUSIBLE_DATA_DOMAIN = env.str("PLAUSIBLE_DATA_DOMAIN", default="")
+SELF_HOSTED_PLAUSIBLE_ADDRESS = env.str("SELF_HOSTED_PLAUSIBLE_ADDRESS", default="")
 
 CIVIL_SERVICE_DOMAINS = frozenset(ALLOWED_DOMAINS)
 
@@ -296,16 +298,17 @@ SESSION_ENGINE = "django.contrib.sessions.backends.db"
 CSP_DEFAULT_SRC = ("'self'",)
 CSP_STYLE_SRC = (
     "'self'",
-    "'sha256-meQy8e5Yiq23veqfbkeTdax2P6gI1gfSHSV1cbsIcyY='",  # TODO: Fix SHA
+    "'sha256-wQJppp72tbAs/gAyLSJEgQfdtams9qseMear9achv1o='",
 )
 CSP_FRAME_SRC = ("https://player.vimeo.com/",)
 CSP_SCRIPT_SRC = (
     "'self'",
-    "'sha256-PBqraf9NRNe1eMLXFzOqAJIf8tTCYe8BuTrSHvqTBEc='",
+    SELF_HOSTED_PLAUSIBLE_ADDRESS,
     "plausible.io",
 )
 CSP_CONNECT_SRC = (
     "'self'",
+    SELF_HOSTED_PLAUSIBLE_ADDRESS,
     "plausible.io",
 )
 
