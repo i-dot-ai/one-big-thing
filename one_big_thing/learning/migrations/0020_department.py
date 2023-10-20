@@ -5,7 +5,7 @@ import os
 import django
 from django.db import migrations, models
 
-with open(os.path.join(os.path.abspath("."), "departments.csv")) as f:
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "departments.csv")) as f:
     rows = [json.loads(f"[{row}]") for row in f.readlines()]
     DEPARTMENTS = rows[1:]
 
