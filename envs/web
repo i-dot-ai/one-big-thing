@@ -17,3 +17,4 @@ REQUIRED_LEARNING_TIME=420
 DEPARTMENTS_USING_INTRANET='{"academy-for-justice-commissioning": "https://google.com/", "accelerated-access-review": "https://google.com/"}'
 ENVIRONMENT=LOCAL
 ALLOWED_DOMAINS=cabinetoffice.gov.uk,example.com
+PLAUSIBLE_DATA_DOMAIN=plausible-domain-name

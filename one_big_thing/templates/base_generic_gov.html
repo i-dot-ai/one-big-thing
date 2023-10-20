@@ -9,17 +9,15 @@
     {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="blue">
-
-{#      <script defer data-domain="http://localhost:8000" src="http://localhost:8000/js/script.js"></script>#}
     {% if request.user.is_authenticated %}
         <script defer
         event-department="{{request.user.department}}"
         event-logged_in="true"
-       data-domain="dev.onebigthing.civilservice.gov.uk" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
+       data-domain="{{PLAUSIBLE_DATA_DOMAIN}}" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
     {% else %}
         <script defer
         event-logged_in="false"
-       data-domain="dev.onebigthing.civilservice.gov.uk" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
+       data-domain="{{PLAUSIBLE_DATA_DOMAIN}}" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
     {% endif %}
 
 

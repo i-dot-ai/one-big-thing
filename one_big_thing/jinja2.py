@@ -2,6 +2,7 @@ import datetime
 
 import humanize
 import jinja2
+from django.conf import settings
 from django.contrib import messages
 from django.templatetags.static import static
 from django.urls import reverse
@@ -69,6 +70,10 @@ def humanize_timedelta(minutes=0, hours_limit=200, too_large_msg=""):
         return humanize.precisedelta(delta, minimum_unit="minutes")
 
 
+def get_plausible_data_domain():
+    return settings.PLAUSIBLE_DATA_DOMAIN
+
+
 def environment(**options):
     extra_options = dict()
     env = jinja2.Environment(  # nosec B701
@@ -92,6 +97,7 @@ def environment(**options):
             "humanize_timedelta": humanize_timedelta,
             "get_messages": messages.get_messages,
             "space_name": VCAP_APPLICATION.get("space_name"),
+            "PLAUSIBLE_DATA_DOMAIN": get_plausible_data_domain(),
         }
     )
     return env
