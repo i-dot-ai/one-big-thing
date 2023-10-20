@@ -18,3 +18,4 @@ DEPARTMENTS_USING_INTRANET='{"academy-for-justice-commissioning": "https://googl
 ENVIRONMENT=LOCAL
 ALLOWED_DOMAINS=cabinetoffice.gov.uk,example.com
 PLAUSIBLE_DATA_DOMAIN=plausible-domain-name
+SELF_HOSTED_PLAUSIBLE_ADDRESS=http://10.0.0.1:8000
