@@ -9,8 +9,8 @@ from django.db.models import Sum
 from django_cte import CTEManager
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 
-from one_big_thing.learning import constants
-from one_big_thing.learning.choices import CourseType, Grade, Profession
+from one_big_thing.learning import choices, constants
+from one_big_thing.learning.choices import Grade, Profession
 from one_big_thing.learning.departments import department_tuples
 
 logger = logging.getLogger(__name__)
@@ -104,8 +104,14 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 class Course(TimeStampedModel, UUIDPrimaryKeyBase):
     title = models.CharField(max_length=200)
     link = models.URLField(blank=True, null=True)
-    learning_type = models.CharField(max_length=128, blank=True, null=True, choices=CourseType.choices)
+    learning_type = models.CharField(max_length=128, blank=True, null=True, choices=choices.CourseType.choices)
     time_to_complete = models.IntegerField(blank=True, null=True)  # minutes
+
+    def get_learning_type_display_name(self):
+        if self.learning_type in choices.CourseType.names:
+            return choices.CourseType.mapping[self.learning_type]
+        else:
+            return ""
 
     def __str__(self):
         return f"{self.title} ({self.id})"
@@ -114,11 +120,17 @@ class Course(TimeStampedModel, UUIDPrimaryKeyBase):
 class Learning(TimeStampedModel, UUIDPrimaryKeyBase):
     title = models.CharField(max_length=200)
     link = models.URLField(blank=True, null=True)
-    learning_type = models.CharField(max_length=128, blank=True, null=True, choices=CourseType.choices)
+    learning_type = models.CharField(max_length=128, blank=True, null=True, choices=choices.CourseType.choices)
     time_to_complete = models.IntegerField()  # minutes
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField(blank=True, null=True)
+
+    def get_learning_type_display_name(self):
+        if self.learning_type in choices.CourseType.names:
+            return choices.CourseType.mapping[self.learning_type]
+        else:
+            return ""
 
     def __str__(self):
         return f"{self.title} ({self.id})"
