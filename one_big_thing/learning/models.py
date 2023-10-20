@@ -5,11 +5,12 @@ from collections import Counter
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
+from django.db.models import Sum
 from django_cte import CTEManager
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 
-from one_big_thing.learning import choices, constants
-from one_big_thing.learning.choices import Grade, Profession
+from one_big_thing.learning import constants
+from one_big_thing.learning.choices import CourseType, Grade, Profession
 from one_big_thing.learning.departments import department_tuples
 
 logger = logging.getLogger(__name__)
@@ -53,38 +54,44 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     is_api_user = models.BooleanField(default=False, null=True, blank=True)
 
     @property
-    def completed_personal_details(self):
+    def completed_personal_details(self) -> bool:
         return self.department and self.grade and self.profession
 
     def save(self, *args, **kwargs):
         self.email = self.email.lower()
         super().save(*args, **kwargs)
 
-    def has_signed_up(self):
+    def has_signed_up(self) -> bool:
         return self.last_login is not None
 
-    def has_completed_required_time(self):
-        learnings = self.learning_set.all()
-        total_time = sum([learning.time_to_complete for learning in learnings])
+    def has_completed_required_time(self) -> bool:
+        total_time = self.get_time_completed()
         required_time = settings.REQUIRED_LEARNING_TIME
         return total_time >= required_time
 
-    def get_time_completed(self):
-        learnings = self.learning_set.all()
-        total_time = sum([learning.time_to_complete for learning in learnings])
-        return total_time
+    def get_time_completed(self) -> int:
+        learning = self.learning_set.aggregate(total=Sum("time_to_complete"))
+        return learning["total"]
 
-    def has_completed_course(self, course_id):
-        learnings = self.learning_set.all()
-        course_ids = [learning.course_id for learning in learnings if learning.course_id]
-        return course_id in course_ids
+    def has_completed_course(self, course_id: int) -> bool:
+        return self.learning_set.filter(course_id=course_id).exists()
 
     def determine_competency_level(self):
         level = None
         if self.has_completed_pre_survey:
-            competency_answers = get_competency_answers_for_user(self)
+            competency_answers = self.get_competency_answers_for_user()
             level = determine_competency_levels(competency_answers)
         return level
+
+    def get_competency_answers_for_user(self):
+        pre_survey_results = (
+            SurveyResult.objects.filter(user=self).filter(survey_type="pre").values_list("data", flat=True)
+        )
+        pre_survey_results = {k: v for result in pre_survey_results for k, v in result.items()}
+        competency_answers = [
+            v for k, v in pre_survey_results.items() if k in constants.INITIAL_COMPETENCY_DETERMINATION_QUESTIONS
+        ]
+        return competency_answers
 
     class Meta:
         indexes = [
@@ -97,14 +104,8 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 class Course(TimeStampedModel, UUIDPrimaryKeyBase):
     title = models.CharField(max_length=200)
     link = models.URLField(blank=True, null=True)
-    learning_type = models.CharField(max_length=128, blank=True, null=True)
+    learning_type = models.CharField(max_length=128, blank=True, null=True, choices=CourseType.choices)
     time_to_complete = models.IntegerField(blank=True, null=True)  # minutes
-
-    def get_learning_type_display_name(self):
-        if self.learning_type in choices.CourseType.names:
-            return choices.CourseType.mapping[self.learning_type]
-        else:
-            return ""
 
     def __str__(self):
         return f"{self.title} ({self.id})"
@@ -113,17 +114,11 @@ class Course(TimeStampedModel, UUIDPrimaryKeyBase):
 class Learning(TimeStampedModel, UUIDPrimaryKeyBase):
     title = models.CharField(max_length=200)
     link = models.URLField(blank=True, null=True)
-    learning_type = models.CharField(max_length=128, blank=True, null=True)
+    learning_type = models.CharField(max_length=128, blank=True, null=True, choices=CourseType.choices)
     time_to_complete = models.IntegerField()  # minutes
     course = models.ForeignKey(Course, on_delete=models.CASCADE, blank=True, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     rating = models.IntegerField(blank=True, null=True)
-
-    def get_learning_type_display_name(self):
-        if self.learning_type in choices.CourseType.names:
-            return choices.CourseType.mapping[self.learning_type]
-        else:
-            return ""
 
     def __str__(self):
         return f"{self.title} ({self.id})"
@@ -135,22 +130,17 @@ class Event(TimeStampedModel):
 
 
 class SurveyResult(UUIDPrimaryKeyBase, TimeStampedModel):
+    PRE = "pre"
+    POST = "post"
+    SURVEY_TYPE = [(PRE, "pre"), (POST, "post")]
+
     data = models.JSONField(null=True, blank=True)
     page_number = models.IntegerField()
-    survey_type = models.CharField(max_length=128)
+    survey_type = models.CharField(max_length=128, choices=SURVEY_TYPE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.survey_type} - {self.id} - {self.modified_at}"
-
-
-def get_competency_answers_for_user(user):
-    pre_survey_results = SurveyResult.objects.filter(user=user).filter(survey_type="pre").values_list("data", flat=True)
-    pre_survey_results = {k: v for result in pre_survey_results for k, v in result.items()}
-    competency_answers = [
-        v for k, v in pre_survey_results.items() if k in constants.INITIAL_COMPETENCY_DETERMINATION_QUESTIONS
-    ]
-    return competency_answers
 
 
 def determine_competency_levels(competency_answers_list):

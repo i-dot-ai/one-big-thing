@@ -4,7 +4,7 @@ from datetime import datetime
 import pytest
 import pytz
 
-from one_big_thing.learning.models import Learning, User
+from one_big_thing.learning.models import Course, Learning, SurveyResult, User
 
 UTC = pytz.timezone("UTC")
 
@@ -76,7 +76,7 @@ def bob(create_user):
 
 @pytest.fixture
 def chris(create_user):
-    return create_user(
+    user = create_user(
         email="chris@co.gov.uk",
         date_joined="2000-01-02",
         grade="GRADE6",
@@ -84,6 +84,18 @@ def chris(create_user):
         has_completed_pre_survey=True,
         has_completed_post_survey=True,
     )
+    SurveyResult.objects.create(
+        user=user,
+        page_number=1,
+        survey_type="pre",
+        data={
+            "confident-in-decisions": "sure",
+            "confidence-graphic-survey": "whatever",
+            "confidence-explaining-chart": "yep",
+            "another-question": "nope",
+        },
+    )
+    yield user
 
 
 @pytest.fixture
@@ -108,3 +120,13 @@ def eric(create_user):
         has_completed_pre_survey=True,
         has_completed_post_survey=True,
     )
+
+
+@pytest.fixture
+def astronomy():
+    yield Course.objects.create()
+
+
+@pytest.fixture
+def astrology():
+    yield Course.objects.create()

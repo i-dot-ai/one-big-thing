@@ -1,6 +1,7 @@
 import pytest
 
 from one_big_thing.learning import models
+from one_big_thing.learning.models import Learning
 
 
 @pytest.mark.django_db
@@ -68,3 +69,21 @@ def test_completed_personal_details():
     user.save()
     assert user.completed_personal_details, user.completed_personal_details
     user.delete()
+
+
+@pytest.mark.django_db
+def test_get_competency_answers_for_user(chris):
+    answers = chris.get_competency_answers_for_user()
+    assert answers == ["sure", "whatever", "yep"]
+
+
+@pytest.mark.django_db
+def test_get_time_completed(bob):
+    assert bob.get_time_completed() == 180
+
+
+@pytest.mark.django_db
+def test_has_completed_course(alice, astronomy, astrology):
+    Learning.objects.create(user=alice, course=astronomy, time_to_complete=30)
+    assert alice.has_completed_course(astronomy.id)
+    assert not alice.has_completed_course(astrology.id)
