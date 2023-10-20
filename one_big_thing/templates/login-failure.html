@@ -8,9 +8,16 @@
   <h1 class="govuk-heading-l">
     Login failed
   </h1>
-  <p class="govuk-body">
-    Links can only be used once. You can <a class="govuk-link" href="{{url('index')}}">create a new link</a> by entering your email address.
-  </p>
-  <p class="govuk-body">If that doesn’t work then <a class="govuk-link" href="{{url('index')}}">create a new link</a> by entering your email address. But do not press on it. Copy the link from the email and paste it into your browser.</p>
+  <ul class="govuk-list govuk-list--number">
+    <li>
+      You can <a class="govuk-link" href="{{url('index')}}">create a new link</a> by entering your email address.
+    </li>
+    <li>
+      If that doesn’t work then <a class="govuk-link" href="{{url('index')}}">create a new link</a>, copy the link from the email and paste it into your browser.
+    </li>
+    <li>
+      If that doesn’t work then try a different browser, for example Google Chrome, Microsoft Edge or Mozilla Firefox.
+    </li>
+  </ul>
   <p class="govuk-body">If you see this message again then please <a class="govuk-link" href="{{url('support')}}">contact us</a>.</p>
-{% endblock %}
+  {% endblock %}

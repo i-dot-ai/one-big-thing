@@ -1,7 +1,10 @@
+import pytest
+
 from one_big_thing.learning import models
 from one_big_thing.learning.models import Department
 
 
+@pytest.mark.django_db
 def test_model_fields():
     course = models.Course(time_to_complete=120, title="Test course")
     course.save()
@@ -20,6 +23,7 @@ def test_model_fields():
     assert course.title == "New course title"
 
 
+@pytest.mark.django_db
 def test_user_save():
     new_email1 = "New_User1@example.org"
     new_email2 = "New_User2@Example.com"
@@ -52,6 +56,7 @@ def test_determine_competency_levels():
     assert expected5 == actual5, actual5
 
 
+@pytest.mark.django_db
 def test_completed_personal_details():
     user = models.User(email="jane@example.com")
     user.save()

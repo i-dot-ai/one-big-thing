@@ -1,10 +1,12 @@
 from io import StringIO
 
+import pytest
 from django.core.management import call_command
 
 from one_big_thing.learning.models import User
 
 
+@pytest.mark.django_db
 def test_assign_superuser_status_happy_path():
     """we create a new user, initially they are not a superuser,
     we then make them one and check that:
