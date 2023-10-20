@@ -74,6 +74,10 @@ def get_plausible_data_domain():
     return settings.PLAUSIBLE_DATA_DOMAIN
 
 
+def get_self_hosted_plausible_address():
+    return settings.SELF_HOSTED_PLAUSIBLE_ADDRESS
+
+
 def environment(**options):
     extra_options = dict()
     env = jinja2.Environment(  # nosec B701
@@ -98,6 +102,7 @@ def environment(**options):
             "get_messages": messages.get_messages,
             "space_name": VCAP_APPLICATION.get("space_name"),
             "PLAUSIBLE_DATA_DOMAIN": get_plausible_data_domain(),
+            "SELF_HOSTED_PLAUSIBLE_ADDRESS": get_self_hosted_plausible_address(),
         }
     )
     return env
