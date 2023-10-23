@@ -53,6 +53,10 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     is_api_user = models.BooleanField(default=False, null=True, blank=True)
 
     @property
+    def email_domain(self) -> str:
+        return self.email.split("@")[-1]
+
+    @property
     def completed_personal_details(self):
         return self.department and self.grade and self.profession
 
