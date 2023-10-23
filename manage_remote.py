@@ -174,5 +174,15 @@ def users_willing_to_follow_up(env):
     click.echo(task)
 
 
+@cli.command()
+@env_option
+def get_email_stats(env):
+    if env.upper() == "PROD":
+        click.secho("this is running things on the (live) server!", fg="red")
+
+    task = run(env, "get_email_stats")
+    click.echo(task)
+
+
 if __name__ == "__main__":
     cli()
