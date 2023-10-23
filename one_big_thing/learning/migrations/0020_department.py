@@ -13,7 +13,7 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "departments.
 def populate_department_model(apps, schema_editor):
     Department = apps.get_model("learning", "Department")
 
-    for code, display, parent, url in DEPARTMENTS:
+    for code, display, parent, url, _, _ in DEPARTMENTS:
         Department.objects.create(code=code, display=display, parent=parent, url=url)
 
 
