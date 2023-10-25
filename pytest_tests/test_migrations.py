@@ -178,6 +178,7 @@ DEPARTMENTS = [
     "other",
     "other-civil-servant",
     "other-public-servant",
+    None,
 ]
 
 
