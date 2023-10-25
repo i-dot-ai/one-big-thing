@@ -28,7 +28,7 @@ def populate_user_model_with_departments(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("learning", "0019_choices"),
+        ("learning", "0020_choices"),
     ]
 
     operations = [

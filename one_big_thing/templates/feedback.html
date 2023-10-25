@@ -1,0 +1,32 @@
+{% extends "base_generic_gov.html" %}
+{% import "macros.html" as macros with context%}
+
+{% block title %}
+  <title>Give feedback on the One Big Thing platform</title>
+{% endblock %}
+
+{% block content %}
+  <h1 class="govuk-heading-l">Give feedback on the One Big Thing platform</h1>
+  <div class="govuk-body">
+      <p>To help us improve the service, we’d like to know more about your visit today.</p>
+      <p>Please note we're unable to respond to feedback.</p>
+      <p>If you have an error or fault, please visit the <a class="govuk-link" href={{url("support")}}>support page</a>.</p>
+      <form method="POST">
+      {{ csrf_input }}
+        {% for question in data.questions %}
+          {% if question.answer_type == "radio" %}
+            {{macros.question_radios(question, loop)}}
+          {% elif question.answer_type == "checkboxes" %}
+            {{macros.checkboxes(question, loop)}}
+          {% elif question.answer_type == "agree-1-5" %}
+              {{macros.agree_1_5(question, loop)}}
+          {% elif question.answer_type == "likely-1-5" %}
+              {{macros.likely_1_5(question, loop)}}
+          {% elif question.answer_type == "textarea" %}
+            {{macros.question_textarea(question)}}
+          {% endif %}
+        {% endfor %}
+      <button type="submit" class="govuk-button">Submit</button>
+      </form>
+  </div>
+{% endblock %}

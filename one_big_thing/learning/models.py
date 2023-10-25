@@ -160,6 +160,10 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     is_api_user = models.BooleanField(default=False, null=True, blank=True)
 
     @property
+    def email_domain(self) -> str:
+        return self.email.split("@")[-1]
+
+    @property
     def completed_personal_details(self):
         return self.department and self.grade and self.profession
 
@@ -249,6 +253,13 @@ class SurveyResult(UUIDPrimaryKeyBase, TimeStampedModel):
 
     def __str__(self):
         return f"{self.survey_type} - {self.id} - {self.modified_at}"
+
+
+class Feedback(TimeStampedModel, UUIDPrimaryKeyBase):
+    satisfaction = models.CharField(max_length=254, blank=True, null=True, choices=choices.Satisfaction.choices)
+    improve_the_service = models.CharField(null=True, blank=True, max_length=2048)
+    take_part_in_user_research = models.CharField(max_length=3, blank=False, null=False, choices=choices.YesNo.choices)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 def get_competency_answers_for_user(user):

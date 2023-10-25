@@ -64,3 +64,16 @@ class Profession(utils.Choices):
     TAX = "Tax"
     VETERINARY = "Veterinary"
     OTHER = "Other"
+
+
+class YesNo(utils.Choices):
+    yes = "Yes"
+    no = "No"
+
+
+class Satisfaction(utils.Choices):
+    VERY_DISSATISFIED = "Very dissatisfied"
+    DISSATISFIED = "Dissatisfied"
+    NO_OPINION = "No opinion"
+    SATISFIED = "Satisfied"
+    VERY_SATISFIED = "Very satisfied"
