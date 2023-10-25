@@ -28,7 +28,7 @@
             <select name="department" id="department" class="govuk-select govuk-!-width-full">
               <option value="" disabled class="govuk-button--disabled" {% if not data.department%}selected{% endif %}>Please type to search for a department you belong to</option>
               {% for option in departments %}
-                <option value="{{option.0}}" {% if 'department' in data.keys() and data.department == option.0 %}selected{% endif %}>{{option.1}}</option>
+                <option value="{{option.0}}" {% if 'department' in data.keys() and data.department == option.1 %}selected{% endif %}>{{option.1}}</option>
               {% endfor %}
             </select>
           </div>

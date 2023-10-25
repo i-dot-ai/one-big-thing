@@ -1,15 +1,17 @@
+from django.core.exceptions import ObjectDoesNotExist
 from marshmallow import (
     Schema,
     ValidationError,
     fields,
     validate,
+    validates,
     validates_schema,
 )
 
-from one_big_thing.learning.departments import Department
 from one_big_thing.learning.utils import is_civil_service_email
 
 from . import choices, constants
+from .models import Department
 
 HOURS_ERROR = "Please enter the hours this course took to complete, for example, 2"
 MINUTES_ERROR = "Please enter the minutes this course took to complete, between 0 and 59"
@@ -183,7 +185,6 @@ class MyDetailsSchema(Schema):
 
     department = fields.Str(
         required=True,
-        validate=validate.OneOf(Department.values),
         error_messages={
             "required": "You must select a department",
         },
@@ -202,3 +203,11 @@ class MyDetailsSchema(Schema):
             "required": "You must select a profession",
         },
     )
+
+    @validates("department")
+    def validate_department(self, value):
+        try:
+            Department.objects.get(code=value)
+        except ObjectDoesNotExist:
+            codes = [display for code, display in Department.choices()]
+            raise ValidationError(f"Must be one of: {codes}.")

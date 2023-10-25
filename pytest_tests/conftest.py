@@ -4,7 +4,7 @@ from datetime import datetime
 import pytest
 import pytz
 
-from one_big_thing.learning.models import Learning, User
+from one_big_thing.learning.models import Department, Learning, User
 
 UTC = pytz.timezone("UTC")
 
@@ -32,7 +32,7 @@ def create_user():
         user = User.objects.create_user(
             email=email,
             date_joined=date_joined,
-            department=department,
+            department=Department.objects.get(code=department),
             grade=grade,
             profession=profession,
             has_completed_pre_survey=has_completed_pre_survey,

@@ -1,6 +1,7 @@
 import pytest
 
 from one_big_thing.learning import models
+from one_big_thing.learning.models import Department
 
 
 @pytest.mark.django_db
@@ -64,7 +65,7 @@ def test_completed_personal_details():
     user.save()
     assert not user.completed_personal_details, user.completed_personal_details
     user.profession = "ANALYSIS"
-    user.department = "cabinet-office"
+    user.department = Department.objects.get(code="cabinet-office")
     user.save()
     assert user.completed_personal_details, user.completed_personal_details
     user.delete()

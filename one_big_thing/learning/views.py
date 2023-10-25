@@ -3,7 +3,7 @@ import types
 import marshmallow
 from django.conf import settings
 from django.contrib import messages
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.core.validators import EmailValidator
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -12,7 +12,6 @@ from django.views.decorators.http import require_http_methods
 from . import (
     choices,
     constants,
-    departments,
     feedback,
     interface,
     models,
@@ -27,6 +26,7 @@ from .decorators import (
     login_required,
 )
 from .email_handler import send_learning_record_email
+from .models import Department
 
 
 def frozendict(*args, **kwargs):
@@ -74,7 +74,6 @@ selected_level_label_map = {
 @enforce_user_completes_details_and_pre_survey
 def homepage_view(request):
     user = request.user
-    use_streamlined_view = user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
     errors = {}
     selected_level = user.determine_competency_level()
     if selected_level:
@@ -112,10 +111,10 @@ def homepage_view(request):
         "selected_level_course": selected_level_course,
         "all_level_courses": all_level_courses_information,
         "completed_feedback_survey": completed_feedback_survey,
-        "streamlined_version": use_streamlined_view,
+        "streamlined_version": user.department.intranet_url is not None,
     }
-    if use_streamlined_view:
-        intranet_link = constants.DEPARTMENTS_USING_INTRANET_LINKS[user.department]
+    if user.department.intranet_url:
+        intranet_link = user.department.intranet_url
         data["intranet_link"] = intranet_link
         return render(
             request,
@@ -177,7 +176,7 @@ class RecordLearningView(utils.MethodDispatcher):
         if not data:
             data = {}
         user = request.user
-        if user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys():
+        if user.department.intranet_url:
             template_name = "streamlined-record-learning.html"
         else:
             template_name = "record-learning.html"
@@ -342,11 +341,10 @@ def save_data(survey_type, user, page_number, data):
 @enforce_user_completes_details_and_pre_survey
 def send_learning_record_view(request):
     user = request.user
-    streamlined_department = user.department in constants.DEPARTMENTS_USING_INTRANET_LINKS.keys()
     courses = models.Learning.objects.filter(user=user)
     data = {
         "courses": courses,
-        "streamlined_department": streamlined_department,
+        "streamlined_department": user.department.intranet_url,
     }
     errors = {}
     if request.method == "POST":
@@ -418,9 +416,8 @@ class MyDetailsView(utils.MethodDispatcher):
     def get(self, request, errors=None, data=None):
         user = request.user
         data = self.my_details_schema.dump(user)
-        department_choices = departments.Department.choices
         context = {
-            "departments": department_choices,
+            "departments": Department.choices(),
             "grades": choices.Grade.choices,
             "professions": choices.Profession.choices,
             "errors": errors or {},
@@ -433,6 +430,11 @@ class MyDetailsView(utils.MethodDispatcher):
         user = request.user
         try:
             details = self.my_details_schema.load(request.POST)
+            if department := details.pop("department", None):
+                try:
+                    user.department = Department.objects.get(code=department)
+                except ObjectDoesNotExist:
+                    raise marshmallow.exceptions.ValidationError(f"{department} is not a valid department")
             for k, v in details.items():
                 setattr(user, k, v)
                 user.save()

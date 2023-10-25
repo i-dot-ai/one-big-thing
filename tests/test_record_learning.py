@@ -1,4 +1,5 @@
 from one_big_thing.learning import models
+from one_big_thing.learning.models import Department
 from tests import utils
 
 
@@ -130,7 +131,7 @@ def test_enter_learning_record_streamlined():
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=test_email)
-    user.department = "home-office"
+    user.department = Department.objects.get(code="home-office")
     user.save()
 
     record_learning_page = client.get("/record-learning/")
@@ -202,7 +203,7 @@ def test_create_delete_learning_streamlined():
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=user_email)
-    user.department = "home-office"
+    user.department = Department.objects.get(code="home-office")
     user.save()
     record_page = client.get("/record-learning/")
     record_learning_form = record_page.get_form()
@@ -227,7 +228,7 @@ def test_streamlined_email_learning():
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=user_email)
-    user.department = "home-office"
+    user.department = Department.objects.get(code="home-office")
     user.save()
     models.Learning(
         user=user,
@@ -252,7 +253,7 @@ def test_mail_learning():
     client = utils.make_testino_client()
     utils.register(client, **authenticated_user)
     user = models.User.objects.get(email=user_email)
-    user.department = "cabinet-office"
+    user.department = Department.objects.get(code="cabinet-office")
     user.save()
     models.Learning(
         user=user,

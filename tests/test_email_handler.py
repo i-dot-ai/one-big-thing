@@ -1,4 +1,5 @@
 from one_big_thing.learning import models
+from one_big_thing.learning.models import Department
 
 from . import utils
 
@@ -15,7 +16,7 @@ def test_send_email_learning_record():
     user.verified = True
     user.grade = "GRADE7"
     user.profession = "ANALYSIS"
-    user.department = "cabinet-office"
+    user.department = Department.objects.get(code="cabinet-office")
     user.save()
     url = utils._get_latest_email_url()
     page = client.get(url)
