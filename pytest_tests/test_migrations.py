@@ -199,7 +199,7 @@ def test_0020_department():
 
     for department in DEPARTMENTS:
         new_user = NewUser.objects.get(department__code=department)
-        assert new_user.old_department == new_user.department.code
+        assert new_user.old_department == new_user.department.code if department is not None else new_user.department
 
     # Cleanup:
     migrator.reset()
