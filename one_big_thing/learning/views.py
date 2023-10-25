@@ -12,11 +12,7 @@ from django.views.decorators.http import require_http_methods
 from . import (
     choices,
     constants,
-<<<<<<< HEAD
-=======
-    departments,
     feedback,
->>>>>>> develop
     interface,
     models,
     schemas,
