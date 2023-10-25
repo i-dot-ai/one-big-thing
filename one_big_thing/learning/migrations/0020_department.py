@@ -15,7 +15,9 @@ def populate_department_model(apps, schema_editor):
     Department = apps.get_model("learning", "Department")
 
     for code, display, parent, intranet_url, gov_id in DEPARTMENTS:
-        Department.objects.create(code=code, display=display, parent=parent, intranet_url=intranet_url, gov_id=gov_id)
+        Department.objects.get_or_create(
+            code=code, display=display, parent=parent, intranet_url=intranet_url, gov_id=gov_id
+        )
 
 
 def populate_user_model_with_departments(apps, schema_editor):
