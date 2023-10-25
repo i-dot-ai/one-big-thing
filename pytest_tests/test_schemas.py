@@ -247,6 +247,19 @@ def test_my_details_schema():
         my_details_schema.load({"grade": "HIGHER_EXECUTIVE_OFFICER"})
 
 
+@pytest.mark.django_db
+@pytest.mark.parametrize(
+    "payload, validation_issues",
+    [
+        ({"department": "dodgy-dept", "grade": "GRADE7", "profession": "ANALYSIS"}, ["department"]),
+        ({"department": "cabinet-office", "grade": "GRADE7", "profession": "ANALYSIS"}, []),
+    ],
+)
+def test_my_details_schema_department(payload, validation_issues):
+    details_schema = schemas.MyDetailsSchema()
+    assert list(details_schema.validate(payload)) == validation_issues
+
+
 def test_record_learning_schema_validation_errors():
     record_learning_schema = schemas.RecordLearningSchema()
     data_no_errors = record_learning_schema.load({"title": "Data training", "time_to_complete_hours": "2"})

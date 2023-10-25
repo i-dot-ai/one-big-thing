@@ -4,6 +4,7 @@ from marshmallow import (
     ValidationError,
     fields,
     validate,
+    validates,
     validates_schema,
 )
 
@@ -182,6 +183,7 @@ class MyDetailsSchema(Schema):
         },
     )
 
+    @validates("department")
     def validate_department(self, value):
         try:
             Department.objects.get(code=value)
