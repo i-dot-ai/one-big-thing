@@ -254,7 +254,7 @@
 
       <fieldset class="govuk-fieldset">
       {% if question.text %}
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h2 class="govuk-fieldset__legend govuk-fieldset__legend--l">{{question.text}}</h2></legend>
+          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l"><h2 class="govuk-fieldset__legend govuk-fieldset__legend--m">{{question.text}}</h2></legend>
       {% endif %}
 
       {% if errors[question.id] %}
@@ -374,8 +374,9 @@
         <span class="govuk-visually-hidden">Error:</span> {{errors[question.id]}}
       </p>
     {% endif %}
-  <div id="{{question.title}}" class="govuk-hint">
+  <div id="{{question.id}}-hint" class="govuk-hint">
     Please enter your information below.{% if question.max_length %} Max {{question.max_length}} characters.{% endif %}
+      {{question.extra_hint and question.extra_hint or ""}}
   </div>
   <textarea class="govuk-textarea" {% if question.max_length %}maxlength="{{question.max_length}}"{% endif %} id="{{question.id}}" name="{{question.id}}" rows="5" aria-describedby="{{question.id}}-hint">{{data.get(question.id, "")}}</textarea>
 </div>

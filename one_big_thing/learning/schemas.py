@@ -156,6 +156,27 @@ class RecordLearningSchema(Schema):
             raise ValidationError({"time_to_complete_hours": HOURS_ERROR, "time_to_complete_minutes": MINUTES_ERROR})
 
 
+class FeedbackSchema(Schema):
+    class Meta:
+        ordered = True
+
+    satisfaction = fields.Str(
+        required=True,
+        validate=validate.OneOf(choices.Satisfaction.values),
+        error_messages={
+            "required": "You must select an option",
+        },
+    )
+    improve_the_service = SingleLineStr(validate=validate.Length(max=2048), allow_none=True)
+    take_part_in_user_research = fields.Str(
+        required=True,
+        validate=validate.OneOf(choices.YesNo.values),
+        error_messages={
+            "required": "You must select an option",
+        },
+    )
+
+
 class MyDetailsSchema(Schema):
     class Meta:
         ordered = True

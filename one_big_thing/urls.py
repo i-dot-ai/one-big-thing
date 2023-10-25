@@ -54,6 +54,7 @@ other_urlpatterns = [
     path("intro-post-survey/", views.intro_to_post_survey_view, name="intro-post-survey"),
     path("end-post-survey/", views.end_post_survey_view, name="end-post-survey"),
     path("department-links/", views.department_links_view, name="department-links"),
+    path("feedback/", views.FeedbackView, name="feedback"),
 ]
 
 urlpatterns = info_urlpatterns + other_urlpatterns + admin_urlpatterns + api_urlpatterns

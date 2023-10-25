@@ -13,6 +13,7 @@ from . import (
     choices,
     constants,
     departments,
+    feedback,
     interface,
     models,
     schemas,
@@ -493,3 +494,41 @@ def department_links_view(request):
             "errors": errors,
         },
     )
+
+
+@login_required
+@require_http_methods(["GET", "POST"])
+class FeedbackView(utils.MethodDispatcher):
+    def get(
+        self,
+        request,
+        data=None,
+        errors=None,
+    ):
+        if data is None:
+            data = {}
+        data = {"questions": feedback.feedback_questions_data, **data}
+        return render(
+            request,
+            template_name="feedback.html",
+            context={
+                "request": request,
+                "data": data,
+                "errors": errors,
+                "answer_labels": feedback.answer_labels,
+            },
+        )
+
+    def post(
+        self,
+        request,
+    ):
+        data = request.POST.dict()
+        feedback_schema = schemas.FeedbackSchema(unknown=marshmallow.EXCLUDE)
+        errors = feedback_schema.validate(data, partial=False)
+        if errors:
+            return self.get(request, data=data, errors=errors)
+        user = request.user
+        data = feedback_schema.load(data)
+        interface.api.feedback.create(user.id, user.id, data)
+        return redirect("homepage")

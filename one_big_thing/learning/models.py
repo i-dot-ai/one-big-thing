@@ -148,6 +148,13 @@ class SurveyResult(UUIDPrimaryKeyBase, TimeStampedModel):
         return f"{self.survey_type} - {self.id} - {self.modified_at}"
 
 
+class Feedback(TimeStampedModel, UUIDPrimaryKeyBase):
+    satisfaction = models.CharField(max_length=254, blank=True, null=True, choices=choices.Satisfaction.choices)
+    improve_the_service = models.CharField(null=True, blank=True, max_length=2048)
+    take_part_in_user_research = models.CharField(max_length=3, blank=False, null=False, choices=choices.YesNo.choices)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
 def get_competency_answers_for_user(user):
     pre_survey_results = SurveyResult.objects.filter(user=user).filter(survey_type="pre").values_list("data", flat=True)
     pre_survey_results = {k: v for result in pre_survey_results for k, v in result.items()}
