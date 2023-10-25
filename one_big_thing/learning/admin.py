@@ -10,7 +10,7 @@ from . import models
 
 
 class DepartmentAdmin(admin.ModelAdmin):
-    list_display = ["display", "parent", "url"]
+    list_display = ["display", "parent", "intranet_url"]
     list_filter = ["parent"]
 
 

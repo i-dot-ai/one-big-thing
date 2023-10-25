@@ -13,8 +13,8 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "departments.
 def populate_department_model(apps, schema_editor):
     Department = apps.get_model("learning", "Department")
 
-    for code, display, parent, url, _, _ in DEPARTMENTS:
-        Department.objects.create(code=code, display=display, parent=parent, url=url)
+    for code, display, parent, intranet_url, gov_id in DEPARTMENTS:
+        Department.objects.create(code=code, display=display, parent=parent, intranet_url=intranet_url, gov_id=gov_id)
 
 
 def populate_user_model_with_departments(apps, schema_editor):
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
                 ("created_at", models.DateTimeField(auto_now_add=True)),
                 ("modified_at", models.DateTimeField(auto_now=True)),
-                ("code", models.CharField(help_text="unique code for department", max_length=128, unique=True)),
+                ("code", models.SlugField(help_text="unique code for department", max_length=128, unique=True)),
                 ("display", models.CharField(help_text="display name", max_length=128)),
                 (
                     "parent",
@@ -111,7 +111,8 @@ class Migration(migrations.Migration):
                         max_length=128,
                     ),
                 ),
-                ("url", models.URLField(blank=True, help_text="intranet link", null=True)),
+                ("intranet_url", models.URLField(blank=True, help_text="intranet link", null=True)),
+                ("gov_id", models.SlugField(help_text="for use in the uk gov api https://www.gov.uk/api/organisations/id", max_length=128, null=True, blank=True)),
             ],
             options={
                 "abstract": False,
