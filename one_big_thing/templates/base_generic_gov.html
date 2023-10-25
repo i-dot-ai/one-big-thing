@@ -9,18 +9,6 @@
     {% endblock %}
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="blue">
-    {% if request.user.is_authenticated %}
-        <script defer
-        event-department="{{request.user.department}}"
-        event-logged_in="true"
-       data-domain="{{PLAUSIBLE_DATA_DOMAIN}}" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
-    {% else %}
-        <script defer
-        event-logged_in="false"
-       data-domain="{{PLAUSIBLE_DATA_DOMAIN}}" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
-    {% endif %}
-
-    <script defer data-domain="{{PLAUSIBLE_DATA_DOMAIN}}" src="{{SELF_HOSTED_PLAUSIBLE_ADDRESS}}/js/script.js"></script>
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="preload" href={{static('fonts/roboto/roboto-v30-latin-700.woff2')}} as="font" type="font/woff2" crossorigin="anonymous">
