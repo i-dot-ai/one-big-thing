@@ -110,10 +110,10 @@ def homepage_view(request):
         "selected_level_course": selected_level_course,
         "all_level_courses": all_level_courses_information,
         "completed_feedback_survey": completed_feedback_survey,
-        "streamlined_version": user.department.url is not None,
+        "streamlined_version": user.department.intranet_url is not None,
     }
-    if user.department.url:
-        intranet_link = user.department.url
+    if user.department.intranet_url:
+        intranet_link = user.department.intranet_url
         data["intranet_link"] = intranet_link
         return render(
             request,
@@ -175,7 +175,7 @@ class RecordLearningView(utils.MethodDispatcher):
         if not data:
             data = {}
         user = request.user
-        if user.department.url:
+        if user.department.intranet_url:
             template_name = "streamlined-record-learning.html"
         else:
             template_name = "record-learning.html"
@@ -343,7 +343,7 @@ def send_learning_record_view(request):
     courses = models.Learning.objects.filter(user=user)
     data = {
         "courses": courses,
-        "streamlined_department": user.department.url,
+        "streamlined_department": user.department.intranet_url,
     }
     errors = {}
     if request.method == "POST":
