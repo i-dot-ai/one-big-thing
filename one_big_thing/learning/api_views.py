@@ -230,7 +230,7 @@ def get_normalized_learning_data():
 
 
 class CustomPagination(PageNumberPagination):
-    page_size_query_param = 'page_size'
+    page_size_query_param = "page_size"
 
 
 class NormalizedUserStatisticsView(ListAPIView):

@@ -155,6 +155,6 @@ def test_breakdown_stats(authenticated_api_client_fixture, alice, bob, chris, da
 @pytest.mark.django_db
 def test_breakdown_stats_page_size(authenticated_api_client_fixture, alice, bob, chris, daisy, eric):  # noqa: F811
     url = reverse("normalized_user_statistics")
-    response = authenticated_api_client_fixture.get(url,{"page_size": 2})
+    response = authenticated_api_client_fixture.get(url, {"page_size": 2})
     assert response.status_code == 200, response.status_code
     assert len(response.json()["results"]) == 2
