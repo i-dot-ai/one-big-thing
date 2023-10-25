@@ -178,6 +178,7 @@ DEPARTMENTS = [
     "other",
     "other-civil-servant",
     "other-public-servant",
+    None,
 ]
 
 
@@ -189,7 +190,7 @@ def test_0020_department():
     OldUser = old_state.apps.get_model("learning", "User")  # noqa: N806
 
     for department in DEPARTMENTS:
-        OldUser.objects.create(email=f"someone@{department}.gov.uk", department=department, password=department)
+        OldUser.objects.create(email=f"someone@{department}.gov.uk", department=department, password="p4ssw0rd!")
 
     new_state = migrator.apply_tested_migration(
         ("learning", "0020_department"),
@@ -198,7 +199,11 @@ def test_0020_department():
 
     for department in DEPARTMENTS:
         new_user = NewUser.objects.get(department__code=department)
-        assert new_user.old_department == new_user.department.code
+        if department is None:
+            assert new_user.old_department is None
+            assert new_user.old_department is None
+        else:
+            assert new_user.old_department == new_user.department.code
 
     # Cleanup:
     migrator.reset()

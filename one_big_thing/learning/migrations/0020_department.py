@@ -3,6 +3,7 @@ import json
 import os
 
 import django
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import migrations, models
 
 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "departments.csv")) as f:
@@ -21,9 +22,12 @@ def populate_user_model_with_departments(apps, schema_editor):
     User = apps.get_model("learning", "User")
     Department = apps.get_model("learning", "Department")
 
-    for user in User.objects.all():
-        user.new_department = Department.objects.get(code=user.department)
-        user.save()
+    for user in User.objects.filter(department__isnull=False):
+        try:
+            user.new_department = Department.objects.get(code=user.department)
+            user.save()
+        except ObjectDoesNotExist:
+            raise Exception(f"could not find {user.department}!")
 
 
 class Migration(migrations.Migration):
