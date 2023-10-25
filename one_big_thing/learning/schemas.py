@@ -188,5 +188,5 @@ class MyDetailsSchema(Schema):
         try:
             Department.objects.get(code=value)
         except ObjectDoesNotExist:
-            codes = [code for code, _ in Department.choices()]
+            codes = [display for code, display in Department.choices()]
             raise ValidationError(f"Must be one of: {codes}.")
