@@ -190,7 +190,7 @@ def test_0020_department():
     OldUser = old_state.apps.get_model("learning", "User")  # noqa: N806
 
     for department in DEPARTMENTS:
-        OldUser.objects.create(email=f"someone@{department}.gov.uk", department=department, password=department)
+        OldUser.objects.create(email=f"someone@{department}.gov.uk", department=department, password="p4ssw0rd!")
 
     new_state = migrator.apply_tested_migration(
         ("learning", "0020_department"),
