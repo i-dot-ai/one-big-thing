@@ -233,6 +233,7 @@ def test_record_learning_schema():
     )
 
 
+@pytest.mark.django_db
 def test_my_details_schema():
     my_details_schema = schemas.MyDetailsSchema()
     details_no_errors = my_details_schema.load(
