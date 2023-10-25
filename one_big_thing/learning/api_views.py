@@ -229,6 +229,10 @@ def get_normalized_learning_data():
     return results
 
 
+class CustomPagination(PageNumberPagination):
+    page_size_query_param = 'page_size'
+
+
 class NormalizedUserStatisticsView(ListAPIView):
     """
     Endpoint used by 10DS and others to get normalised information about department signups
@@ -241,4 +245,4 @@ class NormalizedUserStatisticsView(ListAPIView):
 
     queryset = get_normalized_learning_data()
     serializer_class = NormalizedDepartmentBreakdownSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = CustomPagination
