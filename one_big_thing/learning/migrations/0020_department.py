@@ -112,7 +112,15 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("intranet_url", models.URLField(blank=True, help_text="intranet link", null=True)),
-                ("gov_id", models.SlugField(help_text="for use in the uk gov api https://www.gov.uk/api/organisations/id", max_length=128, null=True, blank=True)),
+                (
+                    "gov_id",
+                    models.SlugField(
+                        help_text="for use in the uk gov api https://www.gov.uk/api/organisations/id",
+                        max_length=128,
+                        null=True,
+                        blank=True,
+                    ),
+                ),
             ],
             options={
                 "abstract": False,

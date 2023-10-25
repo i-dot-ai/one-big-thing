@@ -121,7 +121,12 @@ class Department(TimeStampedModel):
     display = models.CharField(max_length=128, help_text="display name")
     parent = models.CharField(max_length=128, choices=PARENTS, help_text="parent department")
     intranet_url = models.URLField(null=True, blank=True, help_text="intranet link")
-    gov_id = models.SlugField(max_length=128, null=True, blank=True, help_text="for use in the uk gov api https://www.gov.uk/api/organisations/id")
+    gov_id = models.SlugField(
+        max_length=128,
+        null=True,
+        blank=True,
+        help_text="for use in the uk gov api https://www.gov.uk/api/organisations/id",
+    )
 
     @classmethod
     def choices(cls) -> list[tuple[Any, Any]]:
