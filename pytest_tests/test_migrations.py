@@ -185,7 +185,7 @@ DEPARTMENTS = [
 def test_0020_department():
     migrator = Migrator(database="default")
 
-    old_state = migrator.apply_initial_migration(("learning", "0019_choices"))
+    old_state = migrator.apply_initial_migration(("learning", "0019_auto_20231025_1255"))
     OldUser = old_state.apps.get_model("learning", "User")  # noqa: N806
 
     for department in DEPARTMENTS:
