@@ -69,3 +69,25 @@ def test_completed_personal_details():
     user.save()
     assert user.completed_personal_details, user.completed_personal_details
     user.delete()
+
+
+@pytest.mark.django_db
+def test_no_learning_recorded(alice, faye, george):
+    """
+    * alice has spent 60 minutes on one course
+    * faye has recorded zero minutes on two courses
+    * george has done no courses
+    """
+    users = models.User.objects.no_learning_recorded().values_list("email")
+    assert list(users) == [("faye@co.gov.uk",), ("george@co.gov.uk",)]
+
+
+@pytest.mark.django_db
+def test_seven_hours_no_end_evaluation(bob, hannah, isaac):
+    """
+    * alice hasnt done seven hours and hasnt completed the survey
+    * hannah has done seven hours and hasn completed the survey
+    * isaac has done more than seven hours but hasnt completed the survey
+    """
+    users = models.User.objects.seven_hours_no_end_evaluation().values_list("email")
+    assert list(users) == [("isaac@co.gov.uk",)]

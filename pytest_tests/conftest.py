@@ -108,3 +108,50 @@ def eric(create_user):
         has_completed_pre_survey=True,
         has_completed_post_survey=True,
     )
+
+
+@pytest.fixture
+def faye(create_user):
+    return create_user(
+        email="faye@co.gov.uk",
+        date_joined="2000-01-02",
+        times_to_complete=[0, 0],
+        grade="GRADE6",
+        has_completed_pre_survey=True,
+        has_completed_post_survey=True,
+    )
+
+
+@pytest.fixture
+def george(create_user):
+    return create_user(
+        email="george@co.gov.uk",
+        date_joined="2000-01-02",
+        grade="GRADE6",
+        has_completed_pre_survey=True,
+        has_completed_post_survey=True,
+    )
+
+
+@pytest.fixture
+def hannah(create_user):
+    return create_user(
+        email="hannah@co.gov.uk",
+        date_joined="2000-01-02",
+        grade="GRADE6",
+        times_to_complete=[60, 120, 240, 480],
+        has_completed_pre_survey=True,
+        has_completed_post_survey=True,
+    )
+
+
+@pytest.fixture
+def isaac(create_user):
+    return create_user(
+        email="isaac@co.gov.uk",
+        date_joined="2000-01-02",
+        grade="GRADE6",
+        times_to_complete=[60, 120, 240, 480, 6000000],
+        has_completed_pre_survey=True,
+        has_completed_post_survey=False,
+    )
