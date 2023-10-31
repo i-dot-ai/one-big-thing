@@ -6,6 +6,7 @@ from typing import Any
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
+from django.db.models import Q, Sum
 from django_cte import CTEManager
 from django_use_email_as_username.models import BaseUser, BaseUserManager
 
@@ -141,7 +142,21 @@ class UserManager(BaseUserManager, CTEManager):
     we need to do some complex queries on this model
     """
 
-    pass
+    def no_learning_recorded(self):
+        """all that have register but not recorded hours"""
+        user_learning = self.annotate(total_learning=Sum("learning__time_to_complete")).order_by("email")
+
+        zero_learning_on_some_courses = Q(total_learning=0)
+        zero_learning_on_no_courses = Q(total_learning__isnull=True)
+
+        return user_learning.filter(zero_learning_on_no_courses | zero_learning_on_some_courses)
+
+    def seven_hours_no_end_evaluation(self):
+        """all that have done 7 hours but not the end evaluation"""
+        user_learning = self.annotate(total_learning=Sum("learning__time_to_complete")).order_by("email")
+
+        seven_or_more_hours = user_learning.filter(total_learning__gte=7 * 60)
+        return seven_or_more_hours.filter(has_completed_post_survey=False)
 
 
 class User(BaseUser, UUIDPrimaryKeyBase):
