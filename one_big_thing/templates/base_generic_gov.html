@@ -14,11 +14,11 @@
     <script defer
     event-department="{{request.user.department}}"
     event-logged_in="true"
-   data-domain="onebigthing.civilservice.gov.uk" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
+   data-domain="{{PLAUSIBLE_DATA_DOMAIN}}" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
 {% else %}
     <script defer
     event-logged_in="false"
-   data-domain="onebigthing.civilservice.gov.uk" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
+   data-domain="{{PLAUSIBLE_DATA_DOMAIN}}" src="https://plausible.io/js/script.pageview-props.tagged-events.outbound-links.file-downloads.js"></script>
 {% endif %}
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
