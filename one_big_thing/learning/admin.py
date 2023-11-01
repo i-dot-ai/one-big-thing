@@ -16,6 +16,8 @@ class DepartmentAdmin(admin.ModelAdmin):
 
 class SurveyResultAdmin(admin.ModelAdmin):
     readonly_fields = ("id", "modified_at", "created_at")
+    list_display = ["user", "page_number"]
+    list_filter = ["user"]
 
 
 class UserAdmin(admin.ModelAdmin):
