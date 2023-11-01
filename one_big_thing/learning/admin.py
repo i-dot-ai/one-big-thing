@@ -33,7 +33,6 @@ admin_site = OTPAdmin(name="OTPAdmin")
 admin_site.register(User, UserAdmin)
 admin_site.register(Department, DepartmentAdmin)
 admin_site.register(TOTPDevice, TOTPDeviceAdmin)
-admin_site.register(models.SurveyResult, SurveyResultAdmin)
 
 
 if settings.DEBUG:
@@ -41,3 +40,4 @@ if settings.DEBUG:
     # outside of DEBUG mode
     admin_site.register(models.Course)
     admin_site.register(models.Learning)
+    admin_site.register(models.SurveyResult, SurveyResultAdmin)
