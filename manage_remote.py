@@ -115,7 +115,7 @@ def assign_superuser_status(env, email, password=None):
         click.secho("this is running things on the (live) server!", fg="red")
 
     if password is None:
-        task = run(env, "assign_superuser_status?", "--email", email)
+        task = run(env, "assign_superuser_status", "--email", email)
     else:
         task = run(env, "assign_superuser_status", "--email", email, "--password", password)
     click.echo(task)
