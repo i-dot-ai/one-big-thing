@@ -7,5 +7,5 @@ class Command(BaseCommand):
     help = "users have recorded no learning"
 
     def handle(self, *args, **kwargs):
-        for user in User.objects.no_learning_recorded().values_list("email"):
+        for user in User.objects.no_learning_recorded():
             self.stdout.write(user.email)
