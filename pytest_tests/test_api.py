@@ -6,7 +6,6 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from one_big_thing.learning import models
-from one_big_thing.learning.api_views import get_department_stats
 from one_big_thing.learning.models import Department
 from pytest_tests.utils import (  # noqa: F401
     TEST_USER_EMAIL,

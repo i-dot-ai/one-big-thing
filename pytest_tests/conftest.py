@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, date
+from datetime import date, datetime
 
 import pytest
 import pytz
@@ -40,11 +40,7 @@ def create_user():
         )
 
         for i, time_to_complete in enumerate(times_to_complete):
-            Learning.objects.create(
-                time_to_complete=time_to_complete,
-                user=user,
-                created_at= date(2020 + i, 11, 8)
-            )
+            Learning.objects.create(time_to_complete=time_to_complete, user=user, created_at=date(2020 + i, 11, 8))
 
         return user
 
