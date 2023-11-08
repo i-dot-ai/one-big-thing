@@ -20,6 +20,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from one_big_thing.api_serializers import (
     DateJoinedSerializer,
     DepartmentBreakdownSerializer,
+    DepartmentCompletionStatisticsSerializer,
     JwtTokenObtainPairSerializer,
     NormalizedDepartmentBreakdownSerializer,
 )
@@ -245,4 +246,27 @@ class NormalizedUserStatisticsView(ListAPIView):
 
     queryset = get_normalized_learning_data()
     serializer_class = NormalizedDepartmentBreakdownSerializer
+    pagination_class = CustomPagination
+
+
+def get_department_stats():
+    stats = models.Learning.objects.values(
+        "user__department__code",
+        "user__department__parent",
+    ).annotate(recorded_on=TruncDate("created_at"), total_hours=Sum("time_to_complete") / 60.0)
+    return stats
+
+
+class DepartmentStatisticsView(ListAPIView):
+    """
+    Endpoint used by 10DS and others to get normalised information about department signups
+    """
+
+    permission_classes = (
+        IsAuthenticated,
+        IsAPIUser,
+    )
+
+    queryset = get_department_stats()
+    serializer_class = DepartmentCompletionStatisticsSerializer
     pagination_class = CustomPagination

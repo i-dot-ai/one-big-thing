@@ -6,6 +6,7 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 
 from one_big_thing.learning import models
+from one_big_thing.learning.api_views import get_department_stats
 from one_big_thing.learning.models import Department
 from pytest_tests.utils import (  # noqa: F401
     TEST_USER_EMAIL,
@@ -158,3 +159,9 @@ def test_breakdown_stats_page_size(authenticated_api_client_fixture, alice, bob,
     response = authenticated_api_client_fixture.get(url, {"page_size": 2})
     assert response.status_code == 200, response.status_code
     assert len(response.json()["results"]) == 2
+
+
+@pytest.mark.django_db
+def test_get_department_stats(alice, bob, chris, daisy, eric):
+    stats = get_department_stats()
+    assert len(stats) == 2

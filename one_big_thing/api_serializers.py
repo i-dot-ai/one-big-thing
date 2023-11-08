@@ -50,3 +50,13 @@ class NormalizedDepartmentBreakdownSerializer(serializers.Serializer):
 
     class Meta:
         fields = "__all__"
+
+
+class DepartmentCompletionStatisticsSerializer(serializers.Serializer):
+    department = serializers.CharField(allow_null=True, source="user__department__code")
+    parent_department = serializers.CharField(allow_null=True, source="user__department__parent")
+    total_hours = serializers.CharField()
+    recorded_on = serializers.DateField()
+
+    class Meta:
+        fields = "__all__"

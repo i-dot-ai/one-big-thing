@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 
 import pytest
 import pytz
@@ -39,11 +39,8 @@ def create_user():
             has_completed_post_survey=has_completed_post_survey,
         )
 
-        for time_to_complete in times_to_complete:
-            Learning.objects.create(
-                time_to_complete=time_to_complete,
-                user=user,
-            )
+        for i, time_to_complete in enumerate(times_to_complete):
+            Learning.objects.create(time_to_complete=time_to_complete, user=user, created_at=date(2020 + i, 11, 8))
 
         return user
 
@@ -104,6 +101,7 @@ def eric(create_user):
         email="eric@co.gov.uk",
         date_joined="2000-01-02",
         times_to_complete=[5, 10],
+        department="active-travel-england",
         grade="GRADE6",
         has_completed_pre_survey=True,
         has_completed_post_survey=True,
