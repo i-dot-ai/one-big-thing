@@ -79,7 +79,7 @@ def get_signups_by_date():
             date_joined=Cast("signup_date", output_field=DateField()),
             number_of_signups=Cast("count", output_field=IntegerField()),
         )
-        .values("date_joined", "number_of_signups")
+        .values("date_joined", "number_of_signups", "department__code", "department__parent")
     )
 
     return signups

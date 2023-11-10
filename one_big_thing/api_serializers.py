@@ -15,6 +15,8 @@ class JwtTokenObtainPairSerializer(TokenObtainPairSerializer):
 class DateJoinedSerializer(serializers.Serializer):
     date_joined = serializers.DateField()
     number_of_signups = serializers.IntegerField()
+    department = serializers.CharField(source="department__code")
+    parent = serializers.CharField(source="department__parent")
 
     class Meta:
         fields = ["__all__"]

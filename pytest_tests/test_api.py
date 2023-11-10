@@ -68,7 +68,12 @@ def test_get_signup_data(authenticated_api_client_fixture):
     response = authenticated_api_client_fixture.get(url)
     assert response.status_code == 200, response.status_code
     today_date = datetime.today().date().strftime("%Y-%m-%d")
-    record = {"date_joined": today_date, "number_of_signups": 1}
+    record = {
+        "date_joined": today_date,
+        "number_of_signups": 1,
+        "department": "acas",
+        "parent": "DEPARTMENT_FOR_BUSINESS_AND_TRADE",
+    }
     dates = [item["date_joined"] for item in response.data]
     assert record in response.data, response.data
     assert today_date in dates, dates
