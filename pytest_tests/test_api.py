@@ -171,3 +171,23 @@ def test_get_department_stats(authenticated_api_client_fixture, alice, bob, chri
     response = authenticated_api_client_fixture.get(url)
     assert response.status_code == 200, response.status_code
     assert len(response.json()["results"]) == 1
+
+
+@pytest.mark.django_db
+def test_get_surveys(
+    authenticated_api_client_fixture, alice, bob, chris, daisy, eric, pre_survey_data, post_survey_data
+):  # noqa: F811
+    url = reverse("surveys")
+    response = authenticated_api_client_fixture.get(url)
+    assert response.status_code == 200, response.status_code
+
+    g6 = next(x for x in response.json()["results"] if x["grade"] == "GRADE6")
+    g7 = next(x for x in response.json()["results"] if x["grade"] == "GRADE7")
+
+    assert len(g6["learning_records"]) == 1
+    assert len(g7["learning_records"]) == 2
+
+    assert "pre" in g6
+    assert "pre" in g7
+    assert "post" not in g6
+    assert "post" in g7

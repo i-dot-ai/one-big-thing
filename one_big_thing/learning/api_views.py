@@ -23,9 +23,11 @@ from one_big_thing.api_serializers import (
     DepartmentCompletionStatisticsSerializer,
     JwtTokenObtainPairSerializer,
     NormalizedDepartmentBreakdownSerializer,
+    SurveyParticipantSerializer,
 )
 from one_big_thing.learning import models
 from one_big_thing.learning.api_permissions import IsAPIUser
+from one_big_thing.learning.models import User
 
 
 class UserSignupStatsView(APIView):
@@ -269,4 +271,21 @@ class DepartmentStatisticsView(ListAPIView):
 
     queryset = get_department_stats()
     serializer_class = DepartmentCompletionStatisticsSerializer
+    pagination_class = CustomPagination
+
+
+class SurveyView(ListAPIView):
+    """
+    Endpoint used by i.ai to extract survey info from users happy to share their feedback
+    """
+
+    permission_classes = (
+        IsAuthenticated,
+        IsAPIUser,
+    )
+
+    queryset = User.objects.filter(
+        surveyresult__data__contains={"willing-to-follow-up": "yes"},
+    ).order_by("id")
+    serializer_class = SurveyParticipantSerializer
     pagination_class = CustomPagination
