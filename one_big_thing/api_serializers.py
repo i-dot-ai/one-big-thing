@@ -140,7 +140,7 @@ class SurveyParticipantSerializer(serializers.Serializer):
         representation = super().to_representation(instance)
 
         for survey_type, survey_keys in SURVEY_FIELDS.items():
-            if survey := instance.surveyresult_set.filter(survey_type=survey_type).first():
+            if survey := instance.surveyresult_set.filter(survey_type=survey_type).last():
                 representation[survey_type] = {
                     survey_key: survey.data.get(survey_key, "") for survey_key in survey_keys
                 }
