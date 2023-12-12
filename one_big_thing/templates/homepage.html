@@ -17,9 +17,15 @@
     <div class="govuk-notification-banner__content">
       <h3 class="govuk-notification-banner__heading">
           Well done for completeing {{ humanize_timedelta(data.time_completed, 200, "over 200 hours") }} so far!</h3>
+
+          {% if data.completed_feedback_survey %}
+
+          {% else %}
           <p class="govuk-body">
             You should provide <a class="govuk-link" href="{{url('intro-post-survey')}}">feedback</a> about your One Big Thing experience. Your answers will be used to measure the effect of One Big Thing.
           </p>
+          {% endif %}
+          
           <p class="govuk-body">
             You can also download your <a target="_blank" rel="noopener noreferrer" href="{{static('Certificate-OBT.png')}}" class="govuk-link">One Big Thing certificate</a> to celebrate your completion.
           </p>
