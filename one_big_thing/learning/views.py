@@ -106,6 +106,7 @@ def homepage_view(request):
         selected_level_course = {"title": "", "link": ""}
     data = {
         "time_completed": time_completed,
+        "completed_obt": time_completed >= settings.REQUIRED_LEARNING_TIME,
         "selected_level": selected_level,
         "selected_level_label": selected_level_label,
         "selected_level_course": selected_level_course,
