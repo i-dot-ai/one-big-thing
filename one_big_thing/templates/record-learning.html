@@ -21,9 +21,13 @@
         </strong>{% endif %}
       </p>
       {% if data.completed_obt %}
-        <p class="govuk-body">
-          You should provide <a class="govuk-link" href="{{url('intro-post-survey')}}">feedback</a> about your One Big Thing experience. Your answers will be used to measure the effect of One Big Thing.
-        </p>
+      {% if data.completed_feedback_survey %}
+
+      {% else %}
+      <p class="govuk-body">
+        You should provide <a class="govuk-link" href="{{url('intro-post-survey')}}">feedback</a> about your One Big Thing experience. Your answers will be used to measure the effect of One Big Thing.
+      </p>
+      {% endif %}
         <p class="govuk-body">
           You can also download your <a target="_blank" rel="noopener noreferrer" href="{{static('Certificate-OBT.png')}}" class="govuk-link">One Big Thing certificate</a> to celebrate your completion.
         </p>
