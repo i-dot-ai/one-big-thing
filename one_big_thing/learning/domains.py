@@ -122,5 +122,9 @@ EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
         "wales.nhs.uk",
         "wiltonpark.org.uk",
         "yorkshiredales.org.uk",
+        "ucpinquiry.org.uk",
+        "legalombudsman.org.uk",
+        "sfc.ac.uk",
+        "legalombudsman.org.uk"
     )
 )
