@@ -68,7 +68,12 @@ def test_get_signup_data(authenticated_api_client_fixture):
     response = authenticated_api_client_fixture.get(url)
     assert response.status_code == 200, response.status_code
     today_date = datetime.today().date().strftime("%Y-%m-%d")
-    record = {"date_joined": today_date, "number_of_signups": 1}
+    record = {
+        "date_joined": today_date,
+        "number_of_signups": 1,
+        "department": "acas",
+        "parent": "DEPARTMENT_FOR_BUSINESS_AND_TRADE",
+    }
     dates = [item["date_joined"] for item in response.data]
     assert record in response.data, response.data
     assert today_date in dates, dates
@@ -158,3 +163,31 @@ def test_breakdown_stats_page_size(authenticated_api_client_fixture, alice, bob,
     response = authenticated_api_client_fixture.get(url, {"page_size": 2})
     assert response.status_code == 200, response.status_code
     assert len(response.json()["results"]) == 2
+
+
+@pytest.mark.django_db
+def test_get_department_stats(authenticated_api_client_fixture, alice, bob, chris, daisy, eric):  # noqa: F811
+    url = reverse("department_learning")
+    response = authenticated_api_client_fixture.get(url)
+    assert response.status_code == 200, response.status_code
+    assert len(response.json()["results"]) == 1
+
+
+@pytest.mark.django_db
+def test_get_surveys(
+    authenticated_api_client_fixture, alice, bob, chris, daisy, eric, pre_survey_data, post_survey_data
+):  # noqa: F811
+    url = reverse("surveys")
+    response = authenticated_api_client_fixture.get(url)
+    assert response.status_code == 200, response.status_code
+
+    g6 = next(x for x in response.json()["results"] if x["grade"] == "GRADE6")
+    g7 = next(x for x in response.json()["results"] if x["grade"] == "GRADE7")
+
+    assert len(g6["learning_records"]) == 1
+    assert len(g7["learning_records"]) == 2
+
+    assert "pre" in g6
+    assert "pre" in g7
+    assert "post" not in g6
+    assert "post" in g7

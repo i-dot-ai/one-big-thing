@@ -1,10 +1,15 @@
 import uuid
-from datetime import datetime
+from datetime import date, datetime
 
 import pytest
 import pytz
 
-from one_big_thing.learning.models import Department, Learning, User
+from one_big_thing.learning.models import (
+    Department,
+    Learning,
+    SurveyResult,
+    User,
+)
 
 UTC = pytz.timezone("UTC")
 
@@ -39,11 +44,8 @@ def create_user():
             has_completed_post_survey=has_completed_post_survey,
         )
 
-        for time_to_complete in times_to_complete:
-            Learning.objects.create(
-                time_to_complete=time_to_complete,
-                user=user,
-            )
+        for i, time_to_complete in enumerate(times_to_complete):
+            Learning.objects.create(time_to_complete=time_to_complete, user=user, created_at=date(2020 + i, 11, 8))
 
         return user
 
@@ -51,8 +53,71 @@ def create_user():
 
 
 @pytest.fixture
+def pre_survey_data():
+    return {
+        "confident-in-decisions": "very-confident",
+        "confidence-graphic-survey": "not-confident",
+        "confidence-explaining-chart": "confident",
+        "confident-day-to-day": "",
+        "data-support-day-to-day": "",
+        "data-is-relevant-to-role": "2",
+        "use-data-effectively-day-to-day": "",
+        "line-manager": "",
+        "help-team": "",
+        "coach-team": "",
+        "support-team": "",
+        "training-last-six-months": "",
+        "training-analytical-component": "yes",
+        "aware-of-the-aims": "4",
+        "shared-identity": "3",
+        "identity-is-important": "2",
+        "willing-to-follow-up": "yes",
+    }
+
+
+@pytest.fixture
+def post_survey_data():
+    return {
+        "training-level": "practitioner",
+        "shared-identity": "4",
+        "identity-important": "4",
+        "confident-day-to-day": "4",
+        "data-support-day-to-day": "",
+        "data-is-relevant-to-role": "",
+        "use-data-effectively-day-to-day": "",
+        "line-manager": "no",
+        "help-team": "",
+        "coach-team": "",
+        "support-team": "",
+        "anticipate-data-limitations": "",
+        "understanding-ethics-for-data": "",
+        "understand-how-to-quality-assure-data": "",
+        "more-effectively-communicate-data-insights-to-improve-decisions": "",
+        "find-mentor": "",
+        "book-training": "",
+        "other-development": "",
+        "create-development-plan": "",
+        "add-learning-to-development-plan": "5",
+        "training-helped-learning": "",
+        "conversations-helped-learning": "",
+        "additional-resources-helped-learning": "",
+        "useful-learning-formats": "",
+        "obt-good-use-of-time": "",
+        "content-was-relevant-to-my-role": "",
+        "intend-to-apply-learning-in-my-role": "4",
+        "improved-understanding-of-using-data": "",
+        "intend-to-participate-in-further-training": "",
+        "aware-of-aims": "",
+        "sufficient-time": "",
+        "what-went-well": "",
+        "what-can-be-improved": "",
+        "willing-to-follow-up": "no",
+    }
+
+
+@pytest.fixture
 def alice(create_user):
-    return create_user(
+    user = create_user(
         email="alice@co.gov.uk",
         date_joined="2000-01-01",
         grade="GRADE7",
@@ -60,11 +125,12 @@ def alice(create_user):
         has_completed_pre_survey=False,
         has_completed_post_survey=False,
     )
+    return user
 
 
 @pytest.fixture
-def bob(create_user):
-    return create_user(
+def bob(create_user, pre_survey_data, post_survey_data):
+    user = create_user(
         email="bob@co.gov.uk",
         date_joined="2000-01-01",
         grade="GRADE7",
@@ -72,11 +138,24 @@ def bob(create_user):
         has_completed_pre_survey=True,
         has_completed_post_survey=False,
     )
+    SurveyResult.objects.create(
+        user=user,
+        data=pre_survey_data,
+        survey_type="pre",
+        page_number=1,
+    )
+    SurveyResult.objects.create(
+        user=user,
+        data=post_survey_data,
+        survey_type="post",
+        page_number=1,
+    )
+    return bob
 
 
 @pytest.fixture
-def chris(create_user):
-    return create_user(
+def chris(create_user, pre_survey_data):
+    user = create_user(
         email="chris@co.gov.uk",
         date_joined="2000-01-02",
         grade="GRADE6",
@@ -84,6 +163,14 @@ def chris(create_user):
         has_completed_pre_survey=True,
         has_completed_post_survey=True,
     )
+
+    SurveyResult.objects.create(
+        user=user,
+        data=pre_survey_data,
+        survey_type="pre",
+        page_number=1,
+    )
+    return user
 
 
 @pytest.fixture
