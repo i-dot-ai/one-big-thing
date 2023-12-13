@@ -106,6 +106,7 @@ def homepage_view(request):
         selected_level_course = {"title": "", "link": ""}
     data = {
         "time_completed": time_completed,
+        "completed_obt": time_completed >= settings.REQUIRED_LEARNING_TIME,
         "selected_level": selected_level,
         "selected_level_label": selected_level_label,
         "selected_level_course": selected_level_course,
@@ -182,6 +183,7 @@ class RecordLearningView(utils.MethodDispatcher):
             template_name = "record-learning.html"
         time_completed = user.get_time_completed()
         completed_obt = time_completed >= settings.REQUIRED_LEARNING_TIME
+        completed_feedback_survey = user.has_completed_post_survey
         learning_types = choices.CourseType.choices
         courses = models.Learning.objects.filter(user=user)
         data = {
@@ -190,6 +192,7 @@ class RecordLearningView(utils.MethodDispatcher):
             "learning_types": learning_types,
             "courses": courses,
             "completed_obt": completed_obt,
+            "completed_feedback_survey": completed_feedback_survey,
         }
         if course_id:
             course = models.Course.objects.filter(pk=course_id).first()
