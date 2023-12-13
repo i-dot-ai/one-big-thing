@@ -31,5 +31,8 @@ class Command(BaseCommand):
         message = "\n".join(user.email for user in command())
 
         send_mail(
-            subject=self.help, message=message, from_email=settings.FROM_EMAIL, recipient_list=[email],
+            subject=self.help,
+            message=message,
+            from_email=settings.FROM_EMAIL,
+            recipient_list=[email],
         )
