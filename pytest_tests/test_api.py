@@ -214,7 +214,8 @@ def test_select_surveys(create_user, authenticated_api_client_fixture):
         page_number=1,
     )
 
-    user_without_survey = create_user(
+    # a user without a survey
+    _ = create_user(
         email="alex@example.com",
         date_joined="2000-01-02",
         grade="GRADE7",
@@ -229,7 +230,7 @@ def test_select_surveys(create_user, authenticated_api_client_fixture):
 
     assert len(response.json()["results"]) == 2
 
-    returned_grades = [x['grade'] for x in response.json()['results']]
-    assert 'EXECUTIVE_OFFICER' in returned_grades
-    assert 'GRADE6' in returned_grades
-    assert 'GRADE7' not in returned_grades
+    returned_grades = [x["grade"] for x in response.json()["results"]]
+    assert "EXECUTIVE_OFFICER" in returned_grades
+    assert "GRADE6" in returned_grades
+    assert "GRADE7" not in returned_grades

@@ -284,6 +284,6 @@ class SurveyView(ListAPIView):
         IsAPIUser,
     )
 
-    queryset = User.objects.filter(surveyresult__isnull=False).distinct().order_by('id')
+    queryset = User.objects.filter(surveyresult__isnull=False).distinct().order_by("id")
     serializer_class = SurveyParticipantSerializer
     pagination_class = CustomPagination
