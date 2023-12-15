@@ -7,7 +7,7 @@ from one_big_thing.learning.models import User
 
 
 class Command(BaseCommand):
-    help = "nudege users who have completed no training"
+    help = "nudge users who have completed no training"
 
     def handle(self, *args, **kwargs):
         message = render_to_string("email/recorded-your-learning.txt")
