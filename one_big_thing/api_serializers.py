@@ -62,3 +62,87 @@ class DepartmentCompletionStatisticsSerializer(serializers.Serializer):
 
     class Meta:
         fields = "__all__"
+
+
+class LearningSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    learning_type = serializers.CharField()
+    rating = serializers.IntegerField()
+    link = serializers.URLField()
+    time_to_complete = serializers.IntegerField()
+
+
+SURVEY_FIELDS = {
+    "pre": [
+        "confident-in-decisions",
+        "confidence-graphic-survey",
+        "confidence-explaining-chart",
+        "confident-day-to-day",
+        "data-support-day-to-day",
+        "data-is-relevant-to-role",
+        "use-data-effectively-day-to-day",
+        "line-manager",
+        "help-team",
+        "coach-team",
+        "support-team",
+        "training-last-six-months",
+        "training-analytical-component",
+        "aware-of-the-aims",
+        "shared-identity",
+        "identity-is-important",
+    ],
+    "post": [
+        "training-level",
+        "shared-identity",
+        "identity-important",
+        "confident-day-to-day",
+        "data-support-day-to-day",
+        "data-is-relevant-to-role",
+        "use-data-effectively-day-to-day",
+        "line-manager",
+        "help-team",
+        "coach-team",
+        "support-team",
+        "anticipate-data-limitations",
+        "understanding-ethics-for-data",
+        "understand-how-to-quality-assure-data",
+        "more-effectively-communicate-data-insights-to-improve-decisions",
+        "find-mentor",
+        "book-training",
+        "other-development",
+        "create-development-plan",
+        "add-learning-to-development-plan",
+        "training-helped-learning",
+        "conversations-helped-learning",
+        "additional-resources-helped-learning",
+        "useful-learning-formats",
+        "obt-good-use-of-time",
+        "content-was-relevant-to-my-role",
+        "intend-to-apply-learning-in-my-role",
+        "improved-understanding-of-using-data",
+        "intend-to-participate-in-further-training",
+        "aware-of-aims",
+        "sufficient-time",
+        "what-went-well",
+        "what-can-be-improved",
+        "willing-to-follow-up",
+    ],
+}
+
+
+class SurveyParticipantSerializer(serializers.Serializer):
+    department = serializers.CharField()
+    grade = serializers.CharField()
+    profession = serializers.CharField()
+    learning_records = LearningSerializer(many=True, source="learning_set")
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        for survey_type, survey_keys in SURVEY_FIELDS.items():
+            if survey := instance.surveyresult_set.filter(survey_type=survey_type).last():
+                representation[survey_type] = {
+                    survey_key: survey.data.get(survey_key, "") for survey_key in survey_keys
+                }
+
+        return representation
