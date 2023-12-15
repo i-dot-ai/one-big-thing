@@ -141,8 +141,8 @@ class SurveyParticipantSerializer(serializers.Serializer):
 
         for survey_type, survey_keys in SURVEY_FIELDS.items():
             condensed_survey = dict.fromkeys(survey_keys, "")
-            for survey in instance.surveyresult_set.filter(survey_type=survey_type).all().values():
-                condensed_survey = condensed_survey | survey["data"]
+            for survey in instance.surveyresult_set.filter(survey_type=survey_type).order_by("created_at"):
+                condensed_survey = condensed_survey | survey.data
             representation[survey_type] = condensed_survey
 
         return representation

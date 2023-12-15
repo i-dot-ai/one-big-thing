@@ -115,3 +115,36 @@ def test_serialize_user_without_surveys(create_user):
 
     for k, v in output["post"].items():
         assert v == ""
+
+
+@pytest.mark.django_db
+def test_serialize_user_with_overrides(create_user):
+    user = create_user(
+        email="chris@co.gov.uk",
+        date_joined="2000-01-02",
+        grade="GRADE6",
+        times_to_complete=[60],
+        has_completed_pre_survey=True,
+        has_completed_post_survey=True,
+    )
+
+    first = SurveyResult.objects.create(
+        user=user,
+        data={"help-team": "yes"},
+        survey_type="pre",
+        page_number=1,
+    )
+    second = SurveyResult.objects.create(
+        user=user,
+        data={"help-team": "no"},
+        survey_type="pre",
+        page_number=1,
+    )
+
+    assert first.created_at < second.created_at
+
+    serializer = SurveyParticipantSerializer(instance=user)
+
+    output = serializer.to_representation(user)
+
+    assert output["pre"]["help-team"] == "no"
