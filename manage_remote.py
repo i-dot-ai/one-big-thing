@@ -185,24 +185,22 @@ def get_email_stats(env):
 
 
 @cli.command()
-@click.argument("email", type=str)
 @env_option
-def get_users_with_no_hours(email, env):
+def get_users_with_no_hours(env):
     if env.upper() == "PROD":
         click.secho("this is running things on the (live) server!", fg="red")
 
-    task = run(env, "user_stats_to_email", "--email", email, "--cmd", "users_with_no_hours")
+    task = run(env, "email_users",  "--cmd", "users_with_no_hours")
     click.echo(task)
 
 
 @cli.command()
-@click.argument("email", type=str)
 @env_option
-def get_users_with_seven_hours_no_survey(email, env):
+def get_users_with_seven_hours_no_survey(env):
     if env.upper() == "PROD":
         click.secho("this is running things on the (live) server!", fg="red")
 
-    task = run(env, "user_stats_to_email", "--email", email, "--cmd", "users_with_seven_hours_no_survey")
+    task = run(env, "email_users", "--cmd", "users_with_seven_hours_no_survey")
     click.echo(task)
 
 
