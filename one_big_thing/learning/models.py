@@ -12,12 +12,12 @@ from django_use_email_as_username.models import BaseUser, BaseUserManager
 
 from one_big_thing.learning import choices, constants
 from one_big_thing.learning.choices import Grade, Profession
-from one_big_thing.learning.survey_handling import survey_completion_map
+from one_big_thing.learning.constants import SURVEY_TYPES
 
 logger = logging.getLogger(__name__)
 
-POST_SURVEY_TYPES = ["post"] + [key for key, value in survey_completion_map.items() if value == "post"]
-PRE_SURVEY_TYPES = [key for key, value in survey_completion_map.items() if value == "pre"]
+POST_SURVEY_TYPES = ["post"] + [key for key, value in SURVEY_TYPES.items() if value == "post"]
+PRE_SURVEY_TYPES = [key for key, value in SURVEY_TYPES.items() if value == "pre"]
 
 
 class UUIDPrimaryKeyBase(models.Model):

@@ -572,10 +572,3 @@ answer_labels = {
 }
 
 
-survey_completion_map = {
-    "pre": "pre",
-    "working": "post",
-    "awareness": "post",
-    "practitioner": "post",
-    "unknown": "post",
-}

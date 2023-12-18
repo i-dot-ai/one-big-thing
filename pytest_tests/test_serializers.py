@@ -172,7 +172,7 @@ ALL_QUESTIONS = (
 )
 
 
-@pytest.mark.parametrize("survey_type, survey_sub_type, question", ALL_QUESTIONS)
+@pytest.mark.parametrize("survey_type_group, survey_type, question", ALL_QUESTIONS)
 @pytest.mark.django_db
 def test_serialize_user_all_question_fields(create_user, survey_type_group, survey_type, question):
     """For each question, we create a survey result with the survey-type-group (pre/post) and survey-type (other)

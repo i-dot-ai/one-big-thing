@@ -96,3 +96,12 @@ BUSINESS_SPECIFIC_WORDS = [
     "cabinet office",
     "downing street",
 ]
+
+
+SURVEY_TYPES = {
+    "pre": "pre",
+    "working": "post",
+    "awareness": "post",
+    "practitioner": "post",
+    "unknown": "post",
+}
