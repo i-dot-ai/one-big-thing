@@ -8,7 +8,7 @@ To run this project:
 
 open http://localhost:8055/
 
-To populate the database with fake data:
+To populate the database with fake data and provide courses essential for the app to run:
 
     docker-compose run web python manage.py add_courses
 

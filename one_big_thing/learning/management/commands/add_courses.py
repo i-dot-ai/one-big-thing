@@ -1,6 +1,8 @@
+from django.core import management
 from django.core.management import BaseCommand
 
 from one_big_thing.learning import choices, models
+from one_big_thing.learning.management.commands import add_special_courses
 
 courses = (
     {
@@ -36,7 +38,7 @@ courses = (
 )
 
 
-class Command(BaseCommand):
+class Command(management.BaseCommand):
     help = "Add fake courses"
 
     def handle(self, *args, **kwargs):
@@ -47,3 +49,6 @@ class Command(BaseCommand):
             new_course.time_to_complete = course["duration"]
             new_course.learning_type = course["learning_type"]
             new_course.save()
+
+        # the app needs special_courses to work correctly
+        management.call_command(add_special_courses.Command())
