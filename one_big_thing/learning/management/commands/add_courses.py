@@ -7,31 +7,31 @@ courses = (
         "link": "https://learn.civilservice.gov.uk/courses/GyZgKWc0Tz6ZIfvDSiuO1Q",
         "title": "Data quality",
         "duration": "80",
-        "learning_type": choices.CourseType.LINK.name,
+        "learning_type": choices.CourseType.EVENT_CENTRAL.name,
     },
     {
         "link": "https://learn.civilservice.gov.uk/courses/2PAR3NQyT-GOg5-7bVZaog",
         "title": "Data visualisation",
         "duration": "60",
-        "learning_type": choices.CourseType.LINK.name,
+        "learning_type": choices.CourseType.EVENT_CENTRAL.name,
     },
     {
         "link": "https://learn.civilservice.gov.uk/courses/BfBwomNDSEGgpf9b16RJsg",
         "title": "Data visualisation e-learning",
         "duration": "30",
-        "learning_type": choices.CourseType.LINK.name,
+        "learning_type": choices.CourseType.EVENT_CENTRAL.name,
     },
     {
         "link": "https://learn.civilservice.gov.uk/courses/1bzxx1maReOyvnxFIYOP1g",
         "title": "Security and data protection",
         "duration": "95",
-        "learning_type": choices.CourseType.LINK.name,
+        "learning_type": choices.CourseType.EVENT_CENTRAL.name,
     },
     {
         "link": "https://learn.civilservice.gov.uk/courses/s5y7_eboT4iIuz2sUTB-CQ",
         "title": "Government security classification policy",
         "duration": "30",
-        "learning_type": choices.CourseType.LINK.name,
+        "learning_type": choices.CourseType.EVENT_CENTRAL.name,
     },
 )
 
