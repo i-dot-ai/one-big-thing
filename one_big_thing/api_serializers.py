@@ -1,5 +1,14 @@
+from functools import reduce
+
 from rest_framework import exceptions, serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from one_big_thing.learning.models import (
+    POST_SURVEY_TYPES,
+    PRE_SURVEY_TYPES,
+    User,
+)
+from one_big_thing.learning.survey_handling import questions_data
 
 
 class JwtTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -72,62 +81,14 @@ class LearningSerializer(serializers.Serializer):
     time_to_complete = serializers.IntegerField()
 
 
-SURVEY_FIELDS = {
-    "pre": [
-        "confident-in-decisions",
-        "confidence-graphic-survey",
-        "confidence-explaining-chart",
-        "confident-day-to-day",
-        "data-support-day-to-day",
-        "data-is-relevant-to-role",
-        "use-data-effectively-day-to-day",
-        "line-manager",
-        "help-team",
-        "coach-team",
-        "support-team",
-        "training-last-six-months",
-        "training-analytical-component",
-        "aware-of-the-aims",
-        "shared-identity",
-        "identity-is-important",
-    ],
-    "post": [
-        "training-level",
-        "shared-identity",
-        "identity-important",
-        "confident-day-to-day",
-        "data-support-day-to-day",
-        "data-is-relevant-to-role",
-        "use-data-effectively-day-to-day",
-        "line-manager",
-        "help-team",
-        "coach-team",
-        "support-team",
-        "anticipate-data-limitations",
-        "understanding-ethics-for-data",
-        "understand-how-to-quality-assure-data",
-        "more-effectively-communicate-data-insights-to-improve-decisions",
-        "find-mentor",
-        "book-training",
-        "other-development",
-        "create-development-plan",
-        "add-learning-to-development-plan",
-        "training-helped-learning",
-        "conversations-helped-learning",
-        "additional-resources-helped-learning",
-        "useful-learning-formats",
-        "obt-good-use-of-time",
-        "content-was-relevant-to-my-role",
-        "intend-to-apply-learning-in-my-role",
-        "improved-understanding-of-using-data",
-        "intend-to-participate-in-further-training",
-        "aware-of-aims",
-        "sufficient-time",
-        "what-went-well",
-        "what-can-be-improved",
-        "willing-to-follow-up",
-    ],
-}
+def build_empty_survey_dict(*keys: str) -> dict[str, str]:
+    empty_dict = {}
+    for key, questions_level_0 in questions_data.items():
+        if key in keys:
+            for questions_level_1 in questions_level_0:
+                for questions_level_2 in questions_level_1["questions"]:
+                    empty_dict[questions_level_2["id"]] = ""
+    return empty_dict
 
 
 class SurveyParticipantSerializer(serializers.Serializer):
@@ -136,13 +97,21 @@ class SurveyParticipantSerializer(serializers.Serializer):
     profession = serializers.CharField()
     learning_records = LearningSerializer(many=True, source="learning_set")
 
-    def to_representation(self, instance):
+    def to_representation(self, instance: User):
         representation = super().to_representation(instance)
 
-        for survey_type, survey_keys in SURVEY_FIELDS.items():
-            condensed_survey = dict.fromkeys(survey_keys, "")
-            for survey in instance.surveyresult_set.filter(survey_type=survey_type).order_by("created_at"):
-                condensed_survey = condensed_survey | survey.data
-            representation[survey_type] = condensed_survey
+        empty_pre_survey_dict = build_empty_survey_dict(*PRE_SURVEY_TYPES)
+        representation["pre"] = reduce(
+            lambda x, y: x | y,
+            instance.pre_survey_results.values_list("data", flat=True),
+            empty_pre_survey_dict,
+        )
+
+        empty_post_survey_dict = build_empty_survey_dict(*POST_SURVEY_TYPES)
+        representation["post"] = reduce(
+            lambda x, y: x | y,
+            instance.post_survey_results.values_list("data", flat=True),
+            empty_post_survey_dict,
+        )
 
         return representation

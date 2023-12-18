@@ -16,6 +16,9 @@ from one_big_thing.learning.survey_handling import survey_completion_map
 
 logger = logging.getLogger(__name__)
 
+POST_SURVEY_TYPES = ["post"] + [key for key, value in survey_completion_map.items() if value == "post"]
+PRE_SURVEY_TYPES = [key for key, value in survey_completion_map.items() if value == "pre"]
+
 
 class UUIDPrimaryKeyBase(models.Model):
     class Meta:
@@ -177,14 +180,11 @@ class User(BaseUser, UUIDPrimaryKeyBase):
 
     @property
     def pre_survey_results(self):
-        pre_surveys = [key for key, value in survey_completion_map.items() if value == "pre"]
-        return self.surveyresult_set.filter(survey_type__in=pre_surveys).all()
-
+        return self.surveyresult_set.filter(survey_type__in=PRE_SURVEY_TYPES).order_by("created_at")
 
     @property
     def post_survey_results(self):
-        post_surveys = [key for key, value in survey_completion_map.items() if value == "post"]
-        return self.surveyresult_set.filter(survey_type__in=post_surveys).all()
+        return self.surveyresult_set.filter(survey_type__in=POST_SURVEY_TYPES).order_by("created_at")
 
     @property
     def email_domain(self) -> str:
