@@ -175,6 +175,10 @@ ALL_QUESTIONS = (
 @pytest.mark.parametrize("survey_type, survey_sub_type, question", ALL_QUESTIONS)
 @pytest.mark.django_db
 def test_serialize_user_all_question_fields(create_user, survey_type, survey_sub_type, question):
+    """For each question, we create a survey result with the type (pre/post) and sub-type (other)
+    and the question, and assign the answer 'yes'.
+    We then asserts that the output has the question and answer are correctly assigned
+    """
     user = create_user(
         email="chris@co.gov.uk",
         date_joined="2000-01-02",
