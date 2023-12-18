@@ -125,6 +125,6 @@ EXTRA_ALLOWED_CIVIL_SERVICE_DOMAINS = set(
         "ucpinquiry.org.uk",
         "legalombudsman.org.uk",
         "sfc.ac.uk",
-        "legalombudsman.org.uk"
+        "legalombudsman.org.uk",
     )
 )
