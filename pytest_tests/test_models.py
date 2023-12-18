@@ -1,7 +1,7 @@
 import pytest
 
 from one_big_thing.learning import models
-from one_big_thing.learning.models import Department
+from one_big_thing.learning.models import Department, SurveyResult
 
 
 @pytest.mark.django_db
@@ -31,6 +31,18 @@ def test_user_save():
     new_user2, _ = models.User.objects.update_or_create(email=new_email2)
     assert new_user1.email == "new_user1@example.org", new_user1.email
     assert new_user2.email == "new_user2@example.com", new_user2.email
+
+
+
+@pytest.mark.parametrize(
+    "survey_types, has_completed_pre_survey2, has_completed_post_survey2",
+    [(["pre", "post"], True, True)],
+)
+@pytest.mark.django_db
+def test_survey_completion_status(create_user, survey_types, has_completed_pre_survey2, has_completed_post_survey2):
+    user = create_user(email="alcie@example.com")
+    for survey_type in survey_types:
+        SurveyResult.objects.create(survey_type=survey_type, user=user, page_number=1)
 
 
 def test_determine_competency_levels():

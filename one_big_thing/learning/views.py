@@ -92,7 +92,7 @@ def homepage_view(request):
             "title": course.title,
             "link": course.link,
             "id": course.id,
-            "is_complete": user.has_completed_course(course.id),
+            "is_complete": user._has_completed_course(course.id),
         }
         for course in all_level_courses
     ]
@@ -292,7 +292,7 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
             if completed_post_survey:
                 completed_level = completed_post_survey.data["training-level"]
                 return redirect("questions", completed_level)
-        setattr(request.user, f"has_completed_{survey_handling.survey_completion_map[survey_type]}_survey", True)
+        # setattr(request.user, f"has_completed_{survey_handling.survey_completion_map[survey_type]}_survey", True)
         request.user.save()
         if survey_type == "pre":
             return redirect("end-pre-survey")

@@ -170,9 +170,18 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, blank=True, null=True)
     grade = models.CharField(max_length=254, blank=True, null=True, choices=Grade.choices)
     profession = models.CharField(max_length=254, blank=True, null=True, choices=Profession.choices)
-    has_completed_pre_survey = models.BooleanField(default=False)
-    has_completed_post_survey = models.BooleanField(default=False)
+    # has_completed_pre_survey = models.BooleanField(default=False)
+    # has_completed_post_survey = models.BooleanField(default=False)
     is_api_user = models.BooleanField(default=False, null=True, blank=True)
+
+    @property
+    def has_completed_pre_survey(self) -> bool:
+        return self.surveyresult_set.filter(survey_type="pre").exists()
+
+    @property
+    def has_completed_post_survey(self) -> bool:
+        POST_SURVEY_TYPES= ["post"]
+        return self.surveyresult_set.filter(survey_type__in=POST_SURVEY_TYPES).exists()
 
     @property
     def email_domain(self) -> str:
@@ -215,7 +224,7 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     class Meta:
         indexes = [
             models.Index(
-                fields=("department", "grade", "profession", "has_completed_pre_survey", "has_completed_post_survey")
+                fields=("department", "grade", "profession", )
             )
         ]
 

@@ -26,8 +26,8 @@ def _add_user(unique_id=random.randint(0, 2000)):
         department=department_tuples[random.randint(0, len(departments.department_tuples) - 1)][0],
         grade=choices.Grade.labels[random.randint(0, len(choices.Grade.labels) - 1)],
         profession=choices.Profession.labels[random.randint(0, len(choices.Profession.labels) - 1)],
-        has_completed_post_survey=bool(random.choice([True, False])),
-        has_completed_pre_survey=bool(random.choice([True, False])),
+        # has_completed_post_survey=bool(random.choice([True, False])),
+        # has_completed_pre_survey=bool(random.choice([True, False])),
     )
     user.set_password(TEST_USER_PASSWORD)
     user.save()
