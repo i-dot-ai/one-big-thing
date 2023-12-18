@@ -158,8 +158,8 @@ def test_serialize_user_with_overrides(create_user):
     assert output["pre"]["help-team"] == "no"
 
 
-def _build_questions(survey_type, survey_sub_type, question):
-    return [(survey_type, survey_sub_type, q["id"]) for d in question for q in d["questions"]]
+def _build_questions(survey_type_group, survey_type, question):
+    return [(survey_type_group, survey_type, q["id"]) for d in question for q in d["questions"]]
 
 
 ALL_QUESTIONS = (
@@ -174,8 +174,8 @@ ALL_QUESTIONS = (
 
 @pytest.mark.parametrize("survey_type, survey_sub_type, question", ALL_QUESTIONS)
 @pytest.mark.django_db
-def test_serialize_user_all_question_fields(create_user, survey_type, survey_sub_type, question):
-    """For each question, we create a survey result with the type (pre/post) and sub-type (other)
+def test_serialize_user_all_question_fields(create_user, survey_type_group, survey_type, question):
+    """For each question, we create a survey result with the survey-type-group (pre/post) and survey-type (other)
     and the question, and assign the answer 'yes'.
     We then asserts that the output has the question and answer are correctly assigned
     """
@@ -189,7 +189,7 @@ def test_serialize_user_all_question_fields(create_user, survey_type, survey_sub
     SurveyResult.objects.create(
         user=user,
         data={question: "yes"},
-        survey_type=survey_sub_type,
+        survey_type=survey_type,
         page_number=1,
     )
 
@@ -197,4 +197,4 @@ def test_serialize_user_all_question_fields(create_user, survey_type, survey_sub
 
     output = serializer.to_representation(user)
 
-    assert output[survey_type][question] == "yes"
+    assert output[survey_type_group][question] == "yes"
