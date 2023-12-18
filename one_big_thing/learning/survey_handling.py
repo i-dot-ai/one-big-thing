@@ -544,20 +544,6 @@ questions_data = {
     "unknown": unknown_level_questions_data,
 }
 
-# pre_questions = tuple(q for section in pre_questions_data for q in section["questions"])
-# post_questions = tuple(q for section in post_questions_data for q in section["questions"])
-# all_questions = pre_questions + post_questions
-# section_pre_questions_map = {
-#     section["title"]: tuple(question["id"] for question in section["questions"]) for section in pre_questions_data
-# }
-# section_post_questions_map = {
-#     section["title"]: tuple(question["id"] for question in section["questions"]) for section in post_questions_data
-# }
-# section_all_questions_map = {
-#     **section_pre_questions_map,
-#     **section_post_questions_map,
-# }
-
 
 answer_labels = {
     "agree-1-5": {
@@ -584,13 +570,6 @@ answer_labels = {
     "useful-learning-formats": choices.CourseType.mapping,
     "willing-to-follow-up": dict(_yes_no),
 }
-
-
-# agree_pre_questions = tuple(item["id"] for item in pre_questions if item["answer_type"] == "agree-1-5")
-# agree_post_questions = tuple(item["id"] for item in post_questions if item["answer_type"] == "agree-1-5")
-# pre_question_sections = tuple(item["title"] for item in pre_questions_data)
-# post_question_sections = tuple(item["title"] for item in post_questions_data)
-# all_question_sections = pre_question_sections + post_question_sections
 
 
 survey_completion_map = {
