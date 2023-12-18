@@ -570,5 +570,3 @@ answer_labels = {
     "useful-learning-formats": choices.CourseType.mapping,
     "willing-to-follow-up": dict(_yes_no),
 }
-
-
