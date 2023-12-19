@@ -40,8 +40,8 @@ def test_serialize_user(create_user):
 
     output = serializer.to_representation(user)
 
-    assert all(v == "very-confident" if k == "confident-in-decisions" else "" for k, v in output["pre"].items())
-    assert all(v == "practitioner" if k == "training-level" else "" for k, v in output["post"].items())
+    assert all(v == ("very-confident" if k == "confident-in-decisions" else "") for k, v in output["pre"].items())
+    assert all(v == ("practitioner" if k == "training-level" else "") for k, v in output["post"].items())
 
 
 @pytest.mark.django_db
