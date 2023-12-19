@@ -16,7 +16,7 @@ from one_big_thing.learning.constants import SURVEY_TYPES
 
 logger = logging.getLogger(__name__)
 
-POST_SURVEY_TYPES = ["post"] + [key for key, value in SURVEY_TYPES.items() if value == "post"]
+POST_SURVEY_TYPES = [key for key, value in SURVEY_TYPES.items() if value == "post"]
 PRE_SURVEY_TYPES = [key for key, value in SURVEY_TYPES.items() if value == "pre"]
 
 

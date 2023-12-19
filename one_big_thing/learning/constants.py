@@ -104,4 +104,5 @@ SURVEY_TYPES = {
     "awareness": "post",
     "practitioner": "post",
     "unknown": "post",
+    "post": "post",
 }

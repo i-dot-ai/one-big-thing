@@ -21,6 +21,8 @@ import pytest
             "/questions/awareness/2/",
         ),
         ("awareness", 8, {"willing-to-follow-up": "yes"}, False, True, "/end-post-survey/"),
+        ("post", 1, {"training-level": "yes"}, False, False, "/questions/post/2/"),
+        ("post", 5, {"willing-to-follow-up": "yes"}, False, True, "/home/"),
     ],
 )
 @pytest.mark.django_db
