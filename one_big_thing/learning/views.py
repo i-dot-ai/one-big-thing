@@ -293,7 +293,12 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
             if completed_post_survey:
                 completed_level = completed_post_survey.data["training-level"]
                 return redirect("questions", completed_level)
-        setattr(request.user, f"has_completed_{SURVEY_TYPES[survey_type]}_survey", True)
+
+        if SURVEY_TYPES[survey_type] == "pre":
+            request.user.has_completed_pre_survey = True
+        elif SURVEY_TYPES[survey_type] == "post":
+            request.user.has_completed_post_survey = True
+
         request.user.save()
         if survey_type == "pre":
             return redirect("end-pre-survey")
