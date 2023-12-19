@@ -174,20 +174,63 @@ def test_get_department_stats(authenticated_api_client_fixture, alice, bob, chri
 
 
 @pytest.mark.django_db
-def test_get_surveys(
-    authenticated_api_client_fixture, alice, bob, chris, daisy, eric, pre_survey_data, post_survey_data
-):  # noqa: F811
+def test_select_surveys(create_user, authenticated_api_client_fixture):
+    user_with_survey = create_user(
+        email="chris@example.com",
+        date_joined="2000-01-02",
+        grade="GRADE6",
+        times_to_complete=[60],
+        has_completed_pre_survey=True,
+        has_completed_post_survey=True,
+    )
+
+    models.SurveyResult.objects.create(
+        user=user_with_survey,
+        data={"confident-in-decisions": "very-confident"},
+        survey_type="pre",
+        page_number=1,
+    )
+
+    user_with_multiple_surveys = create_user(
+        email="dsfjkds@example.com",
+        date_joined="2000-01-02",
+        grade="EXECUTIVE_OFFICER",
+        times_to_complete=[60],
+        has_completed_pre_survey=True,
+        has_completed_post_survey=True,
+    )
+
+    models.SurveyResult.objects.create(
+        user=user_with_multiple_surveys,
+        data={"confident-in-decisions": "very-confident"},
+        survey_type="pre",
+        page_number=1,
+    )
+
+    models.SurveyResult.objects.create(
+        user=user_with_multiple_surveys,
+        data={"confident-in-decisions": "very-confident"},
+        survey_type="post",
+        page_number=1,
+    )
+
+    # a user without a survey
+    _ = create_user(
+        email="alex@example.com",
+        date_joined="2000-01-02",
+        grade="GRADE7",
+        times_to_complete=[60],
+        has_completed_pre_survey=True,
+        has_completed_post_survey=True,
+    )
+
     url = reverse("surveys")
     response = authenticated_api_client_fixture.get(url)
     assert response.status_code == 200, response.status_code
 
-    g6 = next(x for x in response.json()["results"] if x["grade"] == "GRADE6")
-    g7 = next(x for x in response.json()["results"] if x["grade"] == "GRADE7")
+    assert len(response.json()["results"]) == 2
 
-    assert len(g6["learning_records"]) == 1
-    assert len(g7["learning_records"]) == 2
-
-    assert "pre" in g6
-    assert "pre" in g7
-    assert "post" not in g6
-    assert "post" in g7
+    returned_grades = [x["grade"] for x in response.json()["results"]]
+    assert "EXECUTIVE_OFFICER" in returned_grades
+    assert "GRADE6" in returned_grades
+    assert "GRADE7" not in returned_grades

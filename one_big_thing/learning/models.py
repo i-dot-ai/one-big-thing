@@ -12,8 +12,12 @@ from django_use_email_as_username.models import BaseUser, BaseUserManager
 
 from one_big_thing.learning import choices, constants
 from one_big_thing.learning.choices import Grade, Profession
+from one_big_thing.learning.constants import SURVEY_TYPES
 
 logger = logging.getLogger(__name__)
+
+POST_SURVEY_TYPES = [key for key, value in SURVEY_TYPES.items() if value == "post"]
+PRE_SURVEY_TYPES = [key for key, value in SURVEY_TYPES.items() if value == "pre"]
 
 
 class UUIDPrimaryKeyBase(models.Model):
@@ -173,6 +177,14 @@ class User(BaseUser, UUIDPrimaryKeyBase):
     has_completed_pre_survey = models.BooleanField(default=False)
     has_completed_post_survey = models.BooleanField(default=False)
     is_api_user = models.BooleanField(default=False, null=True, blank=True)
+
+    @property
+    def pre_survey_results(self):
+        return self.surveyresult_set.filter(survey_type__in=PRE_SURVEY_TYPES).order_by("created_at")
+
+    @property
+    def post_survey_results(self):
+        return self.surveyresult_set.filter(survey_type__in=POST_SURVEY_TYPES).order_by("created_at")
 
     @property
     def email_domain(self) -> str:

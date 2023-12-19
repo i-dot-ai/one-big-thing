@@ -1,7 +1,7 @@
 import pytest
 
 from one_big_thing.learning import models
-from one_big_thing.learning.models import Department
+from one_big_thing.learning.models import Department, SurveyResult
 
 
 @pytest.mark.django_db
@@ -31,6 +31,42 @@ def test_user_save():
     new_user2, _ = models.User.objects.update_or_create(email=new_email2)
     assert new_user1.email == "new_user1@example.org", new_user1.email
     assert new_user2.email == "new_user2@example.com", new_user2.email
+
+
+@pytest.mark.django_db
+def test_survey_results(create_user):
+    alice = create_user(email="alice@example.com")
+    SurveyResult.objects.create(
+        user=alice,
+        survey_type="pre",
+        page_number=1,
+    )
+    SurveyResult.objects.create(
+        user=alice,
+        survey_type="pre",
+        page_number=2,
+    )
+    SurveyResult.objects.create(
+        user=alice,
+        survey_type="post",
+        page_number=3,
+    )
+    SurveyResult.objects.create(
+        user=alice,
+        survey_type="working",
+        page_number=4,
+    )
+    SurveyResult.objects.create(
+        user=alice,
+        survey_type="practitioner",
+        page_number=5,
+    )
+
+    assert len(alice.pre_survey_results) == 2
+    assert [result.page_number for result in alice.pre_survey_results] == [1, 2]
+
+    assert len(alice.post_survey_results) == 3
+    assert [result.page_number for result in alice.post_survey_results] == [3, 4, 5]
 
 
 def test_determine_competency_levels():

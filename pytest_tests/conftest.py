@@ -3,6 +3,7 @@ from datetime import date, datetime
 
 import pytest
 import pytz
+from django.core.management import call_command
 
 from one_big_thing.learning.models import (
     Department,
@@ -12,6 +13,11 @@ from one_big_thing.learning.models import (
 )
 
 UTC = pytz.timezone("UTC")
+
+
+@pytest.fixture(autouse=True, scope="session")
+def collect_static():
+    call_command("collectstatic", "--noinput")
 
 
 @pytest.fixture

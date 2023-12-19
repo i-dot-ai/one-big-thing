@@ -21,6 +21,7 @@ from . import (
     utils,
 )
 from .additional_learning import additional_learning
+from .constants import SURVEY_TYPES
 from .decorators import (
     enforce_user_completes_details_and_pre_survey,
     login_required,
@@ -292,7 +293,12 @@ def questions_view_post(request, survey_type, page_number, errors=frozendict()):
             if completed_post_survey:
                 completed_level = completed_post_survey.data["training-level"]
                 return redirect("questions", completed_level)
-        setattr(request.user, f"has_completed_{survey_handling.survey_completion_map[survey_type]}_survey", True)
+
+        if SURVEY_TYPES[survey_type] == "pre":
+            request.user.has_completed_pre_survey = True
+        elif SURVEY_TYPES[survey_type] == "post":
+            request.user.has_completed_post_survey = True
+
         request.user.save()
         if survey_type == "pre":
             return redirect("end-pre-survey")
