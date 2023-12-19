@@ -1,5 +1,4 @@
 from django.core import management
-from django.core.management import BaseCommand
 
 from one_big_thing.learning import choices, models
 from one_big_thing.learning.management.commands import add_special_courses
