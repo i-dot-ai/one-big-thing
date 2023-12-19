@@ -83,11 +83,11 @@ class LearningSerializer(serializers.Serializer):
 
 def build_empty_survey_dict(*keys: str) -> dict[str, str]:
     empty_dict = {}
-    for key, questions_level_0 in questions_data.items():
+    for key, questions_set in questions_data.items():
         if key in keys:
-            for questions_level_1 in questions_level_0:
-                for questions_level_2 in questions_level_1["questions"]:
-                    empty_dict[questions_level_2["id"]] = ""
+            for questions in questions_set:
+                for question in questions["questions"]:
+                    empty_dict[question["id"]] = ""
     return empty_dict
 
 
