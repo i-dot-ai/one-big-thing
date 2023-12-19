@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.parametrize(
-    "survey_type, page_number, payload, expected_has_completed_pre_survey, expected_has_completed_post_survey, expected_redirect",
+    "survey_type, page_number, payload, expected_has_completed_pre_survey, expected_has_completed_post_survey, expected_redirect",  # noqa
     [
         ("pre", 1, {"confident-in-decisions": "very-confident"}, False, False, "/questions/pre/2/"),
         ("pre", 9, {"shared-identity": "1", "identity-is-important": "2"}, True, False, "/end-pre-survey/"),
