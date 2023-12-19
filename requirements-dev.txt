@@ -15,6 +15,7 @@ pytest
 pytest-django
 pytest-env
 django-test-migrations
+pytest-cov
 
 
 -r ./requirements.lock

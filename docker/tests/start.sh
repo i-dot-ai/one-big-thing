@@ -13,4 +13,4 @@ echo
 echo '----------------------------------------------------------------------'
 echo
 nosetests -v ./tests --logging-level=ERROR --with-coverage --cover-package=one_big_thing
-pytest -v ./pytest_tests
+pytest -v ./pytest_tests  --cov one_big_thing --cov-fail-under 73

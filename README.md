@@ -34,7 +34,7 @@ make test
 2. locally, e.g. so you can debug in an IDE
 ```commandline
 pip install -r requirements-dev.txt
-POSTGRES_HOST=localhost python -m pytest
+POSTGRES_HOST=localhost python -m pytest -v ./pytest_tests --cov one_big_thing --cov-fail-under 73
 ```
 note that this assumes that postgres is running in docker, if in doubt run `docker-compose up -d db` first
 
