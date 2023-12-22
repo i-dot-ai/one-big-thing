@@ -1,7 +1,7 @@
 import datetime
 
 import marshmallow
-from nose.tools import assert_raises
+import pytest
 
 from one_big_thing.learning import utils
 
@@ -58,7 +58,7 @@ def test_apply_schema():
     expected = {"date": "2012-04-01"}
     assert result == expected
 
-    with assert_raises(ValueError):
+    with pytest.raises(ValueError):
         result = utils.apply_schema(MySchema, {"date": datetime.date(2012, 4, 1)}, "wibble")
 
 
