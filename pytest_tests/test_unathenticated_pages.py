@@ -1,16 +1,19 @@
 import pytest
 
 
-@pytest.mark.parametrize("url",[
-    "/accounts/verify/",
-    "/accounts/password-reset/",
-    "/accounts/change-password/reset/",
-    "/accounts/password-reset-done/",
-    "/accounts/password-reset-from-key-done/",
-    "/accounts/login/",
-    "/accounts/signup/",
-    "/accounts/verify/resend/",
-])
+@pytest.mark.parametrize(
+    "url",
+    [
+        "/accounts/verify/",
+        "/accounts/password-reset/",
+        "/accounts/change-password/reset/",
+        "/accounts/password-reset-done/",
+        "/accounts/password-reset-from-key-done/",
+        "/accounts/login/",
+        "/accounts/signup/",
+        "/accounts/verify/resend/",
+    ],
+)
 def test_get_account_urls_not_there(client, url):
     response = client.get(url)
     assert response.status_code == 404, response.status_code

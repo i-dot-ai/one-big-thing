@@ -5,7 +5,6 @@ import pytest
 from one_big_thing.learning import email_handler, models
 
 
-
 class MockUser:
     def __init__(self, email):
         self.last_token_sent_at = None
