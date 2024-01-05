@@ -100,12 +100,12 @@
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
-      <form method="post" action="{{request.path}}" novalidate>
+      <form method="post" {% if event_name %} class="plausible-event-name={{event_name}}" {% endif %} action="{{request.path}}" novalidate>
         {{csrf_input}}
 
         {{caller()}}
 
-        <button class="govuk-button {{ event_name and ("plausible-event-name=" + event_name) or ""}}"  data-module="govuk-button">
+        <button class="govuk-button"  data-module="govuk-button">
           {{button_label}}
         </button>
       </form>
